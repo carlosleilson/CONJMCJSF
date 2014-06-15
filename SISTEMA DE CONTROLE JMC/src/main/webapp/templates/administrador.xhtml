@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<f:view locale="#{localeBean.locale}" contentType="text/html">
+  <h:head>
+    <ui:insert name="header">
+      <ui:include src="header.xhtml" />
+    </ui:insert>
+  </h:head>
+  <h:body>
+    <h:panelGrid cellspacing="0" cellpadding="0" styleClass="wrapper">
+      <h:panelGrid columns="2" columnClasses="menu,content">
+      	<ui:remove>
+	        <p:panel cellspacing="0" cellpadding="0" styleClass="menu">
+	          <h:form id="menuForm">
+	            <h:link outcome="main">
+	              <h:graphicImage library="images" name="roo_logo.png" styleClass="banner" alt="Spring Roo" />
+	            </h:link>
+	            
+	          </h:form>
+        </p:panel>
+        </ui:remove>
+        <h:panelGroup>
+        	<h:form>
+	        	<p:menubar>
+	            	<p:submenu label="Cadastro Básico">
+	         			<p:menuitem ajax="false" value="Cargos" action="/pages/cargos.xtml"/>
+	         			<p:menuitem ajax="false" value="Funcionarios"/>
+	         			<p:menuitem ajax="false" value="Usuários"/>
+	         			<p:menuitem ajax="false" value="Motoqueiros"/>
+	         			<p:menuitem ajax="false" value="Classificação de Despesas"/>
+	         			<p:menuitem ajax="false" value="Despesas e Gastos"/>
+	         			<p:menuitem ajax="false" value="Lançamento de Funcionários"/>
+	         			<p:menuitem ajax="false" value="Fornecedores"/>
+	            	</p:submenu>
+	            	<p:submenu label="Controle Diário">
+	            		<p:menuitem ajax="false" value="Fechamento"/>
+	            		<p:menuitem ajax="false" value="Sangria"/>
+	            		<p:submenu label="Controle de Valores Pendentes">
+	            			<p:menuitem ajax="false" value="Controles a receber"/>
+	            			<p:menuitem ajax="false" value="Controles a cobrar"/>
+	            		</p:submenu>
+	            	</p:submenu>
+	            	<p:menuitem ajax="false" value="Redução Z"/>
+	            	<p:menuitem ajax="false" value="Conta Corrente Funicionarios"/>
+	            	<p:submenu label="Despesas">
+	            		<p:menuitem ajax="false" value="Inclusão"/>
+	            		<p:menuitem ajax="false" value="Exclusão"/>
+	            	</p:submenu>
+	            	<p:menuitem ajax="false" value="Contas"/>
+	            </p:menubar>
+            </h:form>
+          <h:panelGrid cellspacing="0" cellpadding="0" styleClass="content">
+            <ui:insert name="content" />
+          </h:panelGrid>
+          <ui:insert name="footer">
+            <ui:include src="footer.xhtml" />
+          </ui:insert>
+        </h:panelGroup>
+      </h:panelGrid>
+    </h:panelGrid>
+  </h:body>
+</f:view>
+</html>

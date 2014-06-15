@@ -53,6 +53,7 @@ public class CargosBean implements Serializable {
     public void init() {
         columns = new ArrayList<String>();
         columns.add("nome");
+        findAllCargoses();
     }
 
 	public String getName() {

@@ -63,6 +63,7 @@ public class FuncionariosBean implements Serializable {
         columns.add("salario");
         columns.add("cpf");
         columns.add("identidade");
+        findAllFuncionarioses();
     }
 
 	public String getName() {
@@ -820,7 +821,8 @@ public class FuncionariosBean implements Serializable {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        return findAllFuncionarioses();
+        findAllFuncionarioses();
+        return "/pages/funcionarios.xhtml";
     }
 
 	public String delete() {

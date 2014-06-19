@@ -4,6 +4,25 @@ body,div,td {
     word-wrap: break-word;
 }
 
+.container {
+	width: 900px;
+	margin: 0 auto;
+}
+
+.navigation {
+	margin: 10px 0;
+}
+
+fieldset {
+	margin-bottom: 15px;
+	padding: 20px 10px;
+} 
+/* body,div,td {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    word-wrap: break-word;
+}
+
 body {
     background-color: #fff;
     text-align: left;
@@ -35,7 +54,7 @@ a:visited {
     min-width: 1024px;
     max-width: 1024px;
     margin-right: auto;
-    margin-left: auto; /* fix max-width incompatibility in IE6 */
+    margin-left: auto; fix max-width incompatibility in IE6
     width: expression(document.body.clientWidth > 1024 ? "1024px" : "auto");
     overflow: hidden;
     display: block;
@@ -85,4 +104,4 @@ a:visited {
 
 .col3 {
     vertical-align: top;
-}
+} */

@@ -54,6 +54,7 @@ public class MotoqueirosBean implements Serializable {
         columns = new ArrayList<String>();
         columns.add("apelido");
         columns.add("nome");
+        findAllMotoqueiroses();
     }
 
 	public String getName() {
@@ -343,7 +344,10 @@ public class MotoqueirosBean implements Serializable {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Motoqueiros");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        return findAllMotoqueiroses();
+        findAllMotoqueiroses();
+        return "motoqueiros.xhtml";
+        
+        
     }
 
 	public String delete() {

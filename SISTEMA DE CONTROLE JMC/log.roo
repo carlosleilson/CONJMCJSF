@@ -118,3 +118,11 @@ perform eclipse
 web jsf setup --implementation APACHE_MYFACES --theme ARISTO 
 perform package
 // Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-08 22:09:46
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-15 17:22:39
+perform eclipse
+perform eclipse
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-15 17:26:30
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-15 17:27:28
+perform ecl
+perform eclipse
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-15 23:20:56

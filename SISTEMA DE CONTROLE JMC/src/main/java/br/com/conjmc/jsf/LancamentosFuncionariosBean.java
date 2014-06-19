@@ -55,6 +55,7 @@ public class LancamentosFuncionariosBean implements Serializable{
     public void init() {
         columns = new ArrayList<String>();
         columns.add("descricao");
+        findAllLancamentosFuncionarioses();
     }
 
 	public String getName() {
@@ -298,7 +299,8 @@ public class LancamentosFuncionariosBean implements Serializable{
         FacesMessage facesMessage = MessageFactory.getMessage(message, "LancamentosFuncionarios");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        return findAllLancamentosFuncionarioses();
+        findAllLancamentosFuncionarioses();
+        return "/pages/lancamentosFuncionarios.xhtml";
     }
 
 	public String delete() {

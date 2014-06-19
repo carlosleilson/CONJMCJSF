@@ -58,6 +58,7 @@ public class DespesasBean implements Serializable {
         columns.add("codigo");
         columns.add("descricao");
         columns.add("idResumo");
+        findAllDespesases();
     }
 
 	public String getName() {
@@ -407,7 +408,8 @@ public class DespesasBean implements Serializable {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        return findAllDespesases();
+        findAllDespesases();
+        return "/pages/despesas.xtml";
     }
 
 	public String delete() {

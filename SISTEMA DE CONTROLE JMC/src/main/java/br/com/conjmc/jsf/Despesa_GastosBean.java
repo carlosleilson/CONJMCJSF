@@ -58,6 +58,7 @@ public class Despesa_GastosBean implements Serializable{
     public void init() {
         columns = new ArrayList<String>();
         columns.add("descrisao");
+        findAllDespesa_Gastoses();
     }
 
 	public String getName() {
@@ -415,7 +416,8 @@ public class Despesa_GastosBean implements Serializable{
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesa_Gastos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        return findAllDespesa_Gastoses();
+        findAllDespesa_Gastoses();
+        return "/pages/despesa_Gastos.xhtml";
     }
 
 	public String delete() {

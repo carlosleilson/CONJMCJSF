@@ -60,6 +60,7 @@ public class FornecedoresBean implements Serializable {
         columns.add("nome");
         columns.add("apelido");
         columns.add("cnpj");
+        findAllFornecedoreses();
     }
 
 	public String getName() {
@@ -476,7 +477,8 @@ public class FornecedoresBean implements Serializable {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Fornecedores");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        return findAllFornecedoreses();
+        findAllFornecedoreses();
+        return "/pages/fornecedor.xhtml";
     }
 
 	public String delete() {

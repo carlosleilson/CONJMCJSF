@@ -12,9 +12,11 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">
-    	<h:panelGrid id="createPanelGrid" columns="3" binding="#{cargosBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-        <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{cargosBean.persist}" update="list" />
-        <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
+    	<fieldset>
+	    	<h:panelGrid id="createPanelGrid" columns="3" binding="#{cargosBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
+	        <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{cargosBean.persist}" update="list" />
+	        <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
+        </fieldset>
         <p:dataTable id="list" value="#{cargosBean.allCargoses}" var="cargos" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
           <p:columns value="#{cargosBean.columns}" var="column" columnIndexVar="colIndex">
             <f:facet name="header">

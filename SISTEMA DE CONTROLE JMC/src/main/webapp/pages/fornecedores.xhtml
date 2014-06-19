@@ -6,20 +6,20 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-<ui:composition template="../templates/layout.xhtml">
+<ui:composition template="../templates/administrador.xhtml">
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
+     <h:form id="createForm" enctype="multipart/form-data">
+       	<fieldset>
+	          <h:panelGrid id="createPanelGrid" columns="3" binding="#{fornecedoresBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
+	          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{fornecedoresBean.persist}"/>
+	          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
+          </fieldset>
+    </h:form>
     <h:form prependId="false" id="dataForm">
-      <p:panel id="data" toggleable="true" toggleSpeed="250">
-        <f:facet name="header">
-          <h:outputText value="#{fornecedoresBean.name}" />
-        </f:facet>
-        <h:outputFormat id="noRecordsFound" value="#{messages.label_no_records_found}" rendered="#{!fornecedoresBean.dataVisible}">
-          <f:param value="Fornecedoreses" />
-        </h:outputFormat>
-        <p:dataTable id="list" value="#{fornecedoresBean.allFornecedoreses}" var="fornecedores" rendered="#{fornecedoresBean.dataVisible}" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
+        <p:dataTable id="list" value="#{fornecedoresBean.allFornecedoreses}" var="fornecedores" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
           <p:columns value="#{fornecedoresBean.columns}" var="column" columnIndexVar="colIndex">
             <f:facet name="header">
               <h:outputText value="#{applicationBean.getColumnName(column)}" />
@@ -44,24 +44,13 @@
             <p:tooltip for="deleteButton" value="#{messages.label_delete}" showEffect="fade" hideEffect="fade" />
           </p:column>
         </p:dataTable>
-      </p:panel>
     </h:form>
-    <p:dialog id="createDialog" header="#{messages.label_create} Fornecedores" modal="true" widgetVar="createDialogWidget" dynamic="true" visible="#{fornecedoresBean.createDialogVisible}" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:ajax event="close" update=":dataForm:data" listener="#{fornecedoresBean.handleDialogClose}" />
-      <p:outputPanel id="createPanel">
-        <h:form id="createForm" enctype="multipart/form-data">
-          <h:panelGrid id="createPanelGrid" columns="3" binding="#{fornecedoresBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{fornecedoresBean.persist}" update="createPanelGrid :growlForm:growl" />
-          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog>
     <p:dialog id="editDialog" header="#{messages.label_edit} Fornecedores" modal="true" widgetVar="editDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:ajax event="close" update=":dataForm:data" listener="#{fornecedoresBean.handleDialogClose}" />
+      <p:ajax event="close" update=":dataForm:list:data" listener="#{fornecedoresBean.handleDialogClose}" />
       <p:outputPanel id="editPanel">
         <h:form id="editForm" enctype="multipart/form-data">
           <h:panelGrid id="editPanelGrid" columns="3" binding="#{fornecedoresBean.editPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-          <p:commandButton id="editSaveButton" value="#{messages.label_save}" action="#{fornecedoresBean.persist}" update="editPanelGrid :growlForm:growl" />
+          <p:commandButton id="editSaveButton" value="#{messages.label_save}" action="#{fornecedoresBean.persist}" update="editPanelGrid :growlForm:growl :dataForm:list" onclick="editDialogWidget.hide()"/>
           <p:commandButton id="editCloseButton" value="#{messages.label_close}" onclick="editDialogWidget.hide()" type="button" />
         </h:form>
       </p:outputPanel>
@@ -77,7 +66,7 @@
     <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm">
       <p:outputPanel id="deletePanel">
         <h:form id="deleteForm">
-          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{fornecedoresBean.delete}" update=":dataForm:data :growlForm:growl" oncomplete="deleteDialogWidget.hide()" />
+          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{fornecedoresBean.delete}" update=":dataForm:list :growlForm:growl" oncomplete="deleteDialogWidget.hide()" />
           <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="deleteDialogWidget.hide()" type="button" />
         </h:form>
       </p:outputPanel>

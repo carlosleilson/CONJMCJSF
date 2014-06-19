@@ -58,6 +58,7 @@ public class UsuariosBean implements Serializable {
     public void init() {
         columns = new ArrayList<String>();
         columns.add("senha");
+        findAllUsuarioses();
     }
 
 	public String getName() {
@@ -384,7 +385,8 @@ public class UsuariosBean implements Serializable {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Usuarios");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        return findAllUsuarioses();
+        findAllUsuarioses();
+        return "/pages/usuarios.xhtml";
     }
 
 	public String delete() {

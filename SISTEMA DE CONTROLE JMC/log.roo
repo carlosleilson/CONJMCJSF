@@ -126,3 +126,16 @@ perform eclipse
 perform ecl
 perform eclipse
 // Spring Roo 1.2.5.RELEASE [rev 8341dc2] log closed at 2014-06-15 23:20:56
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-06-27 13:06:01
+hint
+entity jpa --class ~.despesa.DespesasLoja
+field date --fieldName mes_ano --type java.util.Calendar --notNull --dateTimeFormatPattern MM/yyyy
+field date --fieldName dia --type java.util.Calendar --notNull --dateTimeFormatPattern dd
+field number --fieldName valor --notNull --type java.lang.Double
+field reference --fieldName classificacao --type ~.cadastrobasico.Despesas
+field reference --fieldName item --type ~.cadastrobasico.Despesa_Gastos
+finder list --class ~.despesa.DespesasLoja --filter mes_ano,item
+finder add --finderName findDespesasLojasByMes_anoEquals
+finder add --finderName findDespesasLojasByItem
+web jsf all --package ~.jsf
+perform eclipse

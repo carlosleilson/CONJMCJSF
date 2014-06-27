@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+  <ui:define name="content">
+    <h:form prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+    <h:form prependId="false" id="dataForm">
+    	<fieldset>
+         <h:panelGrid id="createPanelGridNew" columns="3" binding="#{despesasLojaBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
+          <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{despesasLojaBean.persist}"  />
+        </fieldset>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

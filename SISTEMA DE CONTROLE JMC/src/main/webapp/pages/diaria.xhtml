@@ -12,6 +12,11 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">
+    <fieldset>
+          <h:panelGrid id="createPanelGrid" columns="3" binding="#{diariaBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
+          <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{diariaBean.persist}" update="list" />
+          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
+    </fieldset>
       <p:panel id="data" toggleable="true" toggleSpeed="250">
         <f:facet name="header">
           <h:outputText value="#{diariaBean.name}" />
@@ -19,7 +24,7 @@
         <h:outputFormat id="noRecordsFound" value="#{messages.label_no_records_found}" rendered="#{!diariaBean.dataVisible}">
           <f:param value="Diarias" />
         </h:outputFormat>
-        <p:dataTable id="list" value="#{diariaBean.allDiarias}" var="diaria" rendered="#{diariaBean.dataVisible}" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
+        <p:dataTable id="list" value="#{diariaBean.allDiarias}" var="diaria" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
           <p:columns value="#{diariaBean.columns}" var="column" columnIndexVar="colIndex">
             <f:facet name="header">
               <h:outputText value="#{applicationBean.getColumnName(column)}" />
@@ -46,16 +51,6 @@
         </p:dataTable>
       </p:panel>
     </h:form>
-    <p:dialog id="createDialog" header="#{messages.label_create} Diaria" modal="true" widgetVar="createDialogWidget" dynamic="true" visible="#{diariaBean.createDialogVisible}" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:ajax event="close" update=":dataForm:data" listener="#{diariaBean.handleDialogClose}" />
-      <p:outputPanel id="createPanel">
-        <h:form id="createForm" enctype="multipart/form-data">
-          <h:panelGrid id="createPanelGrid" columns="3" binding="#{diariaBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{diariaBean.persist}" update="createPanelGrid :growlForm:growl" />
-          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog>
     <p:dialog id="editDialog" header="#{messages.label_edit} Diaria" modal="true" widgetVar="editDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
       <p:ajax event="close" update=":dataForm:data" listener="#{diariaBean.handleDialogClose}" />
       <p:outputPanel id="editPanel">

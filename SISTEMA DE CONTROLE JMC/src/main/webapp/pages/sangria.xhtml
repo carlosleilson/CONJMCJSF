@@ -12,14 +12,16 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">
+    	<fieldset>
+          <h:panelGrid id="createPanelGrid" columns="3" binding="#{sangriaBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
+          <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{sangriaBean.persist}" update="list" />
+          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
+    	</fieldset>
       <p:panel id="data" toggleable="true" toggleSpeed="250">
         <f:facet name="header">
           <h:outputText value="#{sangriaBean.name}" />
         </f:facet>
-        <h:outputFormat id="noRecordsFound" value="#{messages.label_no_records_found}" rendered="#{!sangriaBean.dataVisible}">
-          <f:param value="Sangrias" />
-        </h:outputFormat>
-        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" rendered="#{sangriaBean.dataVisible}" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
+        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
           <p:columns value="#{sangriaBean.columns}" var="column" columnIndexVar="colIndex">
             <f:facet name="header">
               <h:outputText value="#{applicationBean.getColumnName(column)}" />
@@ -46,16 +48,6 @@
         </p:dataTable>
       </p:panel>
     </h:form>
-    <p:dialog id="createDialog" header="#{messages.label_create} Sangria" modal="true" widgetVar="createDialogWidget" dynamic="true" visible="#{sangriaBean.createDialogVisible}" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:ajax event="close" update=":dataForm:data" listener="#{sangriaBean.handleDialogClose}" />
-      <p:outputPanel id="createPanel">
-        <h:form id="createForm" enctype="multipart/form-data">
-          <h:panelGrid id="createPanelGrid" columns="3" binding="#{sangriaBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{sangriaBean.persist}" update="createPanelGrid :growlForm:growl" />
-          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog>
     <p:dialog id="editDialog" header="#{messages.label_edit} Sangria" modal="true" widgetVar="editDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
       <p:ajax event="close" update=":dataForm:data" listener="#{sangriaBean.handleDialogClose}" />
       <p:outputPanel id="editPanel">

@@ -23,6 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import br.com.conjmc.cadastrobasico.Despesa_Gastos;
 import javax.persistence.ManyToOne;
 import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
 
 @Configurable
 @Entity
@@ -51,77 +52,64 @@ public class Sangria {
     /**
      */
     @ManyToOne
-    private Despesa_Gastos item;
-
-    /**
-     */
-    @ManyToOne
     private Funcionarios funcionario;
 
-	public String toString() {
+    public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-	public Calendar getPeriodo() {
+    public Calendar getPeriodo() {
         return this.periodo;
     }
 
-	public void setPeriodo(Calendar periodo) {
+    public void setPeriodo(Calendar periodo) {
         this.periodo = periodo;
     }
 
-	public Double getValor() {
+    public Double getValor() {
         return this.valor;
     }
 
-	public void setValor(Double valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 
-	public String getOrigem() {
+    public String getOrigem() {
         return this.origem;
     }
 
-	public void setOrigem(String origem) {
+    public void setOrigem(String origem) {
         this.origem = origem;
     }
 
-	public Despesa_Gastos getItem() {
-        return this.item;
-    }
-
-	public void setItem(Despesa_Gastos item) {
-        this.item = item;
-    }
-
-	public Funcionarios getFuncionario() {
+    public Funcionarios getFuncionario() {
         return this.funcionario;
     }
 
-	public void setFuncionario(Funcionarios funcionario) {
+    public void setFuncionario(Funcionarios funcionario) {
         this.funcionario = funcionario;
     }
 
-	@PersistenceContext
+    @PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "valor", "origem", "item", "funcionario");
+    public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "valor", "origem", "item", "funcionario");
 
-	public static final EntityManager entityManager() {
+    public static final EntityManager entityManager() {
         EntityManager em = new Sangria().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 
-	public static long countSangrias() {
+    public static long countSangrias() {
         return entityManager().createQuery("SELECT COUNT(o) FROM Sangria o", Long.class).getSingleResult();
     }
 
-	public static List<Sangria> findAllSangrias() {
+    public static List<Sangria> findAllSangrias() {
         return entityManager().createQuery("SELECT o FROM Sangria o", Sangria.class).getResultList();
     }
 
-	public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {
+    public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Sangria o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
@@ -132,16 +120,16 @@ public class Sangria {
         return entityManager().createQuery(jpaQuery, Sangria.class).getResultList();
     }
 
-	public static Sangria findSangria(Long id) {
+    public static Sangria findSangria(Long id) {
         if (id == null) return null;
         return entityManager().find(Sangria.class, id);
     }
 
-	public static List<Sangria> findSangriaEntries(int firstResult, int maxResults) {
+    public static List<Sangria> findSangriaEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Sangria o", Sangria.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
-	public static List<Sangria> findSangriaEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
+    public static List<Sangria> findSangriaEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Sangria o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
@@ -152,13 +140,13 @@ public class Sangria {
         return entityManager().createQuery(jpaQuery, Sangria.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
-	@Transactional
+    @Transactional
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
     }
 
-	@Transactional
+    @Transactional
     public void remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
@@ -169,19 +157,19 @@ public class Sangria {
         }
     }
 
-	@Transactional
+    @Transactional
     public void flush() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.flush();
     }
 
-	@Transactional
+    @Transactional
     public void clear() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.clear();
     }
 
-	@Transactional
+    @Transactional
     public Sangria merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Sangria merged = this.entityManager.merge(this);
@@ -189,28 +177,41 @@ public class Sangria {
         return merged;
     }
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-	@Version
+    @Version
     @Column(name = "version")
     private Integer version;
 
-	public Long getId() {
+    public Long getId() {
         return this.id;
     }
 
-	public void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-	public Integer getVersion() {
+    public Integer getVersion() {
         return this.version;
     }
 
-	public void setVersion(Integer version) {
+    public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    /**
+     */
+    @ManyToOne
+    private DespesasGastos item;
+
+	public DespesasGastos getItem() {
+        return this.item;
+    }
+
+	public void setItem(DespesasGastos item) {
+        this.item = item;
     }
 }

@@ -6,7 +6,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.Column;
@@ -195,4 +197,16 @@ public class DespesasGastos {
 	public void setVersion(Integer version) {
         this.version = version;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        DespesasGastos other = (DespesasGastos) obj;
+        if (classificacao == null) {
+            if (other.classificacao != null) return false;
+        } else if (!classificacao.equals(other.classificacao)) return false;
+        return true;
+    }
+	
 }

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.converter.RooJsfConverter;
 
 @Configurable
-@FacesConverter("DespesasGastosConverter")
+@FacesConverter("despesasGastosConverter")
 @RooJsfConverter(entity = DespesasGastos.class)
 public class DespesasGastosConverter implements Converter {
 

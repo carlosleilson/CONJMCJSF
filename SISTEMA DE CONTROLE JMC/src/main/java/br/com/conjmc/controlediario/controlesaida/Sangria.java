@@ -48,7 +48,10 @@ public class Sangria {
      */
     @NotNull
     private String origem;
-
+    /**
+     */
+    @ManyToOne
+    private DespesasGastos item;
     /**
      */
     @ManyToOne
@@ -185,6 +188,14 @@ public class Sangria {
     @Version
     @Column(name = "version")
     private Integer version;
+    
+    public DespesasGastos getItem() {
+    	return this.item;
+    }
+    
+    public void setItem(DespesasGastos item) {
+    	this.item = item;
+    }
 
     public Long getId() {
         return this.id;
@@ -202,16 +213,4 @@ public class Sangria {
         this.version = version;
     }
 
-    /**
-     */
-    @ManyToOne
-    private DespesasGastos item;
-
-	public DespesasGastos getItem() {
-        return this.item;
-    }
-
-	public void setItem(DespesasGastos item) {
-        this.item = item;
-    }
 }

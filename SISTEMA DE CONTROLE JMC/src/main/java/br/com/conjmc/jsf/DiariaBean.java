@@ -44,7 +44,7 @@ public class DiariaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String name = "Diarias";
+	private String name = "Fechamento de Diarias";
 
 	private Diaria diaria;
 
@@ -1090,19 +1090,20 @@ public class DiariaBean implements Serializable {
         OutputLabel contaReceberEditOutput = (OutputLabel) application.createComponent(OutputLabel.COMPONENT_TYPE);
         contaReceberEditOutput.setFor("contaReceberEditInput");
         contaReceberEditOutput.setId("contaReceberEditOutput");
-        contaReceberEditOutput.setValue("Conta Receber:");
+        contaReceberEditOutput.setValue("Conta a Receber:");
         htmlPanelGrid.getChildren().add(contaReceberEditOutput);
         
         AutoComplete contaReceberEditInput = (AutoComplete) application.createComponent(AutoComplete.COMPONENT_TYPE);
         contaReceberEditInput.setId("contaReceberEditInput");
-        contaReceberEditInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{diariaBean.diaria.contaReceber}", Receber.class));
-        contaReceberEditInput.setCompleteMethod(expressionFactory.createMethodExpression(elContext, "#{diariaBean.completeContaReceber}", List.class, new Class[] { String.class }));
-        contaReceberEditInput.setDropdown(true);
-        contaReceberEditInput.setValueExpression("var", expressionFactory.createValueExpression(elContext, "contaReceber", String.class));
-        contaReceberEditInput.setValueExpression("itemLabel", expressionFactory.createValueExpression(elContext, "#{contaReceber.periodo} #{contaReceber.numeroPedido} #{contaReceber.telefone} #{contaReceber.valor}", String.class));
-        contaReceberEditInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{contaReceber}", Receber.class));
-        contaReceberEditInput.setConverter(new ReceberConverter());
-        contaReceberEditInput.setRequired(false);
+//        contaReceberEditInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{diariaBean.diaria.contaReceber}", Receber.class));
+//        contaReceberEditInput.setCompleteMethod(expressionFactory.createMethodExpression(elContext, "#{diariaBean.completeContaReceber}", List.class, new Class[] { String.class }));
+//        contaReceberEditInput.setDropdown(true);
+//        contaReceberEditInput.setValueExpression("var", expressionFactory.createValueExpression(elContext, "contaReceber", String.class));
+//        contaReceberEditInput.setValueExpression("itemLabel", expressionFactory.createValueExpression(elContext, "#{contaReceber.periodo} #{contaReceber.numeroPedido} #{contaReceber.telefone} #{contaReceber.valor}", String.class));
+//        contaReceberEditInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{contaReceber}", Receber.class));
+//        contaReceberEditInput.setConverter(new ReceberConverter());
+//        contaReceberEditInput.setRequired(false);
+        contaReceberEditInput.setDisabled(true);
         htmlPanelGrid.getChildren().add(contaReceberEditInput);
         
         Message contaReceberEditInputMessage = (Message) application.createComponent(Message.COMPONENT_TYPE);
@@ -1114,7 +1115,7 @@ public class DiariaBean implements Serializable {
         OutputLabel contaPagarEditOutput = (OutputLabel) application.createComponent(OutputLabel.COMPONENT_TYPE);
         contaPagarEditOutput.setFor("contaPagarEditInput");
         contaPagarEditOutput.setId("contaPagarEditOutput");
-        contaPagarEditOutput.setValue("Conta Pagar:");
+        contaPagarEditOutput.setValue("Conta a Pagar:");
         htmlPanelGrid.getChildren().add(contaPagarEditOutput);
         
         AutoComplete contaPagarEditInput = (AutoComplete) application.createComponent(AutoComplete.COMPONENT_TYPE);
@@ -1127,6 +1128,7 @@ public class DiariaBean implements Serializable {
         contaPagarEditInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{contaPagar}", Cobrar.class));
         contaPagarEditInput.setConverter(new CobrarConverter());
         contaPagarEditInput.setRequired(false);
+        contaPagarEditInput.setDisabled(true);
         htmlPanelGrid.getChildren().add(contaPagarEditInput);
         
         Message contaPagarEditInputMessage = (Message) application.createComponent(Message.COMPONENT_TYPE);
@@ -1405,7 +1407,7 @@ public class DiariaBean implements Serializable {
         
         HtmlOutputText contaReceberLabel = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
         contaReceberLabel.setId("contaReceberLabel");
-        contaReceberLabel.setValue("Conta Receber:");
+        contaReceberLabel.setValue("Conta a Receber:");
         htmlPanelGrid.getChildren().add(contaReceberLabel);
         
         HtmlOutputText contaReceberValue = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);

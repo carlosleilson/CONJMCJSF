@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.converter.RooJsfConverter;
 
 @Configurable
-@FacesConverter("br.com.conjmc.jsf.converter.FuncionariosConverter")
+@FacesConverter("funcionariosConverter")
 @RooJsfConverter(entity = Funcionarios.class)
 public class FuncionariosConverter implements Converter {
 

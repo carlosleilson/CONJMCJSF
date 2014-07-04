@@ -1,14 +1,17 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.cadastrobasico.Despesa_Gastos;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.converter.Despesa_GastosConverter;
+import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -19,6 +22,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
@@ -49,6 +53,10 @@ public class SangriaBean implements Serializable  {
 
 	private List<String> columns;
 
+	private List<DespesasGastos> completeItem;
+	
+	private List<Funcionarios> completeFuncionario;
+	
 	private HtmlPanelGrid createPanelGrid;
 
 	private HtmlPanelGrid editPanelGrid;
@@ -56,9 +64,33 @@ public class SangriaBean implements Serializable  {
 	private HtmlPanelGrid viewPanelGrid;
 
 	private boolean createDialogVisible = false;
+	
+	public List<DespesasGastos> completeItem(String query) {
+        List<DespesasGastos> suggestions = new ArrayList<DespesasGastos>();
+        for (DespesasGastos despesasGastos : DespesasGastos.findAllDespesasGastoses()) {
+            String despesasGastosStr = String.valueOf(despesasGastos.getDescrisao());
+            if (despesasGastosStr.toLowerCase().startsWith(query.toLowerCase())) {
+                suggestions.add(despesasGastos);
+            }
+        }
+        return suggestions;
+    }
 
+	public List<Funcionarios> completeFuncionario(String query) {
+        List<Funcionarios> suggestions = new ArrayList<Funcionarios>();
+        for (Funcionarios funcionarios : Funcionarios.findAllFuncionarioses()) {
+            String funcionariosStr = String.valueOf(funcionarios.getNome() +  " "  + funcionarios.getApelido());
+            if (funcionariosStr.toLowerCase().startsWith(query.toLowerCase())) {
+                suggestions.add(funcionarios);
+            }
+        }
+        return suggestions;
+    }
+	
 	@PostConstruct
     public void init() {
+		setCompleteItem(DespesasGastos.findAllDespesasGastoses());
+		setCompleteFuncionario(Funcionarios.findAllFuncionarioses());
         columns = new ArrayList<String>();
         columns.add("periodo");
         columns.add("valor");
@@ -198,13 +230,13 @@ public class SangriaBean implements Serializable  {
         
         AutoComplete itemCreateInput = (AutoComplete) application.createComponent(AutoComplete.COMPONENT_TYPE);
         itemCreateInput.setId("itemCreateInput");
-        itemCreateInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{sangriaBean.sangria.item}", Despesa_Gastos.class));
+        itemCreateInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{sangriaBean.sangria.item}", DespesasGastos.class));
         itemCreateInput.setCompleteMethod(expressionFactory.createMethodExpression(elContext, "#{sangriaBean.completeItem}", List.class, new Class[] { String.class }));
         itemCreateInput.setDropdown(true);
         itemCreateInput.setValueExpression("var", expressionFactory.createValueExpression(elContext, "item", String.class));
         itemCreateInput.setValueExpression("itemLabel", expressionFactory.createValueExpression(elContext, "#{item.descrisao}", String.class));
-        itemCreateInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{item}", Despesa_Gastos.class));
-        itemCreateInput.setConverter(new Despesa_GastosConverter());
+        itemCreateInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{item}", DespesasGastos.class));
+        itemCreateInput.setConverter(new DespesasGastosConverter());
         itemCreateInput.setRequired(false);
         htmlPanelGrid.getChildren().add(itemCreateInput);
         
@@ -314,13 +346,13 @@ public class SangriaBean implements Serializable  {
         
         AutoComplete itemEditInput = (AutoComplete) application.createComponent(AutoComplete.COMPONENT_TYPE);
         itemEditInput.setId("itemEditInput");
-        itemEditInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{sangriaBean.sangria.item}", Despesa_Gastos.class));
+        itemEditInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{sangriaBean.sangria.item}", DespesasGastos.class));
         itemEditInput.setCompleteMethod(expressionFactory.createMethodExpression(elContext, "#{sangriaBean.completeItem}", List.class, new Class[] { String.class }));
         itemEditInput.setDropdown(true);
         itemEditInput.setValueExpression("var", expressionFactory.createValueExpression(elContext, "item", String.class));
         itemEditInput.setValueExpression("itemLabel", expressionFactory.createValueExpression(elContext, "#{item.descrisao}", String.class));
-        itemEditInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{item}", Despesa_Gastos.class));
-        itemEditInput.setConverter(new Despesa_GastosConverter());
+        itemEditInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{item}", DespesasGastos.class));
+        itemEditInput.setConverter(new DespesasGastosConverter());
         itemEditInput.setRequired(false);
         htmlPanelGrid.getChildren().add(itemEditInput);
         
@@ -342,7 +374,7 @@ public class SangriaBean implements Serializable  {
         funcionarioEditInput.setCompleteMethod(expressionFactory.createMethodExpression(elContext, "#{sangriaBean.completeFuncionario}", List.class, new Class[] { String.class }));
         funcionarioEditInput.setDropdown(true);
         funcionarioEditInput.setValueExpression("var", expressionFactory.createValueExpression(elContext, "funcionario", String.class));
-        funcionarioEditInput.setValueExpression("itemLabel", expressionFactory.createValueExpression(elContext, "#{funcionario.nome} #{funcionario.apelido} #{funcionario.salario} #{funcionario.cpf}", String.class));
+        funcionarioEditInput.setValueExpression("itemLabel", expressionFactory.createValueExpression(elContext, "#{funcionario.nome} #{funcionario.apelido}", String.class));
         funcionarioEditInput.setValueExpression("itemValue", expressionFactory.createValueExpression(elContext, "#{funcionario}", Funcionarios.class));
         funcionarioEditInput.setConverter(new FuncionariosConverter());
         funcionarioEditInput.setRequired(false);
@@ -402,7 +434,7 @@ public class SangriaBean implements Serializable  {
         htmlPanelGrid.getChildren().add(itemLabel);
         
         HtmlOutputText itemValue = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
-        itemValue.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{sangriaBean.sangria.item}", Despesa_Gastos.class));
+        itemValue.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{sangriaBean.sangria.item}", DespesasGastos.class));
         itemValue.setConverter(new Despesa_GastosConverter());
         htmlPanelGrid.getChildren().add(itemValue);
         
@@ -428,28 +460,6 @@ public class SangriaBean implements Serializable  {
 
 	public void setSangria(Sangria sangria) {
         this.sangria = sangria;
-    }
-
-	public List<Despesa_Gastos> completeItem(String query) {
-        List<Despesa_Gastos> suggestions = new ArrayList<Despesa_Gastos>();
-        for (Despesa_Gastos despesa_Gastos : Despesa_Gastos.findAllDespesa_Gastoses()) {
-            String despesa_GastosStr = String.valueOf(despesa_Gastos.getDescrisao());
-            if (despesa_GastosStr.toLowerCase().startsWith(query.toLowerCase())) {
-                suggestions.add(despesa_Gastos);
-            }
-        }
-        return suggestions;
-    }
-
-	public List<Funcionarios> completeFuncionario(String query) {
-        List<Funcionarios> suggestions = new ArrayList<Funcionarios>();
-        for (Funcionarios funcionarios : Funcionarios.findAllFuncionarioses()) {
-            String funcionariosStr = String.valueOf(funcionarios.getNome() +  " "  + funcionarios.getApelido() +  " "  + funcionarios.getSalario() +  " "  + funcionarios.getCpf());
-            if (funcionariosStr.toLowerCase().startsWith(query.toLowerCase())) {
-                suggestions.add(funcionarios);
-            }
-        }
-        return suggestions;
     }
 
 	public String onEdit() {
@@ -511,4 +521,20 @@ public class SangriaBean implements Serializable  {
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }
+
+	public List<Funcionarios> getCompleteFuncionario() {
+		return completeFuncionario;
+	}
+
+	public void setCompleteFuncionario(List<Funcionarios> completeFuncionario) {
+		this.completeFuncionario = completeFuncionario;
+	}
+
+	public List<DespesasGastos> getCompleteItem() {
+		return completeItem;
+	}
+
+	public void setCompleteItem(List<DespesasGastos> completeItem) {
+		this.completeItem = completeItem;
+	}
 }

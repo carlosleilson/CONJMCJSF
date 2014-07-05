@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.converter.RooJsfConverter;
 
 @Configurable
-@FacesConverter("br.com.conjmc.jsf.converter.DiariaConverter")
+@FacesConverter("diariaConverter")
 @RooJsfConverter(entity = Diaria.class)
 public class DiariaConverter implements Converter{
 

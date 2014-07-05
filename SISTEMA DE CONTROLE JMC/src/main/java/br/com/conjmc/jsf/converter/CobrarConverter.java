@@ -7,7 +7,7 @@ import javax.faces.convert.FacesConverter;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.converter.RooJsfConverter;
 
-@FacesConverter("br.com.conjmc.jsf.converter.CobrarConverter")
+@FacesConverter("cobrarConverter")
 @Configurable
 @RooJsfConverter(entity = Cobrar.class)
 public class CobrarConverter implements Converter {

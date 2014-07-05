@@ -7,7 +7,7 @@ import javax.faces.convert.FacesConverter;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.converter.RooJsfConverter;
 
-@FacesConverter("br.com.conjmc.jsf.converter.ReceberConverter")
+@FacesConverter("feceberConverter")
 @Configurable
 @RooJsfConverter(entity = Receber.class)
 public class ReceberConverter implements Converter{

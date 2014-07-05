@@ -5,8 +5,10 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Calendar;
+
+import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -18,10 +20,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
-import br.com.conjmc.cadastrobasico.Despesa_Gastos;
+
 import javax.persistence.ManyToOne;
+
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 
@@ -37,7 +41,7 @@ public class Sangria {
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "dd/MM/yy-hh")
-    private Calendar periodo;
+    private Date periodo;
 
     /**
      */
@@ -61,11 +65,11 @@ public class Sangria {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    public Calendar getPeriodo() {
+	public Date getPeriodo() {
         return this.periodo;
     }
 
-    public void setPeriodo(Calendar periodo) {
+	public void setPeriodo(Date periodo) {
         this.periodo = periodo;
     }
 

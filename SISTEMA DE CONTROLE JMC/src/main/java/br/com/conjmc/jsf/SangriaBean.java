@@ -2,7 +2,6 @@ package br.com.conjmc.jsf;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
-import br.com.conjmc.jsf.converter.Despesa_GastosConverter;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
@@ -435,7 +434,7 @@ public class SangriaBean implements Serializable  {
         
         HtmlOutputText itemValue = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
         itemValue.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{sangriaBean.sangria.item}", DespesasGastos.class));
-        itemValue.setConverter(new Despesa_GastosConverter());
+        itemValue.setConverter(new DespesasGastosConverter());
         htmlPanelGrid.getChildren().add(itemValue);
         
         HtmlOutputText funcionarioLabel = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);

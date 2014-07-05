@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import br.com.conjmc.cadastrobasico.Despesas;
 import javax.persistence.ManyToOne;
-import br.com.conjmc.cadastrobasico.Despesa_Gastos;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
 
 @Configurable
 @Entity
@@ -59,7 +59,7 @@ public class DespesasLoja {
     /**
      */
     @ManyToOne
-    private Despesa_Gastos item;
+    private DespesasGastos item;
 
 	public Calendar getMes_ano() {
         return this.mes_ano;
@@ -93,11 +93,11 @@ public class DespesasLoja {
         this.classificacao = classificacao;
     }
 
-	public Despesa_Gastos getItem() {
+	public DespesasGastos getItem() {
         return this.item;
     }
 
-	public void setItem(Despesa_Gastos item) {
+	public void setItem(DespesasGastos item) {
         this.item = item;
     }
 
@@ -188,7 +188,7 @@ public class DespesasLoja {
         return merged;
     }
 
-	public static Long countFindDespesasLojasByItem(Despesa_Gastos item) {
+	public static Long countFindDespesasLojasByItem(DespesasGastos item) {
         if (item == null) throw new IllegalArgumentException("The item argument is required");
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery q = em.createQuery("SELECT COUNT(o) FROM DespesasLoja AS o WHERE o.item = :item", Long.class);
@@ -204,7 +204,7 @@ public class DespesasLoja {
         return ((Long) q.getSingleResult());
     }
 
-	public static TypedQuery<DespesasLoja> findDespesasLojasByItem(Despesa_Gastos item) {
+	public static TypedQuery<DespesasLoja> findDespesasLojasByItem(DespesasGastos item) {
         if (item == null) throw new IllegalArgumentException("The item argument is required");
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<DespesasLoja> q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.item = :item", DespesasLoja.class);
@@ -212,7 +212,7 @@ public class DespesasLoja {
         return q;
     }
 
-	public static TypedQuery<DespesasLoja> findDespesasLojasByItem(Despesa_Gastos item, String sortFieldName, String sortOrder) {
+	public static TypedQuery<DespesasLoja> findDespesasLojasByItem(DespesasGastos item, String sortFieldName, String sortOrder) {
         if (item == null) throw new IllegalArgumentException("The item argument is required");
         EntityManager em = DespesasLoja.entityManager();
         String jpaQuery = "SELECT o FROM DespesasLoja AS o WHERE o.item = :item";

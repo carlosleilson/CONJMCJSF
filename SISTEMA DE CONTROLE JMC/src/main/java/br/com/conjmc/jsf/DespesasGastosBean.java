@@ -58,6 +58,7 @@ public class DespesasGastosBean implements Serializable {
     public void init() {
         columns = new ArrayList<String>();
         columns.add("descrisao");
+        findAllDespesasGastoses();
     }
 
 	public String getName() {

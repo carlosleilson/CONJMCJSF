@@ -6,7 +6,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.Column;
@@ -299,4 +301,87 @@ public class Funcionarios {
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Funcionarios other = (Funcionarios) obj;
+		if (apelido == null) {
+			if (other.apelido != null)
+				return false;
+		} else if (!apelido.equals(other.apelido))
+			return false;
+		if (bairro == null) {
+			if (other.bairro != null)
+				return false;
+		} else if (!bairro.equals(other.bairro))
+			return false;
+		if (cargo == null) {
+			if (other.cargo != null)
+				return false;
+		} else if (!cargo.equals(other.cargo))
+			return false;
+		if (cep == null) {
+			if (other.cep != null)
+				return false;
+		} else if (!cep.equals(other.cep))
+			return false;
+		if (cidade == null) {
+			if (other.cidade != null)
+				return false;
+		} else if (!cidade.equals(other.cidade))
+			return false;
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (identidade == null) {
+			if (other.identidade != null)
+				return false;
+		} else if (!identidade.equals(other.identidade))
+			return false;
+		if (logradouro == null) {
+			if (other.logradouro != null)
+				return false;
+		} else if (!logradouro.equals(other.logradouro))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (outrasInformacoes == null) {
+			if (other.outrasInformacoes != null)
+				return false;
+		} else if (!outrasInformacoes.equals(other.outrasInformacoes))
+			return false;
+		if (salario == null) {
+			if (other.salario != null)
+				return false;
+		} else if (!salario.equals(other.salario))
+			return false;
+		if (situacao == null) {
+			if (other.situacao != null)
+				return false;
+		} else if (!situacao.equals(other.situacao))
+			return false;
+		if (version == null) {
+			if (other.version != null)
+				return false;
+		} else if (!version.equals(other.version))
+			return false;
+		return true;
+	}
+	
 }

@@ -13,7 +13,24 @@
     </h:form>
     <h:form id="createForm" enctype="multipart/form-data">
      	<fieldset>
-			<h:panelGrid id="createPanelGrid" columns="3" binding="#{despesasBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
+			<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+				<p:outputLabel value="Código" for="codigo"/>
+				<p:inputText id="codigo" value="#{despesasBean.despesas.codigo}" required="true"/>
+				<p:messages for="codigo"/>
+				
+				<p:outputLabel value="Descrição" for="descricao"/>
+				<p:inputTextarea id="descricao" value="#{despesasBean.despesas.descricao}" required="true"/>
+				<p:messages for="descricao"/>
+				
+				<p:outputLabel value="ID Resumo" for="resumo"/>
+				<p:inputText id="resumo" value="#{despesasBean.despesas.idResumo}" required="true"/>
+				<p:messages for="resumo"/>
+				
+				<p:outputLabel value="Situação" for="situacao"/>
+	          	<p:selectBooleanCheckbox id="situacao" value="#{despesasBean.despesas.situacao}" required="true"/>
+	          	<p:message for="situacao"/>
+				
+			</h:panelGrid>
 		    <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{despesasBean.persist}" />
 		    <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
        	</fieldset>

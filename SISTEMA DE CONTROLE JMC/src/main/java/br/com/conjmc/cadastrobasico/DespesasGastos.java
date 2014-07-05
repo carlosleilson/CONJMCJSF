@@ -197,16 +197,38 @@ public class DespesasGastos {
 	public void setVersion(Integer version) {
         this.version = version;
     }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-        DespesasGastos other = (DespesasGastos) obj;
-        if (classificacao == null) {
-            if (other.classificacao != null) return false;
-        } else if (!classificacao.equals(other.classificacao)) return false;
-        return true;
-    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descrisao == null) ? 0 : descrisao.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DespesasGastos other = (DespesasGastos) obj;
+		if (descrisao == null) {
+			if (other.descrisao != null)
+				return false;
+		} else if (!descrisao.equals(other.descrisao))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
 	
 }

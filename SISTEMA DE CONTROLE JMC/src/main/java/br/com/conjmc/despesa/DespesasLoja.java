@@ -42,7 +42,6 @@ public class DespesasLoja {
     /**
      */
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
     private Date mes_ano;
 
 
@@ -222,7 +221,7 @@ public class DespesasLoja {
         return q;
     }
 
-	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Calendar mes_ano) {
+	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Date mes_ano) {
         if (mes_ano == null) throw new IllegalArgumentException("The mes_ano argument is required");
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<DespesasLoja> q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano = :mes_ano", DespesasLoja.class);
@@ -230,7 +229,7 @@ public class DespesasLoja {
         return q;
     }
 
-	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Calendar mes_ano, String sortFieldName, String sortOrder) {
+	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Date mes_ano, String sortFieldName, String sortOrder) {
         if (mes_ano == null) throw new IllegalArgumentException("The mes_ano argument is required");
         EntityManager em = DespesasLoja.entityManager();
         String jpaQuery = "SELECT o FROM DespesasLoja AS o WHERE o.mes_ano = :mes_ano";

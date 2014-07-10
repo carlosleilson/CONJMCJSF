@@ -12,10 +12,10 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form id="dataForm"  acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-    	<fieldset>
+	<fieldset>
     	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
           	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" required="true" />
+          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" locale="pt_BR" pages="2" mindate="02/06/14" maxdate="showDate" disabledWeekends="true" required="true" />
           	<p:message for="mes_ano"/> 
           	
           	<p:outputLabel value="Valor" for="valor"/>
@@ -41,7 +41,7 @@
           	<p:message for="itens"/>
           	          	        	   	
     	</h:panelGrid>
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{despesasLojaBean.persist}"  />
+          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{despesasLojaBean.persist}" update="list" />
         </fieldset>
     </h:form>
   </ui:define>

@@ -1,45 +1,38 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.despesa.DespesasLoja;
-
 import java.io.Serializable;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
-import org.springframework.roo.addon.serializable.RooSerializable;
-
-import javax.faces.convert.DateTimeConverter;
-
-import java.util.Date;
-
-import br.com.conjmc.cadastrobasico.Despesas;
-import br.com.conjmc.cadastrobasico.DespesasGastos;
-import br.com.conjmc.jsf.converter.DespesasGastosConverter;
-import br.com.conjmc.jsf.converter.DespesasConverter;
-import br.com.conjmc.jsf.util.MessageFactory;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.LengthValidator;
+import javax.faces.convert.DateTimeConverter;
 
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.message.Message;
 import org.primefaces.component.outputlabel.OutputLabel;
-import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
+import org.springframework.roo.addon.serializable.RooSerializable;
+
+import br.com.conjmc.cadastrobasico.Despesas;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.despesa.DespesasLoja;
+import br.com.conjmc.jsf.converter.DespesasConverter;
+import br.com.conjmc.jsf.converter.DespesasGastosConverter;
+import br.com.conjmc.jsf.util.MessageFactory;
 
 @Configurable
 @ManagedBean(name = "despesasLojaBean")
@@ -65,7 +58,9 @@ public class DespesasLojaBean implements Serializable{
 	private HtmlPanelGrid editPanelGrid;
 
 	private HtmlPanelGrid viewPanelGrid;
-
+	
+	private SimpleDateFormat sdf;
+	
 	private boolean createDialogVisible = false;
 
 	@PostConstruct
@@ -74,8 +69,17 @@ public class DespesasLojaBean implements Serializable{
         columns.add("mes_ano");
         columns.add("valor");
         findAllDespesasLojas();
+        sdf = new SimpleDateFormat("MM/yyyy");
     }
+	
+	public SimpleDateFormat getSdf(){
+	    return sdf;
+	}
 
+	public void setSdf(SimpleDateFormat sdf){
+	    this.sdf = sdf;
+	}
+	
 	public String getName() {
         return name;
     }
@@ -487,8 +491,8 @@ public class DespesasLojaBean implements Serializable{
         createDialogVisible = false;
     }
 
-	public void busca(){
-		
+	public static String busca(){
+		return null;
 	}
 	
 	public void handleDialogClose(CloseEvent event) {

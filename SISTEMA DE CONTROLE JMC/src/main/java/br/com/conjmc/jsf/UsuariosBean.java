@@ -4,9 +4,12 @@ import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -17,6 +20,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.LengthValidator;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.message.Message;
@@ -53,6 +57,26 @@ public class UsuariosBean implements Serializable {
 	private HtmlPanelGrid viewPanelGrid;
 
 	private boolean createDialogVisible = false;
+	
+	private Perfil perfil;
+	
+	private List<Perfil> allTypes;
+
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}
+
+	public List<Perfil> getAllTypes() {
+		return Arrays.asList(Perfil.values());
+	}
+
+	public void setAllTypes(List<Perfil> allTypes) {
+		this.allTypes = allTypes;
+	}
 
 	@PostConstruct
     public void init() {

@@ -1,10 +1,14 @@
 package br.com.conjmc.jsf;
 import br.com.conjmc.cadastrobasico.Cargos;
+import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Setor;
 import br.com.conjmc.jsf.util.MessageFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -14,6 +18,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.message.Message;
@@ -48,6 +53,26 @@ public class CargosBean implements Serializable {
 	private HtmlPanelGrid viewPanelGrid;
 
 	private boolean createDialogVisible = false;
+	
+	private Setor setor;
+	
+	private List<Setor> allSetor;
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
+	}
+
+	public List<Setor> getAllSetor() {
+		return Arrays.asList(Setor.values());
+	}
+
+	public void setAllSetor(List<Setor> allSetor) {
+		this.allSetor = allSetor;
+	}
 
 	@PostConstruct
     public void init() {

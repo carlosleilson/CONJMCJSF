@@ -38,6 +38,9 @@
           <p:column headerText="Nome" sortBy="#{motoqueiros.nome}">
           	<h:outputText value="#{motoqueiros.nome}"/>
           </p:column>
+          <p:column headerText="Situação" sortBy="#{motoqueiros.situacao}">
+          	<h:outputText value="#{motoqueiros.situacao}"/>
+          </p:column>
           <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
             <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
               <f:setPropertyActionListener value="#{motoqueiros}" target="#{motoqueirosBean.motoqueiros}" />

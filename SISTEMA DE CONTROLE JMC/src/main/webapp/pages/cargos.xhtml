@@ -20,7 +20,7 @@
 				<p:outputLabel value="Setor" for="cargoSetor" />
 				<p:selectOneMenu id="cargoSetor" value="#{cargosBean.cargos.setor}" required="true">
 					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
-					<f:selectItems value="#{cargosBean.allSetor}" />
+					<f:selectItems value="#{cargosBean.allSetor}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
 				<p:message for="cargoSetor"/>
 				
@@ -38,8 +38,8 @@
 					<h:outputText value="#{list.nome}" />
 				</p:column>
 
-				<p:column headerText="Setor" sortBy="#{list.setor}">
-					<h:outputText value="#{list.setor}" />
+				<p:column headerText="Setor" sortBy="#{list.setor.label}">
+					<h:outputText value="#{list.setor.label}" />
 				</p:column>
 
 				<p:column headerText="Ações" styleClass="action-column" style="width:90px">

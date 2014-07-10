@@ -1,6 +1,22 @@
 package br.com.conjmc.cadastrobasico;
 
-public enum Setor {
+import java.io.Serializable;
 
-    COZINHA, ATENDIMENTO, CENTRALDECORTE, CALLCENTER
+public enum Setor implements Serializable {
+
+    COZINHA ("Cozinha"),
+    ATENDIMENTO ("Atendimento"),
+    CENTRALDECORTE ("Central de Corte"),
+    CALLCENTER ("Call Center");
+    
+    private String label;
+    
+    public String getLabel() {
+		return label;
+	}
+
+    private Setor (String label) {  
+        this.label = label;  
+     }
+    
 }

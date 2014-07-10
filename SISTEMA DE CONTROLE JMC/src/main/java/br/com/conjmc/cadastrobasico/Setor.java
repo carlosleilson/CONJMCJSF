@@ -1,8 +1,6 @@
 package br.com.conjmc.cadastrobasico;
 
-import java.io.Serializable;
-
-public enum Setor implements Serializable {
+public enum Setor {
 
     COZINHA ("Cozinha"),
     ATENDIMENTO ("Atendimento"),

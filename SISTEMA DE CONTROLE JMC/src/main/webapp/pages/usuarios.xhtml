@@ -37,7 +37,7 @@
 				<p:outputLabel value="Perfil" for="peril" />
 				<p:selectOneMenu id="peril" value="#{usuariosBean.usuarios.perfil}" required="true">
 					<f:selectItem itemLabel="Selecione um Perfil" itemValue="" />
-					<f:selectItems value="#{usuariosBean.allTypes}" />
+					<f:selectItems value="#{usuariosBean.allTypes}" var="perfil" itemLabel="#{perfil.label}" />
 				</p:selectOneMenu>
 				<p:message for="peril"/>
 		      </h:panelGrid>
@@ -59,7 +59,7 @@
 		</p:column>
 		
 		<p:column headerText="Perfil" sortBy="#{usuarios.perfil}">
-			<h:outputText value="#{usuarios.perfil}" />
+			<h:outputText value="#{usuarios.perfil.label}" />
 		</p:column>
         
         <p:column headerText="Ações" styleClass="action-column" style="width:90px">

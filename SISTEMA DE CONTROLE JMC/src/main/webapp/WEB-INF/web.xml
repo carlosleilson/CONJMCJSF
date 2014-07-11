@@ -43,11 +43,11 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.jsf</url-pattern>
+    <url-pattern>*.html</url-pattern>
   </servlet-mapping>
-  <session-config>
+  <!-- <session-config>
     <session-timeout>10</session-timeout>
-  </session-config>
+  </session-config> -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

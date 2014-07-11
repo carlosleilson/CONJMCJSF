@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -32,7 +32,7 @@
           	<p:inputText id="funcionarioSalario" value="#{funcionariosBean.funcionarios.salario}" required="true" />
           	<p:message for="funcionarioSalario"/>
           	
-          	<p:outputLabel value="Situa√ß√£o" for="funcionarioSituacao"/>
+          	<p:outputLabel value="SituaÁ„o" for="funcionarioSituacao"/>
           	<p:selectBooleanCheckbox id="funcionarioSituacao" value="#{funcionariosBean.funcionarios.situacao}" rendered="true"/>
           	<p:message for="funcionarioSituacao"/>
           	
@@ -60,7 +60,7 @@
           	<p:inputMask id="funcionarioCEP" value="#{funcionariosBean.funcionarios.cep}" mask="99999-999" required="true" />
           	<p:message for="funcionarioCEP"/>
           	
-          	<p:outputLabel value="Outras Informa√ß√µes" for="funcionarioInformacoes"/>
+          	<p:outputLabel value="Outras InformaÁıes" for="funcionarioInformacoes"/>
           	<p:inputTextarea id="funcionarioInformacoes" value="#{funcionariosBean.funcionarios.outrasInformacoes}" required="true" />
           	<p:message for="funcionarioInformacoes"/>
           </h:panelGrid>
@@ -70,7 +70,7 @@
      </h:form>
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{funcionariosBean.allFuncionarioses}" var="funcionarios" paginator="true" rows="10">
-        	<f:facet name="header">Funcion√°rios</f:facet>
+        	<f:facet name="header">Funcion·rios</f:facet>
         	<p:column headerText="Apelido" sortBy="#{funcionarios.apelido}">
         		<h:outputText value="#{funcionarios.apelido}"/>
         	</p:column>
@@ -83,11 +83,11 @@
         	<p:column headerText="CPF" sortBy="#{funcionarios.cpf}">
         		<h:outputText value="#{funcionarios.cpf}"/>
         	</p:column>
-        	<p:column headerText="Situa√ß√£o" sortBy="#{funcionarios.situacao}">
+        	<p:column headerText="SituaÁ„o" sortBy="#{funcionarios.situacao}">
         		<h:outputText value="#{funcionarios.situacao}"/>
         	</p:column>
         	
-          <p:column headerText="A√ß√µes" styleClass="action-column" style="width:90px;">
+          <p:column headerText="AÁıes" styleClass="action-column" style="width:90px;">
             <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
               <f:setPropertyActionListener value="#{funcionarios}" target="#{funcionariosBean.funcionarios}" />
             </p:commandButton>
@@ -102,7 +102,7 @@
 			</p:commandButton>
 			<p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{funcionarios.nome}?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{funcionariosBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-				<p:commandButton id="decline" value="N√£o" onclick="confirmation.hide()" type="button"/>
+				<p:commandButton id="decline" value="N„o" onclick="confirmation.hide()" type="button"/>
 			</p:confirmDialog>	
           </p:column>
         </p:dataTable>

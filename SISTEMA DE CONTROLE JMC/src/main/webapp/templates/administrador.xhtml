@@ -14,14 +14,16 @@
   	<div class="container">
   		<div class="header">
   			<h:form>
-  				<h:graphicImage library="images" name="banner1.png" styleClass="banner" alt="China in box" />
+  				<h:commandLink action="/pages/main.xhtml">
+  					<h:graphicImage library="images" name="banner1.png" styleClass="banner" alt="China in box"/>
+  				</h:commandLink>
   				<div class="navigation">
 		        	<p:menubar>
 		            	<p:submenu label="Cadastro Básico">
-		         			<p:menuitem ajax="false" value="Cargos" action="/pages/cargos.xtml"/>
-		         			<p:menuitem ajax="false" value="Funcionarios" action="/pages/funcionarios.xtml"/>
-		         			<p:menuitem ajax="false" value="Usuários" action="/pages/usuarios.xtml"/>
-		         			<p:menuitem ajax="false" value="Motoqueiros" action="/pages/motoqueiros.xtml"/>
+		         			<p:menuitem ajax="false" value="Cargos" action="/pages/cargos.xtml" disabled="false"/>
+		         			<p:menuitem ajax="false" value="Funcionarios" action="/pages/funcionarios.xtml" disabled="false"/>
+		         			<p:menuitem ajax="false" value="Usuários" action="/pages/usuarios.xtml" disabled="true"/>
+		         			<p:menuitem ajax="false" value="Motoqueiros" action="/pages/motoqueiros.xtml" disabled="true"/>
 		         			<p:menuitem ajax="false" value="Classificação de Despesas" action="/pages/despesas.xtml"/>
 		         			<p:menuitem ajax="false" value="Despesas e Gastos" action="/pages/despesasGastos.xhtml"/>
 		         			<p:menuitem ajax="false" value="Lançamento de Funcionários" action="/pages/lancamentosFuncionarios.xtml" disabled="true"/>

@@ -17,7 +17,7 @@
 		      	<p:outputLabel value="Nome" for="usuarioNome" />
 		    	<p:selectOneMenu id="usuarioNome" value="#{usuariosBean.usuarios.nome}" converter="funcionariosConverter" filter="true" required="true">
 		    		<f:selectItem itemLabel="Selecione um funcionário" itemValue="" />
-					<f:selectItems value="#{funcionariosBean.allFuncionarioses}" var="func" itemLabel="#{func.apelido}" itemValue="#{func}" />
+					<f:selectItems value="#{funcionariosBean.allFuncionariosAtivos}" var="func" itemLabel="#{func.apelido}" itemValue="#{func}" />
 				</p:selectOneMenu>
 		    	<p:message for="usuarioNome" />
 		    	

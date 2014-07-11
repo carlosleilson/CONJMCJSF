@@ -7,6 +7,8 @@ import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,8 @@ import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
+
+import com.sun.crypto.provider.DESParameters;
 
 @ManagedBean(name = "sangriaBean")
 @SessionScoped
@@ -64,6 +68,8 @@ public class SangriaBean implements Serializable  {
 
 	private boolean createDialogVisible = false;
 	
+	private String turno;
+	
 	public List<DespesasGastos> completeItem(String query) {
         List<DespesasGastos> suggestions = new ArrayList<DespesasGastos>();
         for (DespesasGastos despesasGastos : DespesasGastos.findAllDespesasGastoses()) {
@@ -86,6 +92,12 @@ public class SangriaBean implements Serializable  {
         return suggestions;
     }
 	
+	public void carregaClassificacao(){
+		Long idClassific = sangria.getItem().getId();
+		DespesasGastos despesasGastos = DespesasGastos.findDespesasGastos(idClassific);
+		sangria.getItem().setClassificacao(despesasGastos.getClassificacao());
+	}
+	
 	@PostConstruct
     public void init() {
 		setCompleteItem(DespesasGastos.findAllDespesasGastoses());
@@ -94,6 +106,20 @@ public class SangriaBean implements Serializable  {
         columns.add("periodo");
         columns.add("valor");
         columns.add("origem");
+        sangria = new Sangria();
+        Date data = new Date();
+        int horas = data.getHours();
+        int min = data.getMinutes();
+        if(horas > 18 ) {
+        	turno = "01";
+        } else if(horas == 18 && min == 0) {
+        	turno = "01";
+        } else {
+        	turno = "02";
+		}
+        
+        sangria.setPeriodo(data);
+        findAllSangrias();
     }
 
 	public String getName() {
@@ -536,4 +562,13 @@ public class SangriaBean implements Serializable  {
 	public void setCompleteItem(List<DespesasGastos> completeItem) {
 		this.completeItem = completeItem;
 	}
+
+	public String getTurno() {
+		return turno;
+	}
+
+	public void setTurno(String turno) {
+		this.turno = turno;
+	}
+	
 }

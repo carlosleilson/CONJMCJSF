@@ -7,10 +7,13 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -55,7 +58,6 @@ public class Funcionarios {
     /**
      */
     @NotNull
-    @AssertTrue
     private Boolean situacao;
 
     /**
@@ -229,6 +231,10 @@ public class Funcionarios {
 	public static List<Funcionarios> findAllFuncionarioses() {
         return entityManager().createQuery("SELECT o FROM Funcionarios o", Funcionarios.class).getResultList();
     }
+	
+	public static List<Funcionarios> findAllFuncionariosAtivos() {
+        return entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true", Funcionarios.class).getResultList();
+    }
 
 	public static List<Funcionarios> findAllFuncionarioses(String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Funcionarios o";
@@ -268,14 +274,21 @@ public class Funcionarios {
     }
 
 	@Transactional
-    public void remove() {
+    public String remove() {
         if (this.entityManager == null) this.entityManager = entityManager();
         if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
+        	this.entityManager.remove(this);
+        	/*try {
+        		this.entityManager.remove(this);
+			} catch (Exception ex) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "O usuário não pode ser apagando porque depende de outros modulos."));
+				return "pages/funcionarios.xhtml";
+			}*/
         } else {
             Funcionarios attached = Funcionarios.findFuncionarios(this.id);
             this.entityManager.remove(attached);
         }
+        return null;
     }
 
 	@Transactional

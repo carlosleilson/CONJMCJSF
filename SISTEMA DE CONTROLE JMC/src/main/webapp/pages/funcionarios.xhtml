@@ -71,11 +71,11 @@
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{funcionariosBean.allFuncionarioses}" var="funcionarios" paginator="true" rows="10">
         	<f:facet name="header">Funcionários</f:facet>
-        	<p:column headerText="Nome" sortBy="#{funcionarios.nome}">
-        		<h:outputText value="#{funcionarios.nome}"/>
-        	</p:column>
         	<p:column headerText="Apelido" sortBy="#{funcionarios.apelido}">
         		<h:outputText value="#{funcionarios.apelido}"/>
+        	</p:column>
+        	<p:column headerText="Nome" sortBy="#{funcionarios.nome}">
+        		<h:outputText value="#{funcionarios.nome}"/>
         	</p:column>
         	<p:column headerText="Salario" sortBy="#{funcionarios.salario}">
         		<h:outputText value="#{funcionarios.salario}"/>
@@ -83,8 +83,8 @@
         	<p:column headerText="CPF" sortBy="#{funcionarios.cpf}">
         		<h:outputText value="#{funcionarios.cpf}"/>
         	</p:column>
-        	<p:column headerText="Identidade" sortBy="#{funcionarios.identidade}">
-        		<h:outputText value="#{funcionarios.identidade}"/>
+        	<p:column headerText="Situação" sortBy="#{funcionarios.situacao}">
+        		<h:outputText value="#{funcionarios.situacao}"/>
         	</p:column>
         	
           <p:column headerText="Ações" styleClass="action-column" style="width:90px;">

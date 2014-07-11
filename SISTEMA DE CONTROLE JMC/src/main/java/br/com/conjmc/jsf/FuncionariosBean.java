@@ -42,6 +42,8 @@ public class FuncionariosBean implements Serializable {
 	private Funcionarios funcionarios;
 
 	private List<Funcionarios> allFuncionarioses;
+	
+	private List<Funcionarios> allFuncionariosAtivos;
 
 	private boolean dataVisible = false;
 
@@ -64,6 +66,7 @@ public class FuncionariosBean implements Serializable {
         columns.add("cpf");
         columns.add("identidade");
         findAllFuncionarioses();
+        findAllFuncionariosAtivos();
     }
 
 	public String getName() {
@@ -82,10 +85,22 @@ public class FuncionariosBean implements Serializable {
         this.allFuncionarioses = allFuncionarioses;
     }
 
+	public List<Funcionarios> getAllFuncionariosAtivos() {
+		return allFuncionariosAtivos;
+	}
+
+	public void setAllFuncionariosAtivos(List<Funcionarios> allFuncionariosAtivos) {
+		this.allFuncionariosAtivos = allFuncionariosAtivos;
+	}
+
 	public String findAllFuncionarioses() {
         allFuncionarioses = Funcionarios.findAllFuncionarioses();
         dataVisible = !allFuncionarioses.isEmpty();
         return null;
+    }
+	
+	public void findAllFuncionariosAtivos() {
+        allFuncionariosAtivos = Funcionarios.findAllFuncionariosAtivos();
     }
 
 	public boolean isDataVisible() {
@@ -821,7 +836,7 @@ public class FuncionariosBean implements Serializable {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
-        findAllFuncionarioses();
+        init();
         return "/pages/funcionarios.xhtml";
     }
 

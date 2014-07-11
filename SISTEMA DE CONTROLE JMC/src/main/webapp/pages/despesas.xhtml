@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -19,20 +19,20 @@
      </h:form>
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{despesasBean.allDespesases}" var="despesas" paginator="true" rows="10">
-            <f:facet name="header">ClassificaÃ§Ã£o de Despesas</f:facet>
+            <f:facet name="header">Classificação de Despesas</f:facet>
             <p:column headerText="Codigo" sortBy="#{despesas.codigo}">
             	<h:outputText value="#{despesas.codigo}"/>
             </p:column>
-            <p:column headerText="DescriÃ§Ã£o" sortBy="#{despesas.descricao}">
+            <p:column headerText="Descrição" sortBy="#{despesas.descricao}">
             	<h:outputText value="#{despesas.descricao}"/>
             </p:column>
             <p:column headerText="IdResumo" sortBy="#{despesas.idResumo}">
             	<h:outputText value="#{despesas.idResumo}"/>
             </p:column>
-            <p:column headerText="SituaÃ§Ã£o" sortBy="#{despesas.situacao}">
+            <p:column headerText="Situação" sortBy="#{despesas.situacao}">
             	<h:outputText value="#{despesas.situacao}"/>
             </p:column>
-          <p:column headerText="AÃ§Ãµes" styleClass="action-column" style="width:90px">
+          <p:column headerText="Ações" styleClass="action-column" style="width:90px">
             <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
               <f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" />
             </p:commandButton>
@@ -49,7 +49,7 @@
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{despesasBean.despesas.codigo}?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-			<p:commandButton id="decline" value="NÃ£o" onclick="confirmation.hide()" type="button"/>
+			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>
     <p:dialog id="viewDialog" header="#{messages.label_view} Despesas" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">

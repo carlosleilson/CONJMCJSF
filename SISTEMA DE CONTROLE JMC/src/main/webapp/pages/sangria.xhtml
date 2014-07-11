@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -12,41 +12,47 @@
     </h:form>
     <h:form prependId="false" id="dataForm">
     	<fieldset>
-          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-          	<p:outputLabel value="PerÃ­odo" for="periodo"/>
-          	<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy" required="true"/>
-          	<p:message for="periodo"/>
-          	
+    		<p:outputLabel value="Período: " for="periodo"/>
+    		<h:outputText id="periodo" value="#{sangriaBean.turno} - "/>
+          	<h:outputText value="#{sangriaBean.sangria.periodo}">
+          		<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+          	</h:outputText>
+          	<br/><br/>
+          <h:panelGrid id="createPanelGrid" columns="4" styleClass="dialog">
           	<p:outputLabel value="Valor" for="valor"/>
           	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true"/>
           	<p:message for="valor"/>
+          	<span></span>
           	
           	<p:outputLabel value="Origem" for="origem"/>
           	<p:selectOneMenu id="origem" value="#{sangriaBean.sangria.origem}" required="true">
-          		<f:selectItem itemLabel="Selecione uma opÃ§Ã£o" itemValue=""/>
+          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
           		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
           		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
           	</p:selectOneMenu>
           	<p:message for="origem"/>
+          	<span></span>
           	
           	<p:outputLabel value="Itens" for="itens"/>
           	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true">
-          		<f:selectItem itemLabel="Selecione uma opÃ§Ã£o" itemValue=""/>
+          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
           		<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="gasto" 
           			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":dataForm:funcionarioGrid :dataForm:classific"/>
           	</p:selectOneMenu>
           	<p:message for="itens"/>
-          	
-          	<p:outputLabel value="Funcionario" for="funcionario"/>
-          	<p:selectOneMenu id="funcionario" value="#{sangriaBean.sangria.funcionario}" converter="funcionariosConverter" required="true">
-          		<f:selectItem itemLabel="Selecione uma opÃ§Ã£o" itemValue=""/>
-          		<f:selectItems value="#{funcionariosBean.allFuncionarioses}" var="func" 
-          			itemLabel="#{func.apelido}" itemValue="#{func}" />
-          	</p:selectOneMenu>
-          	<p:message for="funcionario"/>
-          	
-          	
+       		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
           </h:panelGrid>
+          <h:panelGrid id="funcionarioGrid" columns="3">
+	          	<p:outputLabel value="Funcionario" for="funcionario" rendered="#{sangriaBean.sangria.item.classificacao.descricao == 'Benefí­cios'}"/>
+	          	<p:selectOneMenu id="funcionario" value="#{sangriaBean.sangria.funcionario}" converter="funcionariosConverter" rendered="#{sangriaBean.sangria.item.classificacao.descricao == 'Benefí­cios'}">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItems value="#{funcionariosBean.allFuncionarioses}" var="func" 
+	          			itemLabel="#{func.apelido}" itemValue="#{func}" />
+	          	</p:selectOneMenu>
+	          	<p:message for="funcionario"/>
+          	</h:panelGrid>
+          	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
     	</fieldset>

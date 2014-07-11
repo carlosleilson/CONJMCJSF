@@ -22,7 +22,6 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 
@@ -41,7 +40,6 @@ public class Sangria {
      */
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd/MM/yy-hh")
     private Date periodo;
 
     /**

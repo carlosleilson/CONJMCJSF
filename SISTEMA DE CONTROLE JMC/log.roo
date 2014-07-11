@@ -139,3 +139,5 @@ finder add --finderName findDespesasLojasByMes_anoEquals
 finder add --finderName findDespesasLojasByItem
 web jsf all --package ~.jsf
 perform eclipse
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-07-05 17:53:52
+perform eclipse

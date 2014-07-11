@@ -11,7 +11,34 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form prependId="false" id="dataForm">
+   <h:form id="dataForm"  acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+    	
+<!--           	<p:outputLabel value="Mes/ano" for="mes_ano"/> -->
+<!--           	<p:selectOneMenu id="mes_ano" value="#{despesasLojaBean.despesasLoja}"> -->
+<!-- 	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" /> -->
+<!-- 				<f:selectItems value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja"  -->
+<!-- 				itemLabel="#{despesasLoja.mes_ano}" itemValue="#{despesasLoja}" /> -->
+<!-- 			</p:selectOneMenu> -->
+<!--           	<p:message for="mes_ano"/> -->
+
+          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
+          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" locale="pt_BR" pages="2" showOtherMonths="true" pattern="MM/yyyy" disabledWeekends="true" required="true" />
+          	<p:message for="mes_ano"/> 
+          	
+          	<p:outputLabel value="Classificacao" for="clas"/>
+          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter">
+	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
+				<f:selectItems value="#{despesasBean.allDespesases}" var="classic" 
+				itemLabel="#{classic.descricao}" itemValue="#{classic}" />
+			</p:selectOneMenu>
+          	<p:message for="clas"/>
+          	          	        	   	
+    	</h:panelGrid>
+          <p:commandButton id="createSaveButton" value="busca" ajax="false" action="#{despesasLojaBean.busca}" update="list" />
+        </fieldset>
+        
         <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
           <p:columns value="#{despesasLojaBean.columns}" var="column" columnIndexVar="colIndex">
             <f:facet name="header">
@@ -39,7 +66,7 @@
         </p:dataTable>
     </h:form>
     <p:dialog id="editDialog" header="#{messages.label_edit} DespesasLoja" modal="true" widgetVar="editDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:ajax event="close" update=":dataForm:data" listener="#{despesasLojaBean.handleDialogClose}" />
+      <p:ajax event="close" update=":dataForm:list" listener="#{despesasLojaBean.handleDialogClose}" />
       <p:outputPanel id="editPanel">
         <h:form id="editForm" enctype="multipart/form-data">
           <h:panelGrid id="editPanelGrid" columns="3" binding="#{despesasLojaBean.editPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
@@ -59,7 +86,7 @@
     <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm">
       <p:outputPanel id="deletePanel">
         <h:form id="deleteForm">
-          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{despesasLojaBean.delete}" update=":dataForm:data :growlForm:growl" oncomplete="deleteDialogWidget.hide()" />
+          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{despesasLojaBean.delete}" update=":dataForm:list :growlForm:growl" oncomplete="deleteDialogWidget.hide()" />
           <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="deleteDialogWidget.hide()" type="button" />
         </h:form>
       </p:outputPanel>

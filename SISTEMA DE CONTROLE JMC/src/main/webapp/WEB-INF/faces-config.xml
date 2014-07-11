@@ -10,7 +10,8 @@
             <var>messages</var>
         </resource-bundle>
         <locale-config>
-            <default-locale>pt</default-locale>
+            <default-locale>pt_BR</default-locale>
+             <supported-locale>pt_BR</supported-locale>
             <supported-locale>pt</supported-locale>
             <supported-locale>en</supported-locale>
             <supported-locale>de</supported-locale>

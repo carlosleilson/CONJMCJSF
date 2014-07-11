@@ -6,6 +6,21 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition>
   <title>#{applicationBean.appName}</title>
+	<script name="jquery/jquery.js" library="primefaces"></script>
+	<script>
+		function beforeShowDate(date) {
+			console.log(date.getMonth());
+			return [ false, '' ];
+		}
+		function showDate() {
+			return new Date().toLocaleDateString();
+		}		
+		function showBeforeMonth() {
+		    var d = new Date();
+		    d.setMonth(d.getMonth()-1);
+		    return d.toLocaleDateString();
+		}		
+	</script>  
   <h:outputStylesheet library="css" name="standard.css" />
   <h:outputScript library="js" name="calendar.js" />
 </ui:composition>

@@ -11,10 +11,37 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form prependId="false" id="dataForm">
-    	<fieldset>
-         <h:panelGrid id="createPanelGridNew" columns="3" binding="#{despesasLojaBean.createPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{despesasLojaBean.persist}"  />
+    <h:form id="dataForm"  acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+	<fieldset>
+    	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
+          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" locale="pt_BR" pages="2" mindate="02/06/14" maxdate="showDate" disabledWeekends="true" required="true" />
+          	<p:message for="mes_ano"/> 
+          	
+          	<p:outputLabel value="Valor" for="valor"/>
+          	<p:inputText id="valor" value="#{despesasLojaBean.despesasLoja.valor}"  required="true" >
+          		<f:convertNumber currencyCode="BRL" pattern="0.00"></f:convertNumber>
+          	</p:inputText>
+          	<p:message for="valor"/> 
+
+          	<p:outputLabel value="Classificacao" for="clas"/>
+          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter" required="true">
+	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
+				<f:selectItems value="#{despesasBean.allDespesases}" var="classic" 
+				itemLabel="#{classic.codigo} - #{classic.descricao}" itemValue="#{classic}" />
+			</p:selectOneMenu>
+          	<p:message for="clas"/>
+
+          	<p:outputLabel value="Itens" for="itens"/>
+          	<p:selectOneMenu id="itens" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter" required="true">
+          		<f:selectItem itemLabel="Selecione  um Item" itemValue=""/>
+          		<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="gasto" 
+          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+          	</p:selectOneMenu>
+          	<p:message for="itens"/>
+          	          	        	   	
+    	</h:panelGrid>
+          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{despesasLojaBean.persist}" update="list" />
         </fieldset>
     </h:form>
   </ui:define>

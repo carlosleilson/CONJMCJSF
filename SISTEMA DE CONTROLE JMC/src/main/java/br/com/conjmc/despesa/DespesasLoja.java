@@ -5,8 +5,11 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -19,10 +22,14 @@ import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import br.com.conjmc.cadastrobasico.Despesas;
+
 import javax.persistence.ManyToOne;
+
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 
 @Configurable
@@ -35,16 +42,8 @@ public class DespesasLoja {
     /**
      */
     @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "MM/yyyy")
-    private Calendar mes_ano;
+    private Date mes_ano;
 
-    /**
-     */
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd")
-    private Calendar dia;
 
     /**
      */
@@ -61,20 +60,12 @@ public class DespesasLoja {
     @ManyToOne
     private DespesasGastos item;
 
-	public Calendar getMes_ano() {
+	public Date getMes_ano() {
         return this.mes_ano;
     }
 
-	public void setMes_ano(Calendar mes_ano) {
+	public void setMes_ano(Date mes_ano) {
         this.mes_ano = mes_ano;
-    }
-
-	public Calendar getDia() {
-        return this.dia;
-    }
-
-	public void setDia(Calendar dia) {
-        this.dia = dia;
     }
 
 	public Double getValor() {
@@ -82,7 +73,10 @@ public class DespesasLoja {
     }
 
 	public void setValor(Double valor) {
-        this.valor = valor;
+		if(valor==0)
+			this.valor=0.0;
+		else
+			this.valor = valor;
     }
 
 	public Despesas getClassificacao() {
@@ -104,7 +98,7 @@ public class DespesasLoja {
 	@PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("mes_ano", "dia", "valor", "classificacao", "item");
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("mes_ano", "valor", "classificacao", "item");
 
 	public static final EntityManager entityManager() {
         EntityManager em = new DespesasLoja().entityManager;
@@ -227,7 +221,7 @@ public class DespesasLoja {
         return q;
     }
 
-	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Calendar mes_ano) {
+	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Date mes_ano) {
         if (mes_ano == null) throw new IllegalArgumentException("The mes_ano argument is required");
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<DespesasLoja> q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano = :mes_ano", DespesasLoja.class);
@@ -235,7 +229,7 @@ public class DespesasLoja {
         return q;
     }
 
-	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Calendar mes_ano, String sortFieldName, String sortOrder) {
+	public static TypedQuery<DespesasLoja> findDespesasLojasByMes_anoEquals(Date mes_ano, String sortFieldName, String sortOrder) {
         if (mes_ano == null) throw new IllegalArgumentException("The mes_ano argument is required");
         EntityManager em = DespesasLoja.entityManager();
         String jpaQuery = "SELECT o FROM DespesasLoja AS o WHERE o.mes_ano = :mes_ano";
@@ -278,4 +272,48 @@ public class DespesasLoja {
 	public void setVersion(Integer version) {
         this.version = version;
     }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DespesasLoja other = (DespesasLoja) obj;
+		if (classificacao == null) {
+			if (other.classificacao != null)
+				return false;
+		} else if (!classificacao.equals(other.classificacao))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (item == null) {
+			if (other.item != null)
+				return false;
+		} else if (!item.equals(other.item))
+			return false;
+		if (mes_ano == null) {
+			if (other.mes_ano != null)
+				return false;
+		} else if (!mes_ano.equals(other.mes_ano))
+			return false;
+		if (valor == null) {
+			if (other.valor != null)
+				return false;
+		} else if (!valor.equals(other.valor))
+			return false;
+		if (version == null) {
+			if (other.version != null)
+				return false;
+		} else if (!version.equals(other.version))
+			return false;
+		return true;
+	}
+	
+	
 }

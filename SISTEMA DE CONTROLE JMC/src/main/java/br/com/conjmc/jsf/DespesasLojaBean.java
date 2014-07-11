@@ -1,36 +1,38 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.despesa.DespesasLoja;
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
-import org.springframework.roo.addon.serializable.RooSerializable;
-import javax.faces.convert.DateTimeConverter;
-import java.util.Date;
-import br.com.conjmc.cadastrobasico.Despesas;
-import br.com.conjmc.cadastrobasico.DespesasGastos;
-import br.com.conjmc.jsf.converter.DespesasGastosConverter;
-import br.com.conjmc.jsf.converter.DespesasConverter;
-import br.com.conjmc.jsf.util.MessageFactory;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.LengthValidator;
+import javax.faces.convert.DateTimeConverter;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.message.Message;
 import org.primefaces.component.outputlabel.OutputLabel;
-import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
+import org.springframework.roo.addon.serializable.RooSerializable;
+
+import br.com.conjmc.cadastrobasico.Despesas;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.despesa.DespesasLoja;
+import br.com.conjmc.jsf.converter.DespesasConverter;
+import br.com.conjmc.jsf.converter.DespesasGastosConverter;
+import br.com.conjmc.jsf.util.MessageFactory;
 
 @Configurable
 @ManagedBean(name = "despesasLojaBean")
@@ -56,17 +58,28 @@ public class DespesasLojaBean implements Serializable{
 	private HtmlPanelGrid editPanelGrid;
 
 	private HtmlPanelGrid viewPanelGrid;
-
+	
+	private SimpleDateFormat sdf;
+	
 	private boolean createDialogVisible = false;
 
 	@PostConstruct
     public void init() {
         columns = new ArrayList<String>();
         columns.add("mes_ano");
-        columns.add("dia");
         columns.add("valor");
+        findAllDespesasLojas();
+        sdf = new SimpleDateFormat("MM/yyyy");
     }
+	
+	public SimpleDateFormat getSdf(){
+	    return sdf;
+	}
 
+	public void setSdf(SimpleDateFormat sdf){
+	    this.sdf = sdf;
+	}
+	
 	public String getName() {
         return name;
     }
@@ -155,27 +168,6 @@ public class DespesasLojaBean implements Serializable{
         mes_anoCreateInputMessage.setFor("mes_anoCreateInput");
         mes_anoCreateInputMessage.setDisplay("icon");
         htmlPanelGrid.getChildren().add(mes_anoCreateInputMessage);
-        
-        OutputLabel diaCreateOutput = (OutputLabel) application.createComponent(OutputLabel.COMPONENT_TYPE);
-        diaCreateOutput.setFor("diaCreateInput");
-        diaCreateOutput.setId("diaCreateOutput");
-        diaCreateOutput.setValue("Dia:");
-        htmlPanelGrid.getChildren().add(diaCreateOutput);
-        
-        Calendar diaCreateInput = (Calendar) application.createComponent(Calendar.COMPONENT_TYPE);
-        diaCreateInput.setId("diaCreateInput");
-        diaCreateInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{despesasLojaBean.despesasLoja.dia}", Date.class));
-        diaCreateInput.setNavigator(true);
-        diaCreateInput.setEffect("slideDown");
-        diaCreateInput.setPattern("dd/MM/yyyy");
-        diaCreateInput.setRequired(true);
-        htmlPanelGrid.getChildren().add(diaCreateInput);
-        
-        Message diaCreateInputMessage = (Message) application.createComponent(Message.COMPONENT_TYPE);
-        diaCreateInputMessage.setId("diaCreateInputMessage");
-        diaCreateInputMessage.setFor("diaCreateInput");
-        diaCreateInputMessage.setDisplay("icon");
-        htmlPanelGrid.getChildren().add(diaCreateInputMessage);
         
         OutputLabel valorCreateOutput = (OutputLabel) application.createComponent(OutputLabel.COMPONENT_TYPE);
         valorCreateOutput.setFor("valorCreateInput");
@@ -275,27 +267,6 @@ public class DespesasLojaBean implements Serializable{
         mes_anoEditInputMessage.setDisplay("icon");
         htmlPanelGrid.getChildren().add(mes_anoEditInputMessage);
         
-        OutputLabel diaEditOutput = (OutputLabel) application.createComponent(OutputLabel.COMPONENT_TYPE);
-        diaEditOutput.setFor("diaEditInput");
-        diaEditOutput.setId("diaEditOutput");
-        diaEditOutput.setValue("Dia:");
-        htmlPanelGrid.getChildren().add(diaEditOutput);
-        
-        Calendar diaEditInput = (Calendar) application.createComponent(Calendar.COMPONENT_TYPE);
-        diaEditInput.setId("diaEditInput");
-        diaEditInput.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{despesasLojaBean.despesasLoja.dia}", Date.class));
-        diaEditInput.setNavigator(true);
-        diaEditInput.setEffect("slideDown");
-        diaEditInput.setPattern("dd/MM/yyyy");
-        diaEditInput.setRequired(true);
-        htmlPanelGrid.getChildren().add(diaEditInput);
-        
-        Message diaEditInputMessage = (Message) application.createComponent(Message.COMPONENT_TYPE);
-        diaEditInputMessage.setId("diaEditInputMessage");
-        diaEditInputMessage.setFor("diaEditInput");
-        diaEditInputMessage.setDisplay("icon");
-        htmlPanelGrid.getChildren().add(diaEditInputMessage);
-        
         OutputLabel valorEditOutput = (OutputLabel) application.createComponent(OutputLabel.COMPONENT_TYPE);
         valorEditOutput.setFor("valorEditInput");
         valorEditOutput.setId("valorEditOutput");
@@ -384,18 +355,6 @@ public class DespesasLojaBean implements Serializable{
         mes_anoValueConverter.setPattern("dd/MM/yyyy");
         mes_anoValue.setConverter(mes_anoValueConverter);
         htmlPanelGrid.getChildren().add(mes_anoValue);
-        
-        HtmlOutputText diaLabel = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
-        diaLabel.setId("diaLabel");
-        diaLabel.setValue("Dia:");
-        htmlPanelGrid.getChildren().add(diaLabel);
-        
-        HtmlOutputText diaValue = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
-        diaValue.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{despesasLojaBean.despesasLoja.dia}", Calendar.class));
-        DateTimeConverter diaValueConverter = (DateTimeConverter) application.createConverter(DateTimeConverter.CONVERTER_ID);
-        diaValueConverter.setPattern("dd/MM/yyyy");
-        diaValue.setConverter(diaValueConverter);
-        htmlPanelGrid.getChildren().add(diaValue);
         
         HtmlOutputText valorLabel = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
         valorLabel.setId("valorLabel");
@@ -488,28 +447,42 @@ public class DespesasLojaBean implements Serializable{
 
 	public String persist() {
         String message = "";
-        if (despesasLoja.getId() != null) {
-            despesasLoja.merge();
-            message = "message_successfully_updated";
-        } else {
-            despesasLoja.persist();
-            message = "message_successfully_created";
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("createDialogWidget.hide()");
-        context.execute("editDialogWidget.hide()");
-        
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "DespesasLoja");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+        try {
+			if (despesasLoja.getId() != null) {
+			    despesasLoja.merge();
+			    message = "message_successfully_updated";
+			} else {
+			    despesasLoja.persist();
+			    message = "message_successfully_created";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			message = e.getMessage();
+		}finally{
+	        RequestContext context = RequestContext.getCurrentInstance();
+	        context.execute("createDialogWidget.hide()");
+	        context.execute("editDialogWidget.hide()");
+	        
+	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        reset();
+		}
         return findAllDespesasLojas();
     }
 
 	public String delete() {
-        despesasLoja.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasLoja");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+		String message = "";
+        try {
+			despesasLoja.remove();
+			message = "message_successfully_deleted";
+		} catch (Exception e) {
+			e.printStackTrace();
+			message = "Error: "+e.getMessage();
+		}finally{
+			FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
+			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			reset();
+		}
         return findAllDespesasLojas();
     }
 
@@ -518,6 +491,10 @@ public class DespesasLojaBean implements Serializable{
         createDialogVisible = false;
     }
 
+	public static String busca(){
+		return null;
+	}
+	
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }

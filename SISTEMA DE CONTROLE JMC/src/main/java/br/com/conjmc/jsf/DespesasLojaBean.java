@@ -32,6 +32,7 @@ import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.converter.DespesasConverter;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
 
 @Configurable
@@ -59,7 +60,9 @@ public class DespesasLojaBean implements Serializable{
 
 	private HtmlPanelGrid viewPanelGrid;
 	
-	private SimpleDateFormat sdf;
+	private String mesAnterior;
+	
+	private String dataAtual;
 	
 	private boolean createDialogVisible = false;
 
@@ -69,16 +72,10 @@ public class DespesasLojaBean implements Serializable{
         columns.add("mes_ano");
         columns.add("valor");
         findAllDespesasLojas();
-        sdf = new SimpleDateFormat("MM/yyyy");
+        
+        dataAtual = DataUltil.dataAtual();
+        mesAnterior = DataUltil.mesAnterior();
     }
-	
-	public SimpleDateFormat getSdf(){
-	    return sdf;
-	}
-
-	public void setSdf(SimpleDateFormat sdf){
-	    this.sdf = sdf;
-	}
 	
 	public String getName() {
         return name;
@@ -498,4 +495,20 @@ public class DespesasLojaBean implements Serializable{
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }
+
+	public String getDataAtual() {
+		return dataAtual;
+	}
+
+	public void setDataAtual(String dataAtual) {
+		this.dataAtual = dataAtual;
+	}
+
+	public String getMesAnterior() {
+		return mesAnterior;
+	}
+
+	public void setMesAnterior(String mesAnterior) {
+		this.mesAnterior = mesAnterior;
+	}
 }

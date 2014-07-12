@@ -64,6 +64,9 @@ public class DespesasLojaBean implements Serializable{
 	
 	private String dataAtual;
 	
+	private Date dataAgora;
+	private Date atedata;
+	
 	private boolean createDialogVisible = false;
 
 	@PostConstruct
@@ -488,8 +491,9 @@ public class DespesasLojaBean implements Serializable{
         createDialogVisible = false;
     }
 
-	public static String busca(){
-		return null;
+	public String busca(){
+		allDespesasLojas = DespesasLoja.encontrarPorData(getAtedata(), getDataAgora());
+		return "/pages/ExclusaoDespesasLoja.xhtml";
 	}
 	
 	public void handleDialogClose(CloseEvent event) {
@@ -510,5 +514,21 @@ public class DespesasLojaBean implements Serializable{
 
 	public void setMesAnterior(String mesAnterior) {
 		this.mesAnterior = mesAnterior;
+	}
+
+	public Date getDataAgora() {
+		return dataAgora;
+	}
+
+	public void setDataAgora(Date dataAgora) {
+		this.dataAgora = dataAgora;
+	}
+
+	public Date getAtedata() {
+		return atedata;
+	}
+
+	public void setAtedata(Date atedata) {
+		this.atedata = atedata;
 	}
 }

@@ -15,14 +15,21 @@
     	<fieldset>
     	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
     	
+<!--           	<p:outputLabel value="Mes/ano" for="mes_ano"/> -->
+<!--           	<p:selectOneMenu id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" converter="despesasLojaConverter" required="true"> -->
+<!-- 	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" /> -->
+<!-- 				<f:selectItems value="#{despesasLojaBean.allDespesasLojas}" var="mes_ano"  -->
+<!-- 				itemLabel="#{classic.despesasLoja.mes_ano}" itemValue="#{mes_ano}" /> -->
+<!-- 			</p:selectOneMenu> -->
+<!--           	<p:message for="mes_ano"/> -->
           	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-          	<p:selectOneMenu id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" converter="despesasLojaConverter" required="true">
-	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
-				<f:selectItems value="#{despesasLojaBean.allDespesasLojas}" var="mes_ano" 
-				itemLabel="#{classic.despesasLoja.mes_ano}" itemValue="#{mes_ano}" />
-			</p:selectOneMenu>
-          	<p:message for="mes_ano"/>
-
+          	<p:calendar id="mes_ano" value="#{despesasLojaBean.dataAgora}" locale="pt_BR" required="true" />
+          	<p:message for="mes_ano"/> 
+          	
+          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
+          	<p:calendar id="Atemes_ano" value="#{despesasLojaBean.atedata}" locale="pt_BR"  required="true" />
+          	<p:message for="Atemes_ano"/>          	
+          	
           	<p:outputLabel value="Classificacao" for="clas"/>
           	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter" required="true">
 	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
@@ -32,7 +39,7 @@
           	<p:message for="clas"/>
           	          	        	   	
     	</h:panelGrid>
-          <p:commandButton id="createSaveButton" value="busca" ajax="false" action="#{despesasLojaBean.busca(mes_ano,clas)}" update="list" />
+          <p:commandButton id="createSaveButton" value="busca" ajax="false" action="#{despesasLojaBean.busca}" update="list" />
         </fieldset>
         
         <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">

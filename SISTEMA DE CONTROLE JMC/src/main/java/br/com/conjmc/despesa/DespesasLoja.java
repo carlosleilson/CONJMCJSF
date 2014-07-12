@@ -6,6 +6,7 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -314,6 +315,14 @@ public class DespesasLoja {
 			return false;
 		return true;
 	}
-	
+	public static List<DespesasLoja> encontrarPorData(Date dataAgora, Date atedata) {
+        if (dataAgora == null) throw new IllegalArgumentException("O Mes/ano é obrigatorio");
+        if (atedata == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        EntityManager em = DespesasLoja.entityManager();
+        String jpaQuery = "SELECT o FROM DespesasLoja AS o WHERE o.mes_ano = '"+sdf.format(dataAgora).toString()+"' or o.mes_ano = '"+sdf.format(atedata).toString()+"'";
+        TypedQuery<DespesasLoja>  despesas = em.createQuery(jpaQuery, DespesasLoja.class);
+        return (List<DespesasLoja>) despesas;
+    }	
 	
 }

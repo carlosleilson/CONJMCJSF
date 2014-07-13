@@ -5,8 +5,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition>
-  <title>#{applicationBean.appName}</title>
 	<script name="jquery/jquery.js" library="primefaces"></script>
+  <h:outputStylesheet library="css" name="standard.css" />
+  <h:outputScript library="js" name="calendar.js" />
 	<script>
 		function beforeShowDate(date) {
 			console.log(date.getMonth());
@@ -21,7 +22,5 @@
 		    return d.toLocaleDateString();
 		}		
 	</script>  
-  <h:outputStylesheet library="css" name="standard.css" />
-  <h:outputScript library="js" name="calendar.js" />
 </ui:composition>
 </html>

@@ -53,7 +53,6 @@ public class Despesas {
     /**
      */
     @NotNull
-    @AssertTrue
     private Boolean situacao;
 
 	public String toString() {
@@ -134,6 +133,10 @@ public class Despesas {
 
 	public static List<Despesas> findAllDespesases() {
         return entityManager().createQuery("SELECT o FROM Despesas o", Despesas.class).getResultList();
+    }
+	
+	public static List<Despesas> findAllDespesasAtivas() {
+        return entityManager().createQuery("SELECT o FROM Despesas o where o.situacao = true", Despesas.class).getResultList();
     }
 
 	public static List<Despesas> findAllDespesases(String sortFieldName, String sortOrder) {

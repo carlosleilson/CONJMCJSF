@@ -6,6 +6,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Cargos</title>
+	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
@@ -25,8 +28,8 @@
 				</p:selectOneMenu>
 				<p:message for="cargoSetor"/>
 				
-					<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{cargosBean.persist}" />
-		        <p:commandButton id="createCloseButton" value="#{messages.label_reset}" onclick="createDialogWidget.hide()" type="button" />
+				<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{cargosBean.persist}" />
+		        <p:commandButton id="createCloseButton" value="#{messages.label_reset}" />
 	        </h:panelGrid>
 		</fieldset>
     </h:form>

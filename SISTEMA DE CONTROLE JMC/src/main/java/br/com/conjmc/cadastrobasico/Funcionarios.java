@@ -275,20 +275,20 @@ public class Funcionarios {
 
 	@Transactional
     public String remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-        	this.entityManager.remove(this);
-        	/*try {
-        		this.entityManager.remove(this);
-			} catch (Exception ex) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "O usuário não pode ser apagando porque depende de outros modulos."));
-				return "pages/funcionarios.xhtml";
-			}*/
-        } else {
-            Funcionarios attached = Funcionarios.findFuncionarios(this.id);
-            this.entityManager.remove(attached);
-        }
-        return null;
+		try {
+	        if (this.entityManager == null) this.entityManager = entityManager();
+	        if (this.entityManager.contains(this)) {
+	        	this.entityManager.remove(this);
+	    		this.entityManager.remove(this);
+	        } else {
+	            Funcionarios attached = Funcionarios.findFuncionarios(this.id);
+	            this.entityManager.remove(attached);
+	        }
+		} catch (Exception ex) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "O usuário não pode ser removido porque depende de outros modulos."));
+		} finally {
+			return null;
+		}
     }
 
 	@Transactional

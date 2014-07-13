@@ -68,6 +68,10 @@ public class DespesasGastos {
 	public static List<DespesasGastos> findAllDespesasGastoses() {
         return entityManager().createQuery("SELECT o FROM DespesasGastos o", DespesasGastos.class).getResultList();
     }
+	
+	public static List<DespesasGastos> findAllDespesasGastosAtivos() {
+        return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
+    }
 
 	public static List<DespesasGastos> findAllDespesasGastoses(String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM DespesasGastos o";

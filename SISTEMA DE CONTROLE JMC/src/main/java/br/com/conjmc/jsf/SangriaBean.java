@@ -111,12 +111,15 @@ public class SangriaBean implements Serializable  {
         int horas = data.getHours();
         int min = data.getMinutes();
         if(horas > 18 ) {
-        	turno = "01";
+        	turno = "01 - ";
         } else if(horas == 18 && min == 0) {
-        	turno = "01";
+        	turno = "01 - ";
         } else {
-        	turno = "02";
+        	turno = "02 - ";
 		}
+        
+        SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
+        turno = turno.toString() + dataFormat.format(data);
         
         sangria.setPeriodo(data);
         findAllSangrias();
@@ -514,6 +517,7 @@ public class SangriaBean implements Serializable  {
 	public String persist() {
         String message = "";
         if (sangria.getId() != null) {
+        	sangria.setPeriodo(new Date());
             sangria.merge();
             message = "message_successfully_updated";
         } else {

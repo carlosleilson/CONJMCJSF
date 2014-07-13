@@ -10,17 +10,17 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form prependId="false" id="dataForm">
+    <h:form id="createForm" enctype="multipart/form-data">
     	<fieldset>
+    		<legend>Sangria</legend>
     		<p:outputLabel value="Período: " for="periodo"/>
-    		<h:outputText id="periodo" value="#{sangriaBean.turno} - "/>
-          	<h:outputText value="#{sangriaBean.sangria.periodo}">
-          		<f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
-          	</h:outputText>
+    		<h:outputText id="periodo" value="#{sangriaBean.turno}"/>
           	<br/><br/>
           <h:panelGrid id="createPanelGrid" columns="4" styleClass="dialog">
           	<p:outputLabel value="Valor" for="valor"/>
-          	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true"/>
+          	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true">
+          		<f:convertNumber locale="pt_BR" pattern="#.##" maxFractionDigits="2"/>
+          	</p:inputText>
           	<p:message for="valor"/>
           	<span></span>
           	
@@ -38,7 +38,7 @@
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
           		<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="gasto" 
           			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
-          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":dataForm:funcionarioGrid :dataForm:classific"/>
+          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":createForm:funcionarioGrid :createForm:classific"/>
           	</p:selectOneMenu>
           	<p:message for="itens"/>
        		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
@@ -47,7 +47,7 @@
 	          	<p:outputLabel value="Funcionario" for="funcionario" rendered="#{sangriaBean.sangria.item.classificacao.descricao == 'Benefí­cios'}"/>
 	          	<p:selectOneMenu id="funcionario" value="#{sangriaBean.sangria.funcionario}" converter="funcionariosConverter" rendered="#{sangriaBean.sangria.item.classificacao.descricao == 'Benefí­cios'}">
 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-	          		<f:selectItems value="#{funcionariosBean.allFuncionarioses}" var="func" 
+	          		<f:selectItems value="#{funcionariosBean.allFuncionariosAtivos}" var="func" 
 	          			itemLabel="#{func.apelido}" itemValue="#{func}" />
 	          	</p:selectOneMenu>
 	          	<p:message for="funcionario"/>
@@ -56,63 +56,52 @@
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
     	</fieldset>
-      <p:panel id="data" toggleable="true" toggleSpeed="250">
-        <f:facet name="header">
-          <h:outputText value="#{sangriaBean.name}" />
-        </f:facet>
-        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
-          <p:columns value="#{sangriaBean.columns}" var="column" columnIndexVar="colIndex">
-            <f:facet name="header">
-              <h:outputText value="#{applicationBean.getColumnName(column)}" />
-            </f:facet>
-            <h:outputText value="#{sangria[column]}" />
-          </p:columns>
-          <p:column styleClass="action-column">
-            <f:facet name="header">
-              <h:outputText value="Actions" />
-            </f:facet>
-            <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
-              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
-            </p:commandButton>
-            <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" />
-            <p:commandButton id="editButton" icon="ui-icon-pencil" update=":editForm:editPanelGrid" action="#{sangriaBean.onEdit}" oncomplete="editDialogWidget.show()" title="#{messages.label_edit}">
-              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
-            </p:commandButton>
-            <p:tooltip for="editButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
-            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="deleteDialogWidget.show()" title="#{messages.label_delete}">
-              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
-            </p:commandButton>
-            <p:tooltip for="deleteButton" value="#{messages.label_delete}" showEffect="fade" hideEffect="fade" />
-          </p:column>
-        </p:dataTable>
-      </p:panel>
-    </h:form>
-    <p:dialog id="editDialog" header="#{messages.label_edit} Sangria" modal="true" widgetVar="editDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:ajax event="close" update=":dataForm:data" listener="#{sangriaBean.handleDialogClose}" />
-      <p:outputPanel id="editPanel">
-        <h:form id="editForm" enctype="multipart/form-data">
-          <h:panelGrid id="editPanelGrid" columns="3" binding="#{sangriaBean.editPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-          <p:commandButton id="editSaveButton" value="#{messages.label_save}" action="#{sangriaBean.persist}" update="editPanelGrid :growlForm:growl" />
-          <p:commandButton id="editCloseButton" value="#{messages.label_close}" onclick="editDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog>
-    <p:dialog id="viewDialog" header="#{messages.label_view} Sangria" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:outputPanel id="viewPanel">
-        <h:form id="viewForm" enctype="multipart/form-data">
-          <h:panelGrid id="viewPanelGrid" columns="2" binding="#{sangriaBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" />
-          <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="viewDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog>
-    <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm">
-      <p:outputPanel id="deletePanel">
-        <h:form id="deleteForm">
-          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{sangriaBean.delete}" update=":dataForm:data :growlForm:growl" oncomplete="deleteDialogWidget.hide()" />
-          <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="deleteDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:confirmDialog>
+    	</h:form>
+    	
+    	<h:form prependId="false" id="dataForm">
+	        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" paginator="true" rows="10">
+	        	<f:facet name="header">Sangria</f:facet>
+	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
+	          		<h:outputText value="#{sangria.periodo}">
+	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+	          		</h:outputText>
+	          	</p:column>
+	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
+	          		<h:outputText value="#{sangria.valor}"/>
+	          	</p:column>
+	          	<p:column headerText="Origem" sortBy="#{sangria.origem}">
+	          		<h:outputText value="#{sangria.origem}"/>
+	          	</p:column>
+	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
+	          		<h:outputText value="#{sangria.item.descrisao}"/>
+	          	</p:column>
+	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}">
+	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/>
+	          	</p:column>
+	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}">
+	          		<h:outputText value="#{sangria.funcionario.apelido}"/>
+	          	</p:column>
+	          
+	          <p:column headerText="Ações" styleClass="action-column" style="width:40px;">
+	           <!--  <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
+	              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
+	            </p:commandButton>
+	            <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" /> -->
+	            
+	           <!--  <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="sangria.xhtml" title="#{messages.label_edit}">
+	              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
+	            </p:commandButton> -->
+	            
+	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
+					<f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
+				</p:commandButton>
+	          </p:column>
+	        </p:dataTable>
+	        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+				<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+			</p:confirmDialog>
+	       </h:form>
   </ui:define>
 </ui:composition>
 </html>

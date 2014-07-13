@@ -39,6 +39,8 @@ public class DespesasBean implements Serializable {
 	private Despesas despesas;
 
 	private List<Despesas> allDespesases;
+	
+	private List<Despesas> allDespesasAtivas;
 
 	private boolean dataVisible = false;
 
@@ -58,8 +60,15 @@ public class DespesasBean implements Serializable {
         columns.add("codigo");
         columns.add("descricao");
         columns.add("idResumo");
+        despesas = new Despesas();
+        despesas.setSituacao(true);
         findAllDespesases();
+        findAllDespesasAtivas();
     }
+
+	private void findAllDespesasAtivas() {
+		allDespesasAtivas = despesas.findAllDespesasAtivas();	
+	}
 
 	public String getName() {
         return name;
@@ -372,6 +381,14 @@ public class DespesasBean implements Serializable {
         return null;
     }
 
+	public List<Despesas> getAllDespesasAtivas() {
+		return allDespesasAtivas;
+	}
+
+	public void setAllDespesasAtivas(List<Despesas> allDespesasAtivas) {
+		this.allDespesasAtivas = allDespesasAtivas;
+	}
+
 	public boolean isCreateDialogVisible() {
         return createDialogVisible;
     }
@@ -407,7 +424,7 @@ public class DespesasBean implements Serializable {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+        init();
         findAllDespesases();
         return "/pages/despesas.xtml";
     }

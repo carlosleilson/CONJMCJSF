@@ -41,6 +41,8 @@ public class DespesasGastosBean implements Serializable {
 	private DespesasGastos despesasGastos;
 
 	private List<DespesasGastos> allDespesasGastoses;
+	
+	private List<DespesasGastos> allDespesasGastosAtivos;
 
 	private boolean dataVisible = false;
 
@@ -58,8 +60,16 @@ public class DespesasGastosBean implements Serializable {
     public void init() {
         columns = new ArrayList<String>();
         columns.add("descrisao");
+        despesasGastos = new DespesasGastos();
+        despesasGastos.setDespesaPessoal(false);
+        despesasGastos.setSituacao(true);
         findAllDespesasGastoses();
+        findAllDespesasGastosAtivos();
     }
+
+	private void findAllDespesasGastosAtivos() {
+		allDespesasGastosAtivos = despesasGastos.findAllDespesasGastosAtivos();		
+	}
 
 	public String getName() {
         return name;
@@ -76,6 +86,15 @@ public class DespesasGastosBean implements Serializable {
 	public void setAllDespesasGastoses(List<DespesasGastos> allDespesasGastoses) {
         this.allDespesasGastoses = allDespesasGastoses;
     }
+	
+	public List<DespesasGastos> getAllDespesasGastosAtivos() {
+		return allDespesasGastosAtivos;
+	}
+
+	public void setAllDespesasGastosAtivos(
+			List<DespesasGastos> allDespesasGastosAtivos) {
+		this.allDespesasGastosAtivos = allDespesasGastosAtivos;
+	}
 
 	public String findAllDespesasGastoses() {
         allDespesasGastoses = DespesasGastos.findAllDespesasGastoses();
@@ -415,7 +434,7 @@ public class DespesasGastosBean implements Serializable {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "DespesasGastos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+        init();
         return findAllDespesasGastoses();
     }
 

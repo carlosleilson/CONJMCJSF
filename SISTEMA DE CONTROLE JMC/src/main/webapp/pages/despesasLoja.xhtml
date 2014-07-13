@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -14,7 +15,7 @@
 	<fieldset>
     	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
           	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" locale="pt_BR" pages="2" mindate="02/06/14" maxdate="showDate" disabledWeekends="true" required="true" />
+          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" locale="pt_BR" pages="2" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" required="true" />
           	<p:message for="mes_ano"/> 
           	
           	<p:outputLabel value="Valor" for="valor"/>
@@ -25,7 +26,7 @@
 
           	<p:outputLabel value="Classificacao" for="clas"/>
           	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter" required="true">
-	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
+	    		<f:selectItem itemLabel="Selecione um opÃ§Ã£o" itemValue="" />
 				<f:selectItems value="#{despesasBean.allDespesases}" var="classic" 
 				itemLabel="#{classic.codigo} - #{classic.descricao}" itemValue="#{classic}" />
 			</p:selectOneMenu>

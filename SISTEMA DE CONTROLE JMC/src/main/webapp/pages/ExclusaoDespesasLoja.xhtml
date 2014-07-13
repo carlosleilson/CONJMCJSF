@@ -59,7 +59,7 @@
         	</p:column> 
         	 <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
 	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
-					<f:setPropertyActionListener value="#{despesasLojas}" target="#{despesasLojaBean.despesasLoja}" />
+					<f:setPropertyActionListener value="#{despesasLoja}" target="#{despesasLojaBean.despesasLoja}" />
 				</p:commandButton>	        	 
         	 </p:column>       	
         </p:dataTable>

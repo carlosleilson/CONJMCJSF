@@ -1,12 +1,5 @@
 package br.com.conjmc.despesa;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.roo.addon.javabean.RooJavaBean;
-import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
-import org.springframework.roo.addon.tostring.RooToString;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,20 +10,26 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.persistence.Version;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.roo.addon.javabean.RooJavaBean;
+import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conjmc.cadastrobasico.Despesas;
-
-import javax.persistence.ManyToOne;
-
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 
 @Configurable
@@ -316,12 +315,24 @@ public class DespesasLoja {
 		return true;
 	}
 	public static List<DespesasLoja> encontrarPorData(Date dataAgora, Date atedata) {
-        if (dataAgora == null) throw new IllegalArgumentException("O Mes/ano é obrigatorio");
+        if (dataAgora == null) throw new IllegalArgumentException("O Dia é obrigatorio");
         if (atedata == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        EntityManager em = DespesasLoja.entityManager();
+//        String jpaQuery = "SELECT o FROM DespesasLoja AS o WHERE o.mes_ano = '"+sdf.format(dataAgora).toString()+"' or o.mes_ano = '"+sdf.format(atedata).toString()+"'";
+//        TypedQuery<DespesasLoja>  despesas = em.createQuery(jpaQuery, DespesasLoja.class);
         EntityManager em = DespesasLoja.entityManager();
-        String jpaQuery = "SELECT o FROM DespesasLoja AS o WHERE o.mes_ano = '"+sdf.format(dataAgora).toString()+"' or o.mes_ano = '"+sdf.format(atedata).toString()+"'";
-        TypedQuery<DespesasLoja>  despesas = em.createQuery(jpaQuery, DespesasLoja.class);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<DespesasLoja> c = cb.createQuery(DespesasLoja.class);
+        Root<DespesasLoja> root = c.from(DespesasLoja.class);
+        c.select(root);       
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        
+    	Path<Date> subcategoria = root.get("mes_ano");
+    	predicates.add(cb.and(cb.equal(subcategoria, dataAgora.getDate())));
+    	
+        c.select(root).where(predicates.toArray(new Predicate[]{}));
+        List<DespesasLoja> despesas = em.createQuery(c).getResultList();        
         return (List<DespesasLoja>) despesas;
     }	
 	

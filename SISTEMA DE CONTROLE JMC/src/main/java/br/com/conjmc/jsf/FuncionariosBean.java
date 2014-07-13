@@ -65,6 +65,8 @@ public class FuncionariosBean implements Serializable {
         columns.add("salario");
         columns.add("cpf");
         columns.add("identidade");
+        funcionarios = new Funcionarios();
+        funcionarios.setSituacao(true);
         findAllFuncionarioses();
         findAllFuncionariosAtivos();
     }

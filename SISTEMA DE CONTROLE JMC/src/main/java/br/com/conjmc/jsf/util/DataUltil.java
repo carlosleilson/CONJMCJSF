@@ -1,6 +1,7 @@
 package br.com.conjmc.jsf.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DataUltil {
@@ -15,7 +16,10 @@ public class DataUltil {
 	
 	public static String mesAnterior(){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
-		data = new Date();
+		Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.set(c.DAY_OF_MONTH,1 );
+		data = c.getTime();
 		data.setMonth(data.getMonth()-1);
 		return sdf.format( data).toString();
 	}	

@@ -496,6 +496,11 @@ public class DespesasLojaBean implements Serializable{
 		return "/pages/ExclusaoDespesasLoja.xhtml";
 	}
 	
+	public String limpar(){
+		this.reset();
+		return findAllDespesasLojas();
+	}
+	
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }

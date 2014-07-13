@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:c="http://java.sun.com/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -11,73 +10,64 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-   <h:form id="dataForm"  acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+   <h:form id="searchForm" enctype="multipart/form-data">
     	<fieldset>
-    	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-    	
-<!--           	<p:outputLabel value="Mes/ano" for="mes_ano"/> -->
-<!--           	<p:selectOneMenu id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" converter="despesasLojaConverter" required="true"> -->
-<!-- 	    		<f:selectItem itemLabel="Selecione um opÃ§Ã£o" itemValue="" /> -->
-<!-- 				<f:selectItems value="#{despesasLojaBean.allDespesasLojas}" var="mes_ano"  -->
-<!-- 				itemLabel="#{classic.despesasLoja.mes_ano}" itemValue="#{mes_ano}" /> -->
-<!-- 			</p:selectOneMenu> -->
-<!--           	<p:message for="mes_ano"/> -->
-          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-          	<p:calendar id="mes_ano" value="#{despesasLojaBean.dataAgora}" locale="pt_BR" required="true" />
-          	<p:message for="mes_ano"/> 
-          	
-          	<p:outputLabel value="AtÃ© Mes/ano" for="Atemes_ano"/>
-          	<p:calendar id="Atemes_ano" value="#{despesasLojaBean.atedata}" locale="pt_BR"  required="true" />
-          	<p:message for="Atemes_ano"/>          	
-          	
-          	<p:outputLabel value="Classificacao" for="clas"/>
-          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter" required="true">
-	    		<f:selectItem itemLabel="Selecione um opÃ§Ã£o" itemValue="" />
+    	<legend>Exclusão de Despesas</legend>
+    	<h:panelGrid id="searchPanelGrid">
+    	 <p:row>
+    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
+	          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
+	          	<p:calendar id="mes_ano" size="8" value="#{despesasLojaBean.dataAgora}" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" locale="pt_BR" required="true" />
+	          	<p:message for="mes_ano"/> 
+	          	
+	          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
+	          	<p:calendar id="Atemes_ano" size="8" value="#{despesasLojaBean.atedata}" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" locale="pt_BR" required="true" />
+	          	<p:message for="Atemes_ano"/>
+	         </h:panelGrid> 	
+		</p:row>
+		<p:row>	
+		<p:column  colspan="3">
+          	<p:outputLabel  value="Classificacao  " for="clas"/>
+          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter">
+	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
 				<f:selectItems value="#{despesasBean.allDespesases}" var="classic" 
 				itemLabel="#{classic.descricao}" itemValue="#{classic}" />
 			</p:selectOneMenu>
           	<p:message for="clas"/>
-          	          	        	   	
-    	</h:panelGrid>
-          <p:commandButton id="createSaveButton" value="busca" ajax="false" action="#{despesasLojaBean.busca}" update="list" />
+         </p:column>
+        </p:row>
+		<p:row>	
+          	
+          <p:commandButton id="createSaveButton" value="Buscar" ajax="false" action="#{despesasLojaBean.busca}" />
+<!--           <p:commandButton id="createCloseButton" value="Limpar" ajax="false" action="/pages/ExclusaoDespesasLoja.xhtml" /> -->
+		 </p:row>
+          </h:panelGrid>
         </fieldset>
-        
-        <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja" resizableColumns="false" paginator="true" paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="5,10,25,50" rows="10">
-          <p:columns value="#{despesasLojaBean.columns}" var="column" columnIndexVar="colIndex">
-            <f:facet name="header">
-              <h:outputText value="#{applicationBean.getColumnName(column)}" />
-            </f:facet>
-            <h:outputText value="#{despesasLoja[column]}" />
-          </p:columns>
-          <p:column styleClass="action-column">
-            <f:facet name="header">
-              <h:outputText value="Actions" />
-            </f:facet>
-            <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
-              <f:setPropertyActionListener value="#{despesasLoja}" target="#{despesasLojaBean.despesasLoja}" />
-            </p:commandButton>
-            <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" />
-            <p:commandButton id="editButton" icon="ui-icon-pencil" update=":editForm:editPanelGrid" action="#{despesasLojaBean.onEdit}" oncomplete="editDialogWidget.show()" title="#{messages.label_edit}">
-              <f:setPropertyActionListener value="#{despesasLoja}" target="#{despesasLojaBean.despesasLoja}" />
-            </p:commandButton>
-            <p:tooltip for="editButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
-            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="deleteDialogWidget.show()" title="#{messages.label_delete}">
-              <f:setPropertyActionListener value="#{despesasLoja}" target="#{despesasLojaBean.despesasLoja}" />
-            </p:commandButton>
-            <p:tooltip for="deleteButton" value="#{messages.label_delete}" showEffect="fade" hideEffect="fade" />
-          </p:column>
+      </h:form>
+    <h:form prependId="false" id="dataForm">       
+        <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja" paginator="true" rows="10">
+        	<f:facet name="header">Exclusão de Despesas</f:facet>
+        	<p:column headerText="Dia" sortBy="#{despesasLoja.mes_ano}">
+        		<h:outputText value="#{despesasLoja.mes_ano}">
+        			<f:convertDateTime pattern="dd/MM/yyyy"/>
+        		</h:outputText>
+        	</p:column>
+        	<p:column headerText="Valor" sortBy="#{despesasLoja.valor}">
+        		<h:outputText value="#{despesasLoja.valor}">
+        			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/>
+        		</h:outputText>
+        	</p:column> 
+        	 <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
+	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
+					<f:setPropertyActionListener value="#{despesasLojas}" target="#{despesasLojaBean.despesasLoja}" />
+				</p:commandButton>	        	 
+        	 </p:column>       	
         </p:dataTable>
+        <p:confirmDialog id="excluir" header="Excluir Despesas" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+			<p:commandButton id="confirm" value="#{messages.label_yes}" oncomplete="confirmation.hide()" action="#{despesasLojaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+			<p:commandButton id="decline" value="#{messages.label_no}" onclick="confirmation.hide()" type="button"/>
+		</p:confirmDialog>        
     </h:form>
-    <p:dialog id="editDialog" header="#{messages.label_edit} DespesasLoja" modal="true" widgetVar="editDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:ajax event="close" update=":dataForm:list" listener="#{despesasLojaBean.handleDialogClose}" />
-      <p:outputPanel id="editPanel">
-        <h:form id="editForm" enctype="multipart/form-data">
-          <h:panelGrid id="editPanelGrid" columns="3" binding="#{despesasLojaBean.editPanelGrid}" styleClass="dialog" columnClasses="col1,col2,col3" />
-          <p:commandButton id="editSaveButton" value="#{messages.label_save}" action="#{despesasLojaBean.persist}" update="editPanelGrid :growlForm:growl" />
-          <p:commandButton id="editCloseButton" value="#{messages.label_close}" onclick="editDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog>
     <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
       <p:outputPanel id="viewPanel">
         <h:form id="viewForm" enctype="multipart/form-data">
@@ -86,14 +76,6 @@
         </h:form>
       </p:outputPanel>
     </p:dialog>
-    <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm">
-      <p:outputPanel id="deletePanel">
-        <h:form id="deleteForm">
-          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{despesasLojaBean.delete}" update=":dataForm:list :growlForm:growl" oncomplete="deleteDialogWidget.hide()" />
-          <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="deleteDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:confirmDialog>
   </ui:define>
 </ui:composition>
 </html>

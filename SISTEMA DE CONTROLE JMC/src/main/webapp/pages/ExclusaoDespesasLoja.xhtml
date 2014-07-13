@@ -27,11 +27,11 @@
 		</p:row>
 		<p:row>	
 		<p:column  colspan="3">
-          	<p:outputLabel  value="Classificacao  " for="clas"/>
-          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter">
+          	<p:outputLabel  value="Item da Despesa  " for="clas"/>
+          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter">
 	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
-				<f:selectItems value="#{despesasBean.allDespesases}" var="classic" 
-				itemLabel="#{classic.descricao}" itemValue="#{classic}" />
+				<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="classic" 
+				itemLabel="#{classic.descrisao}" itemValue="#{classic}" />
 			</p:selectOneMenu>
           	<p:message for="clas"/>
          </p:column>

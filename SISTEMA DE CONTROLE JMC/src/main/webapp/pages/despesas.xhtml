@@ -6,6 +6,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Classificação de Despesas</title>
+	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
@@ -31,7 +34,8 @@
             	<h:outputText value="#{despesas.idResumo}"/>
             </p:column>
             <p:column headerText="Situação" sortBy="#{despesas.situacao}">
-            	<h:outputText value="#{despesas.situacao}"/>
+            	<h:outputText value="Ativo" rendered="#{despesas.situacao == true}"/>
+            	<h:outputText value="Inativo" rendered="#{despesas.situacao == false}"/>
             </p:column>
           <p:column headerText="Ações" styleClass="action-column" style="width:90px">
             <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">

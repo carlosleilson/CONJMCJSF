@@ -6,6 +6,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Sangrias</title>
+	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
@@ -36,7 +39,7 @@
           	<p:outputLabel value="Itens" for="itens"/>
           	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true">
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-          		<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="gasto" 
+          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
           			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
           			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":createForm:funcionarioGrid :createForm:classific"/>
           	</p:selectOneMenu>

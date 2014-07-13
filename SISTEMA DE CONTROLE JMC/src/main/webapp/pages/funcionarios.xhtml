@@ -6,6 +6,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Funcionarios</title>
+	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
@@ -84,8 +87,9 @@
         	<p:column headerText="CPF" sortBy="#{funcionarios.cpf}">
         		<h:outputText value="#{funcionarios.cpf}"/>
         	</p:column>
-        	<p:column headerText="Situação" sortBy="#{funcionarios.situacao?ativo:inativo}">
-        		<h:outputText value="#{funcionarios.situacao}"/>
+        	<p:column headerText="Situação" sortBy="#{funcionarios.situacao}">
+        		<h:outputText value="Ativo" rendered="#{funcionarios.situacao == true}"/>
+        		<h:outputText value="Inativo" rendered="#{funcionarios.situacao == false}"/>
         	</p:column>
         	
           <p:column headerText="Ações" styleClass="action-column" style="width:90px;">

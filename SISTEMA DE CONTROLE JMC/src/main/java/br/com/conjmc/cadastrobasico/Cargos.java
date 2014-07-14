@@ -27,13 +27,9 @@ import javax.persistence.Version;
 @RooJpaActiveRecord
 public class Cargos {
 
-    /**
-     */
     @NotNull
     private String nome;
 
-    /**
-     */
     @NotNull
     @Enumerated
     private Setor setor;

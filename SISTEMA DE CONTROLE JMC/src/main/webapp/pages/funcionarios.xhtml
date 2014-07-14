@@ -45,6 +45,7 @@
 	          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99" required="true" requiredMessage="O CPF é obrigatório" />
 	          	<p:message for="funcionarioCPF"/>
 	          </h:panelGrid>
+          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{funcionariosBean.persist}" />
           </div>
           <div class="gridFunc">
 	          <h:panelGrid id="createPanelGrid2" columns="3" styleClass="dialog">
@@ -73,7 +74,6 @@
 	          	<p:message for="funcionarioInformacoes"/>
 	          </h:panelGrid>
           </div>
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{funcionariosBean.persist}" />
 <!--           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" /> -->
         </fieldset>
      </h:form>

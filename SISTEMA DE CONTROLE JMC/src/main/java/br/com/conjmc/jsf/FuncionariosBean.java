@@ -823,22 +823,37 @@ public class FuncionariosBean implements Serializable {
     }
 
 	public String persist() {
-        String message = "";
-        if (funcionarios.getId() != null) {
-            funcionarios.merge();
-            message = "message_successfully_updated";
-        } else {
-            funcionarios.persist();
-            message = "message_successfully_created";
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("createDialogWidget.hide()");
-        context.execute("editDialogWidget.hide()");
+		boolean existe = true;
+		String message = "";
+		for (Funcionarios func : allFuncionarioses) {
+			if (func.getApelido().equals(funcionarios.getApelido())) {
+				existe = false;
+				message = "Já exite funcionário com apelido cadastrado";
+			}
+			if (func.getCpf().equals(funcionarios.getCpf())) {
+				existe = false;
+				message = "Já exite funcionário com CPF cadastrado";
+			}
+		}
+		if (existe == true) {
+			if (funcionarios.getId() != null) {
+				funcionarios.merge();
+				message = "message_successfully_updated";
+			} else {
+				funcionarios.persist();
+				message = "message_successfully_created";
+			}
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("createDialogWidget.hide()");
+			context.execute("editDialogWidget.hide()");			
+			FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
+			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			reset();
+			init();
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, " "));
+		}
         
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        init();
         return "/pages/funcionarios.xhtml";
     }
 

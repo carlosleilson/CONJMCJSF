@@ -47,7 +47,7 @@
 				</p:column>
 
 				<p:column headerText="Ações" styleClass="action-column" style="width:90px">
-					<p:commandButton id="viewButton" icon="ui-icon-zoomin"
+					<!-- <p:commandButton id="viewButton" icon="ui-icon-zoomin"
 						update=":viewForm:viewPanelGrid"
 						oncomplete="viewDialogWidget.show()"
 						title="#{messages.label_view}">
@@ -55,7 +55,7 @@
 							target="#{cargosBean.cargos}" />
 					</p:commandButton>
 					<p:tooltip for="viewButton" value="#{messages.label_view}"
-						showEffect="fade" hideEffect="fade" />
+						showEffect="fade" hideEffect="fade" /> -->
 						
 					<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="cargos.xhtml">
 						<f:setPropertyActionListener target="#{cargosBean.cargos}" value="#{list}" />

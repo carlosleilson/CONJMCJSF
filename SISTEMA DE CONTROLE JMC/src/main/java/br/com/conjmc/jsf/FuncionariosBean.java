@@ -851,7 +851,7 @@ public class FuncionariosBean implements Serializable {
 			reset();
 			init();
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, " "));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, " "));
 		}
         
         return "/pages/funcionarios.xhtml";

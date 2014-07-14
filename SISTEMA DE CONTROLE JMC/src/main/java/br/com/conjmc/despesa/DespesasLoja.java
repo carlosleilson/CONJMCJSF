@@ -1,4 +1,5 @@
 package br.com.conjmc.despesa;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.jsf.util.DataUltil;
 
 @Configurable
 @Entity
@@ -315,6 +317,7 @@ public class DespesasLoja {
 		return true;
 	}
 	public static List<DespesasLoja> encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
         if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
         EntityManager em = DespesasLoja.entityManager();
@@ -325,9 +328,10 @@ public class DespesasLoja {
         }else{	
         	q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano between :dataInicial and :dataFinal", DespesasLoja.class);
         }
-        q.setParameter("dataInicial", dataInicial);
+        q.setParameter("dataInicial", dataInicial );
         q.setParameter("dataFinal", dataFinal);
-        return q.getResultList();        
+        //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
+        return q.getResultList();
     }	
 	
 }

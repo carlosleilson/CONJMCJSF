@@ -492,7 +492,7 @@ public class DespesasLojaBean implements Serializable{
     }
 
 	public String busca(){
-		allDespesasLojas = DespesasLoja.encontrarPorData(getAtedata(), getDataAgora(),getDespesasLoja().getItem());
+		allDespesasLojas = DespesasLoja.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem());
 		return "/pages/ExclusaoDespesasLoja.xhtml";
 	}
 	

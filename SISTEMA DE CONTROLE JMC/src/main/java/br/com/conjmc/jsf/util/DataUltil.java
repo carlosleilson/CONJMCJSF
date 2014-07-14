@@ -8,6 +8,22 @@ public class DataUltil {
 	private static SimpleDateFormat sdf;
 	private static Date data;
 	
+	public static SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public static void setSdf(SimpleDateFormat sdf) {
+		DataUltil.sdf = sdf;
+	}
+
+	public static Date getData() {
+		return data;
+	}
+
+	public static void setData(Date data) {
+		DataUltil.data = data;
+	}
+
 	public static String dataAtual(){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		data =  new Date();

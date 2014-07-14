@@ -17,11 +17,18 @@
     	 <p:row>
     	 	<h:panelGrid id="dataPanelGrid" columns="6" >
 	          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-	          	<p:calendar id="mes_ano" size="8" value="#{despesasLojaBean.dataAgora}" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" locale="pt_BR" required="true" />
+	          	<p:calendar id="mes_ano" size="8" value="#{despesasLojaBean.dataAgora}" 
+	          		mindate="#{despesasLojaBean.mesAnterior}" 
+	          		maxdate="#{despesasLojaBean.dataAtual}" 
+	          		pattern="dd/MM/yyyy" 
+	          		required="true" />
 	          	<p:message for="mes_ano"/> 
 	          	
 	          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
-	          	<p:calendar id="Atemes_ano" size="8" value="#{despesasLojaBean.atedata}" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" locale="pt_BR" required="true" />
+	          	<p:calendar id="Atemes_ano" size="8" value="#{despesasLojaBean.atedata}" 
+	          		mindate="#{despesasLojaBean.mesAnterior}" 
+	          		maxdate="#{despesasLojaBean.dataAtual}" 
+	          		pattern="dd/MM/yyyy" required="true" />
 	          	<p:message for="Atemes_ano"/>
 	         </h:panelGrid> 	
 		</p:row>

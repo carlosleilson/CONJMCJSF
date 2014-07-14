@@ -323,7 +323,7 @@ public class DespesasLoja {
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<DespesasLoja> q = null;
         if(item!=null){
-            q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano between :dataInicial and :dataFinal or o.item = :item", DespesasLoja.class);
+            q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano between :dataInicial and :dataFinal and o.item = :item", DespesasLoja.class);
             q.setParameter("item", item);
         }else{	
         	q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano between :dataInicial and :dataFinal", DespesasLoja.class);

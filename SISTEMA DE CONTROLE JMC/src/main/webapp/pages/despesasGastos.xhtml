@@ -6,12 +6,16 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Despesas e Gastos</title>
+	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form id="createForm" enctype="multipart/form-data">
     	<fieldset>
+    		<legend>Despesas e Gastos</legend>
           <h:panelGrid id="createPanelGridNew" columns="3" styleClass="dialog">
           	<p:outputLabel value="Descrição" for="descricao"/>
           	<p:inputText id="descricao" value="#{despesasGastosBean.despesasGastos.descrisao}" required="true" />
@@ -56,9 +60,18 @@
           	<h:outputText value="Inativo" rendered="#{despesa_Gastos.situacao == false}"/>          
           </p:column>
           <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
-
+				<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="despesasGastos.xhtml">
+					<f:setPropertyActionListener target="#{despesasGastosBean.despesasGastos}" value="#{despesa_Gastos}" />
+				</p:commandButton>
+				<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
+					<f:setPropertyActionListener value="#{despesa_Gastos}" target="#{despesasGastosBean.despesasGastos}" />
+				</p:commandButton>
           </p:column>
         </p:dataTable>
+        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasGastosBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+		</p:confirmDialog>
     </h:form>
   </ui:define>
 </ui:composition>

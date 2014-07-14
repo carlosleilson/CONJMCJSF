@@ -10,12 +10,12 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form id="dataForm"  acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    <h:form id="dataForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
 	<fieldset>
 	<legend>Despesas Inclusão</legend>
     	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
           	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" pattern="dd/MM/yyyy" pages="2" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" required="true" />
+          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" pattern="dd/MM/yyyy" pages="2" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" required="true" requiredMessage="Data obrigatória" />
           	<p:message for="mes_ano"/> 
           	
           	<p:outputLabel value="Valor" for="valor"/>
@@ -25,7 +25,7 @@
           	<p:message for="valor"/> 
 
           	<p:outputLabel value="Classificacao" for="clas"/>
-          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter" required="true">
+          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter" required="true" requiredMessage="Classificação é obrigatória">
 	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
 				<f:selectItems value="#{despesasBean.allDespesases}" var="classic" 
 				itemLabel="#{classic.codigo} - #{classic.descricao}" itemValue="#{classic}" />
@@ -33,7 +33,7 @@
           	<p:message for="clas"/>
 
           	<p:outputLabel value="Itens" for="itens"/>
-          	<p:selectOneMenu id="itens" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter" required="true">
+          	<p:selectOneMenu id="itens" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter">
           		<f:selectItem itemLabel="Selecione  um Item" itemValue=""/>
           		<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="gasto" 
           			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />

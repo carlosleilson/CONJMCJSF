@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -13,68 +13,73 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form id="createForm" enctype="multipart/form-data">
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
-    		<legend>Funcion�rios</legend>
-          <h:panelGrid id="createPanelGrid" columns="6" styleClass="dialog">
-          	<p:outputLabel value="Nome" for="funcionarioNome"/>
-          	<p:inputText id="funcionarioNome" value="#{funcionariosBean.funcionarios.nome}" required="true" />
-          	<p:message for="funcionarioNome"/>
-          	
-          	<p:outputLabel value="Apelido" for="funcionarioApelido"/>
-          	<p:inputText id="funcionarioApelido" value="#{funcionariosBean.funcionarios.apelido}" required="true" />
-          	<p:message for="funcionarioApelido"/>
-          	
-          	<p:outputLabel value="Cargo" for="funcionarioCargo"/>
-          	<p:selectOneMenu id="funcionarioCargo" value="#{funcionariosBean.funcionarios.cargo}" converter="cargosConverter" required="true">
-	    		<f:selectItem itemLabel="Selecione um cergo" itemValue="" />
-				<f:selectItems value="#{cargosBean.allCargoses}" var="cargo" itemLabel="#{cargo.nome}" itemValue="#{cargo}" />
-			</p:selectOneMenu>
-          	<p:message for="funcionarioCargo"/>
-          	
-          	<p:outputLabel value="Salario" for="funcionarioSalario"/>
-          	<p:inputText id="funcionarioSalario" value="#{funcionariosBean.funcionarios.salario}" required="true" />
-          	<p:message for="funcionarioSalario"/>
-          	
-          	<p:outputLabel value="Situa��o" for="funcionarioSituacao"/>
-          	<p:selectBooleanCheckbox id="funcionarioSituacao" value="#{funcionariosBean.funcionarios.situacao}" rendered="true"/>
-          	<p:message for="funcionarioSituacao"/>
-          	
-          	<p:outputLabel value="CPF" for="funcionarioCPF"/>
-          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99" required="true" />
-          	<p:message for="funcionarioCPF"/>
-          	
-          	<p:outputLabel value="Identidade" for="funcionarioIdentidade"/>
-          	<p:inputText id="funcionarioIdentidade" value="#{funcionariosBean.funcionarios.identidade}" required="true" />
-          	<p:message for="funcionarioIdentidade"/>
-          	
-          	<p:outputLabel value="Logradouro" for="funcionarioLogradouro"/>
-          	<p:inputText id="funcionarioLogradouro" value="#{funcionariosBean.funcionarios.logradouro}" />
-          	<p:message for="funcionarioLogradouro"/>
-          	
-          	<p:outputLabel value="Bairro" for="funcionarioBairro"/>
-          	<p:inputText id="funcionarioBairro" value="#{funcionariosBean.funcionarios.bairro}" />
-          	<p:message for="funcionarioBairro"/>
-          	
-          	<p:outputLabel value="Cidade" for="funcionarioCidade"/>
-          	<p:inputText id="funcionarioCidade" value="#{funcionariosBean.funcionarios.cidade}" />
-          	<p:message for="funcionarioCidade"/>
-          	
-          	<p:outputLabel value="CEP" for="funcionarioCEP"/>
-          	<p:inputMask id="funcionarioCEP" value="#{funcionariosBean.funcionarios.cep}" mask="99999-999" required="true" />
-          	<p:message for="funcionarioCEP"/>
-          	
-          	<p:outputLabel value="Outras Informa��es" for="funcionarioInformacoes"/>
-          	<p:inputTextarea id="funcionarioInformacoes" value="#{funcionariosBean.funcionarios.outrasInformacoes}" required="true" />
-          	<p:message for="funcionarioInformacoes"/>
-          </h:panelGrid>
+    		<legend>Funcionários</legend>
+    	<div class="gridFunc">	
+	          <h:panelGrid id="createPanelGrid1" columns="3" styleClass="dialog">
+	          	<p:outputLabel value="Nome" for="funcionarioNome"/>
+	          	<p:inputText id="funcionarioNome" value="#{funcionariosBean.funcionarios.nome}" required="true" requiredMessage="O nome é obrigatório"/>
+	          	<p:message for="funcionarioNome" />
+	          	
+	          	<p:outputLabel value="Apelido" for="funcionarioApelido"/>
+	          	<p:inputText id="funcionarioApelido" value="#{funcionariosBean.funcionarios.apelido}" requiredMessage="O apelido é obrigatório" required="true" />
+	          	<p:message for="funcionarioApelido"/>
+	          	
+	          	<p:outputLabel value="Cargo" for="funcionarioCargo"/>
+	          	<p:selectOneMenu id="funcionarioCargo" value="#{funcionariosBean.funcionarios.cargo}" converter="cargosConverter" required="true" requiredMessage="O cargo é obrigatório">
+		    		<f:selectItem itemLabel="Selecione um cergo" itemValue="" />
+					<f:selectItems value="#{cargosBean.allCargoses}" var="cargo" itemLabel="#{cargo.nome}" itemValue="#{cargo}" />
+				</p:selectOneMenu>
+	          	<p:message for="funcionarioCargo"/>
+	          	
+	          	<p:outputLabel value="Salario" for="funcionarioSalario"/>
+	          	<p:inputText id="funcionarioSalario" value="#{funcionariosBean.funcionarios.salario}" required="true" requiredMessage="O salario é obrigatório" />
+	          	<p:message for="funcionarioSalario"/>
+	          	
+	          	<p:outputLabel value="Situação" for="funcionarioSituacao"/>
+	          	<p:selectBooleanCheckbox id="funcionarioSituacao" value="#{funcionariosBean.funcionarios.situacao}" rendered="true" />
+	          	<p:message for="funcionarioSituacao"/>
+	          	
+	          	<p:outputLabel value="CPF" for="funcionarioCPF"/>
+	          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99" required="true" requiredMessage="O CPF é obrigatório" />
+	          	<p:message for="funcionarioCPF"/>
+	          </h:panelGrid>
+          </div>
+          <div class="gridFunc">
+	          <h:panelGrid id="createPanelGrid2" columns="3" styleClass="dialog">
+	          	<p:outputLabel value="Identidade" for="funcionarioIdentidade"/>
+	          	<p:inputText id="funcionarioIdentidade" value="#{funcionariosBean.funcionarios.identidade}" requiredMessage="A identidade é obrigatório" required="true" />
+	          	<p:message for="funcionarioIdentidade"/>
+	          	
+	          	<p:outputLabel value="Logradouro" for="funcionarioLogradouro"/>
+	          	<p:inputText id="funcionarioLogradouro" value="#{funcionariosBean.funcionarios.logradouro}" />
+	          	<p:message for="funcionarioLogradouro"/>
+	          	
+	          	<p:outputLabel value="Bairro" for="funcionarioBairro"/>
+	          	<p:inputText id="funcionarioBairro" value="#{funcionariosBean.funcionarios.bairro}" />
+	          	<p:message for="funcionarioBairro"/>
+	          	
+	          	<p:outputLabel value="Cidade" for="funcionarioCidade"/>
+	          	<p:inputText id="funcionarioCidade" value="#{funcionariosBean.funcionarios.cidade}" />
+	          	<p:message for="funcionarioCidade"/>
+	          	
+	          	<p:outputLabel value="CEP" for="funcionarioCEP"/>
+	          	<p:inputMask id="funcionarioCEP" value="#{funcionariosBean.funcionarios.cep}" mask="99999-999" required="true" requiredMessage="O CEP é obrigatório" />
+	          	<p:message for="funcionarioCEP"/>
+	          	
+	          	<p:outputLabel value="Outras Informações" for="funcionarioInformacoes"/>
+	          	<p:inputTextarea id="funcionarioInformacoes" value="#{funcionariosBean.funcionarios.outrasInformacoes}" required="true" requiredMessage="Campo é obrigatório" />
+	          	<p:message for="funcionarioInformacoes"/>
+	          </h:panelGrid>
+          </div>
           <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{funcionariosBean.persist}" />
           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" />
         </fieldset>
      </h:form>
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{funcionariosBean.allFuncionarioses}" var="funcionarios" paginator="true" rows="10">
-        	<f:facet name="header">Funcion�rios</f:facet>
+        	<f:facet name="header">Funcionários</f:facet>
         	<p:column headerText="Apelido" sortBy="#{funcionarios.apelido}">
         		<h:outputText value="#{funcionarios.apelido}"/>
         	</p:column>
@@ -87,12 +92,12 @@
         	<p:column headerText="CPF" sortBy="#{funcionarios.cpf}">
         		<h:outputText value="#{funcionarios.cpf}"/>
         	</p:column>
-        	<p:column headerText="Situa��o" sortBy="#{funcionarios.situacao}">
+        	<p:column headerText="Situação" sortBy="#{funcionarios.situacao}">
         		<h:outputText value="Ativo" rendered="#{funcionarios.situacao == true}"/>
         		<h:outputText value="Inativo" rendered="#{funcionarios.situacao == false}"/>
         	</p:column>
         	
-          <p:column headerText="A��es" styleClass="action-column" style="width:90px;">
+          <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
             <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
               <f:setPropertyActionListener value="#{funcionarios}" target="#{funcionariosBean.funcionarios}" />
             </p:commandButton>
@@ -109,7 +114,7 @@
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{funcionariosBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-			<p:commandButton id="decline" value="N�o" onclick="confirmation.hide()" type="button"/>
+			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>
     <p:dialog id="viewDialog" header="#{messages.label_view} Funcionarios" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">

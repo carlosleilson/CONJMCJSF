@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -13,29 +13,31 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form id="createForm" enctype="multipart/form-data">
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
     		<legend>Despesas e Gastos</legend>
           <h:panelGrid id="createPanelGridNew" columns="3" styleClass="dialog">
-          	<p:outputLabel value="Descrição" for="descricao"/>
-          	<p:inputText id="descricao" value="#{despesasGastosBean.despesasGastos.descrisao}" required="true" />
+          	<p:outputLabel value="DescriÃ§Ã£o" for="descricao"/>
+          	<p:inputText id="descricao" value="#{despesasGastosBean.despesasGastos.descrisao}" required="true" requiredMessage="A descriÃ§Ã£o Ã© obrigatÃ³rio" />
           	<p:message for="descricao"/>
           	
-          	<p:outputLabel value="Classificação" for="classificacao"/>
-          	<p:selectOneMenu id="classificacao" value="#{despesasGastosBean.despesasGastos.classificacao}" converter="despesasConverter" required="true">
-          		<f:selectItem itemLabel="Selecione uma Classificação" itemValue=""/>
+          	<p:outputLabel value="ClassificaÃ§Ã£o" for="classificacao"/>
+          	<p:selectOneMenu id="classificacao" value="#{despesasGastosBean.despesasGastos.classificacao}" converter="despesasConverter" required="true" 
+          		requiredMessage="A ClassificaÃ§Ã£o Ã© obrigatÃ³rio ">
+          		<f:selectItem itemLabel="Selecione uma ClassificaÃ§Ã£o" itemValue=""/>
           		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" item="#{despesa}" />
           	</p:selectOneMenu>
           	<p:message for="classificacao"/>
           	
           	<p:outputLabel for="despesaPessoal" value="Despesa Pessoal" />
-		        <p:selectOneRadio id="despesaPessoal" value="#{despesasGastosBean.despesasGastos.despesaPessoal}" required="true">
+		        <p:selectOneRadio id="despesaPessoal" value="#{despesasGastosBean.despesasGastos.despesaPessoal}" required="true" 
+		        	requiredMessage="A despesa pessoal descriÃ§Ã£o Ã© obrigatÃ³rio">
 		            <f:selectItem itemLabel="Sim" itemValue="true"/>
-		            <f:selectItem itemLabel="Não" itemValue="false"/>
+		            <f:selectItem itemLabel="NÃ£o" itemValue="false"/>
 		        </p:selectOneRadio>
 	        <p:message for="despesaPessoal"/>
           	
-          	<p:outputLabel value="Situação" for="situacao"/>
+          	<p:outputLabel value="SituaÃ§Ã£o" for="situacao"/>
           	<p:selectBooleanCheckbox id="situacao" value="#{despesasGastosBean.despesasGastos.situacao}" required="true"/>
           	<p:message for="situacao"/>
           </h:panelGrid>
@@ -45,21 +47,21 @@
     <h:form prependId="false" id="dataForm">     
         <p:dataTable id="list" value="#{despesasGastosBean.allDespesasGastoses}" var="despesa_Gastos" resizableColumns="false" paginator="true" rows="10">
           <f:facet name="header">Despesas/Gastos</f:facet>
-          <p:column headerText="Descrição" sortBy="#{despesa_Gastos.descrisao}">
+          <p:column headerText="DescriÃ§Ã£o" sortBy="#{despesa_Gastos.descrisao}">
           	<h:outputText value="#{despesa_Gastos.descrisao}" />
           </p:column>
-          <p:column headerText="Classificação" sortBy="#{despesa_Gastos.classificacao.descricao}">
+          <p:column headerText="ClassificaÃ§Ã£o" sortBy="#{despesa_Gastos.classificacao.descricao}">
           	<h:outputText value="#{despesa_Gastos.classificacao.descricao}"/>          
           </p:column>
           <p:column headerText="Despesa Pessoal" sortBy="#{despesa_Gastos.despesaPessoal}">
           	<h:outputText value="Sim" rendered="#{despesa_Gastos.despesaPessoal == true}"/> 
-          	<h:outputText value="Não" rendered="#{despesa_Gastos.despesaPessoal == false}"/>          
+          	<h:outputText value="NÃ£o" rendered="#{despesa_Gastos.despesaPessoal == false}"/>          
           </p:column>
-          <p:column headerText="Situação" sortBy="#{despesa_Gastos.situacao}">
+          <p:column headerText="SituaÃ§Ã£o" sortBy="#{despesa_Gastos.situacao}">
           	<h:outputText value="Ativo" rendered="#{despesa_Gastos.situacao == true}"/>
           	<h:outputText value="Inativo" rendered="#{despesa_Gastos.situacao == false}"/>          
           </p:column>
-          <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
+          <p:column headerText="AÃ§Ãµes" styleClass="action-column" style="width:90px;">
 				<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="despesasGastos.xhtml">
 					<f:setPropertyActionListener target="#{despesasGastosBean.despesasGastos}" value="#{despesa_Gastos}" />
 				</p:commandButton>
@@ -70,7 +72,7 @@
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasGastosBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+			<p:commandButton id="decline" value="NÃ£o" onclick="confirmation.hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>
   </ui:define>

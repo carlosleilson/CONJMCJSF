@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -10,19 +10,19 @@
 		<title>Cargos</title>
 	</ui:define>
   <ui:define name="content">
-    <h:form prependId="false" id="growlForm">
+    <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form id="createForm" enctype="multipart/form-data">
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
     		<legend>Cargos</legend>
 		    <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
 		    	<p:outputLabel value="Nome" for="cargoNome" />
-		    	<p:inputText id="cargoNome" value="#{cargosBean.cargos.nome}" required="true" />
+		    	<p:inputText id="cargoNome" value="#{cargosBean.cargos.nome}" required="true" requiredMessage="O nome nÃ£o pode ser nulo" />
 		    	<p:message for="cargoNome" />
 
 				<p:outputLabel value="Setor" for="cargoSetor" />
-				<p:selectOneMenu id="cargoSetor" value="#{cargosBean.cargos.setor}" required="true">
+				<p:selectOneMenu id="cargoSetor" value="#{cargosBean.cargos.setor}" required="true"  requiredMessage="O setor nÃ£o pode ser nulo" >
 					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
 					<f:selectItems value="#{cargosBean.allSetor}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
@@ -46,7 +46,7 @@
 					<h:outputText value="#{list.setor.label}" />
 				</p:column>
 
-				<p:column headerText="Ações" styleClass="action-column" style="width:90px">
+				<p:column headerText="AÃ§Ãµes" styleClass="action-column" style="width:90px">
 					<!-- <p:commandButton id="viewButton" icon="ui-icon-zoomin"
 						update=":viewForm:viewPanelGrid"
 						oncomplete="viewDialogWidget.show()"
@@ -68,7 +68,7 @@
 			</p:dataTable>
 			<p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{cargosBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-				<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+				<p:commandButton id="decline" value="NÃ£o" onclick="confirmation.hide()" type="button"/>
 			</p:confirmDialog>					
 		</h:form>
 		

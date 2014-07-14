@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -10,9 +10,9 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-   <h:form id="searchForm" enctype="multipart/form-data">
+   <h:form id="searchForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
-    	<legend>Exclusão de Despesas</legend>
+    	<legend>ExclusÃ£o de Despesas</legend>
     	<h:panelGrid id="searchPanelGrid">
     	 <p:row>
     	 	<h:panelGrid id="dataPanelGrid" columns="6" >
@@ -24,7 +24,7 @@
 	          		required="true" />
 	          	<p:message for="mes_ano"/> 
 	          	
-	          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
+	          	<p:outputLabel value="AtÃ© Mes/ano" for="Atemes_ano"/>
 	          	<p:calendar id="Atemes_ano" size="8" value="#{despesasLojaBean.atedata}" 
 	          		mindate="#{despesasLojaBean.mesAnterior}" 
 	          		maxdate="#{despesasLojaBean.dataAtual}" 
@@ -36,7 +36,7 @@
 		<p:column  colspan="3">
           	<p:outputLabel  value="Item da Despesa  " for="clas"/>
           	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter">
-	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
+	    		<f:selectItem itemLabel="Selecione um opÃ§Ã£o" itemValue="" />
 				<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="classic" 
 				itemLabel="#{classic.descrisao}" itemValue="#{classic}" />
 			</p:selectOneMenu>
@@ -53,7 +53,7 @@
       </h:form>
     <h:form prependId="false" id="dataForm">       
         <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja" paginator="true" rows="10">
-        	<f:facet name="header">Exclusão de Despesas</f:facet>
+        	<f:facet name="header">ExclusÃ£o de Despesas</f:facet>
         	<p:column headerText="Dia" sortBy="#{despesasLoja.mes_ano}">
         		<h:outputText value="#{despesasLoja.mes_ano}">
         			<f:convertDateTime pattern="dd/MM/yyyy"/>
@@ -64,7 +64,7 @@
         			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/>
         		</h:outputText>
         	</p:column> 
-        	 <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
+        	 <p:column headerText="AÃ§Ãµes" styleClass="action-column" style="width:90px;">
 	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
 					<f:setPropertyActionListener value="#{despesasLoja}" target="#{despesasLojaBean.despesasLoja}" />
 				</p:commandButton>	        	 

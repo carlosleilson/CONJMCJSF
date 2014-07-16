@@ -1,9 +1,4 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.cadastrobasico.Cargos;
-import br.com.conjmc.cadastrobasico.Perfil;
-import br.com.conjmc.cadastrobasico.Setor;
-import br.com.conjmc.jsf.util.MessageFactory;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +9,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
@@ -29,9 +24,13 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
 
+import br.com.conjmc.cadastrobasico.Cargos;
+import br.com.conjmc.cadastrobasico.Setor;
+import br.com.conjmc.jsf.util.MessageFactory;
+
 @Configurable
 @ManagedBean(name = "cargosBean")
-@SessionScoped
+@RequestScoped
 @RooSerializable
 @RooJsfManagedBean(entity = Cargos.class, beanName = "cargosBean")
 public class CargosBean implements Serializable {
@@ -329,8 +328,7 @@ public class CargosBean implements Serializable {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Cargos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        return findAllCargoses();
+        return "cargos.xhtml";
     }
 
 	public String delete() {

@@ -16,6 +16,7 @@
     <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
     		<legend>Funcionários</legend>
+    		<p:inputText value="#{funcionariosBean.funcionarios.id}" styleClass="primariKey"/>
     	<div class="gridFunc">	
 	          <h:panelGrid id="createPanelGrid1" columns="3" styleClass="dialog">
 	          	<p:outputLabel value="Nome" for="funcionarioNome"/>
@@ -45,7 +46,6 @@
 	          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99" required="true" requiredMessage="O CPF é obrigatório" />
 	          	<p:message for="funcionarioCPF"/>
 	          </h:panelGrid>
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{funcionariosBean.persist}" />
           </div>
           <div class="gridFunc">
 	          <h:panelGrid id="createPanelGrid2" columns="3" styleClass="dialog">
@@ -74,12 +74,17 @@
 	          	<p:message for="funcionarioInformacoes"/>
 	          </h:panelGrid>
           </div>
-<!--           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" /> -->
+          <div class="clear"><!--   --></div>
+          	<p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{funcionariosBean.persist}" />
+          	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{funcionariosBean.reset}" action="funcionarios.xhtml" />
         </fieldset>
      </h:form>
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{funcionariosBean.allFuncionarioses}" var="funcionarios" paginator="true" rows="10">
         	<f:facet name="header">Funcionários</f:facet>
+        	<p:column headerText="Id" styleClass="primariKey">
+        		<h:outputText value="#{funcionarios.id}"/>
+        	</p:column>
         	<p:column headerText="Apelido" sortBy="#{funcionarios.apelido}">
         		<h:outputText value="#{funcionarios.apelido}"/>
         	</p:column>

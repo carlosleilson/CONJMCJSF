@@ -18,9 +18,17 @@ fieldset {
 	padding: 20px 10px;
 } 
 
-.gridFunc{
+.gridFunc {
 	float: left;
 	width: 400px;
+}
+
+.primariKey {
+	display: none;
+}
+
+.clear {
+	clear: both;
 }
 /* body,div,td {
     font-family: Arial, Helvetica, sans-serif;

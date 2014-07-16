@@ -16,6 +16,8 @@
     <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
     		<legend>Cargos</legend>
+    		
+    		<p:inputText value="#{cargosBean.cargos.id}" styleClass="primariKey"/>
 		    <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
 		    	<p:outputLabel value="Nome" for="cargoNome" />
 		    	<p:inputText id="cargoNome" value="#{cargosBean.cargos.nome}" required="true" requiredMessage="O nome não pode ser nulo" />
@@ -27,16 +29,19 @@
 					<f:selectItems value="#{cargosBean.allSetor}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
 				<p:message for="cargoSetor"/>
-				
-				<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{cargosBean.persist}" />
-<!-- 		        <p:commandButton id="createCloseButton" value="#{messages.label_reset}" /> -->
-	        </h:panelGrid>
+			 </h:panelGrid>
+			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{cargosBean.persist}" />
+	        <p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{cargosBean.reset}" action="cargos.xhtml" />
 		</fieldset>
     </h:form>
     <h:form prependId="false" id="dataForm">
 			<p:dataTable id="list" var="list" value="#{cargosBean.allCargoses}" paginator="true" rows="10">
 
 				<f:facet name="header">Cargos</f:facet>
+				
+				<p:column headerText="Id" styleClass="primariKey">
+					<h:outputText value="#{list.id}" />
+				</p:column>
 
 				<p:column headerText="Nome" sortBy="#{list.nome}">
 					<h:outputText value="#{list.nome}" />
@@ -47,16 +52,6 @@
 				</p:column>
 
 				<p:column headerText="Ações" styleClass="action-column" style="width:90px">
-					<!-- <p:commandButton id="viewButton" icon="ui-icon-zoomin"
-						update=":viewForm:viewPanelGrid"
-						oncomplete="viewDialogWidget.show()"
-						title="#{messages.label_view}">
-						<f:setPropertyActionListener value="#{list}"
-							target="#{cargosBean.cargos}" />
-					</p:commandButton>
-					<p:tooltip for="viewButton" value="#{messages.label_view}"
-						showEffect="fade" hideEffect="fade" /> -->
-						
 					<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="cargos.xhtml">
 						<f:setPropertyActionListener target="#{cargosBean.cargos}" value="#{list}" />
 					</p:commandButton>

@@ -30,6 +30,11 @@ fieldset {
 .clear {
 	clear: both;
 }
+
+.buttomLimpar {
+	float: left;
+	margin: -71px 0px 0px 90px;
+}
 /* body,div,td {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;

@@ -62,6 +62,8 @@ public class DespesasBean implements Serializable {
         columns.add("idResumo");
         despesas = new Despesas();
         despesas.setSituacao(true);
+        despesas = new Despesas();
+        despesas.setSituacao(true);
         findAllDespesases();
         findAllDespesasAtivas();
     }

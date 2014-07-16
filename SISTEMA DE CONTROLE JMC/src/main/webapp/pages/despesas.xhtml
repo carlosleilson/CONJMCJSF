@@ -34,8 +34,10 @@
 	          	<p:message for="situacao"/>
 			</h:panelGrid>
 		    <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{despesasBean.persist}" />
-		    <p:commandButton id="createCloseButton" value="#{messages.label_reset}" ajax="false" actionListener="#{despesasBean.reset()}" action="despesas.xhtml" />
        	</fieldset>
+     </h:form>
+     <h:form styleClass="buttomLimpar">
+     	<p:commandButton id="createCloseButton" value="#{messages.label_reset}" ajax="false" actionListener="#{despesasBean.reset()}" action="despesas.xhtml" />
      </h:form>
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{despesasBean.allDespesases}" var="despesas" paginator="true" rows="10">

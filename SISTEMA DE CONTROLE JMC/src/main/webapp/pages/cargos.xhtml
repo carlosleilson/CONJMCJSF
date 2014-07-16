@@ -31,8 +31,10 @@
 				<p:message for="cargoSetor"/>
 			 </h:panelGrid>
 			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{cargosBean.persist}" />
-	        <p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{cargosBean.reset}" action="cargos.xhtml" />
 		</fieldset>
+    </h:form>
+    <h:form styleClass="buttomLimpar">
+    	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{cargosBean.reset}" action="cargos.xhtml" />
     </h:form>
     <h:form prependId="false" id="dataForm">
 			<p:dataTable id="list" var="list" value="#{cargosBean.allCargoses}" paginator="true" rows="10">

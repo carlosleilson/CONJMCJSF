@@ -76,8 +76,10 @@
           </div>
           <div class="clear"><!--   --></div>
           	<p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{funcionariosBean.persist}" />
-          	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{funcionariosBean.reset}" action="funcionarios.xhtml" />
         </fieldset>
+     </h:form>
+     <h:form styleClass="buttomLimpar">
+     	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{funcionariosBean.reset}" action="funcionarios.xhtml" />
      </h:form>
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{funcionariosBean.allFuncionarioses}" var="funcionarios" paginator="true" rows="10">

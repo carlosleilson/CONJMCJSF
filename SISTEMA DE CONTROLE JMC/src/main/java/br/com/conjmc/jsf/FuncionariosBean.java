@@ -1,21 +1,19 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.cadastrobasico.Cargos;
-import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.jsf.converter.CargosConverter;
-import br.com.conjmc.jsf.util.MessageFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.LengthValidator;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
@@ -28,9 +26,14 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
 
+import br.com.conjmc.cadastrobasico.Cargos;
+import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.jsf.converter.CargosConverter;
+import br.com.conjmc.jsf.util.MessageFactory;
+
 @Configurable
 @ManagedBean(name = "funcionariosBean")
-@SessionScoped
+@RequestScoped
 @RooSerializable
 @RooJsfManagedBean(entity = Funcionarios.class, beanName = "funcionariosBean")
 public class FuncionariosBean implements Serializable {
@@ -835,23 +838,27 @@ public class FuncionariosBean implements Serializable {
 				message = "Já exite funcionário com CPF cadastrado";
 			}
 		}
-		if (existe == true) {
-			if (funcionarios.getId() != null) {
-				funcionarios.merge();
-				message = "message_successfully_updated";
-			} else {
-				funcionarios.persist();
-				message = "message_successfully_created";
-			}
+		
+		if (funcionarios.getId() != null) {
+			funcionarios.merge();
+			message = "message_successfully_updated";
 			RequestContext context = RequestContext.getCurrentInstance();
 			context.execute("createDialogWidget.hide()");
 			context.execute("editDialogWidget.hide()");			
 			FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
 			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-			reset();
-			init();
 		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, " "));
+			if (existe == true) {
+				funcionarios.persist();
+				message = "message_successfully_created";
+				RequestContext context = RequestContext.getCurrentInstance();
+				context.execute("createDialogWidget.hide()");
+				context.execute("editDialogWidget.hide()");			
+				FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
+				FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, " "));
+			}
 		}
         
         return "/pages/funcionarios.xhtml";

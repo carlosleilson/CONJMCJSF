@@ -1,21 +1,19 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.cadastrobasico.Despesas;
-import br.com.conjmc.cadastrobasico.DespesasGastos;
-import br.com.conjmc.jsf.converter.DespesasConverter;
-import br.com.conjmc.jsf.util.MessageFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.LengthValidator;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.message.Message;
@@ -27,8 +25,13 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
 
+import br.com.conjmc.cadastrobasico.Despesas;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.jsf.converter.DespesasConverter;
+import br.com.conjmc.jsf.util.MessageFactory;
+
 @ManagedBean(name = "despesasGastosBean")
-@SessionScoped
+@RequestScoped
 @Configurable
 @RooSerializable
 @RooJsfManagedBean(entity = DespesasGastos.class, beanName = "despesasGastosBean")
@@ -434,7 +437,6 @@ public class DespesasGastosBean implements Serializable {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "DespesasGastos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
         return findAllDespesasGastoses();
     }
 

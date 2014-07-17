@@ -54,8 +54,8 @@
     <h:form prependId="false" id="dataForm">       
         <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja" paginator="true" rows="10">
         	<f:facet name="header">Exclusão de Despesas</f:facet>
-        	<p:column headerText="Dia" sortBy="#{despesasLoja.mes_ano}">
-        		<h:outputText value="#{despesasLoja.mes_ano}">
+        	<p:column headerText="Dia" sortBy="#{despesasLoja.periodo}">
+        		<h:outputText value="#{despesasLoja.periodo}">
         			<f:convertDateTime pattern="dd/MM/yyyy"/>
         		</h:outputText>
         	</p:column>

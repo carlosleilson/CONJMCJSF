@@ -29,6 +29,7 @@ import org.springframework.roo.addon.serializable.RooSerializable;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.converter.DespesasConverter;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
@@ -46,10 +47,12 @@ public class DespesasLojaBean implements Serializable{
 
 	private String name = "DespesasLojas";
 
-	private DespesasLoja despesasLoja;
+//	private DespesasLoja despesasLoja;
+//
+//	private List<DespesasLoja> allDespesasLojas;
+	private Sangria despesasLoja;
 
-	private List<DespesasLoja> allDespesasLojas;
-
+	private List<Sangria> allDespesasLojas;
 	private boolean dataVisible = false;
 
 	private List<String> columns;
@@ -88,16 +91,16 @@ public class DespesasLojaBean implements Serializable{
         return columns;
     }
 
-	public List<DespesasLoja> getAllDespesasLojas() {
+	public List<Sangria> getAllDespesasLojas() {
         return allDespesasLojas;
     }
 
-	public void setAllDespesasLojas(List<DespesasLoja> allDespesasLojas) {
+	public void setAllDespesasLojas(List<Sangria> allDespesasLojas) {
         this.allDespesasLojas = allDespesasLojas;
     }
 
 	public String findAllDespesasLojas() {
-        allDespesasLojas = DespesasLoja.findAllDespesasLojas();
+        allDespesasLojas =  Sangria.findAllSangrias();// DespesasLoja.findAllDespesasLojas();
         dataVisible = !allDespesasLojas.isEmpty();
         return null;
     }
@@ -388,14 +391,14 @@ public class DespesasLojaBean implements Serializable{
         return htmlPanelGrid;
     }
 
-	public DespesasLoja getDespesasLoja() {
+	public Sangria getDespesasLoja() {
         if (despesasLoja == null) {
-            despesasLoja = new DespesasLoja();
+            despesasLoja = new Sangria();
         }
         return despesasLoja;
     }
 
-	public void setDespesasLoja(DespesasLoja despesasLoja) {
+	public void setDespesasLoja(Sangria despesasLoja) {
         this.despesasLoja = despesasLoja;
     }
 
@@ -440,7 +443,7 @@ public class DespesasLojaBean implements Serializable{
     }
 
 	public String displayCreateDialog() {
-        despesasLoja = new DespesasLoja();
+        despesasLoja = new Sangria();
         createDialogVisible = true;
         return "despesasLoja";
     }
@@ -492,7 +495,7 @@ public class DespesasLojaBean implements Serializable{
     }
 
 	public String busca(){
-		allDespesasLojas = DespesasLoja.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem());
+		allDespesasLojas =  Sangria.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem()); //DespesasLoja.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem());
 		return "/pages/ExclusaoDespesasLoja.xhtml";
 	}
 	

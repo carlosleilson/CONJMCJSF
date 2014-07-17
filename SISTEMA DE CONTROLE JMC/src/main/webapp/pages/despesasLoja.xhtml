@@ -15,7 +15,7 @@
 	<legend>Despesas Inclusão</legend>
     	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
           	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.mes_ano}" pattern="dd/MM/yyyy" pages="2" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" required="true" requiredMessage="Data obrigatória" />
+          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.periodo}" pattern="dd/MM/yyyy" pages="2" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" required="true" requiredMessage="Data obrigatória" />
           	<p:message for="mes_ano"/> 
           	
           	<p:outputLabel value="Valor" for="valor"/>

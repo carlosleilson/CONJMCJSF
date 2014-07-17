@@ -6,6 +6,7 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,16 +19,19 @@ import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
+import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 
 import javax.persistence.ManyToOne;
 
 import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.despesa.DespesasLoja;
 
 @Configurable
 @Entity
@@ -49,13 +53,18 @@ public class Sangria {
 
     /**
      */
-    @NotNull
     private String origem;
 
     /**
      */
     @ManyToOne
     private DespesasGastos item;
+    
+    /**
+     * Campo do Despesas
+     */
+    @ManyToOne
+    private Despesas classificacao;
 
     /**
      */
@@ -217,4 +226,30 @@ public class Sangria {
 	public void setVersion(Integer version) {
         this.version = version;
     }
+
+	public Despesas getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(Despesas classificacao) {
+		this.classificacao = classificacao;
+	}
+	
+	public static List< Sangria > encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
+        if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
+        EntityManager em = DespesasLoja.entityManager();
+        TypedQuery<Sangria> q = null;
+        if(item!=null){
+            q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item = :item", Sangria.class);
+            q.setParameter("item", item);
+        }else{	
+        	q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal", Sangria.class);
+        }
+        q.setParameter("dataInicial", dataInicial );
+        q.setParameter("dataFinal", dataFinal);
+        //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
+        return q.getResultList();
+    }		
 }

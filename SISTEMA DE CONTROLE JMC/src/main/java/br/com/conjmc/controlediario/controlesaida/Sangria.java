@@ -70,6 +70,10 @@ public class Sangria {
      */
     @ManyToOne
     private Funcionarios funcionario;
+    
+    /**
+     */
+    private Boolean sangria;
 
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -118,7 +122,7 @@ public class Sangria {
 	@PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "valor", "origem", "item", "funcionario");
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "valor", "origem", "item", "classificacao", "funcionario","sangria");
 
 	public static final EntityManager entityManager() {
         EntityManager em = new Sangria().entityManager;
@@ -251,5 +255,71 @@ public class Sangria {
         q.setParameter("dataFinal", dataFinal);
         //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
         return q.getResultList();
-    }		
+    }
+
+	public Boolean getSangria() {
+		return sangria;
+	}
+
+	public void setSangria(Boolean sangria) {
+		this.sangria = sangria;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sangria other = (Sangria) obj;
+		if (classificacao == null) {
+			if (other.classificacao != null)
+				return false;
+		} else if (!classificacao.equals(other.classificacao))
+			return false;
+		if (funcionario == null) {
+			if (other.funcionario != null)
+				return false;
+		} else if (!funcionario.equals(other.funcionario))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (item == null) {
+			if (other.item != null)
+				return false;
+		} else if (!item.equals(other.item))
+			return false;
+		if (origem == null) {
+			if (other.origem != null)
+				return false;
+		} else if (!origem.equals(other.origem))
+			return false;
+		if (periodo == null) {
+			if (other.periodo != null)
+				return false;
+		} else if (!periodo.equals(other.periodo))
+			return false;
+		if (sangria == null) {
+			if (other.sangria != null)
+				return false;
+		} else if (!sangria.equals(other.sangria))
+			return false;
+		if (valor == null) {
+			if (other.valor != null)
+				return false;
+		} else if (!valor.equals(other.valor))
+			return false;
+		if (version == null) {
+			if (other.version != null)
+				return false;
+		} else if (!version.equals(other.version))
+			return false;
+		return true;
+	}	
+	
 }

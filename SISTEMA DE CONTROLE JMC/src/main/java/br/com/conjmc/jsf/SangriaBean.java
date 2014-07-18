@@ -107,6 +107,7 @@ public class SangriaBean implements Serializable  {
         columns.add("valor");
         columns.add("origem");
         sangria = new Sangria();
+        //Definir que esse dados são do sangria.
         Date data = new Date();
         int horas = data.getHours();
         int min = data.getMinutes();
@@ -122,6 +123,7 @@ public class SangriaBean implements Serializable  {
         turno = turno.toString() + dataFormat.format(data);
         
         sangria.setPeriodo(data);
+        sangria.setSangria(true);
         findAllSangrias();
     }
 

@@ -14,8 +14,8 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-    	<fieldset>
-    		<legend>Sangria</legend>
+    	<p:fieldset legend="Sangria">
+<!--    ki burro 		<h:inputHidden id="sangriaFormes" value="#{sangriaBean.sangria}" /> -->
     		<p:outputLabel value="Período: " for="periodo"/>
     		<h:outputText id="periodo" value="#{sangriaBean.turno}"/>
           	<br/><br/>
@@ -58,34 +58,34 @@
           	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
 <!--           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" /> -->
-    	</fieldset>
+		</p:fieldset>
     	</h:form>
     	
     	<h:form prependId="false" id="dataForm">
-	        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" paginator="true" rows="10">
+	        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" paginator="true" rows="10"  >
 	        	<f:facet name="header">Sangria</f:facet>
-	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
+	        	<p:column rendered="#{sangriaBean.sangria}" headerText="Data" sortBy="#{sangria.periodo}">
 	          		<h:outputText value="#{sangria.periodo}">
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
+	          	<p:column rendered="#{sangriaBean.sangria}" headerText="Valor" sortBy="#{sangria.valor}">
 	          		<h:outputText value="#{sangria.valor}"/>
 	          	</p:column>
-	          	<p:column headerText="Origem" sortBy="#{sangria.origem}">
+	          	<p:column rendered="#{sangriaBean.sangria}" headerText="Origem" sortBy="#{sangria.origem}">
 	          		<h:outputText value="#{sangria.origem}"/>
 	          	</p:column>
-	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
+	          	<p:column rendered="#{sangriaBean.sangria}" headerText="Item" sortBy="#{sangria.item.descrisao}">
 	          		<h:outputText value="#{sangria.item.descrisao}"/>
 	          	</p:column>
-	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}">
+	          	<p:column rendered="#{sangriaBean.sangria}" headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}">
 	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/>
 	          	</p:column>
-	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}">
+	          	<p:column rendered="#{sangriaBean.sangria}" headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}">
 	          		<h:outputText value="#{sangria.funcionario.apelido}"/>
 	          	</p:column>
 	          
-	          <p:column headerText="Ações" styleClass="action-column" style="width:40px;">
+	          <p:column rendered="#{sangriaBean.sangria}" headerText="Ações" styleClass="action-column" style="width:40px;">
 	           <!--  <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
 	              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
 	            </p:commandButton>

@@ -78,7 +78,9 @@ public class DespesasLojaBean implements Serializable{
         columns.add("mes_ano");
         columns.add("valor");
         findAllDespesasLojas();
-        
+        //Definir que os dados são da despesas. 
+        despesasLoja = new Sangria();
+        despesasLoja.setSangria(false);
         dataAtual = DataUltil.dataAtual();
         mesAnterior = DataUltil.mesAnterior();
     }

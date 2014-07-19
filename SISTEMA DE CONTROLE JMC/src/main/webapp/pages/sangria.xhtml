@@ -37,7 +37,7 @@
           	<span></span>
           	
           	<p:outputLabel value="Itens" for="itens"/>
-          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório">
+          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" required="true" requiredMessage="O item é obrigatório">
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
           		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
           			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />

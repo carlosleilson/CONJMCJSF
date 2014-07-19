@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+<p:menubar>
+   	<p:submenu label="Cadastro Básico">
+			<p:menuitem ajax="false" value="Cargos" action="/pages/cargos.xtml" disabled="false"/>
+			<p:menuitem ajax="false" value="Funcionarios" action="/pages/funcionarios.xtml" disabled="false"/>
+			<p:menuitem ajax="false" value="Usuários" action="/pages/usuarios.xtml" disabled="true"/>
+			<p:menuitem ajax="false" value="Motoqueiros" action="/pages/motoqueiros.xtml" disabled="true"/>
+			<p:menuitem ajax="false" value="Classificação de Despesas" action="/pages/despesas.xtml"/>
+			<p:menuitem ajax="false" value="Despesas e Gastos" action="/pages/despesasGastos.xhtml"/>
+			<p:menuitem ajax="false" value="Lançamento de Funcionários" action="/pages/lancamentosFuncionarios.xtml" disabled="true"/>
+			<p:menuitem ajax="false" value="Fornecedores" action="/pages/fornecedores.xtml" disabled="true"/>
+   	</p:submenu>
+   	<p:submenu label="Controle Diário">
+   		<p:menuitem ajax="false" value="Fechamento" action="/pages/diaria.xtml" disabled="true"/>
+   		<p:menuitem ajax="false" value="Sangria" action="/pages/sangria.xtml" />
+   		<p:submenu label="Controle de Valores Pendentes" >
+   			<p:menuitem ajax="false" value="Controles a receber" disabled="true"/>
+   			<p:menuitem ajax="false" value="Controles a cobrar" disabled="true"/>
+   		</p:submenu>
+   	</p:submenu>
+   	<p:menuitem ajax="false" value="Redução Z" disabled="true"/>
+   	<p:menuitem ajax="false" value="Conta Corrente Funicionarios" disabled="true"/>
+   	<p:submenu label="Despesas">
+   		<p:menuitem ajax="false" value="Inclusão"  action="/pages/despesasLoja.xtml"/>
+   		<p:menuitem ajax="false" value="Exclusão"  action="/pages/ExclusaoDespesasLoja.xhtml"/>
+   	</p:submenu>
+   	<p:menuitem ajax="false" value="Contas" disabled="true"/>
+   	<p:submenu label="Relatorios">
+   		<p:menuitem ajax="false" value="Mensal"  action="/relatorios/RelatorioMensal.xtml"/>
+   		<p:menuitem ajax="false" value="Despesas"  action="/relatorios/RelatorioDespesa.xhtml"/>
+   	</p:submenu>   	
+   </p:menubar>
+</ui:composition>
+</html>

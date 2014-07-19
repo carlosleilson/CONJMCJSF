@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+  <ui:define name="content">
+    <h:form prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+	<p:fieldset legend="Relatorio de Desempenho Mensal">
+    <h:form prependId="false" id="dataForm">       
+        <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja">
+<!--         	<f:facet name="header">Relatorio de Desempenho Mensal</f:facet> -->
+        	<p:column headerText="Dia" sortBy="#{despesasLoja.periodo}">
+        		<h:outputText value="#{despesasLoja.periodo}">
+        			<f:convertDateTime pattern="dd/MM/yyyy"/>
+        		</h:outputText>
+        	</p:column>
+        	<p:column headerText="Valor" sortBy="#{despesasLoja.valor}">
+        		<h:outputText value="#{despesasLoja.valor}">
+        			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/>
+        		</h:outputText>
+        	</p:column> 
+        	 <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
+        	 </p:column> 
+			<f:facet name="footer">Relatorio de Desempenho Mensal</f:facet>        	       	
+        </p:dataTable>
+    </h:form>
+    </p:fieldset>
+  </ui:define>
+</ui:composition>
+</html>

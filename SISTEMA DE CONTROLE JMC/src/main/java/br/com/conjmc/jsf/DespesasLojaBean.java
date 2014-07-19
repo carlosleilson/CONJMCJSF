@@ -53,6 +53,7 @@ public class DespesasLojaBean implements Serializable{
 	private Sangria despesasLoja;
 
 	private List<Sangria> allDespesasLojas;
+	
 	private boolean dataVisible = false;
 
 	private List<String> columns;
@@ -404,6 +405,13 @@ public class DespesasLojaBean implements Serializable{
         this.despesasLoja = despesasLoja;
     }
 
+	public List<Despesas> desespesaMes() {
+        List<Despesas> suggestions = new ArrayList<Despesas>();
+        for (Despesas despesas : Despesas.findAllDespesases()) {
+        }
+        return Despesas.findAllDespesases();
+    }	
+	
 	public List<Despesas> completeClassificacao(String query) {
         List<Despesas> suggestions = new ArrayList<Despesas>();
         for (Despesas despesas : Despesas.findAllDespesases()) {

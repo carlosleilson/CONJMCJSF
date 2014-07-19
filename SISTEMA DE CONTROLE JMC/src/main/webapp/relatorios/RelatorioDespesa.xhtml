@@ -12,18 +12,38 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-        <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja">
+		<table>
+		
+			<ui:repeat var="despesasLoja" value="#{despesasLojaBean.allDespesasLojas}">
+			<tr>
+				<td><h:outputText value="#{despesasLoja.classificacao.codigo} - #{despesasLoja.classificacao.descricao}"/></td>
+			</tr>
+			
+			</ui:repeat>
+		</table>
+        <p:dataTable id="list" value="#{despesasLojaBean.desespesaMes()}" var="despesasLoja">
         	<f:facet name="header">Relatorio de Despesas</f:facet>
-        	<p:column headerText="item" sortBy="#{despesasLoja.item.descrisao}">
+        	<p:column headerText="item" sortBy="#{despesasLoja.item.descrisao}" >
         		<h:outputText value="#{despesasLoja.item.descrisao}"/>
         	</p:column>
+        	<p:column headerText="Dia" sortBy="#{despesasLoja.periodo}">
+        		<h:outputText value="#{despesasLoja.periodo}">
+        			<f:convertDateTime pattern="dd/MM/yyyy"/>
+        		</h:outputText>
+        	</p:column>        	
         	<p:column headerText="Valor" sortBy="#{despesasLoja.valor}">
         		<h:outputText value="#{despesasLoja.valor}">
         			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/>
         		</h:outputText>
         	</p:column> 
-        	 <p:column headerText="Total do Mês" styleClass="action-column" style="width:90px;">
-        	 </p:column>   
+	      <p:columnGroup type="footer">
+	            <p:row>
+	                <p:column footerText="Total do Mês" colspan="2"/>
+	<!--                 <p:column footerText="$#{dtGroupView.lastYearTotal}" /> -->
+	 
+	                <p:column footerText="R$ #{despesasLoja.valor}" />
+	            </p:row>
+	        </p:columnGroup>        	  
 			<f:facet name="footer">Relatorio de Despesas</f:facet>         	     	
         </p:dataTable>
         </p:fieldset>

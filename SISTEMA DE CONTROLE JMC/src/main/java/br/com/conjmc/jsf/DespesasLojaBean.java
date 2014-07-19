@@ -405,11 +405,11 @@ public class DespesasLojaBean implements Serializable{
         this.despesasLoja = despesasLoja;
     }
 
-	public List<Despesas> desespesaMes() {
-        List<Despesas> suggestions = new ArrayList<Despesas>();
-        for (Despesas despesas : Despesas.findAllDespesases()) {
+	public List<Sangria> desespesaMes() {
+        List<Sangria> suggestions = new ArrayList<Sangria>();
+        for (Sangria despesas : Sangria.findAllSangrias()) {
         }
-        return Despesas.findAllDespesases();
+        return Sangria.findAllSangrias();
     }	
 	
 	public List<Despesas> completeClassificacao(String query) {

@@ -1,14 +1,5 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.cadastrobasico.DespesasGastos;
-import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.controlediario.controlesaida.Sangria;
-import br.com.conjmc.jsf.converter.DespesasGastosConverter;
-import br.com.conjmc.jsf.converter.FuncionariosConverter;
-import br.com.conjmc.jsf.util.MessageFactory;
-
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +26,12 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
 
-import com.sun.crypto.provider.DESParameters;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.jsf.converter.DespesasGastosConverter;
+import br.com.conjmc.jsf.converter.FuncionariosConverter;
+import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean(name = "sangriaBean")
 @SessionScoped
@@ -107,23 +103,6 @@ public class SangriaBean implements Serializable  {
         columns.add("valor");
         columns.add("origem");
         sangria = new Sangria();
-        //Definir que esse dados são do sangria.
-        Date data = new Date();
-        int horas = data.getHours();
-        int min = data.getMinutes();
-        if(horas > 18 ) {
-        	turno = "01 - ";
-        } else if(horas == 18 && min == 0) {
-        	turno = "01 - ";
-        } else {
-        	turno = "02 - ";
-		}
-        
-        SimpleDateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
-        turno = turno.toString() + dataFormat.format(data);
-        
-        sangria.setPeriodo(data);
-        sangria.setSangria(true);
         findAllSangrias();
     }
 
@@ -520,9 +499,12 @@ public class SangriaBean implements Serializable  {
         String message = "";
         if (sangria.getId() != null) {
         	sangria.setPeriodo(new Date());
+        	sangria.setSangria(true);
             sangria.merge();
             message = "message_successfully_updated";
         } else {
+        	sangria.setPeriodo(new Date());
+        	sangria.setSangria(true);
             sangria.persist();
             message = "message_successfully_created";
         }

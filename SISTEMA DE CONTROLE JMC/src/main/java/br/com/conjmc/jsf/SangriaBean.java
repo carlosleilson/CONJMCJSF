@@ -123,8 +123,7 @@ public class SangriaBean implements Serializable  {
     }
 
 	public String findAllSangrias() {
-        allSangrias = Sangria.findAllSangrias();
-        dataVisible = !allSangrias.isEmpty();
+        allSangrias = Sangria.findAllSangriasAtivas();
         return null;
     }
 

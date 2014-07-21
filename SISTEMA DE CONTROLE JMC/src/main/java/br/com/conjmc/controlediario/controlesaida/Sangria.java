@@ -54,6 +54,11 @@ public class Sangria {
     /**
      */
     private String origem;
+    
+    @NotNull
+    private boolean sangria;
+    
+    private String turno;
 
     /**
      */
@@ -70,6 +75,9 @@ public class Sangria {
      */
     @ManyToOne
     private Funcionarios funcionario;
+    
+    @ManyToOne
+    private Despesas classsificacao;
     
     /**
      */
@@ -119,6 +127,32 @@ public class Sangria {
         this.funcionario = funcionario;
     }
 
+	public Despesas getClasssificacao() {
+		return classsificacao;
+	}
+
+	public void setClasssificacao(Despesas classsificacao) {
+		this.classsificacao = classsificacao;
+	}
+
+	public boolean isSangria() {
+		return sangria;
+	}
+
+	public void setSangria(boolean sangria) {
+		this.sangria = sangria;
+	}
+
+	public String getTurno() {
+		return turno;
+	}
+
+	public void setTurno(String turno) {
+		this.turno = turno;
+	}
+
+
+
 	@PersistenceContext
     transient EntityManager entityManager;
 
@@ -136,6 +170,10 @@ public class Sangria {
 
 	public static List<Sangria> findAllSangrias() {
         return entityManager().createQuery("SELECT o FROM Sangria o", Sangria.class).getResultList();
+    }
+	
+	public static List<Sangria> findAllSangriasAtivas() {
+        return entityManager().createQuery("SELECT o FROM Sangria o where o.sangria=true", Sangria.class).getResultList();
     }
 
 	public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {

@@ -316,22 +316,6 @@ public class DespesasLoja {
 			return false;
 		return true;
 	}
-	public static List<DespesasLoja> encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
-        if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
-        EntityManager em = DespesasLoja.entityManager();
-        TypedQuery<DespesasLoja> q = null;
-        if(item!=null){
-            q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano between :dataInicial and :dataFinal and o.item = :item", DespesasLoja.class);
-            q.setParameter("item", item);
-        }else{	
-        	q = em.createQuery("SELECT o FROM DespesasLoja AS o WHERE o.mes_ano between :dataInicial and :dataFinal", DespesasLoja.class);
-        }
-        q.setParameter("dataInicial", dataInicial );
-        q.setParameter("dataFinal", dataFinal);
-        //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
-        return q.getResultList();
-    }	
+		
 	
 }

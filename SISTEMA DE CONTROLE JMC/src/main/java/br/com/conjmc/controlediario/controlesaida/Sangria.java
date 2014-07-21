@@ -291,7 +291,7 @@ public class Sangria {
         //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
         return q.getResultList();
     }
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

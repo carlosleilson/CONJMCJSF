@@ -81,7 +81,6 @@ public class Sangria {
     
     /**
      */
-    private Boolean sangria;
 
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -173,7 +172,7 @@ public class Sangria {
     }
 	
 	public static List<Sangria> findAllSangriasAtivas() {
-        return entityManager().createQuery("SELECT o FROM Sangria o where o.sangria=true", Sangria.class).getResultList();
+        return entityManager().createQuery("SELECT o FROM Sangria o where o.sagria=true", Sangria.class).getResultList();
     }
 
 	public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {
@@ -294,14 +293,6 @@ public class Sangria {
         //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
         return q.getResultList();
     }
-
-	public Boolean getSangria() {
-		return sangria;
-	}
-
-	public void setSangria(Boolean sangria) {
-		this.sangria = sangria;
-	}
 
 	@Override
 	public boolean equals(Object obj) {

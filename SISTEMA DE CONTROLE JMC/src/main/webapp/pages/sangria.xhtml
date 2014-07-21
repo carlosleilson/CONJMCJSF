@@ -17,8 +17,8 @@
     	<p:fieldset legend="Sangria">
 <!--    ki burro 		<h:inputHidden id="sangriaFormes" value="#{sangriaBean.sangria}" /> -->
     		<p:outputLabel value="Período: " for="periodo"/>
-    		<h:outputText id="periodo" value="#{sangriaBean.turno}"/>
-          	<br/><br/>
+    		<p:clock id="periodo" pattern="dd/MM/yyyy HH:mm:ss" mode="server" />
+    		<br/><br/>        	
           <h:panelGrid id="createPanelGrid" columns="4" styleClass="dialog">
           	<p:outputLabel value="Valor" for="valor"/>
           	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
@@ -47,8 +47,8 @@
        		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
           </h:panelGrid>
           <h:panelGrid id="funcionarioGrid" columns="3">
-	          	<p:outputLabel value="Funcionario" for="funcionario" rendered="#{sangriaBean.sangria.item.classificacao.descricao == 'Benefí­cios'}"/>
-	          	<p:selectOneMenu id="funcionario" value="#{sangriaBean.sangria.funcionario}" converter="funcionariosConverter" rendered="#{sangriaBean.sangria.item.classificacao.descricao == 'Benefí­cios'}">
+	          	<p:outputLabel value="Funcionario" for="funcionario" rendered="#{sangriaBean.sangria.item.despesaPessoal == true}"/>
+	          	<p:selectOneMenu id="funcionario" value="#{sangriaBean.sangria.funcionario}" converter="funcionariosConverter" rendered="#{sangriaBean.sangria.item.despesaPessoal == true}">
 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
 	          		<f:selectItems value="#{funcionariosBean.allFuncionariosAtivos}" var="func" 
 	          			itemLabel="#{func.apelido}" itemValue="#{func}" />

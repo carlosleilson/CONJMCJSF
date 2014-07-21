@@ -342,11 +342,6 @@ public class Sangria {
 				return false;
 		} else if (!periodo.equals(other.periodo))
 			return false;
-		if (sangria == null) {
-			if (other.sangria != null)
-				return false;
-		} else if (!sangria.equals(other.sangria))
-			return false;
 		if (valor == null) {
 			if (other.valor != null)
 				return false;

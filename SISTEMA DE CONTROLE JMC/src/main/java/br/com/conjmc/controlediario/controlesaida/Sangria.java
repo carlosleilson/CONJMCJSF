@@ -150,8 +150,6 @@ public class Sangria {
 		this.turno = turno;
 	}
 
-
-
 	@PersistenceContext
     transient EntityManager entityManager;
 
@@ -172,7 +170,7 @@ public class Sangria {
     }
 	
 	public static List<Sangria> findAllSangriasAtivas() {
-        return entityManager().createQuery("SELECT o FROM Sangria o where o.sagria=true", Sangria.class).getResultList();
+        return entityManager().createQuery("SELECT o FROM Sangria o where o.sangria = true", Sangria.class).getResultList();
     }
 
 	public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {

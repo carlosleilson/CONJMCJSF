@@ -142,6 +142,7 @@ public class Sangria {
 			sangria.setValor(Double.parseDouble(dado[3].replace(",", ".")));
 			sangria.setClassificacao(comboClassificacao(dado[0]));
 			sangria.setItem(comboItem(dado[1]));
+			sangria.setSangria(true);
 			sangria.persist();
 		}
 		System.out.println("###Fim###");

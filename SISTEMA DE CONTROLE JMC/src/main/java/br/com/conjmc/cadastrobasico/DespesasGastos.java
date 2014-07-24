@@ -19,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.Version;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
@@ -72,6 +73,13 @@ public class DespesasGastos {
 	public static List<DespesasGastos> findAllDespesasGastosAtivos() {
         return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
     }
+	
+	public static List<DespesasGastos> findAllClassificaco(Long id2) {
+		 Query query = entityManager().createQuery("SELECT o FROM DespesasGastos o where o.classificacao = :classificacao", DespesasGastos.class);
+		 query.setParameter("classificacao", id2);
+		List<DespesasGastos> despesasGastosForClassificacao = query.getResultList();
+		return despesasGastosForClassificacao;
+	}
 
 	public static List<DespesasGastos> findAllDespesasGastoses(String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM DespesasGastos o";
@@ -233,6 +241,5 @@ public class DespesasGastos {
 			return false;
 		return true;
 	}
-
 	
 }

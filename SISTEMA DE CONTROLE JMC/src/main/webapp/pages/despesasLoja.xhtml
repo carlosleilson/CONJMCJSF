@@ -6,44 +6,80 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Sangrias</title>
+	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form id="dataForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-	<fieldset>
-	<legend>Despesas Inclusão</legend>
-    	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-          	<p:calendar id="mes_ano" value="#{despesasLojaBean.despesasLoja.periodo}" pattern="dd/MM/yyyy" pages="2" mindate="#{despesasLojaBean.mesAnterior}" maxdate="#{despesasLojaBean.dataAtual}" required="true" requiredMessage="Data obrigatória" />
-          	<p:message for="mes_ano"/> 
-          	
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Despesa Loja</legend>   	
+          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+          	<p:outputLabel value="Período: " for="periodo"/>
+    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy" />
+    		<p:message for="periodo"/>   
+          
           	<p:outputLabel value="Valor" for="valor"/>
-          	<p:inputText id="valor" value="#{despesasLojaBean.despesasLoja.valor}"  required="true" >
-          		<f:convertNumber currencyCode="BRL" pattern="0.00"></f:convertNumber>
+          	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
+          		<f:convertNumber locale="pt_BR" pattern="#.##" maxFractionDigits="2"/>
           	</p:inputText>
-          	<p:message for="valor"/> 
-
-          	<p:outputLabel value="Classificacao" for="clas"/>
-          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.classificacao}" converter="despesasConverter" required="true" requiredMessage="Classificação é obrigatória">
-	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
-				<f:selectItems value="#{despesasBean.allDespesases}" var="classic" 
-				itemLabel="#{classic.codigo} - #{classic.descricao}" itemValue="#{classic}" />
-			</p:selectOneMenu>
-          	<p:message for="clas"/>
-
-          	<p:outputLabel value="Itens" for="itens"/>
-          	<p:selectOneMenu id="itens" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter">
-          		<f:selectItem itemLabel="Selecione  um Item" itemValue=""/>
-          		<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="gasto" 
-          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+          	<p:message for="valor"/>
+          	
+          	<p:outputLabel value="Classificação" for="classificacao"/>
+          	<p:selectOneMenu id="classificacao" value="#{despesasBean.allDespesasAtivas}" converter="despesasConverter" required="true" requiredMessage="A classificação é obrigatório">
+          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" itemValue="#{despesa}" />
+       			<p:ajax listener="#{despesasGastosBean.findAllDespasGastosForClassificao}" event="change" update=":createForm:despesasGastos"/>
           	</p:selectOneMenu>
-          	<p:message for="itens"/>
-          	          	        	   	
-    	</h:panelGrid>
-          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{despesasLojaBean.persist}" update="list" />
-        </fieldset>
-    </h:form>
+          	<p:message for="classificacao"/>
+          	
+          	<h:panelGrid id="despesasGastos">
+	          	<p:outputLabel value="Itens" for="itens"/>
+	          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosClassificacao}" var="gasto" 
+	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+	          	</p:selectOneMenu>
+	          	<p:message for="itens"/>
+          	</h:panelGrid>
+          </h:panelGrid>
+          	<br/>
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
+<!--           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" /> -->
+    	</fieldset>
+    	</h:form>
+    	
+    	<h:form prependId="false" id="dataForm">
+	        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" paginator="true" rows="10">
+	        	<f:facet name="header">Sangria</f:facet>
+	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
+	          		<h:outputText value="#{sangria.periodo}">
+	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+	          		</h:outputText>
+	          	</p:column>
+	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
+	          		<h:outputText value="#{sangria.valor}"/>
+	          	</p:column>
+	          	<p:column headerText="Origem" sortBy="#{sangria.origem}">
+	          		<h:outputText value="#{sangria.origem}"/>
+	          	</p:column>
+	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
+	          		<h:outputText value="#{sangria.item.descrisao}"/>
+	          	</p:column>
+	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}">
+	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/>
+	          	</p:column>
+	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}">
+	          		<h:outputText value="#{sangria.funcionario.apelido}"/>
+	          	</p:column>
+	        </p:dataTable>
+	        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+				<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+			</p:confirmDialog>
+	       </h:form>
   </ui:define>
 </ui:composition>
 </html>

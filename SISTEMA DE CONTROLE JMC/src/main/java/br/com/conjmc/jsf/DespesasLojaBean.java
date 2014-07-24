@@ -63,12 +63,20 @@ public class DespesasLojaBean implements Serializable{
 	private HtmlPanelGrid viewPanelGrid;
 
 	private boolean createDialogVisible = false;
-
+	private String mesAnterior;
+	
+	private String dataAtual;
+	
+	private Date dataAgora;
+	private Date atedata;
 	@PostConstruct
     public void init() {
         columns = new ArrayList<String>();
         columns.add("mes_ano");
         columns.add("valor");
+        findAllDespesasLojas();
+        dataAtual = DataUltil.dataAtual();
+        mesAnterior = DataUltil.mesAnterior();        
     }
 
 	public String getName() {
@@ -438,28 +446,42 @@ public class DespesasLojaBean implements Serializable{
 
 	public String persist() {
         String message = "";
-        if (despesasLoja.getId() != null) {
-            despesasLoja.merge();
-            message = "message_successfully_updated";
-        } else {
-            despesasLoja.persist();
-            message = "message_successfully_created";
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("createDialogWidget.hide()");
-        context.execute("editDialogWidget.hide()");
-        
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "DespesasLoja");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+        try {
+			if (despesasLoja.getId() != null) {
+			    despesasLoja.merge();
+			    message = "message_successfully_updated";
+			} else {
+			    despesasLoja.persist();
+			    message = "message_successfully_created";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			message = e.getMessage();
+		}finally{
+	        RequestContext context = RequestContext.getCurrentInstance();
+	        context.execute("createDialogWidget.hide()");
+	        context.execute("editDialogWidget.hide()");
+	        
+	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        reset();
+		}
         return findAllDespesasLojas();
     }
 
 	public String delete() {
-        despesasLoja.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasLoja");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+		String message = "";
+        try {
+			despesasLoja.remove();
+			message = "message_successfully_deleted";
+		} catch (Exception e) {
+			e.printStackTrace();
+			message = "Error: "+e.getMessage();
+		}finally{
+			FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
+			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			reset();
+		}
         return findAllDespesasLojas();
     }
 
@@ -468,7 +490,48 @@ public class DespesasLojaBean implements Serializable{
         createDialogVisible = false;
     }
 
+	public String busca(){
+		allDespesasLojas =  DespesasLoja.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem()); //DespesasLoja.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem());
+		return "/pages/ExclusaoDespesasLoja.xhtml";
+	}
+	
+	public String limpar(){
+		this.reset();
+		return findAllDespesasLojas();
+	}
+	
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }
+	public String getDataAtual() {
+		return dataAtual;
+	}
+
+	public void setDataAtual(String dataAtual) {
+		this.dataAtual = dataAtual;
+	}
+
+	public String getMesAnterior() {
+		return mesAnterior;
+	}
+
+	public void setMesAnterior(String mesAnterior) {
+		this.mesAnterior = mesAnterior;
+	}
+
+	public Date getDataAgora() {
+		return dataAgora;
+	}
+
+	public void setDataAgora(Date dataAgora) {
+		this.dataAgora = dataAgora;
+	}
+
+	public Date getAtedata() {
+		return atedata;
+	}
+
+	public void setAtedata(Date atedata) {
+		this.atedata = atedata;
+	}	
 }

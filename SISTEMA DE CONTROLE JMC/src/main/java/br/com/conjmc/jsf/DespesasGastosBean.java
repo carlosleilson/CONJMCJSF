@@ -46,6 +46,8 @@ public class DespesasGastosBean implements Serializable {
 	private List<DespesasGastos> allDespesasGastoses;
 	
 	private List<DespesasGastos> allDespesasGastosAtivos;
+	
+	private List<DespesasGastos> allDespesasGastosClassificacao;
 
 	private boolean dataVisible = false;
 
@@ -104,6 +106,11 @@ public class DespesasGastosBean implements Serializable {
         dataVisible = !allDespesasGastoses.isEmpty();
         return null;
     }
+	
+	public String findAllDespasGastosForClassificao() {
+		allDespesasGastosClassificacao = DespesasGastos.findAllClassificaco(despesasGastos.getId());
+		return null;
+	}
 
 	public boolean isDataVisible() {
         return dataVisible;
@@ -386,6 +393,15 @@ public class DespesasGastosBean implements Serializable {
 	public void setDespesasGastos(DespesasGastos despesasGastos) {
         this.despesasGastos = despesasGastos;
     }
+
+	public List<DespesasGastos> getAllDespesasGastosClassificacao() {
+		return allDespesasGastosClassificacao;
+	}
+
+	public void setAllDespesasGastosClassificacao(
+			List<DespesasGastos> allDespesasGastosClassificacao) {
+		this.allDespesasGastosClassificacao = allDespesasGastosClassificacao;
+	}
 
 	public List<Despesas> completeClassificacao(String query) {
         List<Despesas> suggestions = new ArrayList<Despesas>();

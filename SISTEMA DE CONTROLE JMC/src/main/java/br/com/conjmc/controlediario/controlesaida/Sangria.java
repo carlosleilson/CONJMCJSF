@@ -76,9 +76,6 @@ public class Sangria {
     @ManyToOne
     private Funcionarios funcionario;
     
-    @ManyToOne
-    private Despesas classsificacao;
-    
     /**
      */
 
@@ -125,14 +122,6 @@ public class Sangria {
 	public void setFuncionario(Funcionarios funcionario) {
         this.funcionario = funcionario;
     }
-
-	public Despesas getClasssificacao() {
-		return classsificacao;
-	}
-
-	public void setClasssificacao(Despesas classsificacao) {
-		this.classsificacao = classsificacao;
-	}
 
 	public boolean isSangria() {
 		return sangria;

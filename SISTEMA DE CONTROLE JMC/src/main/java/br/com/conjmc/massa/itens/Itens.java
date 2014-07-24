@@ -386,7 +386,8 @@ public class Itens {
 				iten.setDespesaPessoal(true);
 			else
 				iten.setDespesaPessoal(false);
-			iten.setSituacao(false);
+			iten.setSituacao(true);
+			iten.setVersion(1);
 			iten.persist();
 		}
 	}

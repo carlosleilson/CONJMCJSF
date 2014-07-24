@@ -76,6 +76,7 @@ public class Classificacao {
 			despesas.setDescricao(dado[1].trim());
 			despesas.setIdResumo(dado[2].toUpperCase().trim());
 			despesas.setSituacao(true);
+			despesas.setVersion(1);
 			despesas.persist();
 	        //em.persist(despesas);
         }

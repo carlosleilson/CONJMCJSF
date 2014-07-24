@@ -143,6 +143,7 @@ public class Sangria {
 			sangria.setClassificacao(comboClassificacao(dado[0]));
 			sangria.setItem(comboItem(dado[1]));
 			sangria.setSangria(true);
+			sangria.setVersion(1);
 			sangria.persist();
 		}
 		System.out.println("###Fim###");

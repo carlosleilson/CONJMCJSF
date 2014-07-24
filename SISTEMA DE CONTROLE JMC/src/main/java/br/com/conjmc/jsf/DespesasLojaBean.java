@@ -43,17 +43,15 @@ import br.com.conjmc.jsf.util.MessageFactory;
 @RooJsfManagedBean(entity = DespesasLoja.class, beanName = "despesasLojaBean")
 public class DespesasLojaBean implements Serializable{
 
+
 	private static final long serialVersionUID = 1L;
 
 	private String name = "DespesasLojas";
 
-//	private DespesasLoja despesasLoja;
-//
-//	private List<DespesasLoja> allDespesasLojas;
-	private Sangria despesasLoja;
+	private DespesasLoja despesasLoja;
 
-	private List<Sangria> allDespesasLojas;
-	
+	private List<DespesasLoja> allDespesasLojas;
+
 	private boolean dataVisible = false;
 
 	private List<String> columns;
@@ -63,14 +61,7 @@ public class DespesasLojaBean implements Serializable{
 	private HtmlPanelGrid editPanelGrid;
 
 	private HtmlPanelGrid viewPanelGrid;
-	
-	private String mesAnterior;
-	
-	private String dataAtual;
-	
-	private Date dataAgora;
-	private Date atedata;
-	
+
 	private boolean createDialogVisible = false;
 
 	@PostConstruct
@@ -78,14 +69,8 @@ public class DespesasLojaBean implements Serializable{
         columns = new ArrayList<String>();
         columns.add("mes_ano");
         columns.add("valor");
-        findAllDespesasLojas();
-        //Definir que os dados são da despesas. 
-        despesasLoja = new Sangria();
-        despesasLoja.setSangria(false);
-        dataAtual = DataUltil.dataAtual();
-        mesAnterior = DataUltil.mesAnterior();
     }
-	
+
 	public String getName() {
         return name;
     }
@@ -94,16 +79,16 @@ public class DespesasLojaBean implements Serializable{
         return columns;
     }
 
-	public List<Sangria> getAllDespesasLojas() {
+	public List<DespesasLoja> getAllDespesasLojas() {
         return allDespesasLojas;
     }
 
-	public void setAllDespesasLojas(List<Sangria> allDespesasLojas) {
+	public void setAllDespesasLojas(List<DespesasLoja> allDespesasLojas) {
         this.allDespesasLojas = allDespesasLojas;
     }
 
 	public String findAllDespesasLojas() {
-        allDespesasLojas =  Sangria.findAllSangrias();// DespesasLoja.findAllDespesasLojas();
+        allDespesasLojas = DespesasLoja.findAllDespesasLojas();
         dataVisible = !allDespesasLojas.isEmpty();
         return null;
     }
@@ -356,7 +341,7 @@ public class DespesasLojaBean implements Serializable{
         htmlPanelGrid.getChildren().add(mes_anoLabel);
         
         HtmlOutputText mes_anoValue = (HtmlOutputText) application.createComponent(HtmlOutputText.COMPONENT_TYPE);
-        mes_anoValue.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{despesasLojaBean.despesasLoja.mes_ano}", Calendar.class));
+        mes_anoValue.setValueExpression("value", expressionFactory.createValueExpression(elContext, "#{despesasLojaBean.despesasLoja.mes_ano}", Date.class));
         DateTimeConverter mes_anoValueConverter = (DateTimeConverter) application.createConverter(DateTimeConverter.CONVERTER_ID);
         mes_anoValueConverter.setPattern("dd/MM/yyyy");
         mes_anoValue.setConverter(mes_anoValueConverter);
@@ -394,24 +379,17 @@ public class DespesasLojaBean implements Serializable{
         return htmlPanelGrid;
     }
 
-	public Sangria getDespesasLoja() {
+	public DespesasLoja getDespesasLoja() {
         if (despesasLoja == null) {
-            despesasLoja = new Sangria();
+            despesasLoja = new DespesasLoja();
         }
         return despesasLoja;
     }
 
-	public void setDespesasLoja(Sangria despesasLoja) {
+	public void setDespesasLoja(DespesasLoja despesasLoja) {
         this.despesasLoja = despesasLoja;
     }
 
-	public List<Sangria> desespesaMes() {
-        List<Sangria> suggestions = new ArrayList<Sangria>();
-        for (Sangria despesas : Sangria.findAllSangrias()) {
-        }
-        return Sangria.findAllSangrias();
-    }	
-	
 	public List<Despesas> completeClassificacao(String query) {
         List<Despesas> suggestions = new ArrayList<Despesas>();
         for (Despesas despesas : Despesas.findAllDespesases()) {
@@ -453,49 +431,35 @@ public class DespesasLojaBean implements Serializable{
     }
 
 	public String displayCreateDialog() {
-        despesasLoja = new Sangria();
+        despesasLoja = new DespesasLoja();
         createDialogVisible = true;
         return "despesasLoja";
     }
 
 	public String persist() {
         String message = "";
-        try {
-			if (despesasLoja.getId() != null) {
-			    despesasLoja.merge();
-			    message = "message_successfully_updated";
-			} else {
-			    despesasLoja.persist();
-			    message = "message_successfully_created";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			message = e.getMessage();
-		}finally{
-	        RequestContext context = RequestContext.getCurrentInstance();
-	        context.execute("createDialogWidget.hide()");
-	        context.execute("editDialogWidget.hide()");
-	        
-	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
-	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        reset();
-		}
+        if (despesasLoja.getId() != null) {
+            despesasLoja.merge();
+            message = "message_successfully_updated";
+        } else {
+            despesasLoja.persist();
+            message = "message_successfully_created";
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("createDialogWidget.hide()");
+        context.execute("editDialogWidget.hide()");
+        
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "DespesasLoja");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        reset();
         return findAllDespesasLojas();
     }
 
 	public String delete() {
-		String message = "";
-        try {
-			despesasLoja.remove();
-			message = "message_successfully_deleted";
-		} catch (Exception e) {
-			e.printStackTrace();
-			message = "Error: "+e.getMessage();
-		}finally{
-			FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
-			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-			reset();
-		}
+        despesasLoja.remove();
+        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasLoja");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        reset();
         return findAllDespesasLojas();
     }
 
@@ -504,49 +468,7 @@ public class DespesasLojaBean implements Serializable{
         createDialogVisible = false;
     }
 
-	public String busca(){
-		allDespesasLojas =  Sangria.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem()); //DespesasLoja.encontrarPorData(getDataAgora(), getAtedata(), getDespesasLoja().getItem());
-		return "/pages/ExclusaoDespesasLoja.xhtml";
-	}
-	
-	public String limpar(){
-		this.reset();
-		return findAllDespesasLojas();
-	}
-	
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }
-
-	public String getDataAtual() {
-		return dataAtual;
-	}
-
-	public void setDataAtual(String dataAtual) {
-		this.dataAtual = dataAtual;
-	}
-
-	public String getMesAnterior() {
-		return mesAnterior;
-	}
-
-	public void setMesAnterior(String mesAnterior) {
-		this.mesAnterior = mesAnterior;
-	}
-
-	public Date getDataAgora() {
-		return dataAgora;
-	}
-
-	public void setDataAgora(Date dataAgora) {
-		this.dataAgora = dataAgora;
-	}
-
-	public Date getAtedata() {
-		return atedata;
-	}
-
-	public void setAtedata(Date atedata) {
-		this.atedata = atedata;
-	}
 }

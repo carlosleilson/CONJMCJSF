@@ -111,7 +111,7 @@ public class DespesasGastosBean implements Serializable {
 		allDespesasGastosClassificacao = DespesasGastos.findAllClassificaco(despesasGastos.getId());
 		return null;
 	}
-
+	
 	public boolean isDataVisible() {
         return dataVisible;
     }
@@ -472,4 +472,9 @@ public class DespesasGastosBean implements Serializable {
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }
+
+	public String findAllDespasGastosByClassificao(Long id) {
+		allDespesasGastosClassificacao = DespesasGastos.findAllClassificaco(id);;
+		return null;
+	}		
 }

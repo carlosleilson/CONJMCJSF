@@ -122,7 +122,7 @@ public class SangriaBean implements Serializable  {
 	public void setAllSangrias(List<Sangria> allSangrias) {
         this.allSangrias = allSangrias;
     }
-
+	
 	public String findAllSangrias() {
         allSangrias = Sangria.findAllSangriasAtivas();
         return null;
@@ -596,4 +596,9 @@ public class SangriaBean implements Serializable  {
         }
         return suggestions;
     }
+
+	public String relatorioDespesas() {
+        allSangrias = Sangria.findAllSangriasAtivas();
+        return null;
+    }	
 }

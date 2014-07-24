@@ -12,50 +12,62 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-		<table>
-		
-			<ui:repeat var="despesasLoja" value="#{despesasLojaBean.allDespesasLojas}">
-			<tr>
-				<td><h:outputText value="#{despesasLoja.classificacao.codigo} - #{despesasLoja.classificacao.descricao}"/></td>
-			</tr>
-			
+		<table border="3">
+			<ui:repeat var="classificacao" value="#{despesasBean.allDespesases}">
+			<thead>
+				<tr>
+					<td><h:outputText value="#{classificacao.codigo} - #{classificacao.descricao}"/></td>
+				</tr>
+			</thead>
+				<ui:repeat var="itens" value="#{despesasGastosBean.findAllDespasGastosByClassificao(classificacao.id)}">
+					<tbody>
+						<tr>
+							<td><h:outputText value="#{itens.descrisao}"/></td>
+						</tr>
+					</tbody>
+				</ui:repeat>
+			<tfoot>
+				<tr>
+					<td>total</td>
+				</tr>
+			</tfoot>
 			</ui:repeat>
 		</table>
-        <p:dataTable id="list" value="#{despesasLojaBean.desespesaMes()}" var="despesasLoja">
-        	<f:facet name="header">Relatorio de Despesas</f:facet>
-        	<p:column headerText="item" sortBy="#{despesasLoja.item.descrisao}" >
-        		<h:outputText value="#{despesasLoja.item.descrisao}"/>
-        	</p:column>
-        	<p:column headerText="Dia" sortBy="#{despesasLoja.periodo}">
-        		<h:outputText value="#{despesasLoja.periodo}">
-        			<f:convertDateTime pattern="dd/MM/yyyy"/>
-        		</h:outputText>
-        	</p:column>        	
-        	<p:column headerText="Valor" sortBy="#{despesasLoja.valor}">
-        		<h:outputText value="#{despesasLoja.valor}">
-        			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/>
-        		</h:outputText>
-        	</p:column> 
-	      <p:columnGroup type="footer">
-	            <p:row>
-	                <p:column footerText="Total do Mês" colspan="2"/>
-	<!--                 <p:column footerText="$#{dtGroupView.lastYearTotal}" /> -->
+<!--         <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria"> -->
+<!--         	<f:facet name="header">Relatorio de Despesas</f:facet> -->
+<!--         	<p:column headerText="item" sortBy="#{sangria.item.descrisao}" > -->
+<!--         		<h:outputText value="#{sangria.item.descrisao}"/> -->
+<!--         	</p:column> -->
+<!--         	<p:column headerText="Dia" sortBy="#{sangria.periodo}"> -->
+<!--         		<h:outputText value="#{sangria.periodo}"> -->
+<!--         			<f:convertDateTime pattern="dd/MM/yyyy"/> -->
+<!--         		</h:outputText> -->
+<!--         	</p:column>        	 -->
+<!--         	<p:column headerText="Valor" sortBy="#{sangria.valor}"> -->
+<!--         		<h:outputText value="#{sangria.valor}"> -->
+<!--         			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/> -->
+<!--         		</h:outputText> -->
+<!--         	</p:column>  -->
+<!-- 	      <p:columnGroup type="footer"> -->
+<!-- 	            <p:row> -->
+<!-- 	                <p:column footerText="Total do Mês" colspan="2"/> -->
+<!-- 	               <p:column footerText="$#{dtGroupView.lastYearTotal}" />  -->
 	 
-	                <p:column footerText="R$ #{despesasLoja.valor}" />
-	            </p:row>
-	        </p:columnGroup>        	  
-			<f:facet name="footer">Relatorio de Despesas</f:facet>         	     	
-        </p:dataTable>
+<!-- 	                <p:column footerText="R$ #{sangria.valor}" /> -->
+<!-- 	            </p:row> -->
+<!-- 	        </p:columnGroup>        	   -->
+<!-- 			<f:facet name="footer">Relatorio de Despesas</f:facet>         	     	 -->
+<!--         </p:dataTable> -->
         </p:fieldset>
     </h:form>
-    <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:outputPanel id="viewPanel">
-        <h:form id="viewForm" enctype="multipart/form-data">
-          <h:panelGrid id="viewPanelGrid" columns="2" binding="#{despesasLojaBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" />
-          <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="viewDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog>
+<!--     <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode"> -->
+<!--       <p:outputPanel id="viewPanel"> -->
+<!--         <h:form id="viewForm" enctype="multipart/form-data"> -->
+<!--           <h:panelGrid id="viewPanelGrid" columns="2" binding="#{despesasLojaBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" /> -->
+<!--           <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="viewDialogWidget.hide()" type="button" /> -->
+<!--         </h:form> -->
+<!--       </p:outputPanel> -->
+<!--     </p:dialog> -->
   </ui:define>
 </ui:composition>
 </html>

@@ -3,7 +3,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -14,7 +13,6 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
-
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
@@ -25,7 +23,7 @@ import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
-
+import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
@@ -47,6 +45,8 @@ public class SangriaBean implements Serializable  {
 	private Sangria sangria;
 
 	private List<Sangria> allSangrias;
+	
+	private List<Sangria> allDespesaLoja;
 
 	private boolean dataVisible = false;
 
@@ -104,6 +104,7 @@ public class SangriaBean implements Serializable  {
         columns.add("origem");
         sangria = new Sangria();
         findAllSangrias();
+        findAllDespesaLoja();
     }
 
 	public String getName() {
@@ -124,6 +125,11 @@ public class SangriaBean implements Serializable  {
 
 	public String findAllSangrias() {
         allSangrias = Sangria.findAllSangriasAtivas();
+        return null;
+    }
+	
+	public String findAllDespesaLoja() {
+        allDespesaLoja = Sangria.findAllSangrias();
         return null;
     }
 
@@ -498,12 +504,15 @@ public class SangriaBean implements Serializable  {
         String message = "";
         if (sangria.getId() != null) {
         	sangria.setPeriodo(new Date());
-        	sangria.setSangria(true);
             sangria.merge();
             message = "message_successfully_updated";
         } else {
-        	sangria.setPeriodo(new Date());
-        	sangria.setSangria(true);
+        	if(sangria.getOrigem() == null) {
+        		sangria.setPeriodo(new Date());
+        		sangria.setSangria(true);
+        	} else {
+        		sangria.setSangria(false);
+        	}
             sangria.persist();
             message = "message_successfully_created";
         }
@@ -557,5 +566,34 @@ public class SangriaBean implements Serializable  {
 	public void setTurno(String turno) {
 		this.turno = turno;
 	}
-	
+
+	public List<Sangria> getAllDespesaLoja() {
+		return allDespesaLoja;
+	}
+
+	public void setAllDespesaLoja(List<Sangria> allDespesaLoja) {
+		this.allDespesaLoja = allDespesaLoja;
+	}
+
+	public List<Despesas> completeClasssificacao(String query) {
+        List<Despesas> suggestions = new ArrayList<Despesas>();
+        for (Despesas despesas : Despesas.findAllDespesases()) {
+            String despesasStr = String.valueOf(despesas.getCodigo() +  " "  + despesas.getDescricao() +  " "  + despesas.getIdResumo());
+            if (despesasStr.toLowerCase().startsWith(query.toLowerCase())) {
+                suggestions.add(despesas);
+            }
+        }
+        return suggestions;
+    }
+
+	public List<Despesas> completeClassificacao(String query) {
+        List<Despesas> suggestions = new ArrayList<Despesas>();
+        for (Despesas despesas : Despesas.findAllDespesases()) {
+            String despesasStr = String.valueOf(despesas.getCodigo() +  " "  + despesas.getDescricao() +  " "  + despesas.getIdResumo());
+            if (despesasStr.toLowerCase().startsWith(query.toLowerCase())) {
+                suggestions.add(despesas);
+            }
+        }
+        return suggestions;
+    }
 }

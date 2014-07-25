@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
@@ -331,5 +332,12 @@ public class Sangria {
 		} else if (!version.equals(other.version))
 			return false;
 		return true;
-	}	
+	}
+	
+	public static List< Sangria > findSangriaByItens(Long id) {
+        if (id == null) return null;
+		 Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.item.id = :item", Sangria.class);
+		 query.setParameter("item", id);
+        return (List< Sangria >)query.getResultList();
+	}
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"  
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -12,62 +13,37 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-		<table border="3">
-			<ui:repeat var="classificacao" value="#{despesasBean.allDespesases}">
-			<thead>
-				<tr>
+	<table border="3">
+			<ui:repeat id="listClassificacao"  var="classificacao" value="#{despesasBean.allDespesases}">
+				<tr bgcolor="#87CEFA">
 					<td><h:outputText value="#{classificacao.codigo} - #{classificacao.descricao}"/></td>
 				</tr>
-			</thead>
-				<ui:repeat var="itens" value="#{despesasGastosBean.findAllDespasGastosByClassificao(classificacao.id)}">
-					<tbody>
-						<tr>
+					<ui:repeat  id="listItens"  var="itens" value="#{despesasBean.findAllDespasGastosByClassificao(classificacao.id)}">
+						<tr bgcolor="#FFFF00">	
 							<td><h:outputText value="#{itens.descrisao}"/></td>
-						</tr>
-					</tbody>
-				</ui:repeat>
-			<tfoot>
-				<tr>
-					<td>total</td>
-				</tr>
-			</tfoot>
+							<c:forEach begin="0" end="31">
+								 <td>0.00</td>
+							</c:forEach>	 
+							<ui:repeat  id="listDados"  var="dados" value="#{despesasBean.findAllSangriaByItens(itens.id)}">
+								 <c:forEach begin="0" end="31">
+								 <td>0.00</td>
+								 <c:choose>
+								      <c:when test="#{empty dados.valor}">
+								      	<td>0.00</td>
+								      </c:when>
+								      <c:otherwise>
+										<td><h:outputText value="#{dados.valor}"/></td>
+								      </c:otherwise>
+								</c:choose>
+								 </c:forEach>
+								 <td><h:outputText value="#{dados.valor}"/></td>
+							</ui:repeat>	
+						</tr>	
+					</ui:repeat>
 			</ui:repeat>
-		</table>
-<!--         <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria"> -->
-<!--         	<f:facet name="header">Relatorio de Despesas</f:facet> -->
-<!--         	<p:column headerText="item" sortBy="#{sangria.item.descrisao}" > -->
-<!--         		<h:outputText value="#{sangria.item.descrisao}"/> -->
-<!--         	</p:column> -->
-<!--         	<p:column headerText="Dia" sortBy="#{sangria.periodo}"> -->
-<!--         		<h:outputText value="#{sangria.periodo}"> -->
-<!--         			<f:convertDateTime pattern="dd/MM/yyyy"/> -->
-<!--         		</h:outputText> -->
-<!--         	</p:column>        	 -->
-<!--         	<p:column headerText="Valor" sortBy="#{sangria.valor}"> -->
-<!--         		<h:outputText value="#{sangria.valor}"> -->
-<!--         			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/> -->
-<!--         		</h:outputText> -->
-<!--         	</p:column>  -->
-<!-- 	      <p:columnGroup type="footer"> -->
-<!-- 	            <p:row> -->
-<!-- 	                <p:column footerText="Total do Mês" colspan="2"/> -->
-<!-- 	               <p:column footerText="$#{dtGroupView.lastYearTotal}" />  -->
-	 
-<!-- 	                <p:column footerText="R$ #{sangria.valor}" /> -->
-<!-- 	            </p:row> -->
-<!-- 	        </p:columnGroup>        	   -->
-<!-- 			<f:facet name="footer">Relatorio de Despesas</f:facet>         	     	 -->
-<!--         </p:dataTable> -->
+	</table>		
         </p:fieldset>
     </h:form>
-<!--     <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode"> -->
-<!--       <p:outputPanel id="viewPanel"> -->
-<!--         <h:form id="viewForm" enctype="multipart/form-data"> -->
-<!--           <h:panelGrid id="viewPanelGrid" columns="2" binding="#{despesasLojaBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" /> -->
-<!--           <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="viewDialogWidget.hide()" type="button" /> -->
-<!--         </h:form> -->
-<!--       </p:outputPanel> -->
-<!--     </p:dialog> -->
   </ui:define>
 </ui:composition>
 </html>

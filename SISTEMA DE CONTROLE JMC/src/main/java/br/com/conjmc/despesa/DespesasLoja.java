@@ -335,4 +335,12 @@ public class DespesasLoja {
         return q.getResultList();
     }			
 	
+
+	public static Long countFindDespesasLojasByMes_anoEquals(Date mes_ano) {
+        if (mes_ano == null) throw new IllegalArgumentException("The mes_ano argument is required");
+        EntityManager em = DespesasLoja.entityManager();
+        TypedQuery q = em.createQuery("SELECT COUNT(o) FROM DespesasLoja AS o WHERE o.mes_ano = :mes_ano", Long.class);
+        q.setParameter("mes_ano", mes_ano);
+        return ((Long) q.getSingleResult());
+    }
 }

@@ -1,5 +1,7 @@
 package br.com.conjmc.jsf;
 import br.com.conjmc.cadastrobasico.Despesas;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ public class DespesasBean implements Serializable {
 	private Despesas despesas;
 
 	private List<Despesas> allDespesases;
+	private List<DespesasGastos> allDespesasGastoses;
+	private List<Sangria> allSangrias;
 	
 	private List<Despesas> allDespesasAtivas;
 
@@ -64,6 +68,7 @@ public class DespesasBean implements Serializable {
         despesas.setSituacao(true);
         despesas = new Despesas();
         despesas.setSituacao(true);
+        findAllDespesasGastoses();
         findAllDespesases();
         findAllDespesasAtivas();
     }
@@ -447,5 +452,36 @@ public class DespesasBean implements Serializable {
 	public void handleDialogClose(CloseEvent event) {
         reset();
     }
+
+	public List<DespesasGastos> findAllDespasGastosByClassificao(Long id) {
+		allDespesasGastoses = DespesasGastos.findAllClassificaco(id);
+		return allDespesasGastoses;
+	}
 	
+	public String findAllDespesasGastoses() {
+        allDespesasGastoses = DespesasGastos.findAllDespesasGastoses();
+        dataVisible = !allDespesasGastoses.isEmpty();
+        return null;
+    }
+	
+	public List<DespesasGastos> getAllDespesasGastoses() {
+		return allDespesasGastoses;
+	}
+
+	public void setAllDespesasGastoses(List<DespesasGastos> allDespesasGastoses) {
+		this.allDespesasGastoses = allDespesasGastoses;
+	}
+
+	public List<Sangria> getAllSangrias() {
+		return allSangrias;
+	}
+
+	public void setAllSangrias(List<Sangria> allSangrias) {
+		this.allSangrias = allSangrias;
+	}	
+	
+	public List<Sangria> findAllSangriaByItens(Long id) {
+		allSangrias =  Sangria.findSangriaByItens(id);
+		return allSangrias;
+	}	
 }

@@ -474,7 +474,7 @@ public class DespesasGastosBean implements Serializable {
     }
 
 	public String findAllDespasGastosByClassificao(Long id) {
-		allDespesasGastosClassificacao = DespesasGastos.findAllClassificaco(id);;
+		allDespesasGastoses = DespesasGastos.findAllClassificaco(id);;
 		return null;
 	}		
 }

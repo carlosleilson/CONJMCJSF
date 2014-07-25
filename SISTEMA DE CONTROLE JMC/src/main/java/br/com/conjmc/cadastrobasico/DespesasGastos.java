@@ -75,7 +75,7 @@ public class DespesasGastos {
     }
 	
 	public static List<DespesasGastos> findAllClassificaco(Long id2) {
-		 Query query = entityManager().createQuery("SELECT o FROM DespesasGastos o where o.classificacao = :classificacao", DespesasGastos.class);
+		 Query query = entityManager().createQuery("SELECT o FROM DespesasGastos o where o.classificacao.id = :classificacao", DespesasGastos.class);
 		 query.setParameter("classificacao", id2);
 		List<DespesasGastos> despesasGastosForClassificacao = query.getResultList();
 		return despesasGastosForClassificacao;

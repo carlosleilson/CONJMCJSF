@@ -71,6 +71,7 @@ public class SangriaBean implements Serializable  {
 	private boolean createDialogVisible = false;
 	
 	private String turno;
+	private double totalLinha;
 	
 	public List<DespesasGastos> completeItem(String query) {
         List<DespesasGastos> suggestions = new ArrayList<DespesasGastos>();
@@ -649,21 +650,21 @@ public class SangriaBean implements Serializable  {
 
 	private String[] valoresItens(String[] campo, Long idItens) {
 		List<Sangria> dadosItens = findAllSangriaByItens(idItens);
+		totalLinha = 0;
 		for(int i =1; i < 33; i++){
+			campo[i] = "0.00";
 			if(dadosItens.size() != 0)
 				dados(i, campo, idItens,dadosItens);
-			else
-				campo[i] = "0.00";
 		}
+		campo[32]= String.valueOf(totalLinha);
 		return campo;
 	}
 
 	private void dados(int i, String[] campo, Long idItens, List<Sangria> dadosItens) {
 		for (Sangria dado : dadosItens) {
-			if(dado.getPeriodo().getDate() == i){
+			if(dado.getPeriodo().getDate() == i && dado.getValor()!=null){
 				campo[i] = String.valueOf(dado.getValor());
-			}else{
-				campo[i] = "0.00";
+				totalLinha = totalLinha + dado.getValor();
 			}
 		}
 	}

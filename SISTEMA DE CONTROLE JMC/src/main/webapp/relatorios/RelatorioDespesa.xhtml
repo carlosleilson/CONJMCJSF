@@ -26,57 +26,36 @@
         	</p:columnGroup>
         	<c:choose>
 			    <c:when test="#{empty linha[1]}">
-  			          <p:column colspan="30" headerText="Itens">
-			        		<h:outputText value="#{linha[0]}"/>
-			           </p:column> 
+  			          <p:column colspan="31" >
+			        		<h:outputText  value="#{linha[0]}"/>
+			           </p:column>
 			    </c:when>
 			    <c:otherwise>
-  			          <p:column headerText="Itens">
+			    <div style="background-color: yellow">
+  			          <p:column >
 			        		<h:outputText value="#{linha[0]}"/>
 			           </p:column> 			    
+			    </div>
 			    </c:otherwise>       	
         	</c:choose>
         	<c:forEach var="item" begin="1" end="31">
-	        	<p:column headerText="item" >
+	        	<p:column >
 	        		<h:outputText value="#{linha[item]}"/>
 	        	</p:column> 
         	</c:forEach>       	
-        	 <p:column headerText="Total">
+        	 <p:column >
         	 	<h:outputText value="#{linha[32]}"/>
-        	 </p:column> 
+        	 </p:column>
+	        <p:columnGroup type="footer">
+	            <p:row>
+	                <p:column colspan="1" style="text-align:right" footerText="Totals:" />
+	                 <c:forEach var="campoRodaPe" begin="1" end="31">
+		                <p:column headerText="#{campoRodaPe}" />
+	                 </c:forEach>	                
+	            </p:row>
+	        </p:columnGroup>        	  
 			<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	
         </p:dataTable>
-<ui:remove>
-<!-- 	<table border="3"> -->
-<!-- 			<ui:repeat id="listClassificacao"  var="classificacao" value="#{despesasBean.allDespesases}"> -->
-<!-- 				<tr bgcolor="#87CEFA"> -->
-<!-- 					<td><h:outputText value="#{classificacao.codigo} - #{classificacao.descricao}"/></td> -->
-<!-- 				</tr> -->
-<!-- 					<ui:repeat  id="listItens"  var="itens" value="#{despesasBean.findAllDespasGastosByClassificao(classificacao.id)}"> -->
-<!-- 						<tr bgcolor="#FFFF00">	 -->
-<!-- 							<td><h:outputText value="#{itens.descrisao}"/></td> -->
-<!-- 							<c:forEach begin="0" end="31"> -->
-<!-- 								 <td>0.00</td> -->
-<!-- 							</c:forEach>	  -->
-<!-- 							<ui:repeat  id="listDados"  var="dados" value="#{despesasBean.findAllSangriaByItens(itens.id)}"> -->
-<!-- 								 <c:forEach begin="0" end="31"> -->
-<!-- 								 <td>0.00</td> -->
-<!-- 								 <c:choose> -->
-<!-- 								      <c:when test="#{empty dados.valor}"> -->
-<!-- 								      	<td>0.00</td> -->
-<!-- 								      </c:when> -->
-<!-- 								      <c:otherwise> -->
-<!-- 										<td><h:outputText value="#{dados.valor}"/></td> -->
-<!-- 								      </c:otherwise> -->
-<!-- 								</c:choose> -->
-<!-- 								 </c:forEach> -->
-<!-- 								 <td><h:outputText value="#{dados.valor}"/></td> -->
-<!-- 							</ui:repeat>	 -->
-<!-- 						</tr>	 -->
-<!-- 					</ui:repeat> -->
-<!-- 			</ui:repeat> -->
-<!-- 	</table>		 -->
-</ui:remove>
         </p:fieldset>
     </h:form>
   </ui:define>

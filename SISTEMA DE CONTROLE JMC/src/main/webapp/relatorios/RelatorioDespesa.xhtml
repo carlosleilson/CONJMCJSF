@@ -13,35 +13,141 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-	<table border="3">
-			<ui:repeat id="listClassificacao"  var="classificacao" value="#{despesasBean.allDespesases}">
-				<tr bgcolor="#87CEFA">
-					<td><h:outputText value="#{classificacao.codigo} - #{classificacao.descricao}"/></td>
-				</tr>
-					<ui:repeat  id="listItens"  var="itens" value="#{despesasBean.findAllDespasGastosByClassificao(classificacao.id)}">
-						<tr bgcolor="#FFFF00">	
-							<td><h:outputText value="#{itens.descrisao}"/></td>
-							<c:forEach begin="0" end="31">
-								 <td>0.00</td>
-							</c:forEach>	 
-							<ui:repeat  id="listDados"  var="dados" value="#{despesasBean.findAllSangriaByItens(itens.id)}">
-								 <c:forEach begin="0" end="31">
-								 <td>0.00</td>
-								 <c:choose>
-								      <c:when test="#{empty dados.valor}">
-								      	<td>0.00</td>
-								      </c:when>
-								      <c:otherwise>
-										<td><h:outputText value="#{dados.valor}"/></td>
-								      </c:otherwise>
-								</c:choose>
-								 </c:forEach>
-								 <td><h:outputText value="#{dados.valor}"/></td>
-							</ui:repeat>	
-						</tr>	
-					</ui:repeat>
-			</ui:repeat>
-	</table>		
+        <p:dataTable id="list" value="#{sangriaBean.relatorioDiaDoMes}" var="linha">
+        	<f:facet name="header">Relatorio de Despesas</f:facet>
+        	<p:column headerText="Itens">
+        		<h:outputText value="#{linha[0]}"/>
+        	</p:column>
+        	<p:column headerText="01" >
+        		<h:outputText value="#{linha[1]}"/>
+        	</p:column> 
+        	<p:column headerText="02" >
+        		<h:outputText value="#{linha[2]}"/>
+        	</p:column> 
+        	<p:column headerText="03" >
+        		<h:outputText value="#{linha[3]}"/>
+        	</p:column> 
+        	<p:column headerText="04" >
+        		<h:outputText value="#{linha[4]}"/>
+        	</p:column> 
+        	<p:column headerText="05" >
+        		<h:outputText value="#{linha[5]}"/>
+        	</p:column> 
+        	<p:column headerText="06" >
+        		<h:outputText value="#{linha[6]}"/>
+        	</p:column> 
+        	<p:column headerText="07" >
+        		<h:outputText value="#{linha[7]}"/>
+        	</p:column> 
+        	<p:column headerText="08" >
+        		<h:outputText value="#{linha[8]}"/>
+        	</p:column> 
+        	<p:column headerText="09" >
+        		<h:outputText value="#{linha[9]}"/>
+        	</p:column> 
+        	<p:column headerText="10" >
+        		<h:outputText value="#{linha[10]}"/>
+        	</p:column> 
+        	<p:column headerText="11" >
+        		<h:outputText value="#{linha[11]}"/>
+        	</p:column> 
+        	<p:column headerText="12" >
+        		<h:outputText value="#{linha[12]}"/>
+        	</p:column> 
+        	<p:column headerText="13" >
+        		<h:outputText value="#{linha[13]}"/>
+        	</p:column> 
+        	<p:column headerText="14" >
+        		<h:outputText value="#{linha[14]}"/>
+        	</p:column> 
+        	<p:column headerText="15" >
+        		<h:outputText value="#{linha[15]}"/>
+        	</p:column> 
+        	<p:column headerText="16" >
+        		<h:outputText value="#{linha[16]}"/>
+        	</p:column> 
+        	<p:column headerText="17" >
+        		<h:outputText value="#{linha[17]}"/>
+        	</p:column> 
+        	<p:column headerText="18" >
+        		<h:outputText value="#{linha[18]}"/>
+        	</p:column> 
+        	<p:column headerText="19" >
+        		<h:outputText value="#{linha[19]}"/>
+        	</p:column> 
+        	<p:column headerText="20" >
+        		<h:outputText value="#{linha[20]}"/>
+        	</p:column> 
+        	<p:column headerText="21" >
+        		<h:outputText value="#{linha[21]}"/>
+        	</p:column> 
+        	<p:column headerText="23" >
+        		<h:outputText value="#{linha[23]}"/>
+        	</p:column> 
+        	<p:column headerText="24" >
+        		<h:outputText value="#{linha[24]}"/>
+        	</p:column> 
+        	<p:column headerText="25" >
+        		<h:outputText value="#{linha[25]}"/>
+        	</p:column> 
+        	<p:column headerText="26" >
+        		<h:outputText value="#{linha[26]}"/>
+        	</p:column> 
+        	<p:column headerText="27" >
+        		<h:outputText value="#{linha[27]}"/>
+        	</p:column> 
+        	<p:column headerText="28" >
+        		<h:outputText value="#{linha[28]}"/>
+        	</p:column> 
+        	<p:column headerText="29" >
+        		<h:outputText value="#{linha[29]}"/>
+        	</p:column> 
+        	<p:column headerText="30" >
+        		<h:outputText value="#{linha[30]}"/>
+        	</p:column> 
+        	<p:column headerText="31" >
+        		<h:outputText value="#{linha[31]}"/>
+        	</p:column> 
+        	<p:column headerText="32" >
+        		<h:outputText value="#{linha[32]}"/>
+        	</p:column> 
+        	
+        	 <p:column headerText="Total" styleClass="action-column" style="width:90px;">
+        	 	<h:outputText value="#{linha[33]}"/>
+        	 </p:column> 
+			<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	
+        </p:dataTable>
+<ui:remove>
+<!-- 	<table border="3"> -->
+<!-- 			<ui:repeat id="listClassificacao"  var="classificacao" value="#{despesasBean.allDespesases}"> -->
+<!-- 				<tr bgcolor="#87CEFA"> -->
+<!-- 					<td><h:outputText value="#{classificacao.codigo} - #{classificacao.descricao}"/></td> -->
+<!-- 				</tr> -->
+<!-- 					<ui:repeat  id="listItens"  var="itens" value="#{despesasBean.findAllDespasGastosByClassificao(classificacao.id)}"> -->
+<!-- 						<tr bgcolor="#FFFF00">	 -->
+<!-- 							<td><h:outputText value="#{itens.descrisao}"/></td> -->
+<!-- 							<c:forEach begin="0" end="31"> -->
+<!-- 								 <td>0.00</td> -->
+<!-- 							</c:forEach>	  -->
+<!-- 							<ui:repeat  id="listDados"  var="dados" value="#{despesasBean.findAllSangriaByItens(itens.id)}"> -->
+<!-- 								 <c:forEach begin="0" end="31"> -->
+<!-- 								 <td>0.00</td> -->
+<!-- 								 <c:choose> -->
+<!-- 								      <c:when test="#{empty dados.valor}"> -->
+<!-- 								      	<td>0.00</td> -->
+<!-- 								      </c:when> -->
+<!-- 								      <c:otherwise> -->
+<!-- 										<td><h:outputText value="#{dados.valor}"/></td> -->
+<!-- 								      </c:otherwise> -->
+<!-- 								</c:choose> -->
+<!-- 								 </c:forEach> -->
+<!-- 								 <td><h:outputText value="#{dados.valor}"/></td> -->
+<!-- 							</ui:repeat>	 -->
+<!-- 						</tr>	 -->
+<!-- 					</ui:repeat> -->
+<!-- 			</ui:repeat> -->
+<!-- 	</table>		 -->
+</ui:remove>
         </p:fieldset>
     </h:form>
   </ui:define>

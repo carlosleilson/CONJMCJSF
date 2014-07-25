@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -13,6 +14,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
@@ -23,6 +25,7 @@ import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
+
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
@@ -56,6 +59,8 @@ public class SangriaBean implements Serializable  {
 	private List<DespesasGastos> completeItem;
 	
 	private List<Funcionarios> completeFuncionario;
+	
+	private List<String[]> relatorioDiaDoMes;
 	
 	private HtmlPanelGrid createPanelGrid;
 
@@ -106,6 +111,7 @@ public class SangriaBean implements Serializable  {
         sangria = new Sangria();
         findAllSangrias();
         findAllDespesaLoja();
+        allRelatorioDiaDoMes();
     }
 
 	public String getName() {
@@ -601,5 +607,96 @@ public class SangriaBean implements Serializable  {
 	public String relatorioDespesas() {
         allSangrias = Sangria.findAllSangriasAtivas();
         return null;
-    }	
+    }
+
+	public List<String[]> getRelatorioDiaDoMes() {
+		return relatorioDiaDoMes;
+	}
+
+	public void setRelatorioDiaDoMes(List<String[]> relatorioDiaDoMes) {
+		this.relatorioDiaDoMes = relatorioDiaDoMes;
+	}
+	
+	/**
+	 * Método que alimenta todos dados do relatorio
+	 * 
+	 * @param 
+	 *            
+	 */	
+	public List<String[]> allRelatorioDiaDoMes() {
+		List<String[]>  linha = new ArrayList<String[]>();
+		for(Despesas classificacao :findAllClassificacao()){
+			String[] campo = new String[34];
+			campo[0]=classificacao.getCodigo()+" - "+classificacao.getDescricao();
+			linha.add(campo);
+			dadosItens(classificacao.getId(),linha);
+		}
+		relatorioDiaDoMes = linha;
+		return linha;
+	}
+	/**
+	 * Método que carrega do dados do itens.
+	 * @param id -- Id da classificação
+	 * @param linha -- Linha do relatorio.
+	 */		
+	private void dadosItens(Long id, List<String[]> linha) {
+		for (DespesasGastos itens : findAllDespasGastosByClassificao(id)) {
+			String[] campo = new String[34];
+			campo[0] = " - "+itens.getDescrisao();
+			linha.add(valoresItens(campo,itens.getId()));
+		}
+	}
+
+	private String[] valoresItens(String[] campo, Long idItens) {
+		List<Sangria> dadosItens = findAllSangriaByItens(idItens);
+		for(int i =1; i < 33; i++){
+			if(dadosItens.size() != 0)
+				dados(i, campo, idItens,dadosItens);
+			else
+				campo[i] = "0.00";
+		}
+		return campo;
+	}
+
+	private void dados(int i, String[] campo, Long idItens, List<Sangria> dadosItens) {
+		for (Sangria dado : dadosItens) {
+			if(dado.getPeriodo().getDate() == i){
+				campo[i] = String.valueOf(dado.getValor());
+			}else{
+				campo[i] = "0.00";
+			}
+		}
+	}
+
+	/**
+	 * Método que retorna todas clasificação.
+	 * 
+	 * @param 
+	 *            
+	 */		
+	public List<Despesas> findAllClassificacao() {
+        return  Despesas.findAllDespesases();
+    }
+	
+	/**
+	 * Método para encontrar dados dos itens por id da classificação.
+	 * 
+	 * @param Long id
+	 *            -- Id da classificação.
+	 */	
+	public List<DespesasGastos> findAllDespasGastosByClassificao(Long id) {
+		return DespesasGastos.findAllClassificaco(id);
+	}
+	
+	/**
+	 * Método para encontrar valores do sangria por id dos itens
+	 * 
+	 * @param Long id
+	 *            -- Id dos itens.
+	 */
+	public List<Sangria> findAllSangriaByItens(Long id) {
+		allSangrias =  Sangria.findSangriaByItens(id);
+		return allSangrias;
+	}		
 }
+

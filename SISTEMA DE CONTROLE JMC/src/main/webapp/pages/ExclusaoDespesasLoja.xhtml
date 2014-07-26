@@ -10,71 +10,83 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-   <h:form id="searchForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-    	<fieldset>
-    	<legend>Exclusão de Despesas</legend>
-    	<h:panelGrid id="searchPanelGrid">
-    	 <p:row>
-    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
-	          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-	          	<p:calendar id="mes_ano" size="8" value="#{despesasLojaBean.dataAgora}" 
-	          		mindate="#{despesasLojaBean.mesAnterior}" 
-	          		maxdate="#{despesasLojaBean.dataAtual}" 
-	          		pattern="dd/MM/yyyy" 
-	          		required="true" />
-	          	<p:message for="mes_ano"/> 
+    <ui:remove>
+	   <h:form id="searchForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+	    	<fieldset>
+	    	<legend>Excluir Despesas</legend>
+	    	<h:panelGrid id="searchPanelGrid">
+	    	 <p:row>
+	    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
+		          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
+		          	<p:calendar id="mes_ano" size="8" value="#{despesasLojaBean.dataAgora}" 
+		          		mindate="#{despesasLojaBean.mesAnterior}" 
+		          		maxdate="#{despesasLojaBean.dataAtual}" 
+		          		pattern="dd/MM/yyyy" 
+		          		required="true" />
+		          	<p:message for="mes_ano"/> 
+		          	
+		          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
+		          	<p:calendar id="Atemes_ano" size="8" value="#{despesasLojaBean.atedata}" 
+		          		mindate="#{despesasLojaBean.mesAnterior}" 
+		          		maxdate="#{despesasLojaBean.dataAtual}" 
+		          		pattern="dd/MM/yyyy" required="true" />
+		          	<p:message for="Atemes_ano"/>
+		         </h:panelGrid> 	
+			</p:row>
+			<p:row>	
+			<p:column  colspan="3">
+	          	<p:outputLabel  value="Item da Despesa  " for="clas"/>
+	          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter">
+		    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
+					<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="classic" 
+					itemLabel="#{classic.descrisao}" itemValue="#{classic}" />
+				</p:selectOneMenu>
+	          	<p:message for="clas"/>
+	         </p:column>
+	        </p:row>
+			<p:row>	
 	          	
-	          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
-	          	<p:calendar id="Atemes_ano" size="8" value="#{despesasLojaBean.atedata}" 
-	          		mindate="#{despesasLojaBean.mesAnterior}" 
-	          		maxdate="#{despesasLojaBean.dataAtual}" 
-	          		pattern="dd/MM/yyyy" required="true" />
-	          	<p:message for="Atemes_ano"/>
-	         </h:panelGrid> 	
-		</p:row>
-		<p:row>	
-		<p:column  colspan="3">
-          	<p:outputLabel  value="Item da Despesa  " for="clas"/>
-          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter">
-	    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
-				<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="classic" 
-				itemLabel="#{classic.descrisao}" itemValue="#{classic}" />
-			</p:selectOneMenu>
-          	<p:message for="clas"/>
-         </p:column>
-        </p:row>
-		<p:row>	
-          	
-          <p:commandButton id="createSaveButton" value="Buscar" ajax="false" action="#{despesasLojaBean.busca}" />
-<!--           <p:commandButton id="createCloseButton" value="Limpar" ajax="false" action="/pages/ExclusaoDespesasLoja.xhtml" /> -->
-		 </p:row>
-          </h:panelGrid>
-        </fieldset>
-      </h:form>
-    <h:form prependId="false" id="dataForm">       
-        <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja" paginator="true" rows="10">
-        	<f:facet name="header">Exclusão de Despesas</f:facet>
-        	<p:column headerText="Dia" sortBy="#{despesasLoja.periodo}">
-        		<h:outputText value="#{despesasLoja.periodo}">
-        			<f:convertDateTime pattern="dd/MM/yyyy"/>
-        		</h:outputText>
-        	</p:column>
-        	<p:column headerText="Valor" sortBy="#{despesasLoja.valor}">
-        		<h:outputText value="#{despesasLoja.valor}">
-        			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/>
-        		</h:outputText>
-        	</p:column> 
-        	 <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
-	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
-					<f:setPropertyActionListener value="#{despesasLoja}" target="#{despesasLojaBean.despesasLoja}" />
-				</p:commandButton>	        	 
-        	 </p:column>       	
-        </p:dataTable>
-        <p:confirmDialog id="excluir" header="Excluir Despesas" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-			<p:commandButton id="confirm" value="#{messages.label_yes}" oncomplete="confirmation.hide()" action="#{despesasLojaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-			<p:commandButton id="decline" value="#{messages.label_no}" onclick="confirmation.hide()" type="button"/>
-		</p:confirmDialog>        
-    </h:form>
+	          <p:commandButton id="createSaveButton" value="Buscar" ajax="false" action="#{despesasLojaBean.busca}" />
+	<!--           <p:commandButton id="createCloseButton" value="Limpar" ajax="false" action="/pages/ExclusaoDespesasLoja.xhtml" /> -->
+			 </p:row>
+	          </h:panelGrid>
+	        </fieldset>
+	      </h:form>
+	 </ui:remove>     
+      <h:form prependId="false" id="dataForm">
+	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
+	        	<f:facet name="header">Sangria</f:facet>
+	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
+	          		<h:outputText value="#{sangria.periodo}">
+	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+	          		</h:outputText>
+	          	</p:column>
+	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
+	          		<h:outputText value="#{sangria.valor}"/>
+	          	</p:column>
+	          	<p:column headerText="Origem" sortBy="#{sangria.origem}">
+	          		<h:outputText value="#{sangria.origem}"/>
+	          	</p:column>
+	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
+	          		<h:outputText value="#{sangria.item.descrisao}"/>
+	          	</p:column>
+	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}">
+	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/>
+	          	</p:column>
+	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}">
+	          		<h:outputText value="#{sangria.funcionario.apelido}"/>
+	          	</p:column>
+	          	<p:column headerText="Ações" styleClass="action-column" style="width:40px;"> 
+		            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}" rendered="#{sangria.sangria != true}">
+						<f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
+					</p:commandButton>
+	          	</p:column>
+	        </p:dataTable>
+	        <p:confirmDialog id="excluir" header="Excluir Despesas" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+				<p:commandButton id="confirm" value="#{messages.label_yes}" oncomplete="confirmation.hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+				<p:commandButton id="decline" value="#{messages.label_no}" onclick="confirmation.hide()" type="button"/>
+			</p:confirmDialog>        
+       </h:form>
     <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
       <p:outputPanel id="viewPanel">
         <h:form id="viewForm" enctype="multipart/form-data">

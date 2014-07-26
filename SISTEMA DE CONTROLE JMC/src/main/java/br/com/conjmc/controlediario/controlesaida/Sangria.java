@@ -32,7 +32,6 @@ import br.com.conjmc.cadastrobasico.DespesasGastos;
 import javax.persistence.ManyToOne;
 
 import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.despesa.DespesasLoja;
 
 @Configurable
 @Entity
@@ -264,7 +263,7 @@ public class Sangria {
 		this.classificacao = classificacao;
 	}
 	
-	public static List< Sangria > encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
+	/*public static List< Sangria > encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
         if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
@@ -280,7 +279,7 @@ public class Sangria {
         q.setParameter("dataFinal", dataFinal);
         //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
         return q.getResultList();
-    }
+    }*/
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -304,9 +303,9 @@ public class Sangria {
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!id.equals(other.id)) {
 			return false;
-		if (item == null) {
+		} else if (item == null) {
 			if (other.item != null)
 				return false;
 		} else if (!item.equals(other.item))

@@ -72,13 +72,13 @@ public class DespesasGastos {
 	
 	public static List<DespesasGastos> findAllDespesasGastosAtivos() {
         return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
-    }
+    }	
 	
 	public static List<DespesasGastos> findAllClassificaco(Long id2) {
 		 Query query = entityManager().createQuery("SELECT o FROM DespesasGastos o where o.classificacao.id = :classificacao", DespesasGastos.class);
 		 query.setParameter("classificacao", id2);
-		List<DespesasGastos> despesasGastosForClassificacao = query.getResultList();
-		return despesasGastosForClassificacao;
+		 List<DespesasGastos> despesasGastosForClassificacao = query.getResultList();
+		 return despesasGastosForClassificacao;
 	}
 
 	public static List<DespesasGastos> findAllDespesasGastoses(String sortFieldName, String sortOrder) {

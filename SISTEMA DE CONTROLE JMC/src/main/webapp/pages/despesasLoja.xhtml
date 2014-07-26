@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
 	<ui:define name="title">
-		<title>Sangrias</title>
+		<title>Incluir Despesa</title>
 	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
@@ -28,22 +28,20 @@
           	<p:message for="valor"/>
           	
           	<p:outputLabel value="Classificação" for="classificacao"/>
-          	<p:selectOneMenu id="classificacao" value="#{despesasBean.allDespesasAtivas}" converter="despesasConverter" required="true" requiredMessage="A classificação é obrigatório">
+          	<p:selectOneMenu id="classificacao" required="true" value="#{sangriaBean.classificacao}" requiredMessage="A classificação é obrigatório">
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" itemValue="#{despesa}" />
-       			<p:ajax listener="#{despesasGastosBean.findAllDespasGastosForClassificao}" event="change" update=":createForm:despesasGastos"/>
+          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" itemValue="#{despesa.id}" />
+          		<p:ajax listener="#{sangriaBean.carregaDespesasGastos}" event="change" update=":createForm:itens"/>
           	</p:selectOneMenu>
           	<p:message for="classificacao"/>
           	
-          	<h:panelGrid id="despesasGastos">
-	          	<p:outputLabel value="Itens" for="itens"/>
-	          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório">
-	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-	          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosClassificacao}" var="gasto" 
-	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
-	          	</p:selectOneMenu>
-	          	<p:message for="itens"/>
-          	</h:panelGrid>
+          	<p:outputLabel value="Itens" for="itens"/>
+          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório">
+          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+          		<f:selectItems value="#{sangriaBean.allDespesasGatos}" var="gasto" 
+          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+          	</p:selectOneMenu>
+          	<p:message for="itens"/>
           </h:panelGrid>
           	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
@@ -52,7 +50,7 @@
     	</h:form>
     	
     	<h:form prependId="false" id="dataForm">
-	        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" paginator="true" rows="10">
+	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
 	        	<f:facet name="header">Sangria</f:facet>
 	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
 	          		<h:outputText value="#{sangria.periodo}">
@@ -75,10 +73,6 @@
 	          		<h:outputText value="#{sangria.funcionario.apelido}"/>
 	          	</p:column>
 	        </p:dataTable>
-	        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-				<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
-			</p:confirmDialog>
 	       </h:form>
   </ui:define>
 </ui:composition>

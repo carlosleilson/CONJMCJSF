@@ -21,6 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
+import javax.validation.constraints.AssertFalse;
+import javax.validation.constraints.AssertTrue;
 
 @Entity
 @Configurable
@@ -72,9 +74,9 @@ public class DespesasGastos {
         return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
     }	
 	
-	public static List<DespesasGastos> findAllClassificaco(Long id2) {
+	public static List<DespesasGastos> findAllClassificaco(long classificacao) {
 		 Query query = entityManager().createQuery("SELECT o FROM DespesasGastos o where o.classificacao.id = :classificacao", DespesasGastos.class);
-		 query.setParameter("classificacao", id2);
+		 query.setParameter("classificacao", classificacao);
 		 List<DespesasGastos> despesasGastosForClassificacao = query.getResultList();
 		 return despesasGastosForClassificacao;
 	}

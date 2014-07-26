@@ -13,7 +13,7 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-        <p:dataTable id="list" value="#{sangriaBean.relatorioDiaDoMes}" var="linha">
+        <p:dataTable id="list" value="#{sangriaBean.relatorioDiaDoMes}" var="linha" rowStyleClass="#{linha[0] == 'TOTAL DO ITEM' ? 'ui-datatable-odd' : null}" >
         	<f:facet name="header">Relatorio de Despesas</f:facet>
         	<p:columnGroup type="header">
 	            <p:row>
@@ -39,21 +39,25 @@
 			    </c:otherwise>       	
         	</c:choose>
         	<c:forEach var="item" begin="1" end="31">
-	        	<p:column >
+	        	<p:column style="text-align:center">
 	        		<h:outputText value="#{linha[item]}"/>
 	        	</p:column> 
         	</c:forEach>       	
-        	 <p:column >
+        	 <p:column style="text-align:center" >
         	 	<h:outputText value="#{linha[32]}"/>
         	 </p:column>
-	        <p:columnGroup type="footer">
-	            <p:row>
-	                <p:column colspan="1" style="text-align:right" footerText="Totals:" />
-	                 <c:forEach var="campoRodaPe" begin="1" end="31">
-		                <p:column headerText="#{campoRodaPe}" />
-	                 </c:forEach>	                
-	            </p:row>
-	        </p:columnGroup>        	  
+        	 <ui:remove>
+<!-- 	        <p:columnGroup type="footer"> -->
+<!-- 	            <p:row> -->
+<!-- 	                <p:column colspan="1" style="text-align:right" footerText="TOTAL GERAL:" /> -->
+<!-- 	                 <c:forEach var="campoRodaPe" begin="1" end="31"> -->
+<!-- 		                <p:column headerText="#{linha[campoRodaPe]}" > -->
+<!-- 		                	<h:outputText value="#{linha[campoRodaPe]}"/> -->
+<!-- 		                </p:column> -->
+<!-- 	                 </c:forEach>	                 -->
+<!-- 	            </p:row> -->
+<!-- 	        </p:columnGroup>         -->
+	        </ui:remove>	  
 			<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	
         </p:dataTable>
         </p:fieldset>

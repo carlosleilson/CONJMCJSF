@@ -21,8 +21,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
-import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.AssertTrue;
 
 @Entity
 @Configurable

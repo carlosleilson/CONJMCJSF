@@ -3,7 +3,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -14,7 +13,6 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
-
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
@@ -25,8 +23,6 @@ import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
-
-import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
@@ -51,6 +47,8 @@ public class SangriaBean implements Serializable  {
 	private List<Sangria> allSangrias;
 	
 	private List<Sangria> allDespesaLoja;
+	
+	private List<DespesasGastos> allDespesasGatos;
 
 	private boolean dataVisible = false;
 
@@ -59,8 +57,6 @@ public class SangriaBean implements Serializable  {
 	private List<DespesasGastos> completeItem;
 	
 	private List<Funcionarios> completeFuncionario;
-	
-	private List<String[]> relatorioDiaDoMes;
 	
 	private HtmlPanelGrid createPanelGrid;
 
@@ -71,8 +67,8 @@ public class SangriaBean implements Serializable  {
 	private boolean createDialogVisible = false;
 	
 	private String turno;
-	private double totalLinha;
-	private Double total = 0.0;
+	
+	private String classificacao;
 	
 	public List<DespesasGastos> completeItem(String query) {
         List<DespesasGastos> suggestions = new ArrayList<DespesasGastos>();
@@ -102,6 +98,11 @@ public class SangriaBean implements Serializable  {
 		sangria.getItem().setClassificacao(despesasGastos.getClassificacao());
 	}
 	
+	public void carregaDespesasGastos(){
+		long idClassific = Long.parseLong(classificacao);
+		allDespesasGatos = DespesasGastos.findAllClassificaco(idClassific);
+	}
+	
 	@PostConstruct
     public void init() {
 		setCompleteItem(DespesasGastos.findAllDespesasGastoses());
@@ -113,7 +114,6 @@ public class SangriaBean implements Serializable  {
         sangria = new Sangria();
         findAllSangrias();
         findAllDespesaLoja();
-        allRelatorioDiaDoMes();
     }
 
 	public String getName() {
@@ -131,7 +131,7 @@ public class SangriaBean implements Serializable  {
 	public void setAllSangrias(List<Sangria> allSangrias) {
         this.allSangrias = allSangrias;
     }
-	
+
 	public String findAllSangrias() {
         allSangrias = Sangria.findAllSangriasAtivas();
         return null;
@@ -516,7 +516,7 @@ public class SangriaBean implements Serializable  {
             sangria.merge();
             message = "message_successfully_updated";
         } else {
-        	if(sangria.getOrigem() == null) {
+        	if(sangria.getOrigem() != null) {
         		sangria.setPeriodo(new Date());
         		sangria.setSangria(true);
         	} else {
@@ -532,6 +532,7 @@ public class SangriaBean implements Serializable  {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Sangria");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
+        init();
         return findAllSangrias();
     }
 
@@ -576,6 +577,14 @@ public class SangriaBean implements Serializable  {
 		this.turno = turno;
 	}
 
+	public String getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(String classificacao) {
+		this.classificacao = classificacao;
+	}
+
 	public List<Sangria> getAllDespesaLoja() {
 		return allDespesaLoja;
 	}
@@ -606,115 +615,13 @@ public class SangriaBean implements Serializable  {
         return suggestions;
     }
 
-	public String relatorioDespesas() {
-        allSangrias = Sangria.findAllSangriasAtivas();
-        return null;
-    }
-
-	public List<String[]> getRelatorioDiaDoMes() {
-		return relatorioDiaDoMes;
+	public List<DespesasGastos> getAllDespesasGatos() {
+		return allDespesasGatos;
 	}
 
-	public void setRelatorioDiaDoMes(List<String[]> relatorioDiaDoMes) {
-		this.relatorioDiaDoMes = relatorioDiaDoMes;
+	public void setAllDespesasGatos(List<DespesasGastos> allDespesasGatos) {
+		this.allDespesasGatos = allDespesasGatos;
 	}
 	
-	/**
-	 * Método que alimenta todos dados do relatorio
-	 * 
-	 * @param 
-	 *            
-	 */	
-	public List<String[]> allRelatorioDiaDoMes() {
-		List<String[]>  linha = new ArrayList<String[]>();
-		for(Despesas classificacao :findAllClassificacao()){
-			String[] campo = new String[34];
-			campo[0]=classificacao.getCodigo()+" - "+classificacao.getDescricao();
-			linha.add(campo);
-			dadosItens(classificacao.getId(),linha);
-		}
-		relatorioDiaDoMes = linha;
-		return linha;
-	}
-	/**
-	 * Método que carrega do dados do itens.
-	 * @param id -- Id da classificação
-	 * @param linha -- Linha do relatorio.
-	 */		
-	private void dadosItens(Long id, List<String[]> linha) {
-		for (DespesasGastos itens : findAllDespasGastosByClassificao(id)) {
-			String[] campo = new String[34];
-			campo[0] = " - "+itens.getDescrisao();
-			linha.add(valoresItens(campo,itens.getId()));
-		}
-	}
 	
-	/**
-	 * Método que retorna valores de uma linha.
-	 * 
-	 * @param String[] campo  -- valor de cada coluna
-	 * @param Long idItens 	  -- id dos itens
-	 *            
-	 */	
-	private String[] valoresItens(String[] campo, Long idItens) {
-		List<Sangria> dadosItens = findAllSangriaByItens(idItens);
-		totalLinha = 0;
-		for(int i =1; i < 33; i++){
-			campo[i] = "0.00";
-			if(dadosItens.size() != 0)
-				dados(i, campo, idItens,dadosItens);
-		}
-		campo[32]= String.valueOf(totalLinha);
-		total = total + totalLinha;
-	
-		return campo;
-	}
-
-	/**
-	 * Método que retorna dado de um iten.
-	 * @param int i --Valor do dia
-	 * @param String[] campo  -- valor de cada coluna
-	 * @param Long idItens 	  -- id dos itens
-	 * @param List<Sangria> dadosItens --dados da despesas            
-	 */		
-	private void dados(int i, String[] campo, Long idItens, List<Sangria> dadosItens) {
-		for (Sangria dado : dadosItens) {
-			if(dado.getPeriodo().getDate() == i && dado.getValor()!=null){
-				campo[i] = String.valueOf(dado.getValor());
-				totalLinha = totalLinha + dado.getValor();
-			}
-		}
-	}
-
-	/**
-	 * Método que retorna todas clasificação.
-	 * 
-	 * @param 
-	 *            
-	 */		
-	public List<Despesas> findAllClassificacao() {
-        return  Despesas.findAllDespesases();
-    }
-	
-	/**
-	 * Método para encontrar dados dos itens por id da classificação.
-	 * 
-	 * @param Long id
-	 *            -- Id da classificação.
-	 */	
-	public List<DespesasGastos> findAllDespasGastosByClassificao(Long id) {
-		return DespesasGastos.findAllClassificaco(id);
-	}
-	
-	/**
-	 * Método para encontrar valores do sangria por id dos itens
-	 * 
-	 * @param Long id
-	 *            -- Id dos itens.
-	 */
-	public List<Sangria> findAllSangriaByItens(Long id) {
-		allSangrias =  Sangria.findSangriaByItens(id);
-		return allSangrias;
-	}		
 }
-

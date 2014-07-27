@@ -8,7 +8,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
@@ -31,7 +31,7 @@ import br.com.conjmc.jsf.converter.DespesasConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean(name = "despesasGastosBean")
-@RequestScoped
+@SessionScoped
 @Configurable
 @RooSerializable
 @RooJsfManagedBean(entity = DespesasGastos.class, beanName = "despesasGastosBean")
@@ -453,15 +453,16 @@ public class DespesasGastosBean implements Serializable {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "DespesasGastos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        return findAllDespesasGastoses();
+        init();
+        return "despesasGastos.xhtml";
     }
 
 	public String delete() {
         despesasGastos.remove();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        return findAllDespesasGastoses();
+        init();
+        return "despesasGastos.xhtml";
     }
 
 	public void reset() {

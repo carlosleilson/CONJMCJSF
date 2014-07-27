@@ -9,6 +9,7 @@ import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
@@ -33,7 +34,7 @@ import br.com.conjmc.jsf.util.MessageFactory;
 
 @Configurable
 @ManagedBean(name = "funcionariosBean")
-@RequestScoped
+@SessionScoped
 @RooSerializable
 @RooJsfManagedBean(entity = Funcionarios.class, beanName = "funcionariosBean")
 public class FuncionariosBean implements Serializable {
@@ -860,7 +861,7 @@ public class FuncionariosBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, " "));
 			}
 		}
-        
+        init();
         return "/pages/funcionarios.xhtml";
     }
 
@@ -868,8 +869,8 @@ public class FuncionariosBean implements Serializable {
         funcionarios.remove();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Funcionarios");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        return findAllFuncionarioses();
+        init();
+        return "funcionarios.xhtml";
     }
 
 	public void reset() {

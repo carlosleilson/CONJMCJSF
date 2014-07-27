@@ -10,6 +10,7 @@ import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
@@ -30,7 +31,7 @@ import br.com.conjmc.jsf.util.MessageFactory;
 
 @Configurable
 @ManagedBean(name = "cargosBean")
-@RequestScoped
+@SessionScoped
 @RooSerializable
 @RooJsfManagedBean(entity = Cargos.class, beanName = "cargosBean")
 public class CargosBean implements Serializable {
@@ -77,6 +78,7 @@ public class CargosBean implements Serializable {
     public void init() {
         columns = new ArrayList<String>();
         columns.add("nome");
+        cargos = new Cargos();
         findAllCargoses();
     }
 
@@ -328,6 +330,7 @@ public class CargosBean implements Serializable {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Cargos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
         return "cargos.xhtml";
     }
 
@@ -335,8 +338,8 @@ public class CargosBean implements Serializable {
         cargos.remove();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Cargos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        return findAllCargoses();
+        init();
+        return "cargos.xhtml";
     }
 
 	public void reset() {

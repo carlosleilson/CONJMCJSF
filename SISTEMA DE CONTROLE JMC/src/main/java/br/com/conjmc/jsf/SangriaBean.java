@@ -65,7 +65,6 @@ public class SangriaBean implements Serializable  {
 	
 	private List<Funcionarios> completeFuncionario;
 	
-	
 	private HtmlPanelGrid createPanelGrid;
 
 	private HtmlPanelGrid editPanelGrid;
@@ -78,7 +77,7 @@ public class SangriaBean implements Serializable  {
 	
 	private String classificacao;
 	
-	private RelatorioDiaDoMes rDiaDoMes; 
+	private RelatorioDiaDoMes relatorioDiaDoMes; 
 	
 	public List<DespesasGastos> completeItem(String query) {
         List<DespesasGastos> suggestions = new ArrayList<DespesasGastos>();
@@ -124,8 +123,8 @@ public class SangriaBean implements Serializable  {
         sangria = new Sangria();
         findAllSangrias();
         findAllDespesaLoja();
-        rDiaDoMes = new RelatorioDiaDoMes();
-        rDiaDoMes.allRelatorioDiaDoMes();
+        setRelatorioDiaDoMes(new RelatorioDiaDoMes());
+        getRelatorioDiaDoMes().allRelatorioDiaDoMes();
     }
 
 	public String getName() {
@@ -640,12 +639,12 @@ public class SangriaBean implements Serializable  {
         return null;
     }
 
-	public RelatorioDiaDoMes getrDiaDoMes() {
-		return rDiaDoMes;
+	public RelatorioDiaDoMes getRelatorioDiaDoMes() {
+		return relatorioDiaDoMes;
 	}
 
-	public void setrDiaDoMes(RelatorioDiaDoMes rDiaDoMes) {
-		this.rDiaDoMes = rDiaDoMes;
-	}		
+	public void setRelatorioDiaDoMes(RelatorioDiaDoMes relatorioDiaDoMes) {
+		this.relatorioDiaDoMes = relatorioDiaDoMes;
+	}
 }
 

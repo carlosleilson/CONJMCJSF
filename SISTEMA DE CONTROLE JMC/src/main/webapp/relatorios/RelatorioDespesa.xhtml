@@ -13,7 +13,7 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-        <p:dataTable id="list" value="#{sangriaBean.rDiaDoMes.relatorioDiaDoMes}" var="linha" rowStyleClass="#{linha[0] == 'TOTAL DO ITEM' ? 'ui-datatable-odd' : null}" >
+        <p:dataTable id="list" value="#{sangriaBean.relatorioDiaDoMes.relatorioDiaDoMes}" var="linha" rowStyleClass="#{linha[0] == 'TOTAL DO ITEM' ? 'ui-datatable-odd' : null}" >
         	<f:facet name="header">Relatorio de Despesas</f:facet>
         	<p:columnGroup type="header">
 	            <p:row>

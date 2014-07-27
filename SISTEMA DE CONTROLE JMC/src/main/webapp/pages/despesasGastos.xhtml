@@ -78,7 +78,7 @@
           </p:column>
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasGastosBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasGastosBean.delete}" ajax="false" onclick="confirmation.hide()" />
 			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>

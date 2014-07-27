@@ -24,7 +24,7 @@
           	
           	<p:outputLabel value="Classificação" for="classificacao"/>
           	<p:selectOneMenu id="classificacao" value="#{despesasGastosBean.despesasGastos.classificacao}"  converter="despesasConverter" required="true" 
-          		requiredMessage="A Classificação é obrigatório ">
+          		requiredMessage="A Classificação é obrigatório " filter="true">
           		<f:selectItem itemLabel="Selecione uma Classificação" itemValue=""/>
           		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" item="#{despesa}" />
           	</p:selectOneMenu>

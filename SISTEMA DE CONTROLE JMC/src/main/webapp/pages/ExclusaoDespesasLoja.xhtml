@@ -6,6 +6,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Excluir Despesa</title>
+	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
@@ -13,7 +16,7 @@
     <ui:remove>
 	   <h:form id="searchForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
 	    	<fieldset>
-	    	<legend>Excluir Despesas</legend>
+	    	<legend>Excluir Despesa</legend>
 	    	<h:panelGrid id="searchPanelGrid">
 	    	 <p:row>
 	    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
@@ -55,7 +58,7 @@
 	 </ui:remove>     
       <h:form prependId="false" id="dataForm">
 	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
-	        	<f:facet name="header">Sangria</f:facet>
+	        	<f:facet name="header">Excluir Despesa</f:facet>
 	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
 	          		<h:outputText value="#{sangria.periodo}">
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>

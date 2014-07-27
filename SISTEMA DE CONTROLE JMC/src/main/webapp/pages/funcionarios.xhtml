@@ -16,7 +16,6 @@
     <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
     		<legend>Funcionários</legend>
-    		<p:inputText value="#{funcionariosBean.funcionarios.id}" styleClass="primariKey"/>
     	<div class="gridFunc">	
 	          <h:panelGrid id="createPanelGrid1" columns="3" styleClass="dialog">
 	          	<p:outputLabel value="Nome" for="funcionarioNome"/>
@@ -84,9 +83,6 @@
     <h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{funcionariosBean.allFuncionarioses}" var="funcionarios" paginator="true" rows="10">
         	<f:facet name="header">Funcionários</f:facet>
-        	<p:column headerText="Id" styleClass="primariKey">
-        		<h:outputText value="#{funcionarios.id}"/>
-        	</p:column>
         	<p:column headerText="Apelido" sortBy="#{funcionarios.apelido}">
         		<h:outputText value="#{funcionarios.apelido}"/>
         	</p:column>
@@ -120,7 +116,7 @@
           </p:column>
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{funcionariosBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{funcionariosBean.delete}" ajax="false" onclick="confirmation.hide()" />
 			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>

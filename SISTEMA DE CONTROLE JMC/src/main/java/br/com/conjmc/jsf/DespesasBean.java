@@ -432,7 +432,6 @@ public class DespesasBean implements Serializable {
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         init();
-        findAllDespesases();
         return "/pages/despesas.xtml";
     }
 
@@ -440,8 +439,8 @@ public class DespesasBean implements Serializable {
         despesas.remove();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Despesas");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        return findAllDespesases();
+        init();
+        return "/pages/despesas.xtml";
     }
 
 	public void reset() {

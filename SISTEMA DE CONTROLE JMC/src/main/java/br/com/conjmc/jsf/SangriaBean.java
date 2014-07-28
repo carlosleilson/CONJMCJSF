@@ -37,6 +37,8 @@ import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.relatorios.Classificacao;
+import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 
 @ManagedBean(name = "sangriaBean")
 @SessionScoped
@@ -77,6 +79,7 @@ public class SangriaBean implements Serializable  {
 	private String turno;
 	
 	private String classificacao;
+	private List<Classificacao> classificacaoItens;
 	
 	/*----------- Search ------------*/
 	private Date dataInicial;
@@ -141,6 +144,8 @@ public class SangriaBean implements Serializable  {
         findAllSangrias();
         findAllDespesaLoja();
         allRelatorioDiaDoMes();
+    	RelatorioDiaDoMes relatorioDiaDoMes = new RelatorioDiaDoMes();
+    	classificacaoItens = relatorioDiaDoMes.criarRelatorio();
     }
 
 	/**
@@ -862,4 +867,11 @@ public class SangriaBean implements Serializable  {
 		this.itemSearch = itemSearch;
 	}
 	
+	public List<Classificacao> getClassificacaoItens() {
+		return classificacaoItens;
+	}
+
+	public void setClassificacaoItens(List<Classificacao> classificacaoItens) {
+		this.classificacaoItens = classificacaoItens;
+	}	
 }

@@ -60,7 +60,9 @@
 <!--           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" /> -->
     	</fieldset>
     	</h:form>
-    	
+    	<h:form styleClass="buttomLimpar">
+    		<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{sangriaBean.reset}" action="sangria.xhtml" />
+      	</h:form>
     	<h:form prependId="false" id="dataForm">
 	        <p:dataTable id="list" value="#{sangriaBean.allSangrias}" var="sangria" paginator="true" rows="10">
 	        	<f:facet name="header">Sangria</f:facet>

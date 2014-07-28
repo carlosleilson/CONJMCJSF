@@ -32,6 +32,7 @@ import br.com.conjmc.cadastrobasico.DespesasGastos;
 import javax.persistence.ManyToOne;
 
 import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.despesa.DespesasLoja;
 
 @Configurable
 @Entity
@@ -262,6 +263,24 @@ public class Sangria {
 	public void setClassificacao(Despesas classificacao) {
 		this.classificacao = classificacao;
 	}
+	
+	public static List<Sangria> encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
+        if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
+        EntityManager em = DespesasLoja.entityManager();
+        TypedQuery<Sangria> q = null;
+        if(item!=null){
+            q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item = :item", Sangria.class);
+            q.setParameter("item", item);
+        }else{	
+        	q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal", Sangria.class);
+        }
+        q.setParameter("dataInicial", dataInicial );
+        q.setParameter("dataFinal", dataFinal);
+        //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
+        return q.getResultList();
+    }
 	
 	/*public static List< Sangria > encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

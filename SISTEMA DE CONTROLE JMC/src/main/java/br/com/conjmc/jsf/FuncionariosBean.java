@@ -832,24 +832,39 @@ public class FuncionariosBean implements Serializable {
 		for (Funcionarios func : allFuncionarioses) {
 			if (func.getApelido().equals(funcionarios.getApelido())) {
 				existe = false;
-				message = "J� exite funcion�rio com apelido cadastrado";
-			}
-			if (func.getCpf().equals(funcionarios.getCpf())) {
+				message = "já existe funcionário com apelido cadastrado";
+			} else if (func.getCpf().equals(funcionarios.getCpf())) {
 				existe = false;
-				message = "J� exite funcion�rio com CPF cadastrado";
+				message = "Já existe CPF com funcionário cadastrado";
 			}
 		}
 		
 		if (funcionarios.getId() != null) {
-			funcionarios.merge();
-			message = "message_successfully_updated";
-			RequestContext context = RequestContext.getCurrentInstance();
-			context.execute("createDialogWidget.hide()");
-			context.execute("editDialogWidget.hide()");			
-			FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
-			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+			boolean merge = true;
+			for (Funcionarios func : allFuncionarioses) {
+				if ((func.getApelido().equals(funcionarios.getApelido()) && (func.getId() != funcionarios.getId()))) {
+					merge = false;
+					message = "já existe funcionário com apelido cadastrado";
+				} else if ((func.getCpf().equals(funcionarios.getCpf()) && (func.getId() != funcionarios.getId()))) {
+					merge = false;
+					message = "Já existe CPF com funcionário cadastrado";
+				}
+			}
+			if (merge) {
+				funcionarios.merge();
+				message = "message_successfully_updated";
+				RequestContext context = RequestContext.getCurrentInstance();
+				context.execute("createDialogWidget.hide()");
+				context.execute("editDialogWidget.hide()");			
+				FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
+				FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				init();
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, " "));
+				findAllFuncionarioses();
+			}
 		} else {
-			if (existe == true) {
+			if (existe) {
 				funcionarios.persist();
 				message = "message_successfully_created";
 				RequestContext context = RequestContext.getCurrentInstance();
@@ -857,11 +872,11 @@ public class FuncionariosBean implements Serializable {
 				context.execute("editDialogWidget.hide()");			
 				FacesMessage facesMessage = MessageFactory.getMessage(message, "Funcionarios");
 				FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				init();
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, " "));
 			}
 		}
-        init();
         return "/pages/funcionarios.xhtml";
     }
 

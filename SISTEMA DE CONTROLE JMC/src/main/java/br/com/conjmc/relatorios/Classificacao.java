@@ -6,12 +6,13 @@ import java.util.List;
 public class Classificacao {
 	private String name;
 	private List<Itens> itens;
-	public String getName() {
-		return name;
-	}
 	
 	public Classificacao() {
 		this.itens = new ArrayList<Itens>();
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	public void setName(String name) {

@@ -29,13 +29,13 @@ import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
 import org.springframework.roo.addon.serializable.RooSerializable;
 
 import br.com.conjmc.cadastrobasico.Despesas;
-import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.relatorios.Classificacao;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 
 @ManagedBean(name = "sangriaBean")
@@ -77,7 +77,8 @@ public class SangriaBean implements Serializable  {
 	
 	private String classificacao;
 	
-	private RelatorioDiaDoMes relatorioDiaDoMes; 
+	private List<Classificacao> classificacaoItens;
+ 
 	
 	public List<DespesasGastos> completeItem(String query) {
         List<DespesasGastos> suggestions = new ArrayList<DespesasGastos>();
@@ -123,8 +124,8 @@ public class SangriaBean implements Serializable  {
         sangria = new Sangria();
         findAllSangrias();
         findAllDespesaLoja();
-        setRelatorioDiaDoMes(new RelatorioDiaDoMes());
-        getRelatorioDiaDoMes().allRelatorioDiaDoMes();
+    	RelatorioDiaDoMes relatorioDiaDoMes = new RelatorioDiaDoMes();
+    	classificacaoItens = relatorioDiaDoMes.criarRelatorio();
     }
 
 	public String getName() {
@@ -639,12 +640,12 @@ public class SangriaBean implements Serializable  {
         return null;
     }
 
-	public RelatorioDiaDoMes getRelatorioDiaDoMes() {
-		return relatorioDiaDoMes;
+	public List<Classificacao> getClassificacaoItens() {
+		return classificacaoItens;
 	}
 
-	public void setRelatorioDiaDoMes(RelatorioDiaDoMes relatorioDiaDoMes) {
-		this.relatorioDiaDoMes = relatorioDiaDoMes;
+	public void setClassificacaoItens(List<Classificacao> classificacaoItens) {
+		this.classificacaoItens = classificacaoItens;
 	}
 }
 

@@ -13,44 +13,59 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-        <p:dataTable id="list" value="#{sangriaBean.relatorioDiaDoMes.relatorioDiaDoMes}" var="linha" rowStyleClass="#{linha[0] == 'TOTAL DO ITEM' ? 'ui-datatable-odd' : null}" >
+        <p:dataTable id="list"  var="linha" value="#{sangriaBean.classificacaoItens}" rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'ui-datatable-odd' : null}">
         	<f:facet name="header">Relatorio de Despesas</f:facet>
         	<p:columnGroup type="header">
 	            <p:row>
-	                <p:column headerText="Classificação" />
+	                <p:column headerText="ITENS / DIAS" />
 	                 <c:forEach var="campoCebecalho" begin="1" end="31">
 		                <p:column headerText="#{campoCebecalho}" />
 	                 </c:forEach>
 	                 <p:column headerText="Total" />
 	            </p:row>        	
         	</p:columnGroup>
-
-		   <p:column colspan="31" >
-        		<h:outputText  value="#{linha[0]}"/>
-           </p:column>
-
-        	<c:forEach var="item" begin="1" end="31">
+        	
+        	<p:subTable var="iten" value="#{linha.itens}" >
+        	
+	        	<f:facet name="header">
+	        		<h:outputText  value="#{linha.name}"/>
+	                 <c:forEach var="campoCebecalho" begin="1" end="31">
+		                <p:column headerText="#{campoCebecalho}" />
+	                 </c:forEach>	        		
+	        	</f:facet>
+	        	
+				   <p:column >
+		        		<h:outputText  value="#{iten.item.descrisao}"/>
+		           </p:column>
+		           
+	        	<c:forEach var="item" begin="1" end="31">
+		        	<p:column style="text-align:center">
+		        		<h:outputText value="#{iten.campos[item]}">
+<!-- 		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->
+		        		</h:outputText>
+		        	</p:column> 
+	        	</c:forEach> 
+        		           
 	        	<p:column style="text-align:center">
-	        		<h:outputText value="#{linha[item]}"/>
+	        		<h:outputText value="#{iten.campos[32]}">
+		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
+	        		</h:outputText>
 	        	</p:column> 
-        	</c:forEach>   
-        	    	
-        	 <p:column style="text-align:center" >
-        	 	<h:outputText value="#{linha[32]}"/>
-        	 </p:column>
-        	 
-        	 <ui:remove>
-<!-- 	        <p:columnGroup type="footer"> -->
-<!-- 	            <p:row> -->
-<!-- 	                <p:column colspan="1" style="text-align:right" footerText="TOTAL GERAL:" /> -->
-<!-- 	                 <c:forEach var="campoRodaPe" begin="1" end="31"> -->
-<!-- 		                <p:column headerText="#{linha[campoRodaPe]}" > -->
-<!-- 		                	<h:outputText value="#{linha[campoRodaPe]}"/> -->
-<!-- 		                </p:column> -->
-<!-- 	                 </c:forEach>	                 -->
-<!-- 	            </p:row> -->
-<!-- 	        </p:columnGroup>         -->
-	        </ui:remove>	  
+		        	        		           
+            <p:columnGroup type="footer">
+                <p:row>
+                    <p:column footerText="Totals: " style="text-align:right"/>
+		        	<c:forEach var="item" begin="1" end="32">
+			        	<p:column footerText="#{iten.campos[item]}"  style="text-align:center">
+			        		<h:outputText value="#{iten.campos[item]}">
+<!-- 			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->
+			        		</h:outputText>
+			        	</p:column> 
+		        	</c:forEach>                     
+                </p:row>
+            </p:columnGroup>        		           
+        	</p:subTable>
+        	
 			<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	
         </p:dataTable>
         </p:fieldset>

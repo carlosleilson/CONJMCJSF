@@ -13,7 +13,6 @@
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <ui:remove>
 	   <h:form id="searchForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
 	    	<fieldset>
 	    	<legend>Excluir Despesa</legend>
@@ -21,25 +20,27 @@
 	    	 <p:row>
 	    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
 		          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-		          	<p:calendar id="mes_ano" size="8" value="#{despesasLojaBean.dataAgora}" 
+		          	<p:calendar id="mes_ano" size="8" value="#{sangriaBean.dataInicial}"
 		          		mindate="#{despesasLojaBean.mesAnterior}" 
 		          		maxdate="#{despesasLojaBean.dataAtual}" 
 		          		pattern="dd/MM/yyyy" 
-		          		required="true" />
+		          		required="true"
+		          		requiredMessage="A data Mes/ano não pode ser nula" />
 		          	<p:message for="mes_ano"/> 
 		          	
 		          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
-		          	<p:calendar id="Atemes_ano" size="8" value="#{despesasLojaBean.atedata}" 
+		          	<p:calendar id="Atemes_ano" size="8" value="#{sangriaBean.dataFinal}"
 		          		mindate="#{despesasLojaBean.mesAnterior}" 
 		          		maxdate="#{despesasLojaBean.dataAtual}" 
-		          		pattern="dd/MM/yyyy" required="true" />
+		          		pattern="dd/MM/yyyy" required="true"
+		          		requiredMessage="A data Até Mes/ano não pode ser nula" />
 		          	<p:message for="Atemes_ano"/>
 		         </h:panelGrid> 	
 			</p:row>
 			<p:row>	
 			<p:column  colspan="3">
 	          	<p:outputLabel  value="Item da Despesa  " for="clas"/>
-	          	<p:selectOneMenu id="clas" value="#{despesasLojaBean.despesasLoja.item}" converter="despesasGastosConverter">
+	          	<p:selectOneMenu id="clas" value="#{sangriaBean.itemSearch}" converter="despesasGastosConverter" filter="true">
 		    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
 					<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="classic" 
 					itemLabel="#{classic.descrisao}" itemValue="#{classic}" />
@@ -47,15 +48,13 @@
 	          	<p:message for="clas"/>
 	         </p:column>
 	        </p:row>
-			<p:row>	
-	          	
-	          <p:commandButton id="createSaveButton" value="Buscar" ajax="false" action="#{despesasLojaBean.busca}" />
-	<!--           <p:commandButton id="createCloseButton" value="Limpar" ajax="false" action="/pages/ExclusaoDespesasLoja.xhtml" /> -->
-			 </p:row>
 	          </h:panelGrid>
+	          <p:commandButton id="createSaveButton" value="Buscar" update=":dataForm:list :growlForm:growl" action="#{sangriaBean.busca}" />
 	        </fieldset>
-	      </h:form>
-	 </ui:remove>     
+	  </h:form>
+	  <h:form styleClass="buttomLimpar">
+    		<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{sangriaBean.reset}" action="ExclusaoDespesasLoja.xhtml" />
+      </h:form>     
       <h:form prependId="false" id="dataForm">
 	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
 	        	<f:facet name="header">Excluir Despesa</f:facet>
@@ -90,6 +89,12 @@
 				<p:commandButton id="decline" value="#{messages.label_no}" onclick="confirmation.hide()" type="button"/>
 			</p:confirmDialog>        
        </h:form>
+       
+		<p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+		<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+		    <p:graphicImage name="/images/carregando.gif" />
+		</p:dialog>
+		
     <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
       <p:outputPanel id="viewPanel">
         <h:form id="viewForm" enctype="multipart/form-data">

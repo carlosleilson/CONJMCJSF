@@ -458,10 +458,14 @@ public class DespesasGastosBean implements Serializable {
     }
 
 	public String delete() {
-        despesasGastos.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
+		try {
+			despesasGastos.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        init();
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
+		}
         return "despesasGastos.xhtml";
     }
 

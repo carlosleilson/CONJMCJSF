@@ -832,11 +832,11 @@ public class FuncionariosBean implements Serializable {
 		for (Funcionarios func : allFuncionarioses) {
 			if (func.getApelido().equals(funcionarios.getApelido())) {
 				existe = false;
-				message = "Já exite funcionário com apelido cadastrado";
+				message = "Jï¿½ exite funcionï¿½rio com apelido cadastrado";
 			}
 			if (func.getCpf().equals(funcionarios.getCpf())) {
 				existe = false;
-				message = "Já exite funcionário com CPF cadastrado";
+				message = "Jï¿½ exite funcionï¿½rio com CPF cadastrado";
 			}
 		}
 		
@@ -866,10 +866,14 @@ public class FuncionariosBean implements Serializable {
     }
 
 	public String delete() {
-        funcionarios.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Funcionarios");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
+		try {
+			funcionarios.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        init();
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item nÃ£o pode ser deletado porque possui dependÃªncias em outros mÃ³dulos", "O item nÃ£o pode ser deletado porque possui dependÃªncias em outros mÃ³dulos"));
+		}
         return "funcionarios.xhtml";
     }
 

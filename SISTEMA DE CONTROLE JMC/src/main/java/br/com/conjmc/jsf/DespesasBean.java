@@ -3,9 +3,11 @@ import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -16,6 +18,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.LengthValidator;
+
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.inputtextarea.InputTextarea;
 import org.primefaces.component.message.Message;
@@ -436,10 +439,14 @@ public class DespesasBean implements Serializable {
     }
 
 	public String delete() {
-        despesas.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Despesas");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
+		try {
+			despesas.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        init();
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
+		}
         return "/pages/despesas.xtml";
     }
 

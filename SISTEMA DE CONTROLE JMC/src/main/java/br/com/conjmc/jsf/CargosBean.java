@@ -335,10 +335,14 @@ public class CargosBean implements Serializable {
     }
 
 	public String delete() {
-        cargos.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Cargos");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
+		try {
+			cargos.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        init();
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
+		}
         return "cargos.xhtml";
     }
 

@@ -45,10 +45,11 @@
           </h:panelGrid>
           	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
-<!--           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="createDialogWidget.hide()" type="button" /> -->
     	</fieldset>
     	</h:form>
-    	
+    	<h:form styleClass="buttomLimpar">
+    		<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{sangriaBean.reset}" action="despesasLoja.xhtml" />
+      	</h:form>
     	<h:form prependId="false" id="dataForm">
 	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
 	        	<f:facet name="header">Incluir Despesa</f:facet>

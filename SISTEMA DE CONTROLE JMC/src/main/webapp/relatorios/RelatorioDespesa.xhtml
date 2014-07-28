@@ -33,12 +33,8 @@
 		                <p:column headerText="#{campoCebecalho}" />
 	                 </c:forEach>	        		
 	        	</f:facet>
-	        	
-				   <p:column >
-		        		<h:outputText  value="#{iten.item.descrisao}"/>
-		           </p:column>
 		           
-	        	<c:forEach var="item" begin="1" end="31">
+	        	<c:forEach var="item" begin="0" end="31">
 		        	<p:column style="text-align:center">
 		        		<h:outputText value="#{iten.campos[item]}">
 <!-- 		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->
@@ -51,19 +47,19 @@
 		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
 	        		</h:outputText>
 	        	</p:column> 
-		        	        		           
-            <p:columnGroup type="footer">
-                <p:row>
-                    <p:column footerText="Totals: " style="text-align:right"/>
-		        	<c:forEach var="item" begin="1" end="32">
-			        	<p:column footerText="#{iten.campos[item]}"  style="text-align:center">
-			        		<h:outputText value="#{iten.campos[item]}">
-<!-- 			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->
-			        		</h:outputText>
-			        	</p:column> 
-		        	</c:forEach>                     
-                </p:row>
-            </p:columnGroup>        		           
+		       <ui:remove>
+<!--             <p:columnGroup type="footer"> -->
+<!--                 <p:row > -->
+<!-- 		        	<c:forEach var="item" begin="0" end="32"> -->
+<!-- 			        	<p:column footerText="#{iten.campos[item]}"  style="text-align:center"> -->
+<!-- 			        		<h:outputText value="#{iten.campos[item]}"> -->
+<!--  			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->
+<!-- 			        		</h:outputText> -->
+<!-- 			        	</p:column>  -->
+<!-- 		        	</c:forEach>                      -->
+<!--                 </p:row> -->
+<!--             </p:columnGroup>        		            -->
+		       </ui:remove> 	        			           
         	</p:subTable>
         	
 			<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	

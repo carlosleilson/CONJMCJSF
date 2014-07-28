@@ -184,6 +184,7 @@ public class SangriaBean implements Serializable  {
     }
 
 	public List<Sangria> getAllSangrias() {
+		findAllSangrias();
         return allSangrias;
     }
 
@@ -606,6 +607,10 @@ public class SangriaBean implements Serializable  {
 	public void reset() {
         sangria = null;
         createDialogVisible = false;
+        dataInicial = null;
+        dataFinal = null;
+        itemSearch = null;
+        findAllDespesaLoja();
     }
 
 	public void handleDialogClose(CloseEvent event) {

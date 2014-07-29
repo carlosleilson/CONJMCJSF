@@ -38,8 +38,6 @@ import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.relatorios.Classificacao;
-import br.com.conjmc.relatorios.Resumo;
-import br.com.conjmc.relatorios.mes.Mes;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 
 @ManagedBean(name = "sangriaBean")
@@ -82,7 +80,6 @@ public class SangriaBean implements Serializable  {
 	
 	private String classificacao;
 	private List<Classificacao> classificacaoItens;
-	private List<Resumo> relatorioMes;
 	
 	/*----------- Search ------------*/
 	private Date dataInicial;
@@ -149,9 +146,6 @@ public class SangriaBean implements Serializable  {
         allRelatorioDiaDoMes();
     	RelatorioDiaDoMes relatorioDiaDoMes = new RelatorioDiaDoMes();
     	classificacaoItens = relatorioDiaDoMes.criarRelatorio();
-    	
-    	Mes mes = new Mes();
-    	relatorioMes = mes.criarRelatorio();
     }
 
 	/**
@@ -880,12 +874,4 @@ public class SangriaBean implements Serializable  {
 	public void setClassificacaoItens(List<Classificacao> classificacaoItens) {
 		this.classificacaoItens = classificacaoItens;
 	}
-
-	public List<Resumo> getRelatorioMes() {
-		return relatorioMes;
-	}
-
-	public void setRelatorioMes(List<Resumo> relatorioMes) {
-		this.relatorioMes = relatorioMes;
-	}	
 }

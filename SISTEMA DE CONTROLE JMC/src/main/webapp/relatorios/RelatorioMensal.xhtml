@@ -12,12 +12,26 @@
     </h:form>
 	<p:fieldset legend="Relatorio de Desempenho Mensal">
     <h:form prependId="false" id="dataForm">       
-        <p:dataTable id="list" var="list" value="#{sangriaBean.relatorioMes}" >
-			<f:facet name="footer">Relatorio de Desempenho Mensal</f:facet> 
-					 <p:column style="text-align:center">
-		        		<h:outputText value="#{list.nome}">
+        <p:dataTable id="list" var="linha" value="#{sangriaBean.classificacaoItens}" >
+        	<p:subTable var="item" value="#{linha.itens}" >
+        	<f:facet name="header">
+        		<p:column rowspan="2" >
+        			<h:outputText value="#{linha.resumo}" />
+        		</p:column>
+        	</f:facet>
+					<h:outputText value="#{linha.name}" />
+        			<p:column style="text-align:center"/>
+		        	<p:column style="text-align:center">
+		        		<h:outputText value="#{item.campos[0]}">
 		        		</h:outputText>
-		        	</p:column>        	       	
+		        	</p:column> 
+        		           
+	        	<p:column style="text-align:center">
+	        		<h:outputText value="#{item.campos[32]}">
+		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
+	        		</h:outputText>
+	        	</p:column> 
+        	</p:subTable>	        	        	       	       	
         </p:dataTable>
     </h:form>
     </p:fieldset>

@@ -12,21 +12,12 @@
     </h:form>
 	<p:fieldset legend="Relatorio de Desempenho Mensal">
     <h:form prependId="false" id="dataForm">       
-        <p:dataTable id="list" value="#{despesasLojaBean.allDespesasLojas}" var="despesasLoja">
-<!--         	<f:facet name="header">Relatorio de Desempenho Mensal</f:facet> -->
-        	<p:column headerText="Dia" sortBy="#{despesasLoja.periodo}">
-        		<h:outputText value="#{despesasLoja.periodo}">
-        			<f:convertDateTime pattern="dd/MM/yyyy"/>
-        		</h:outputText>
-        	</p:column>
-        	<p:column headerText="Valor" sortBy="#{despesasLoja.valor}">
-        		<h:outputText value="#{despesasLoja.valor}">
-        			<f:convertNumber locale="pt_BR" pattern="0.00" maxFractionDigits="2"/>
-        		</h:outputText>
-        	</p:column> 
-        	 <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
-        	 </p:column> 
-			<f:facet name="footer">Relatorio de Desempenho Mensal</f:facet>        	       	
+        <p:dataTable id="list" var="list" value="#{sangriaBean.relatorioMes}" >
+			<f:facet name="footer">Relatorio de Desempenho Mensal</f:facet> 
+					 <p:column style="text-align:center">
+		        		<h:outputText value="#{list.nome}">
+		        		</h:outputText>
+		        	</p:column>        	       	
         </p:dataTable>
     </h:form>
     </p:fieldset>

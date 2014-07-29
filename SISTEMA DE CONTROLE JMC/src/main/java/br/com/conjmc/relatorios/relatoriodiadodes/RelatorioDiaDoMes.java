@@ -103,6 +103,7 @@ public class RelatorioDiaDoMes {
 		total[QTD_CAMPOS-1] = df.format(Double.valueOf(total[QTD_CAMPOS-1]) + valor).replace(",", ".");
 
 	}
+	
 	/**
 	 * Método que retorna todas clasificação.
 	 * 

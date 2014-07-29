@@ -18,46 +18,24 @@ public class RelatorioDiaDoMes {
 	private String[] totalLinha;
 	
 	public RelatorioDiaDoMes(){
-        //criarRelatorio();
-		initCampos();
 	}
 	
-	/**
-	 * Método para inicializar com 0,00 a ultima linha do relatorio
-	 */
-	private void initResultadoTotal() {
-		totalLinha = new String[QTD_CAMPOS];
-		for(int y =1; y < QTD_CAMPOS; y++){
-			totalLinha[y] = "0";
+	private String[] inicializaArray(String[] campos){
+		campos =  new String[QTD_CAMPOS];
+		for(int y =0; y < QTD_CAMPOS; y++){
+			campos[y] = "0";
 		}
-		totalLinha[0] ="TOTAL GERAL:";
-	}	
-	
-	private void initCampos(){
-		campos = new String[QTD_CAMPOS];
-		for (int y = 1; y < QTD_CAMPOS; y++) {
-			campos[y] = "0.0";
-		}
+		return campos;
 	}
-	
 	/**
 	 * Método para criar relatorio.
 	 */	
 	public List<Classificacao> criarRelatorio(){
 		classificacaoItens = new ArrayList<Classificacao>();
 		for(Despesas classificacao :findAllClassificacao()){
-				criarClassificacao(classificacao);
+			classificacaoItens.add(criarClassificacao(classificacao));
 		}
 		return classificacaoItens;
-	}
-	
-	/**
-	 * Método que carrega do dados do itens.
-	 * @param classificacao -- Objeto da classificação
-	 */		
-	private void criarClassificacao(Despesas classificacao) {
-		Classificacao classificacaoIten = new Classificacao();
-		classificacaoItens.add(criarItens(classificacaoIten,classificacao));
 	}
 	
 	/**
@@ -65,7 +43,8 @@ public class RelatorioDiaDoMes {
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */		
-	private Classificacao criarItens(Classificacao classificacaoIten, Despesas classificacao) {
+	private Classificacao criarClassificacao(Despesas classificacao) {
+		Classificacao classificacaoIten = new Classificacao();
 		classificacaoIten.setName(classificacao.getCodigo() + " - "	+ classificacao.getDescricao());
 		List<Itens> listItens = new ArrayList<Itens>();
 		for (DespesasGastos item : findAllDespasGastosByClassificao(classificacao.getId())) {
@@ -78,8 +57,6 @@ public class RelatorioDiaDoMes {
 	}
 	
 	private Itens criarTotalLinha() {
-		totalLinha = new String[QTD_CAMPOS];
-		initResultadoTotal();
 		Itens itensRelatorio = new Itens();
 		itensRelatorio.setCampos(totalLinha);
 		return itensRelatorio;
@@ -91,37 +68,40 @@ public class RelatorioDiaDoMes {
 	 */
 	private Itens criarDadosDeItem(DespesasGastos item, Itens itensRelatorio) {
 		List<Sangria> dadosItens = findAllSangriaByItens(item.getId());
-		campos = new String[QTD_CAMPOS];
-		 initCampos();
+		String[] total = new String[QTD_CAMPOS];
+		total = inicializaArray(total);
+		campos = inicializaArray(campos);
 		campos[0] = item.getDescrisao();
-		preencherCampos(campos,dadosItens);
+		preencherCampos(total,campos,dadosItens);
 		itensRelatorio.setCampos(campos);
+		totalLinha = total;
 		return itensRelatorio;
 	}
 
 	/**
 	 * Método que preenche os campos.
 	 * @param campos -- 31 campos para representar o mês.
+	 * @param campos2 
 	 * @param dadosItens -- itens do sangria.
 	 */
-	private void preencherCampos(String[] campos, List<Sangria> dadosItens) {
+	private void preencherCampos( String[] total,String[] campos, List<Sangria> dadosItens) {
 		DecimalFormat df = new DecimalFormat("#.##");
 		campos[QTD_CAMPOS-1]="0.0";
 		for (Sangria dado : dadosItens) {
 			if(dado.getValor()!=null){
 				campos[dado.getPeriodo().getDate()] =  df.format(dado.getValor()).replace(",", ".");
 				campos[QTD_CAMPOS-1] = df.format(Double.valueOf(campos[QTD_CAMPOS-1]) + dado.getValor()).replace(",", ".");
-				somarTotalPorClassificacao(dado.getPeriodo().getDate(),dado.getValor());
+				somarTotalPorClassificacao(total,dado.getPeriodo().getDate(),dado.getValor());
 			}	
 		}
 	}
 
-	private String[] somarTotalPorClassificacao(int campo, Double valor) {
+	private void somarTotalPorClassificacao(String[] total, int campo, Double valor) {
 		DecimalFormat df = new DecimalFormat("#.##");
-		totalLinha[0] ="Totals:";
-		totalLinha[campo] = df.format(Double.valueOf(totalLinha[campo]) + valor).replace(",", ".");
-		totalLinha[QTD_CAMPOS-1] = df.format(Double.valueOf(totalLinha[QTD_CAMPOS-1]) + valor).replace(",", ".");
-		return totalLinha;
+		total[0] ="Totals:";
+		total[campo] = df.format(Double.valueOf(total[campo]) + valor).replace(",", ".");
+		total[QTD_CAMPOS-1] = df.format(Double.valueOf(total[QTD_CAMPOS-1]) + valor).replace(",", ".");
+
 	}
 	/**
 	 * Método que retorna todas clasificação.

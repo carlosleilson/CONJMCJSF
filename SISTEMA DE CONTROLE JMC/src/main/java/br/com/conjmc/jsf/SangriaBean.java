@@ -36,6 +36,7 @@ import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.relatorios.Classificacao;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
@@ -85,6 +86,10 @@ public class SangriaBean implements Serializable  {
 	private Date dataInicial;
 	
 	private Date dataFinal;
+	
+	private String mesAnterior;
+	
+	private String dataAtual;
 	
 	private DespesasGastos itemSearch;
 	
@@ -146,6 +151,9 @@ public class SangriaBean implements Serializable  {
         allRelatorioDiaDoMes();
     	RelatorioDiaDoMes relatorioDiaDoMes = new RelatorioDiaDoMes();
     	classificacaoItens = relatorioDiaDoMes.criarRelatorio();
+        dataAtual = DataUltil.dataAtual();
+        mesAnterior = DataUltil.mesAnterior();
+       // sangria.setPeriodo(DataUltil.mesAnterior(new Date()));
     }
 
 	/**
@@ -833,7 +841,8 @@ public class SangriaBean implements Serializable  {
 	 *            -- Id dos itens.
 	 */
 	public List<Sangria> findAllSangriaByItens(Long id) {
-		allSangrias =  Sangria.findSangriaByItens(id);
+		//allSangrias =  Sangria.findSangriaByItens(id);
+		allSangrias = Sangria.paginaPorMes(new Date(), id);
 		return allSangrias;
 	}
 	
@@ -873,5 +882,21 @@ public class SangriaBean implements Serializable  {
 
 	public void setClassificacaoItens(List<Classificacao> classificacaoItens) {
 		this.classificacaoItens = classificacaoItens;
+	}
+
+	public String getMesAnterior() {
+		return mesAnterior;
+	}
+
+	public void setMesAnterior(String mesAnterior) {
+		this.mesAnterior = mesAnterior;
+	}
+
+	public String getDataAtual() {
+		return dataAtual;
+	}
+
+	public void setDataAtual(String dataAtual) {
+		this.dataAtual = dataAtual;
 	}
 }

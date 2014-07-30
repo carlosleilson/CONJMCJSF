@@ -33,6 +33,7 @@ import javax.persistence.ManyToOne;
 
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.despesa.DespesasLoja;
+import br.com.conjmc.jsf.util.DataUltil;
 
 @Configurable
 @Entity
@@ -282,23 +283,15 @@ public class Sangria {
         return q.getResultList();
     }
 	
-	/*public static List< Sangria > encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
-        if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
+	public static List< Sangria > paginaPorMes(Date data, Long id) {
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
-        if(item!=null){
-            q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item = :item", Sangria.class);
-            q.setParameter("item", item);
-        }else{	
-        	q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal", Sangria.class);
-        }
-        q.setParameter("dataInicial", dataInicial );
-        q.setParameter("dataFinal", dataFinal);
-        //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
+        q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.id = :item", Sangria.class);
+       	q.setParameter("item", id);
+        q.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
+        q.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));
         return q.getResultList();
-    }*/
+    }
 	
 	@Override
 	public boolean equals(Object obj) {

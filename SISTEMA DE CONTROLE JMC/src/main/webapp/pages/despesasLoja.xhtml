@@ -18,7 +18,7 @@
     		<legend>Incluir Despesa</legend>   	
           <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
           	<p:outputLabel value="Período: " for="periodo"/>
-    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy" />
+    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" />
     		<p:message for="periodo"/>   
           
           	<p:outputLabel value="Valor" for="valor"/>

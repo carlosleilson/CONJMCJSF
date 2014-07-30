@@ -114,6 +114,15 @@ public class RelatorioDiaDoMes {
         return  Despesas.findAllDespesases();
     }
 	
+//	/**
+//	 * Método que retorna todas clasificação por mes.
+//	 * 
+//	 * @param 
+//	 *            
+//	 */		
+//	public List<Despesas> findAllClassificacaoByMonth(int mes) {
+//        return  Despesas.findAllDespesases(mes);
+//    }	
 	/**
 	 * Método para encontrar dados dos itens por id da classificação.
 	 * 

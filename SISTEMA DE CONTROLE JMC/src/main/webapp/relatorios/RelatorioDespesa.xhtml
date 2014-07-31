@@ -13,7 +13,7 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-        <p:dataTable id="list"  var="linha" value="#{sangriaBean.classificacaoItens}" rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'ui-datatable-odd' : null}">
+        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'ui-datatable-odd' : null}">
         	<f:facet name="header">Relatorio de Despesas</f:facet>
         	<p:columnGroup type="header">
 	            <p:row>

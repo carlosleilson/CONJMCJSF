@@ -12,7 +12,7 @@
     </h:form>
 	<p:fieldset legend="Relatorio de Desempenho Mensal">
     <h:form prependId="false" id="dataForm">       
-        <p:dataTable id="list" var="linha" value="#{sangriaBean.classificacaoItens}" >
+        <p:dataTable id="list" var="linha" value="#{relatorioBean.classificacaoItens}" >
         	<p:subTable var="item" value="#{linha.itens}" >
         	<f:facet name="header">
         		<p:column rowspan="2" >

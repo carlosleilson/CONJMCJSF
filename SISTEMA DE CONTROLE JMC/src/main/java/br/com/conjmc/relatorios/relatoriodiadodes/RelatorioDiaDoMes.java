@@ -119,7 +119,6 @@ public class RelatorioDiaDoMes {
 		DecimalFormat df = new DecimalFormat("#.##");
 		campoTemp[0] ="Totals:";
 		campoTemp[dia] = df.format(Double.valueOf(campoTemp[dia]) + valor).replace(",", ".");
-		//campoTemp[QTD_CAMPOS-1] = df.format(Double.valueOf(campoTemp[QTD_CAMPOS-1]) + valor).replace(",", ".");
 	}	
 	
 	/**

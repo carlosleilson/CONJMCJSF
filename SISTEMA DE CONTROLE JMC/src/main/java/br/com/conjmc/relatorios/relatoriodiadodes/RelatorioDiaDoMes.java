@@ -10,119 +10,141 @@ import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.relatorios.Classificacao;
 import br.com.conjmc.relatorios.Itens;
 
+/**
+ * @author leilson
+ *
+ */
 public class RelatorioDiaDoMes {
 	private List<Classificacao> classificacaoItens;
 	private List<Sangria> allSangrias;
 	private final int QTD_CAMPOS = 33; 
-	private String[] campos;
-	private String[] totalLinha;
+	private String[] campoTemp;
+	private static String[] totalLinha;
 	
 	public RelatorioDiaDoMes(){
+		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
+		totalLinha[0] = "TOTAL GERAL";
 	}
 	
 	private String[] inicializaArray(String[] campos){
-		campos =  new String[QTD_CAMPOS];
-		for(int y =0; y < QTD_CAMPOS; y++){
+		for(int y =1; y < QTD_CAMPOS; y++){
 			campos[y] = "0";
 		}
 		return campos;
 	}
+	
 	/**
 	 * Método para criar relatorio.
 	 */	
 	public List<Classificacao> criarRelatorio(){
+		return linhasDoRelatorio();
+	}
+	
+	/**
+	 * Método que cria cada Linha do relatorio, dinamicamente.
+	 */	
+	private List<Classificacao> linhasDoRelatorio() {
+		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
 		classificacaoItens = new ArrayList<Classificacao>();
 		for(Despesas classificacao :findAllClassificacao()){
-			classificacaoItens.add(criarClassificacao(classificacao));
+			classificacaoItens.add(criarLinhas(classificacao));
 		}
-		return classificacaoItens;
+		classificacaoItens.add(criarTotalDeTodasLinhas());
+		return classificacaoItens;		
 	}
+	
+	private Classificacao criarTotalDeTodasLinhas(){
+		Classificacao classificacaoIten = new Classificacao();
+		List<Itens> listItens = new ArrayList<Itens>();
+			listItens.add(criarSomarTotalLinha());
+		classificacaoIten.setItens(listItens);
+		return classificacaoIten;
+	}
+	
+	private Itens criarSomarTotalLinha() {
+		Itens itensRelatorio = new Itens();
+			itensRelatorio.setCampos(totalLinha);
+		return itensRelatorio;
+	}		
 	
 	/**
 	 * Método que carrega do dados do itens.
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
-	 */		
-	private Classificacao criarClassificacao(Despesas classificacao) {
+	 */
+	private Classificacao criarLinhas(Despesas classificacao) {
 		Classificacao classificacaoIten = new Classificacao();
 		classificacaoIten.setName(classificacao.getCodigo() + " - "	+ classificacao.getDescricao());
 		List<Itens> listItens = new ArrayList<Itens>();
 		for (DespesasGastos item : findAllDespasGastosByClassificao(classificacao.getId())) {
-			Itens itensRelatorio = new Itens();
-			listItens.add(criarDadosDeItem(item,itensRelatorio));
-		}
+			listItens.add(criarDadosDeItem(item));
+		}		
 		listItens.add(criarTotalLinha());
+		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
 		classificacaoIten.setItens(listItens);
 		return classificacaoIten;
 	}
-	
-	private Itens criarTotalLinha() {
-		Itens itensRelatorio = new Itens();
-		itensRelatorio.setCampos(totalLinha);
-		return itensRelatorio;
-	}
+
 	/**
 	 * Método que carrega dado de valor e periodo do itens.
 	 * @param item -- id do itens
-	 * @param itensRelatorio -- Objeto do iten.
 	 */
-	private Itens criarDadosDeItem(DespesasGastos item, Itens itensRelatorio) {
-		List<Sangria> dadosItens = findAllSangriaByItens(item.getId());
-		String[] total = new String[QTD_CAMPOS];
-		total = inicializaArray(total);
-		campos = inicializaArray(campos);
-		campos[0] = item.getDescrisao();
-		preencherCampos(total,campos,dadosItens);
-		itensRelatorio.setCampos(campos);
-		totalLinha = total;
+	private Itens criarDadosDeItem(DespesasGastos item) {
+		Itens itensRelatorio = new Itens();
+		String[] campos = new String[QTD_CAMPOS];
+		campos[0]=item.getDescrisao();
+		itensRelatorio.setCampos( preencharCampos( inicializaArray(campos),item.getId() ));
 		return itensRelatorio;
-	}
-
-	/**
-	 * Método que preenche os campos.
-	 * @param campos -- 31 campos para representar o mês.
-	 * @param campos2 
-	 * @param dadosItens -- itens do sangria.
-	 */
-	private void preencherCampos( String[] total,String[] campos, List<Sangria> dadosItens) {
-		DecimalFormat df = new DecimalFormat("#.##");
-		campos[QTD_CAMPOS-1]="0.0";
-		for (Sangria dado : dadosItens) {
-			if(dado.getValor()!=null){
-				campos[dado.getPeriodo().getDate()] =  df.format(dado.getValor()).replace(",", ".");
-				campos[QTD_CAMPOS-1] = df.format(Double.valueOf(campos[QTD_CAMPOS-1]) + dado.getValor()).replace(",", ".");
-				somarTotalPorClassificacao(total,dado.getPeriodo().getDate(),dado.getValor());
-			}	
-		}
-	}
-
-	private void somarTotalPorClassificacao(String[] total, int campo, Double valor) {
-		DecimalFormat df = new DecimalFormat("#.##");
-		total[0] ="Totals:";
-		total[campo] = df.format(Double.valueOf(total[campo]) + valor).replace(",", ".");
-		total[QTD_CAMPOS-1] = df.format(Double.valueOf(total[QTD_CAMPOS-1]) + valor).replace(",", ".");
-
 	}
 	
 	/**
+	 * Método que preenche os campos.
+	 * @param campos -- 31 campos para representar o mês.
+	 * @param itenId -- itens do sangria.
+	 */
+	private String[] preencharCampos(String[] campos, Long itenId) {
+		DecimalFormat df = new DecimalFormat("#.##");
+		List<Sangria> dadosItens = findAllSangriaByItens(itenId);
+		for(int i = 1; i<campos.length; i++){
+			for (Sangria dado : dadosItens) {
+				if(dado.getPeriodo().getDate() == i && dado.getValor()!=null){
+					campos[i] = String.valueOf(dado.getValor());
+					campos[QTD_CAMPOS-1] = df.format(Double.valueOf(campos[QTD_CAMPOS-1])+ dado.getValor()).replace(",", ".");
+				}
+			}			
+			totalLinha[i] = df.format(Double.valueOf(totalLinha[i])+ Double.valueOf(campos[i])).replace(",", ".");
+			somarTotalPorClassificacao(i,Double.valueOf(campos[i]));
+		}
+		return campos;
+	}
+	
+	/**
+	 * Método para incluir o total:
+	 */		
+	private Itens criarTotalLinha() {
+		Itens itensRelatorio = new Itens();
+		itensRelatorio.setCampos(campoTemp);
+		return itensRelatorio;
+	}	
+	
+	/**
+	 * Método que somar total de cada linha e adcionar na linha total:
+	 * @param dia O dai do mes.
+	 * @param valor é o valor do dia.
+	 */			
+	private void somarTotalPorClassificacao(int dia, Double valor) {
+		DecimalFormat df = new DecimalFormat("#.##");
+		campoTemp[0] ="Totals:";
+		campoTemp[dia] = df.format(Double.valueOf(campoTemp[dia]) + valor).replace(",", ".");
+	}	
+	
+	/**
 	 * Método que retorna todas clasificação.
-	 * 
-	 * @param 
-	 *            
 	 */		
 	public List<Despesas> findAllClassificacao() {
         return  Despesas.findAllDespesases();
     }
 	
-//	/**
-//	 * Método que retorna todas clasificação por mes.
-//	 * 
-//	 * @param 
-//	 *            
-//	 */		
-//	public List<Despesas> findAllClassificacaoByMonth(int mes) {
-//        return  Despesas.findAllDespesases(mes);
-//    }	
 	/**
 	 * Método para encontrar dados dos itens por id da classificação.
 	 * 

@@ -20,7 +20,8 @@ public class Relatorio {
 	}
 	
 	public void anterior(){
-		
+		RelatorioDiaDoMes relatorioDiaDoMes = new RelatorioDiaDoMes();
+		relatorioDiaDoMes.mesAnterior();
 	}
 	
 	public void proximo(){

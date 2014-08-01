@@ -13,8 +13,8 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:fieldset legend="Relatorio de Despesas">
-	<p:commandButton id="anteriorButton" value="Anterior" action="#{relatorioBean.anterior}" />
-	 <p:commandButton id="proximoButton" value="Próximo" action="#{relatorioBean.proximo}" />
+	<p:commandButton id="anteriorButton" ajax="false" value="Anterior" action="#{relatorioBean.anterior}" />
+	 <p:commandButton id="proximoButton" ajax="false" value="Próximo" action="#{relatorioBean.proximo}" />
         <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'ui-datatable-odd' : null}">
         	<f:facet name="header">Relatorio de Despesas</f:facet>
         	<p:columnGroup type="header">

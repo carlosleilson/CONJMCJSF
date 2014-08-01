@@ -56,7 +56,7 @@ public class DataUltil {
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
-		c.set(c.DAY_OF_MONTH,1 );
+		c.set(c.DAY_OF_MONTH,0 );
 		data = c.getTime();
 		return data;
 	}	

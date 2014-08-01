@@ -12,11 +12,21 @@ import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 public class Relatorio {
 	private List<Classificacao> classificacaoItens;
 	private List<Sangria> allSangrias;	
+	
 	@PostConstruct
     public void init() {
     	RelatorioDiaDoMes relatorioDiaDoMes = new RelatorioDiaDoMes();
-    	setClassificacaoItens(relatorioDiaDoMes.criarRelatorio());		
+    	this.classificacaoItens = relatorioDiaDoMes.criarRelatorio();		
 	}
+	
+	public void anterior(){
+		
+	}
+	
+	public void proximo(){
+		
+	}
+	
 	public List<Classificacao> getClassificacaoItens() {
 		return classificacaoItens;
 	}

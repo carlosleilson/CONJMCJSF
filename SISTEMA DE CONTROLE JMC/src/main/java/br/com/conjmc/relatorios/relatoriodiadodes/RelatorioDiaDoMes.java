@@ -1,7 +1,9 @@
 package br.com.conjmc.relatorios.relatoriodiadodes;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,11 +20,13 @@ import br.com.conjmc.relatorios.Itens;
 public class RelatorioDiaDoMes {
 	private List<Classificacao> classificacaoItens;
 	private List<Sangria> allSangrias;
-	private final int QTD_CAMPOS = 33; 
+	private int QTD_CAMPOS = 33; 
 	private String[] campoTemp;
 	private static String[] totalLinha;
 	
 	public RelatorioDiaDoMes(){
+		Calendar c = Calendar.getInstance();
+		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
 	}

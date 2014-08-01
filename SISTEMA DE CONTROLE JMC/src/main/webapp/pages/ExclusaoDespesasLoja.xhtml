@@ -58,6 +58,9 @@
       <h:form prependId="false" id="dataForm">
 	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
 	        	<f:facet name="header">Excluir Despesa</f:facet>
+	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
+	          		<h:outputText value="#{sangria.item.descrisao}"/>
+	          	</p:column>
 	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
 	          		<h:outputText value="#{sangria.periodo}">
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
@@ -66,18 +69,17 @@
 	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
 	          		<h:outputText value="#{sangria.valor}"/>
 	          	</p:column>
-	          	<p:column headerText="Origem" sortBy="#{sangria.origem}">
-	          		<h:outputText value="#{sangria.origem}"/>
-	          	</p:column>
-	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
-	          		<h:outputText value="#{sangria.item.descrisao}"/>
-	          	</p:column>
-	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}">
-	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/>
-	          	</p:column>
-	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}">
-	          		<h:outputText value="#{sangria.funcionario.apelido}"/>
-	          	</p:column>
+	          	<ui:remove>
+<!-- 	          	<p:column headerText="Origem" sortBy="#{sangria.origem}"> -->
+<!-- 	          		<h:outputText value="#{sangria.origem}"/> -->
+<!-- 	          	</p:column> -->
+<!-- 	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}"> -->
+<!-- 	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/> -->
+<!-- 	          	</p:column> -->
+<!-- 	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}"> -->
+<!-- 	          		<h:outputText value="#{sangria.funcionario.apelido}"/> -->
+<!-- 	          	</p:column> -->
+	          	</ui:remove>
 	          	<p:column headerText="Ações" styleClass="action-column" style="width:40px;"> 
 		            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}" rendered="#{sangria.sangria != true}">
 						<f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />

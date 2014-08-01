@@ -2,6 +2,7 @@ package br.com.conjmc.relatorios.relatoriodiadodes;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.com.conjmc.cadastrobasico.Despesas;
@@ -162,7 +163,7 @@ public class RelatorioDiaDoMes {
 	 *            -- Id dos itens.
 	 */
 	public List<Sangria> findAllSangriaByItens(Long id) {
-		allSangrias =  Sangria.findSangriaByItens(id);
+		allSangrias =  Sangria.paginaPorMes(new Date(), id);
 		return allSangrias;
 	}
 

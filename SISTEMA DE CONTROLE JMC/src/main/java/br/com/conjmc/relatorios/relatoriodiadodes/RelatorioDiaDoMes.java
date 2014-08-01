@@ -19,9 +19,11 @@ public class RelatorioDiaDoMes {
 	private List<Sangria> allSangrias;
 	private final int QTD_CAMPOS = 33; 
 	private String[] campoTemp;
+	private static String[] totalLinha;
 	
 	public RelatorioDiaDoMes(){
-		
+		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
+		totalLinha[0] = "TOTAL GERAL";
 	}
 	
 	private String[] inicializaArray(String[] campos){
@@ -47,8 +49,23 @@ public class RelatorioDiaDoMes {
 		for(Despesas classificacao :findAllClassificacao()){
 			classificacaoItens.add(criarLinhas(classificacao));
 		}
+		classificacaoItens.add(criarTotalDeTodasLinhas());
 		return classificacaoItens;		
 	}
+	
+	private Classificacao criarTotalDeTodasLinhas(){
+		Classificacao classificacaoIten = new Classificacao();
+		List<Itens> listItens = new ArrayList<Itens>();
+			listItens.add(criarSomarTotalLinha());
+		classificacaoIten.setItens(listItens);
+		return classificacaoIten;
+	}
+	
+	private Itens criarSomarTotalLinha() {
+		Itens itensRelatorio = new Itens();
+			itensRelatorio.setCampos(totalLinha);
+		return itensRelatorio;
+	}		
 	
 	/**
 	 * Método que carrega do dados do itens.
@@ -95,7 +112,7 @@ public class RelatorioDiaDoMes {
 					campos[QTD_CAMPOS-1] = df.format(Double.valueOf(campos[QTD_CAMPOS-1])+ dado.getValor()).replace(",", ".");
 				}
 			}			
-			//campos[QTD_CAMPOS-1] = df.format(Double.valueOf(campos[QTD_CAMPOS-1])+ Double.valueOf(campos[QTD_CAMPOS-1])).replace(",", ".");
+			totalLinha[i] = df.format(Double.valueOf(totalLinha[i])+ Double.valueOf(campos[i])).replace(",", ".");
 			somarTotalPorClassificacao(i,Double.valueOf(campos[i]));
 		}
 		return campos;

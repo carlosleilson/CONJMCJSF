@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -54,6 +55,9 @@ public class Despesas {
      */
     @NotNull
     private Boolean situacao;
+    
+    @OneToMany (mappedBy="classificacao")
+    private List<DespesasGastos> classificacao;
 
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -247,6 +251,14 @@ public class Despesas {
 		} else if (!version.equals(other.version))
 			return false;
 		return true;
+	}
+
+	public List<DespesasGastos> getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(List<DespesasGastos> classificacao) {
+		this.classificacao = classificacao;
 	}
 	
 }

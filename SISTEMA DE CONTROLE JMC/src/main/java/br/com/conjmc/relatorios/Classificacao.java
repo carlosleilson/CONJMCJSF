@@ -6,6 +6,7 @@ import java.util.List;
 public class Classificacao {
 	private String name;
 	private String resumo;
+	private String codigo;
 	private List<Itens> itens;
 	
 	public Classificacao() {
@@ -32,5 +33,13 @@ public class Classificacao {
 
 	public void setResumo(String resumo) {
 		this.resumo = resumo;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 }

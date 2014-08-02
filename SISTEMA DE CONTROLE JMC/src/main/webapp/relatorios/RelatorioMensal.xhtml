@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -11,28 +12,29 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">       
-	<p:fieldset legend="Relatorio de Desempenho Mensal - #{relatorioBean.dataLabel}">
-	<p:commandButton id="anteriorButton" ajax="false" value="Anterior" action="#{relatorioBean.anterior}" />
-	 <p:commandButton id="proximoButton" ajax="false" value="Próximo" action="#{relatorioBean.proximo}" />	
-        <p:dataTable id="list" var="linha" value="#{relatorioBean.classificacaoItens}"  selectionMode="single" draggableRows="true">
-        	<p:subTable var="item" value="#{linha.itens}" >
-        	<f:facet name="header">
-        		<p:column rowspan="2" >
-        			<h:outputText value="#{linha.resumo}" />
-        		</p:column>
-        	</f:facet>
-					<h:outputText value="#{linha.name}" />
-        			<p:column style="text-align:center"/>
+	<p:fieldset legend="Relatorio de Desempenho Mensal - #{relatorioMesBean.dataLabel}">
+	<p:commandButton id="anteriorButton" ajax="false" value="Anterior" action="#{relatorioMesBean.anterior}" />
+	 <p:commandButton id="proximoButton" ajax="false" value="Próximo" action="#{relatorioMesBean.proximo}" />	
+        <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}"  >
+        	<p:subTable var="item" value="#{linha.classificacoes}" >
+            <f:facet name="header">
+            </f:facet>
+            	<p:column rowspan="3" >
+	                <h:outputText value="#{linha.name}" />
+            	</p:column>        	
+	        	<p:column >
+	                <h:outputText value="#{item.codigo}" />
+	        	</p:column>	        	
+	        	<p:column >
+	                <h:outputText value="#{item.name}" />
+	        	</p:column>
 		        	<p:column style="text-align:center">
-		        		<h:outputText value="#{item.campos[0]}">
+	        	<ui:repeat var="total" value="#{item.itens}">
+		        		<h:outputText value="#{total.campos[32]}">
+			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
 		        		</h:outputText>
+	        	</ui:repeat>
 		        	</p:column> 
-        		           
-	        	<p:column style="text-align:center">
-	        		<h:outputText value="#{item.campos[32]}">
-		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
-	        		</h:outputText>
-	        	</p:column> 
         	</p:subTable>	        	        	       	       	
         </p:dataTable>
     </p:fieldset>

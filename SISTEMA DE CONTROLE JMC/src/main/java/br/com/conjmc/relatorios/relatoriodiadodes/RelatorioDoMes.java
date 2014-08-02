@@ -1,7 +1,6 @@
 package br.com.conjmc.relatorios.relatoriodiadodes;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,26 +11,28 @@ import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.relatorios.Classificacao;
 import br.com.conjmc.relatorios.Itens;
+import br.com.conjmc.relatorios.Resumo;
 
 /**
  * @author leilson
  *
  */
-public class RelatorioDiaDoMes {
-	private List<Classificacao> classificacaoItens;
+public class RelatorioDoMes {
+	private List<Resumo> resumosItens;
 	private List<Sangria> allSangrias;
 	private int QTD_CAMPOS = 33; 
 	private String[] campoTemp;
 	private static String[] totalLinha;
 	private static Date data;
 	
-	public RelatorioDiaDoMes(Date dataTemp){
+	public RelatorioDoMes(Date dataTemp){
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTemp);
 		data = c.getTime();
 		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
+		
 	}
 
 	private String[] inicializaArray(String[] campos){
@@ -44,43 +45,104 @@ public class RelatorioDiaDoMes {
 	/**
 	 * Método para criar relatorio.
 	 */	
-	public List<Classificacao> criarRelatorio(){
+	public List<Resumo> criarRelatorio(){
 		return linhasDoRelatorio();
 	}
 	
 	/**
 	 * Método que cria cada Linha do relatorio, dinamicamente.
 	 */	
-	private List<Classificacao> linhasDoRelatorio() {
+	private List<Resumo> linhasDoRelatorio() {
 		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
-		classificacaoItens = new ArrayList<Classificacao>();
+		resumosItens = new ArrayList<Resumo>();
 		for(Despesas classificacao :findAllClassificacao()){
-			classificacaoItens.add(criarLinhas(classificacao));
+			resumosItens.add(criarLinhas(classificacao));
 		}
-		classificacaoItens.add(criarTotalDeTodasLinhas());
-		return classificacaoItens;		
+		return resumosItens;		
 	}
-	
-	private Classificacao criarTotalDeTodasLinhas(){
-		Classificacao classificacaoIten = new Classificacao();
-		List<Itens> listItens = new ArrayList<Itens>();
-			listItens.add(criarSomarTotalLinha());
-		classificacaoIten.setItens(listItens);
-		return classificacaoIten;
-	}
-	
-	private Itens criarSomarTotalLinha() {
-		Itens itensRelatorio = new Itens();
-			itensRelatorio.setCampos(totalLinha);
-		return itensRelatorio;
-	}		
 	
 	/**
 	 * Método que carrega do dados do itens.
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */
-	private Classificacao criarLinhas(Despesas classificacao) {
+	private Resumo criarLinhas(Despesas classificacao) {
+		Resumo resumoIten = new Resumo();
+		resumoIten.setName(classificacao.getIdResumo());
+		List<Classificacao> classificacaoItens = new ArrayList<Classificacao>();
+		Classificacao classificacaoTemp = new Classificacao();
+		for (Despesas dadosDoResumo : findAllDadosDaClassificacao(classificacao.getIdResumo())) {
+			if(classificacao.getId().equals(dadosDoResumo.getId())){
+				classificacaoTemp.setCodigo(dadosDoResumo.getCodigo());
+				classificacaoTemp.setName(dadosDoResumo.getDescricao());
+				classificacaoTemp.setResumo(dadosDoResumo.getIdResumo());
+				classificacaoTemp.setItens(criarTotalDeTodasLinhas());
+				classificacaoItens.add(classificacaoTemp);
+				somarLinhas(classificacao);
+			}
+		}	
+		resumoIten.setClassificacoes(classificacaoItens);
+		return resumoIten;
+	}
+	
+	private List<Itens> criarTotalDeTodasLinhas(){
+		List<Itens> listItens = new ArrayList<Itens>();
+			listItens.add(criarSomarTotalLinha());
+		return listItens;
+	}
+	
+	private Itens criarSomarTotalLinha() {
+		Itens itensRelatorio = new Itens();
+			itensRelatorio.setCampos(campoTemp);
+		return itensRelatorio;
+	}		
+	
+	private List<Despesas>  findAllDadosDaClassificacao(String idResumo) {
+		return  Despesas.findAllIdResumo(idResumo);
+	}
+
+	/**
+	 * Método que retorna todas clasificação.
+	 */		
+	public List<Despesas> findAllClassificacao() {
+        return  Despesas.findAllDespesases();
+    }
+	
+	/**
+	 * Método para encontrar dados dos itens por id da classificação.
+	 * 
+	 * @param Long id
+	 *            -- Id da classificação.
+	 */	
+	public List<DespesasGastos> findAllDespasGastosByClassificao(Long id) {
+		return DespesasGastos.findAllClassificaco(id);
+	}
+	
+	/**
+	 * Método para encontrar valores do sangria por id dos itens
+	 * 
+	 * @param Long id
+	 *            -- Id dos itens.
+	 */
+	public List<Sangria> findAllSangriaByItens(Long id) {
+		allSangrias =  Sangria.paginaPorMes(data, id);
+		return allSangrias;
+	}
+
+	public List<Resumo> getResumosItens() {
+		return resumosItens;
+	}
+
+	public void setResumosItens(List<Resumo> resumosItens) {
+		this.resumosItens = resumosItens;
+	}
+//////////////////////////////////////////////////////////
+	/**
+	 * Método que carrega do dados do itens.
+	 * @param classificacaoIten -- Objeto da lista classificação
+	 * @param classificacao -- Objeto da classificação
+	 */
+	private Classificacao somarLinhas(Despesas classificacao) {
 		Classificacao classificacaoIten = new Classificacao();
 		classificacaoIten.setName(classificacao.getCodigo() + " - "	+ classificacao.getDescricao());
 		classificacaoIten.setResumo(classificacao.getIdResumo());
@@ -93,7 +155,15 @@ public class RelatorioDiaDoMes {
 		classificacaoIten.setItens(listItens);
 		return classificacaoIten;
 	}
-
+	
+	/**
+	 * Método para incluir o total:
+	 */		
+	private Itens criarTotalLinha() {
+		Itens itensRelatorio = new Itens();
+		itensRelatorio.setCampos(campoTemp);
+		return itensRelatorio;
+	}	
 	/**
 	 * Método que carrega dado de valor e periodo do itens.
 	 * @param item -- id do itens
@@ -125,15 +195,6 @@ public class RelatorioDiaDoMes {
 			somarTotalPorClassificacao(i,Double.valueOf(campos[i]));
 		}
 		return campos;
-	}
-	
-	/**
-	 * Método para incluir o total:
-	 */		
-	private Itens criarTotalLinha() {
-		Itens itensRelatorio = new Itens();
-		itensRelatorio.setCampos(campoTemp);
-		return itensRelatorio;
 	}	
 	
 	/**
@@ -146,40 +207,4 @@ public class RelatorioDiaDoMes {
 		campoTemp[0] ="Totals:";
 		campoTemp[dia] = df.format(Double.valueOf(campoTemp[dia]) + valor).replace(",", ".");
 	}	
-	
-	/**
-	 * Método que retorna todas clasificação.
-	 */		
-	public List<Despesas> findAllClassificacao() {
-        return  Despesas.findAllDespesases();
-    }
-	
-	/**
-	 * Método para encontrar dados dos itens por id da classificação.
-	 * 
-	 * @param Long id
-	 *            -- Id da classificação.
-	 */	
-	public List<DespesasGastos> findAllDespasGastosByClassificao(Long id) {
-		return DespesasGastos.findAllClassificaco(id);
-	}
-	
-	/**
-	 * Método para encontrar valores do sangria por id dos itens
-	 * 
-	 * @param Long id
-	 *            -- Id dos itens.
-	 */
-	public List<Sangria> findAllSangriaByItens(Long id) {
-		allSangrias =  Sangria.paginaPorMes(data, id);
-		return allSangrias;
-	}
-
-	public List<Classificacao> getClassificacaoItens() {
-		return classificacaoItens;
-	}
-
-	public void setClassificacaoItens(List<Classificacao> classificacaoItens) {
-		this.classificacaoItens = classificacaoItens;
-	}
 }

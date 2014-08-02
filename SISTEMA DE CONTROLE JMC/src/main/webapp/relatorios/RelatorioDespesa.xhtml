@@ -16,7 +16,7 @@
 	<p:commandButton id="anteriorButton" ajax="false" value="Anterior" action="#{relatorioBean.anterior}" />
 	 <p:commandButton id="proximoButton" ajax="false" value="Próximo" action="#{relatorioBean.proximo}" />
 	 <br />
-        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" >
+        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" draggableRows="true" >
         	<f:facet name="header">Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
         	<p:columnGroup type="header">
 	            <p:row>
@@ -28,7 +28,7 @@
 	            </p:row>        	
         	</p:columnGroup>
         	
-        	<p:subTable var="iten" value="#{linha.itens}">
+        	<p:subTable var="iten" value="#{linha.itens}" >
         	
 	        	<f:facet name="header">
 	        		<h:outputText  value="#{linha.name}" />
@@ -36,8 +36,12 @@
 		                <p:column headerText="#{campoCebecalho}" />
 	                 </c:forEach>	        		
 	        	</f:facet>
+	        	
+		        <p:column style="text-align:center" width="200">
+		        	<h:outputText value="#{iten.campos[0]}"/>
+		        </p:column>
 		           
-	        	<c:forEach var="item" begin="0" end="31">
+	        	<c:forEach var="item" begin="1" end="31">
 		        	<p:column style="text-align:center">
 		        		<h:outputText value="#{iten.campos[item]}">
 <!-- 		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->

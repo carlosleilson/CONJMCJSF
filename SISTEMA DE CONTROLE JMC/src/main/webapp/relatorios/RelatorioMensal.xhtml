@@ -14,7 +14,7 @@
 	<p:fieldset legend="Relatorio de Desempenho Mensal - #{relatorioBean.dataLabel}">
 	<p:commandButton id="anteriorButton" ajax="false" value="Anterior" action="#{relatorioBean.anterior}" />
 	 <p:commandButton id="proximoButton" ajax="false" value="Próximo" action="#{relatorioBean.proximo}" />	
-        <p:dataTable id="list" var="linha" value="#{relatorioBean.classificacaoItens}">
+        <p:dataTable id="list" var="linha" value="#{relatorioBean.classificacaoItens}"  selectionMode="single" draggableRows="true">
         	<p:subTable var="item" value="#{linha.itens}" >
         	<f:facet name="header">
         		<p:column rowspan="2" >

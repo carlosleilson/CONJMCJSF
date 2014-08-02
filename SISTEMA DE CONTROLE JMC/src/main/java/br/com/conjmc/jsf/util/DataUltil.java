@@ -55,8 +55,8 @@ public class DataUltil {
 	public static Date primeiroDiaMes(Date data){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
-		c.set(c.DAY_OF_MONTH,0 );
+		c.setTime(data);
+		c.set(c.DAY_OF_MONTH,c.getActualMinimum(Calendar.DAY_OF_MONTH) );
 		data = c.getTime();
 		return data;
 	}	
@@ -64,7 +64,7 @@ public class DataUltil {
 	public static Date ultimoDiaMes(Date data){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
-		c.setTime(new Date());
+		c.setTime(data);
 		c.set(c.DAY_OF_MONTH,c.getActualMaximum(Calendar.DAY_OF_MONTH) );
 		data = c.getTime();
 		return data;

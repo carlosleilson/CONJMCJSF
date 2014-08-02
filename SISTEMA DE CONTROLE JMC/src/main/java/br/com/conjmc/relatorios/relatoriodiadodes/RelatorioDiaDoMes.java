@@ -25,21 +25,16 @@ public class RelatorioDiaDoMes {
 	private static String[] totalLinha;
 	private static Date data;
 	
-	public RelatorioDiaDoMes(){
+	public RelatorioDiaDoMes(Date dataTemp){
 		Calendar c = Calendar.getInstance();
-		//data = c.getTime();
+		c.setTime(dataTemp);
+		data = c.getTime();
 		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
 		
 	}
 
-	public void mesAnterior() {
-		Calendar c = Calendar.getInstance();
-		data =c.getTime();
-		data.setMonth(data.getMonth()-1);
-	}	
-	
 	private String[] inicializaArray(String[] campos){
 		for(int y =1; y < QTD_CAMPOS; y++){
 			campos[y] = "0";

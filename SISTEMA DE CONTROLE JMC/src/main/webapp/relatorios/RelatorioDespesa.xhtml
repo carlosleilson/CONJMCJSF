@@ -12,14 +12,15 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">       
-	<p:fieldset legend="Relatorio de Despesas">
+	<p:fieldset legend="Relatorio de Despesas - #{relatorioBean.dataLabel}">
 	<p:commandButton id="anteriorButton" ajax="false" value="Anterior" action="#{relatorioBean.anterior}" />
 	 <p:commandButton id="proximoButton" ajax="false" value="Próximo" action="#{relatorioBean.proximo}" />
-        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'ui-datatable-odd' : null}">
-        	<f:facet name="header">Relatorio de Despesas</f:facet>
+	 <br />
+        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" >
+        	<f:facet name="header">Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
         	<p:columnGroup type="header">
 	            <p:row>
-	                <p:column headerText="ITENS / DIAS" />
+	                <p:column headerText="ITENS / DIAS" width="200"/>
 	                 <c:forEach var="campoCebecalho" begin="1" end="31">
 		                <p:column headerText="#{campoCebecalho}" />
 	                 </c:forEach>
@@ -27,10 +28,10 @@
 	            </p:row>        	
         	</p:columnGroup>
         	
-        	<p:subTable var="iten" value="#{linha.itens}" >
+        	<p:subTable var="iten" value="#{linha.itens}">
         	
 	        	<f:facet name="header">
-	        		<h:outputText  value="#{linha.name}"/>
+	        		<h:outputText  value="#{linha.name}" />
 	                 <c:forEach var="campoCebecalho" begin="1" end="31">
 		                <p:column headerText="#{campoCebecalho}" />
 	                 </c:forEach>	        		

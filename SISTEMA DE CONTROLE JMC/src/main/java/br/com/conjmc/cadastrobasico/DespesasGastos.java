@@ -1,4 +1,20 @@
 package br.com.conjmc.cadastrobasico;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -7,22 +23,7 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.Version;
-import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.AssertTrue;
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 
 @Entity
 @Configurable
@@ -50,6 +51,9 @@ public class DespesasGastos {
      */
     @NotNull
     private Boolean situacao;
+    
+    @OneToMany (mappedBy="item")
+    private List<Sangria> sangria;
 
 	@PersistenceContext
     transient EntityManager entityManager;
@@ -240,6 +244,14 @@ public class DespesasGastos {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public List<Sangria> getSangria() {
+		return sangria;
+	}
+
+	public void setSangria(List<Sangria> sangria) {
+		this.sangria = sangria;
 	}
 	
 }

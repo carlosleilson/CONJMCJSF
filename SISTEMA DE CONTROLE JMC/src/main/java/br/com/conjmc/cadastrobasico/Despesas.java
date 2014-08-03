@@ -6,7 +6,7 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.transaction.annotation.Transactional;
-
+import javax.persistence.Query;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -260,5 +260,9 @@ public class Despesas {
 	public void setClassificacao(List<DespesasGastos> classificacao) {
 		this.classificacao = classificacao;
 	}*/
-	
+    public static List<Despesas> findAllIdResumo(String idResumo) {
+        Query query = entityManager().createQuery("SELECT o FROM Despesas o where o.idResumo = :idResumo", Despesas.class);
+        query.setParameter("idResumo", idResumo);
+       return (List< Despesas >)query.getResultList();        
+   }  	
 }

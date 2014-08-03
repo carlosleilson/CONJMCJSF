@@ -12,67 +12,67 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">       
-	<p:fieldset legend="Relatorio de Despesas - #{relatorioBean.dataLabel}">
-	<p:commandButton id="anteriorButton" ajax="false" value="Anterior" action="#{relatorioBean.anterior}" />
-	 <p:commandButton id="proximoButton" ajax="false" value="Próximo" action="#{relatorioBean.proximo}" />
-	 <br />
-        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" draggableRows="true" >
-        	<f:facet name="header">Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
-        	<p:columnGroup type="header">
-	            <p:row>
-	                <p:column headerText="ITENS / DIAS" width="200"/>
-	                 <c:forEach var="campoCebecalho" begin="1" end="31">
-		                <p:column headerText="#{campoCebecalho}" />
-	                 </c:forEach>
-	                 <p:column headerText="Total" />
-	            </p:row>        	
-        	</p:columnGroup>
-        	
-        	<p:subTable var="iten" value="#{linha.itens}" >
-        	
-	        	<f:facet name="header">
-	        		<h:outputText  value="#{linha.name}" />
-	                 <c:forEach var="campoCebecalho" begin="1" end="31">
-		                <p:column headerText="#{campoCebecalho}" />
-	                 </c:forEach>	        		
-	        	</f:facet>
-	        	
-		        <p:column style="text-align:center" width="200">
-		        	<h:outputText value="#{iten.campos[0]}"/>
-		        </p:column>
-		           
-	        	<c:forEach var="item" begin="1" end="31">
-		        	<p:column style="text-align:center">
-		        		<h:outputText value="#{iten.campos[item]}">
-<!-- 		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->
-		        		</h:outputText>
-		        	</p:column> 
-	        	</c:forEach> 
-        		           
-	        	<p:column style="text-align:center">
-	        		<h:outputText value="#{iten.campos[32]}">
-		        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
-	        		</h:outputText>
-	        	</p:column> 
-		       <ui:remove>
-<!--             <p:columnGroup type="footer"> -->
-<!--                 <p:row > -->
-<!-- 		        	<c:forEach var="item" begin="0" end="32"> -->
-<!-- 			        	<p:column footerText="#{iten.campos[item]}"  style="text-align:center"> -->
-<!-- 			        		<h:outputText value="#{iten.campos[item]}"> -->
-<!--  			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" /> -->
-<!-- 			        		</h:outputText> -->
-<!-- 			        	</p:column>  -->
-<!-- 		        	</c:forEach>                      -->
-<!--                 </p:row> -->
-<!--             </p:columnGroup>        		            -->
-		       </ui:remove> 	        			           
-        	</p:subTable>
-        	
-			<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	
-        </p:dataTable>
+		<p:commandButton id="anteriorButton" update=":dataForm:field" value="Anterior" action="#{relatorioBean.anterior}" />
+		<p:commandButton id="proximoButton" update=":dataForm:field" value="Próximo" action="#{relatorioBean.proximo}" />
+		<br/><br/>
+		<p:fieldset id="field" legend="Relatorio de Despesas - #{relatorioBean.dataLabel}">
+			<div class="relatorioMensal">
+		        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" draggableRows="true" >
+		        	<f:facet name="header">Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
+		        	<p:columnGroup type="header">
+			            <p:row>
+			                <p:column headerText="ITENS / DIAS" width="200"/>
+			                 <c:forEach var="campoCebecalho" begin="1" end="31">
+				                <p:column headerText="#{campoCebecalho}" />
+			                 </c:forEach>
+			                 <p:column headerText="Total" />
+			            </p:row>        	
+		        	</p:columnGroup>
+		        	
+		        	<p:subTable var="iten" value="#{linha.itens}" >
+		        	
+			        	<f:facet name="header">
+			        		<h:outputText  value="#{linha.name}" />
+			                 <c:forEach var="campoCebecalho" begin="1" end="31">
+				                <p:column headerText="#{campoCebecalho}" />
+			                 </c:forEach>	        		
+			        	</f:facet>
+			        	
+				        <p:column style="text-align:center" width="200">
+				        	<h:outputText value="#{iten.campos[0]}"/>
+				        </p:column>
+				           
+			        	<c:forEach var="item" begin="1" end="31">
+				        	<p:column style="text-align:center">
+				        		<h:outputText value="#{iten.campos[item]}">
+				        		</h:outputText>
+				        	</p:column> 
+			        	</c:forEach> 
+		        		           
+			        	<p:column style="text-align:center">
+			        		<h:outputText value="#{iten.campos[32]}">
+				        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
+			        		</h:outputText>
+			        	</p:column>  	        			           
+		        	</p:subTable>
+		        	
+					<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	
+		        </p:dataTable>
+		        <h:commandLink>
+			        <p:graphicImage name="/demo/images/excel.png" />
+			        <p:dataExporter type="xls" target=":dataForm:list" fileName="despesas" pageOnly="true"/>
+			    </h:commandLink>
+			    <h:commandLink>
+			       <p:graphicImage name="/demo/images/pdf.png" />
+			        <p:dataExporter type="pdf" target="list" fileName="despesas" pageOnly="true" />
+			    </h:commandLink>
+	       	</div>
         </p:fieldset>
     </h:form>
+    <p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+		<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+	    <p:graphicImage name="/images/carregando.gif" />
+	</p:dialog>
   </ui:define>
 </ui:composition>
 </html>

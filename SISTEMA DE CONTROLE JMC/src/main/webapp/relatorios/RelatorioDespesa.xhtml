@@ -17,7 +17,7 @@
 		<br/><br/>
 		<p:fieldset id="field" legend="Relatorio de Despesas - #{relatorioBean.dataLabel}">
 			<div class="relatorioMensal">
-		        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" draggableRows="true" >
+		        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" draggableRows="true" stickyHeader="true" >
 		        	<f:facet name="header">Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
 		        	<p:columnGroup type="header">
 			            <p:row>

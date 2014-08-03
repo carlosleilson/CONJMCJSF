@@ -56,8 +56,8 @@ public class Despesas {
     @NotNull
     private Boolean situacao;
     
-    @OneToMany (mappedBy="classificacao")
-    private List<DespesasGastos> classificacao;
+   /* @OneToMany (mappedBy="classificacao")
+    private List<DespesasGastos> classificacao;*/
 
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -253,12 +253,12 @@ public class Despesas {
 		return true;
 	}
 
-	public List<DespesasGastos> getClassificacao() {
+	/*public List<DespesasGastos> getClassificacao() {
 		return classificacao;
 	}
 
 	public void setClassificacao(List<DespesasGastos> classificacao) {
 		this.classificacao = classificacao;
-	}
+	}*/
 	
 }

@@ -52,8 +52,8 @@ public class DespesasGastos {
     @NotNull
     private Boolean situacao;
     
-    @OneToMany (mappedBy="item")
-    private List<Sangria> sangria;
+    /*@OneToMany (mappedBy="item")
+    private List<Sangria> sangria;*/
 
 	@PersistenceContext
     transient EntityManager entityManager;
@@ -246,12 +246,12 @@ public class DespesasGastos {
 		return true;
 	}
 
-	public List<Sangria> getSangria() {
+	/*public List<Sangria> getSangria() {
 		return sangria;
 	}
 
 	public void setSangria(List<Sangria> sangria) {
 		this.sangria = sangria;
 	}
-	
+	*/
 }

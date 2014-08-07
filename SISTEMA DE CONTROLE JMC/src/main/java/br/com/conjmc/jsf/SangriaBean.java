@@ -538,12 +538,12 @@ public class SangriaBean implements Serializable  {
 	public String persist() {
         String message = "";
         if (sangria.getId() != null) {
-        	sangria.setPeriodo(new Date());
+//        	sangria.setPeriodo(new Date());
             sangria.merge();
             message = "message_successfully_updated";
         } else {
         	if(sangria.getOrigem() != null) {
-        		sangria.setPeriodo(new Date());
+//        		sangria.setPeriodo(new Date());
         		sangria.setSangria(true);
         	} else {
         		sangria.setSangria(false);

@@ -28,7 +28,7 @@
           	<p:message for="valor"/>
           	
           	<p:outputLabel value="Classificação" for="classificacao"/>
-          	<p:selectOneMenu id="classificacao" required="true" value="#{sangriaBean.classificacao}" requiredMessage="A classificação é obrigatório">
+          	<p:selectOneMenu id="classificacao" required="true" value="#{sangriaBean.classificacao}" requiredMessage="A classificação é obrigatório" filter="true">
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
           		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" itemValue="#{despesa.id}" />
           		<p:ajax listener="#{sangriaBean.carregaDespesasGastos}" event="change" update=":createForm:itens"/>
@@ -36,7 +36,7 @@
           	<p:message for="classificacao"/>
           	
           	<p:outputLabel value="Itens" for="itens"/>
-          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório">
+          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório"  filter="true">
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
           		<f:selectItems value="#{sangriaBean.allDespesasGatos}" var="gasto" 
           			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />

@@ -17,9 +17,15 @@
     	<fieldset>
     		<legend>Sangria</legend>
     		<p:outputLabel value="Período: " for="periodo"/>
-    		<p:clock id="periodo" pattern="dd/MM/yyyy HH:mm:ss"  mode="server" />
+    		<p:clock id="periodo2" pattern="dd/MM/yyyy HH:mm:ss"  mode="server" />
     		<br/><br/>        	
           <h:panelGrid id="createPanelGrid" columns="4" styleClass="dialog">
+          
+            <p:outputLabel value="Período: " for="periodo"/>
+    		<p:calendar id="periodo"  value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy"/>
+    		<p:message for="periodo"/>
+          	<span></span>
+    		
           	<p:outputLabel value="Valor" for="valor" />
           	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
           		<f:convertNumber locale="pt_BR" pattern="#.##" maxFractionDigits="2"/>

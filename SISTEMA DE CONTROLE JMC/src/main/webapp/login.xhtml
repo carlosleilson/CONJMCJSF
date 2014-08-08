@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-      xmlns:p="http://primefaces.prime.com.tr/ui"
-      xmlns:spring="http://www.springframework.org/tags"
+      xmlns:p="http://primefaces.org/ui"
       >
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -15,9 +16,15 @@
             <center>
                 <h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
             </center>
-            <spring:url value="/resources/j_spring_security_check" var="form_url" />
-            <form action="#{fn:escapeXml(form_url)}" method="post">
+            <form action="#{facesContext.externalContext.requestContextPath}/j_spring_security_check" method="post">
                 <h:panelGrid columns="2" cellpadding="5">
+                	<h:outputLabel for="j_loja" value="Loja: *" />
+                	<h:selectOneMenu id="j_loja" required="true">
+						<f:selectItem itemLabel="Selecione uma opção" itemValue="" />
+						<f:selectItem itemValue="1" itemLabel="Guara" />
+						<f:selectItem itemValue="2" itemLabel="TAGUATINGA" />
+						<f:selectItem itemValue="3" itemLabel="AGUA CLARAS" />
+					</h:selectOneMenu>
                     <h:outputLabel for="j_username" value="Username: *" />
                     <h:inputText id="j_username" required="true"/>
                     <h:outputLabel for="j_password" value="Password: * " />

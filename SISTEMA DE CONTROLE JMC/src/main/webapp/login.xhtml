@@ -12,18 +12,16 @@
         <title>Bem vindo ao CONJMC!</title>
     </h:head>
     <h:body >
-        <p:dialog header="Login" visible="true" closable="false" draggable="false" resizable="false" width="420">
-            <center>
-                <h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
-            </center>
-            <form action="#{facesContext.externalContext.requestContextPath}/j_spring_security_check" method="post">
+        <p:dialog header="Login" visible="true" closable="false" resizable="false" width="420">
+         <h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
+            <form action="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_check" method="post">
                 <h:panelGrid columns="2" cellpadding="5">
                 	<h:outputLabel for="j_loja" value="Loja: *" />
                 	<h:selectOneMenu id="j_loja" required="true">
 						<f:selectItem itemLabel="Selecione uma opção" itemValue="" />
 						<f:selectItem itemValue="1" itemLabel="Guara" />
-						<f:selectItem itemValue="2" itemLabel="TAGUATINGA" />
-						<f:selectItem itemValue="3" itemLabel="AGUA CLARAS" />
+						<f:selectItem itemValue="2" itemLabel="Taguatinga" />
+						<f:selectItem itemValue="3" itemLabel="Aguas Claras" />
 					</h:selectOneMenu>
                     <h:outputLabel for="j_username" value="Username: *" />
                     <h:inputText id="j_username" required="true"/>

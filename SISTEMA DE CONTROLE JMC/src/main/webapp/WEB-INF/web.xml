@@ -31,9 +31,6 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  <listener>
     <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
   </listener>
   <servlet>
@@ -45,19 +42,25 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-    <!-- InÃ­cio das configuraÃ§Ãµes para o Spring Security 3 -->
+    <!-- Início das configurações para o Spring Security 3 -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>    
     <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    	<dispatcher>FORWARD</dispatcher>
     </filter-mapping>
-    <!-- Fim das configuraÃ§Ã£o para utilizar o Spring Security 3 -->
+    <!-- Fim das configuração para utilizar o Spring Security 3 -->
 </web-app>

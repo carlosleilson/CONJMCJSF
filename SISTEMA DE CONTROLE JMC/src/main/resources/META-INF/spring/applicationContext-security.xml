@@ -13,18 +13,25 @@
         <!-- Configure these elements to secure URIs in your application -->
         <intercept-url pattern="/index.html" access="hasRole('ROLE_USER')" />
         <intercept-url pattern="/index.html" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/index.html" access="hasRole('ROLE_MANAGER')" />
+        <intercept-url pattern="/index.html" access="hasRole('ROLE_EXCLUSIVE')" />
 <!--         <intercept-url pattern="/pages/main.xhtml" access="hasRole('ROLE_USER')" /> -->
 <!--         <intercept-url pattern="/pages/main.xhtml" access="hasRole('ROLE_ADMIN')" /> -->
-        <intercept-url pattern="/pages/**" access="isAuthenticated()" />
+		<intercept-url pattern="/login.xhtml" access="permitAll" />
+        <intercept-url pattern="/**" access="isAuthenticated()" />
     </http>
     <!-- Configure Authentication mechanism -->
     <authentication-manager alias="authenticationManager">
         <!-- SHA-256 values can be produced using 'echo -n your_desired_password | sha256sum' (using normal *nix environments) -->
         <authentication-provider>
-<!--             <password-encoder hash="sha-256" /> -->
+            <password-encoder hash="sha-256" />
             <user-service>
-                <user name="admin" password="123456" authorities="ROLE_ADMIN" />
-                <user name="user" password="123456" authorities="ROLE_USER" />
+                <user name="carlosleilson" password="d969b73c7315aeda838cb0c232db7ea2985dfd014b7bee2e2b6403b4e66ddf83" authorities="ROLE_ADMIN" />
+                <user name="daniel" password="79a21bd1a5b98517bc6440a4e7292e46cb92fb39ae7e4e019a85c8620ed57ece" authorities="ROLE_ADMIN" />
+                <user name="joao" password="99dce81b721026887f56d754582aa1b3b999a6da664dd9258e8836be614ad324" authorities="ROLE_ADMIN" />
+                <user name="rodrigo" password="648da7c8135ae6fbcc89fe3aaeabf61c99c53a0f6237b356691c25b13e980979" authorities="ROLE_ADMIN" />
+                <user name="isabella" password="e720fee3b94b4277b69dc6082fde5f832811f0aa87d532f3c266224ecbb2a27c" authorities="ROLE_ADMIN" />
+                <user name="user" password="87c359445a59861cf1fa8454bd22ebfc38f3374cf73015da1dadf1ccefdbb6fe" authorities="ROLE_USER" />            
 <!--                 <user name="admin" password="8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918" authorities="ROLE_ADMIN" /> -->
 <!--                 <user name="user" password="04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb" authorities="ROLE_USER" /> -->
             </user-service>

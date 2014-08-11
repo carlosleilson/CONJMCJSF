@@ -18,7 +18,9 @@
 <!--         <intercept-url pattern="/pages/main.xhtml" access="hasRole('ROLE_USER')" /> -->
 <!--         <intercept-url pattern="/pages/main.xhtml" access="hasRole('ROLE_ADMIN')" /> -->
 		<intercept-url pattern="/login.xhtml" access="permitAll" />
-        <intercept-url pattern="/**" access="isAuthenticated()" />
+		<intercept-url pattern="/index.html" access="permitAll" />
+		<intercept-url pattern="/resources/**" access="permitAll" />
+        <intercept-url pattern="/pages/**" access="isAuthenticated()" />
     </http>
     <!-- Configure Authentication mechanism -->
     <authentication-manager alias="authenticationManager">

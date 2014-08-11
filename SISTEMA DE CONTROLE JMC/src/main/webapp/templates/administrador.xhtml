@@ -6,6 +6,9 @@
       xmlns:p="http://primefaces.org/ui">
 <f:view locale="#{localeBean.locale}" contentType="text/html">
   <h:head>
+    <h:outputLink value="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_logout">
+        <h:outputText value="Sair"/>
+    </h:outputLink>  
   	 <ui:insert name="title" />
     <ui:insert name="header">
       <ui:include src="header.xhtml" />

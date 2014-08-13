@@ -158,6 +158,7 @@ public class Sangria {
 	private static Date setdata(final int dia) {
 		Calendar data = Calendar.getInstance();
 		data.set(Calendar.DAY_OF_MONTH, dia);
+		data.set(Calendar.MONTH, 6);
 		return data.getTime();
 	}
 

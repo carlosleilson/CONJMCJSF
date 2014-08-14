@@ -34,7 +34,12 @@
 	          	<p:message for="funcionarioCargo"/>
 	          	
 	          	<p:outputLabel value="Salario" for="funcionarioSalario"/>
-	          	<p:inputText id="funcionarioSalario" value="#{funcionariosBean.funcionarios.salario}" required="true" requiredMessage="O salario é obrigatório" />
+	          	<p:inputText id="funcionarioSalario" 
+	          		styleClass="money" 
+	          		value="#{funcionariosBean.funcionarios.salario}"
+	          		converter="moneyConverter" 
+	          		required="true" 
+	          		requiredMessage="O salario é obrigatório" />
 	          	<p:message for="funcionarioSalario"/>
 	          	
 	          	<p:outputLabel value="Situação" for="funcionarioSituacao"/>
@@ -90,7 +95,9 @@
         		<h:outputText value="#{funcionarios.nome}"/>
         	</p:column>
         	<p:column headerText="Salario" sortBy="#{funcionarios.salario}">
-        		<h:outputText value="#{funcionarios.salario}"/>
+        		<h:outputText value="#{funcionarios.salario}">
+        			<f:convertNumber minFractionDigits="2"/>
+        		</h:outputText>
         	</p:column>
         	<p:column headerText="CPF" sortBy="#{funcionarios.cpf}">
         		<h:outputText value="#{funcionarios.cpf}"/>

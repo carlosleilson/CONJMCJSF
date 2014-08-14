@@ -29,7 +29,8 @@ public class DataUltil {
 		Calendar c = Calendar.getInstance();
 		c.setTime(new Date());
 		c.set(c.DAY_OF_MONTH,c.getActualMaximum(Calendar.DAY_OF_MONTH) );
-		data = c.getTime();		
+		data = c.getTime();	
+		data.setMonth(data.getMonth()+1);
 		return sdf.format(data).toString();
 	}
 	
@@ -39,7 +40,7 @@ public class DataUltil {
 		c.setTime(new Date());
 		c.set(c.DAY_OF_MONTH,1 );
 		data = c.getTime();
-		data.setMonth(data.getMonth()-1);
+		/*data.setMonth(data.getMonth()-1);*/
 		return sdf.format( data).toString();
 	}
 	

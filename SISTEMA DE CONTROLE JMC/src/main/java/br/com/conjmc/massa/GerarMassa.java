@@ -22,8 +22,8 @@ public class GerarMassa {
 		Classificacao.setDados();
 		System.out.println("###Iniciar Itens###");
 		Itens.setDados();
-		System.out.println("###Iniciar Sangria###");
-		Sangria.setDados();
+		/*System.out.println("###Iniciar Sangria###");
+		Sangria.setDados();*/
         System.out.println("###Fim###");
 	}
 

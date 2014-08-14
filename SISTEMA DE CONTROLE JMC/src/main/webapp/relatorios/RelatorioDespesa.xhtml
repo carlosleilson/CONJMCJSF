@@ -44,15 +44,12 @@
 				           
 			        	<c:forEach var="item" begin="1" end="31">
 				        	<p:column style="text-align:center">
-				        		<h:outputText value="#{iten.campos[item]}">
-				        		</h:outputText>
+				        		<h:outputText value="#{iten.campos[item]}" />
 				        	</p:column> 
 			        	</c:forEach> 
 		        		           
 			        	<p:column style="text-align:center">
-			        		<h:outputText value="#{iten.campos[32]}">
-				        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
-			        		</h:outputText>
+			        		<h:outputText value="#{iten.campos[32]}"/>
 			        	</p:column>  	        			           
 		        	</p:subTable>
 		        	

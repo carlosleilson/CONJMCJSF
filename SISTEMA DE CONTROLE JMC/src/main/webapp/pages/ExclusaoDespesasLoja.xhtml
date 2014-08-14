@@ -67,7 +67,9 @@
 	          		</h:outputText>
 	          	</p:column>
 	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
-	          		<h:outputText value="#{sangria.valor}"/>
+	          		<h:outputText value="#{sangria.valor}">
+	          			<f:convertNumber minFractionDigits="2"/>
+	          		</h:outputText>
 	          	</p:column>
 	          	<ui:remove>
 <!-- 	          	<p:column headerText="Origem" sortBy="#{sangria.origem}"> -->

@@ -5,11 +5,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.converter.RooJsfConverter;
 
 @FacesConverter("fornecedoresConverter")
 @Configurable
-@RooJsfConverter(entity = Fornecedores.class)
 public class FornecedoresConverter implements Converter{
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {

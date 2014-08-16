@@ -24,8 +24,6 @@ import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
-import org.springframework.roo.addon.serializable.RooSerializable;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
@@ -39,8 +37,6 @@ import br.com.conjmc.jsf.util.MessageFactory;
 @Configurable
 @ManagedBean(name = "despesasLojaBean")
 @SessionScoped
-@RooSerializable
-@RooJsfManagedBean(entity = DespesasLoja.class, beanName = "despesasLojaBean")
 public class DespesasLojaBean implements Serializable{
 
 

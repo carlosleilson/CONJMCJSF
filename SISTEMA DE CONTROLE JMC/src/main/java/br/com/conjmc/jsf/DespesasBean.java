@@ -27,14 +27,10 @@ import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
-import org.springframework.roo.addon.serializable.RooSerializable;
 
 @ManagedBean(name = "despesasBean")
 @SessionScoped
 @Configurable
-@RooSerializable
-@RooJsfManagedBean(entity = Despesas.class, beanName = "despesasBean")
 public class DespesasBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;

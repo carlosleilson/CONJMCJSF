@@ -24,8 +24,6 @@ import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
-import org.springframework.roo.addon.serializable.RooSerializable;
 
 import br.com.conjmc.cadastrobasico.Cargos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
@@ -35,8 +33,6 @@ import br.com.conjmc.jsf.util.MessageFactory;
 @Configurable
 @ManagedBean(name = "funcionariosBean")
 @SessionScoped
-@RooSerializable
-@RooJsfManagedBean(entity = Funcionarios.class, beanName = "funcionariosBean")
 public class FuncionariosBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;

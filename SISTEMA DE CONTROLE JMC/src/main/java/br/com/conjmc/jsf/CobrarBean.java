@@ -25,14 +25,10 @@ import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
-import org.springframework.roo.addon.serializable.RooSerializable;
 
 @ManagedBean(name = "cobrarBean")
 @SessionScoped
 @Configurable
-@RooSerializable
-@RooJsfManagedBean(entity = Cobrar.class, beanName = "cobrarBean")
 public class CobrarBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;

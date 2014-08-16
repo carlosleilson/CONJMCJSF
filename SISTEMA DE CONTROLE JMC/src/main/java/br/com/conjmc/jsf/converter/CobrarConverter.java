@@ -5,11 +5,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.converter.RooJsfConverter;
 
 @FacesConverter("cobrarConverter")
 @Configurable
-@RooJsfConverter(entity = Cobrar.class)
 public class CobrarConverter implements Converter {
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {

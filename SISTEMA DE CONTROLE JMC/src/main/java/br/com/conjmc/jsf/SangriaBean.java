@@ -25,8 +25,6 @@ import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jsf.managedbean.RooJsfManagedBean;
-import org.springframework.roo.addon.serializable.RooSerializable;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.Despesas;
@@ -44,8 +42,6 @@ import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 @ManagedBean(name = "sangriaBean")
 @SessionScoped
 @Configurable
-@RooSerializable
-@RooJsfManagedBean(entity = Sangria.class, beanName = "sangriaBean")
 public class SangriaBean implements Serializable  {
 
 	private static final long serialVersionUID = 1L;

@@ -22,26 +22,23 @@
     		<p:message for="periodo"/>   
           
           	<p:outputLabel value="Valor" for="valor"/>
-          	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
-          		<f:convertNumber locale="pt_BR" pattern="#.##" maxFractionDigits="2"/>
-          	</p:inputText>
+          	<p:inputText 
+          		id="valor"
+          		styleClass="money" 
+          		value="#{sangriaBean.sangria.valor}"
+          		converter="moneyConverter" 
+          		required="true" 
+          		requiredMessage="O valor é obrigatório"/>
           	<p:message for="valor"/>
           	
-          	<p:outputLabel value="Classificação" for="classificacao"/>
-          	<p:selectOneMenu id="classificacao" required="true" value="#{sangriaBean.classificacao}" requiredMessage="A classificação é obrigatório" filter="true">
-          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" itemValue="#{despesa.id}" />
-          		<p:ajax listener="#{sangriaBean.carregaDespesasGastos}" event="change" update=":createForm:itens"/>
-          	</p:selectOneMenu>
-          	<p:message for="classificacao"/>
-          	
           	<p:outputLabel value="Itens" for="itens"/>
-          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório"  filter="true">
+          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-          		<f:selectItems value="#{sangriaBean.allDespesasGatos}" var="gasto" 
+          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
           			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":createForm:classific"/>
           	</p:selectOneMenu>
-          	<p:message for="itens"/>
+       		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
           </h:panelGrid>
           	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
@@ -62,19 +59,10 @@
 	          		</h:outputText>
 	          	</p:column>
 	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
-	          		<h:outputText value="#{sangria.valor}"/>
+	          		<h:outputText value="#{sangria.valor}">
+	          			<f:convertNumber minFractionDigits="2"/>
+	          		</h:outputText>
 	          	</p:column>
-	          	<ui:remove>
-<!-- 	          	<p:column headerText="Origem" sortBy="#{sangria.origem}"> -->
-<!-- 	          		<h:outputText value="#{sangria.origem}"/> -->
-<!-- 	          	</p:column> -->
-<!-- 	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}"> -->
-<!-- 	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/> -->
-<!-- 	          	</p:column> -->
-<!-- 	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}"> -->
-<!-- 	          		<h:outputText value="#{sangria.funcionario.apelido}"/> -->
-<!-- 	          	</p:column> -->
-	          	</ui:remove>
 	        </p:dataTable>
 	       </h:form>
   </ui:define>

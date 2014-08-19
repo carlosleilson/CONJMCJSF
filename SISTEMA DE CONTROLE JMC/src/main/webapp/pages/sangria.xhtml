@@ -27,9 +27,7 @@
           	<span></span>
     		
           	<p:outputLabel value="Valor" for="valor" />
-          	<p:inputText id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
-          		<f:convertNumber locale="pt_BR" pattern="#.##" maxFractionDigits="2"/>
-          	</p:inputText>
+          	<p:inputText styleClass="money" id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório"/>
           	<p:message for="valor"/>
           	<span></span>
           	
@@ -77,7 +75,9 @@
 	          		</h:outputText>
 	          	</p:column>
 	          	<p:column headerText="Valor" sortBy="#{sang.valor}">
-	        		<h:outputText value="#{sang.valor}"/>
+	        		<h:outputText value="#{sang.valor}">
+	        			<f:convertNumber minFractionDigits="2"/>
+	        		</h:outputText>
 	        	</p:column>
 	          	<p:column headerText="Origem" sortBy="#{sang.origem}">
 	          		<h:outputText value="#{sang.origem}"/>

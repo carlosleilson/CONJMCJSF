@@ -64,6 +64,7 @@ public class DespesasGastosBean implements Serializable {
         despesasGastos = new DespesasGastos();
         despesasGastos.setDespesaPessoal(false);
         despesasGastos.setSituacao(true);
+        despesasGastos.setCodigo(DespesasGastos.getMaxId()+1);
         findAllDespesasGastoses();
         findAllDespesasGastosAtivos();
     }

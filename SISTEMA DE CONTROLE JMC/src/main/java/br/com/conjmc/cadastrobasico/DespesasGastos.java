@@ -26,6 +26,7 @@ import br.com.conjmc.controlediario.controlesaida.Sangria;
 @Configurable
 public class DespesasGastos {
 
+	private long codigo;
     /**
      */
     @NotNull
@@ -36,7 +37,11 @@ public class DespesasGastos {
      */
     @ManyToOne
     private Despesas classificacao;
-
+    
+    /**
+     */
+    private Boolean naoDespesa;
+   
     /**
      */
     private Boolean despesaPessoal;
@@ -58,6 +63,10 @@ public class DespesasGastos {
         EntityManager em = new DespesasGastos().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
+    }
+	
+	public static long getMaxId() {
+        return entityManager().createQuery("SELECT max(o.id) FROM DespesasGastos o", Long.class).getSingleResult();
     }
 
 	public static long countDespesasGastoses() {
@@ -238,6 +247,22 @@ public class DespesasGastos {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Boolean getNaoDespesa() {
+		return naoDespesa;
+	}
+
+	public void setNaoDespesa(Boolean naoDespesa) {
+		this.naoDespesa = naoDespesa;
+	}
+
+	public long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(long codigo) {
+		this.codigo = codigo;
 	}
 
 	/*public List<Sangria> getSangria() {

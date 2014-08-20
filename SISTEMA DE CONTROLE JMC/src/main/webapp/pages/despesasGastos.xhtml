@@ -18,6 +18,10 @@
     		<legend>Despesas e Gastos</legend>
     		<p:inputText value="#{despesasGastosBean.despesasGastos.id}" styleClass="primariKey"/>
           <h:panelGrid id="createPanelGridNew" columns="3" styleClass="dialog">
+         	<!-- <p:outputLabel value="Código" for="codigo"/>
+          	<p:inputText id="codigo" value="#{despesasGastosBean.despesasGastos.codigo}" />
+          	<p:message for="codigo"/> --> 
+          
           	<p:outputLabel value="Descrição" for="descricao"/>
           	<p:inputText id="descricao" value="#{despesasGastosBean.despesasGastos.descrisao}" required="true" requiredMessage="A descrição é obrigatório" />
           	<p:message for="descricao"/>
@@ -37,6 +41,10 @@
 		            <f:selectItem itemLabel="Não" itemValue="false"/>
 		        </p:selectOneRadio>
 	        <p:message for="despesaPessoal"/>
+	        
+	        <p:outputLabel value="Não é Despesa" for="naoDespesa"/>
+          	<p:selectBooleanCheckbox id="naoDespesa" value="#{despesasGastosBean.despesasGastos.naoDespesa}" required="true"/>
+          	<p:message for="naoDespesa"/>
           	
           	<p:outputLabel value="Ativo" for="situacao"/>
           	<p:selectBooleanCheckbox id="situacao" value="#{despesasGastosBean.despesasGastos.situacao}" required="true"/>

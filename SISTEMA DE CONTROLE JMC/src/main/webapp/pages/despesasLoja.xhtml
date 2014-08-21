@@ -17,6 +17,12 @@
     	<fieldset>
     		<legend>Incluir Despesa</legend>   	
           <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+          	<p:outputLabel value="Código" for="codigo"/>
+    		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
+    			<p:ajax event="keyup" update=":createForm:itens" listener="#{sangriaBean.search()}"/>
+    		</p:inputText>
+          	<span></span>
+          
           	<p:outputLabel value="Período: " for="periodo"/>
     		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" />
     		<p:message for="periodo"/>   

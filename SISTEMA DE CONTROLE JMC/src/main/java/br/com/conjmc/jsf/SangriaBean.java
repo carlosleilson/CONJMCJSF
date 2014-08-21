@@ -1,6 +1,5 @@
 package br.com.conjmc.jsf;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +15,6 @@ import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.DateTimeConverter;
 
-import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
@@ -27,17 +25,13 @@ import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import br.com.conjmc.cadastrobasico.Despesas;
-import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
-import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
-import br.com.conjmc.relatorios.Classificacao;
-import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 
 @ManagedBean(name = "sangriaBean")
 @SessionScoped
@@ -64,6 +58,7 @@ public class SangriaBean implements Serializable  {
 	
 	private List<Funcionarios> completeFuncionario;
 	
+	private Long codigo;
 	
 	private HtmlPanelGrid createPanelGrid;
 
@@ -136,6 +131,10 @@ public class SangriaBean implements Serializable  {
         mesAnterior = DataUltil.mesAnterior();
        // sangria.setPeriodo(DataUltil.mesAnterior(new Date()));
     }
+	
+	public void search() {
+		sangria.setItem(DespesasGastos.findByCondigo(codigo));
+	}
 
 	public String getName() {
         return name;
@@ -704,4 +703,13 @@ public class SangriaBean implements Serializable  {
 	public void setDataAtual(String dataAtual) {
 		this.dataAtual = dataAtual;
 	}
+
+	public Long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Long codigo) {
+		this.codigo = codigo;
+	}
+	
 }

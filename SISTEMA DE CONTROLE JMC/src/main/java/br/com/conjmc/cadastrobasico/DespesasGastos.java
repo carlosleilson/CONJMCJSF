@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
@@ -20,15 +19,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.conjmc.controlediario.controlesaida.Sangria;
-
 @Entity
 @Configurable
 public class DespesasGastos {
 
-	private long codigo;
-    /**
-     */
+	private Long codigo; 
+	
     @NotNull
     @Size(max = 30)
     private String descrisao;
@@ -67,6 +63,13 @@ public class DespesasGastos {
 	
 	public static long getMaxId() {
         return entityManager().createQuery("SELECT max(o.id) FROM DespesasGastos o", Long.class).getSingleResult();
+    }
+	
+	public static DespesasGastos findByCondigo(Long codigo) {
+		Query query = entityManager().createQuery("SELECT o FROM DespesasGastos o where o.codigo = :codigo", DespesasGastos.class);
+		query.setParameter("codigo", codigo);
+		DespesasGastos despesasGastos  = (DespesasGastos) query.getSingleResult();
+		return despesasGastos;
     }
 
 	public static long countDespesasGastoses() {
@@ -257,11 +260,11 @@ public class DespesasGastos {
 		this.naoDespesa = naoDespesa;
 	}
 
-	public long getCodigo() {
+	public Long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(long codigo) {
+	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
 

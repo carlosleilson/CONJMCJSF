@@ -62,7 +62,10 @@
           <p:column headerText="Id" styleClass="primariKey">
           	<h:outputText value="#{despesa_Gastos.id}" />
           </p:column>
-          <p:column headerText="Descrição" sortBy="#{despesa_Gastos.descrisao}">
+          <p:column headerText="Código" sortBy="#{despesa_Gastos.codigo}">
+          	<h:outputText value="#{despesa_Gastos.codigo}" />
+          </p:column>
+          <p:column headerText="Descrição" sortBy="#{despesa_Gastos.descrisao}" filterBy="#{despesa_Gastos.descrisao}">
           	<h:outputText value="#{despesa_Gastos.descrisao}" />
           </p:column>
           <p:column headerText="Classificação" sortBy="#{despesa_Gastos.classificacao.descricao}">

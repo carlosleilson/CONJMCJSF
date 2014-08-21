@@ -20,6 +20,12 @@
     		<p:clock id="periodo2" pattern="dd/MM/yyyy HH:mm:ss"  mode="server" />
     		<br/><br/>        	
           <h:panelGrid id="createPanelGrid" columns="4" styleClass="dialog">
+          	<p:outputLabel value="Código" for="codigo"/>
+    		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
+    			<p:ajax event="keyup" update=":createForm:itens" listener="#{sangriaBean.search()}"/>
+    		</p:inputText>
+    		<p:message for="codigo"/>
+          	<span></span>
           
             <p:outputLabel value="Período: " for="periodo"/>
     		<p:calendar id="periodo"  value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy"/>

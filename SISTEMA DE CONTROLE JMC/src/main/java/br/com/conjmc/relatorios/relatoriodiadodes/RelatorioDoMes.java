@@ -1,6 +1,7 @@
 package br.com.conjmc.relatorios.relatoriodiadodes;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +25,7 @@ public class RelatorioDoMes {
 	private String[] campoTemp;
 	private static String[] totalLinha;
 	private static Date data;
+	private NumberFormat df;
 	
 	public RelatorioDoMes(Date dataTemp){
 		Calendar c = Calendar.getInstance();

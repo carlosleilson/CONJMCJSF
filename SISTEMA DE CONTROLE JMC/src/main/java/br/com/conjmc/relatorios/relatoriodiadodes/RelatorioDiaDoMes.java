@@ -22,8 +22,8 @@ public class RelatorioDiaDoMes {
 	private List<Classificacao> classificacaoItens;
 	private List<Sangria> allSangrias;
 	private int QTD_CAMPOS = 33; 
-	private String[] campoTemp;
-	private static String[] totalLinha;
+	private Double[] campoTemp;
+	private static Double[] totalLinha;
 	private static Date data;
 	private NumberFormat df; 
 	
@@ -33,13 +33,12 @@ public class RelatorioDiaDoMes {
 		c.setTime(dataTemp);
 		data = c.getTime();
 		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
-		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
-		totalLinha[0] = "TOTAL GERAL";
+		totalLinha = inicializaArray(new Double[QTD_CAMPOS]);
 	}
 
-	private String[] inicializaArray(String[] campos){
+	private Double[] inicializaArray(Double[] campos){
 		for(int y =1; y < QTD_CAMPOS; y++){
-			campos[y] = df.format(0.0);
+			campos[y] = 0.0;
 		}
 		return campos;
 	}
@@ -55,7 +54,7 @@ public class RelatorioDiaDoMes {
 	 * Método que cria cada Linha do relatorio, dinamicamente.
 	 */	
 	private List<Classificacao> linhasDoRelatorio() {
-		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
+		campoTemp = inicializaArray(new Double[QTD_CAMPOS]);
 		classificacaoItens = new ArrayList<Classificacao>();
 		for(Despesas classificacao :findAllClassificacao()){
 			classificacaoItens.add(criarLinhas(classificacao));
@@ -74,7 +73,7 @@ public class RelatorioDiaDoMes {
 	
 	private Itens criarSomarTotalLinha() {
 		Itens itensRelatorio = new Itens();
-			itensRelatorio.setCampos(totalLinha);
+			itensRelatorio.setCampos(arrayStringToArrayLong("TOTAL GERAL",totalLinha));
 		return itensRelatorio;
 	}		
 	
@@ -92,7 +91,7 @@ public class RelatorioDiaDoMes {
 			listItens.add(criarDadosDeItem(item));
 		}		
 		listItens.add(criarTotalLinha());
-		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
+		campoTemp = inicializaArray(new Double[QTD_CAMPOS]);
 		classificacaoIten.setItens(listItens);
 		return classificacaoIten;
 	}
@@ -103,10 +102,9 @@ public class RelatorioDiaDoMes {
 	 */
 	private Itens criarDadosDeItem(DespesasGastos item) {
 		Itens itensRelatorio = new Itens();
-		String[] campos = new String[QTD_CAMPOS];
-		campos[0]=item.getDescrisao();
+		Double[] campos = new Double[QTD_CAMPOS];
 		try {
-			itensRelatorio.setCampos( preencharCampos( inicializaArray(campos),item.getId() ));
+			itensRelatorio.setCampos( arrayStringToArrayLong(item.getDescrisao(),preencharCampos( inicializaArray(campos),item.getId() )));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -119,17 +117,17 @@ public class RelatorioDiaDoMes {
 	 * @param itenId -- itens do sangria.
 	 * @throws ParseException 
 	 */
-	private String[] preencharCampos(String[] campos, Long itenId) throws ParseException {
+	private Double[] preencharCampos(Double[] campos, Long itenId) throws ParseException {
 		List<Sangria> dadosItens = findAllSangriaByItens(itenId);
 		for(int i = 1; i<campos.length; i++){
 			for (Sangria dado : dadosItens) {
 				if(dado.getPeriodo().getDate() == i && dado.getValor()!=null){
-					campos[i] = df.format(dado.getValor());
-					campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
+					campos[i] = campos[i] + dado.getValor();
+					campos[QTD_CAMPOS-1] = campos[QTD_CAMPOS-1] + dado.getValor();
 				}
 			}			
-			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
-			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
+			totalLinha[i] = totalLinha[i] + campos[i];
+			somarTotalPorClassificacao(i,campos[i]);
 		}
 		return campos;
 	}
@@ -139,7 +137,7 @@ public class RelatorioDiaDoMes {
 	 */		
 	private Itens criarTotalLinha() {
 		Itens itensRelatorio = new Itens();
-		itensRelatorio.setCampos(campoTemp);
+		itensRelatorio.setCampos(arrayStringToArrayLong("Totals:",campoTemp));
 		return itensRelatorio;
 	}	
 	
@@ -150,9 +148,24 @@ public class RelatorioDiaDoMes {
 	 * @throws ParseException 
 	 */			
 	private void somarTotalPorClassificacao(int dia, Double valor) throws ParseException {
-		campoTemp[0] ="Totals:";
-		campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
+		campoTemp[dia] = campoTemp[dia] + valor;
 	}	
+	
+	/**
+	 * Método que converte array de Double para Sring.
+	 * 
+	 * @param String primeiroCampoTemp
+	 * @param Long[] tempArray
+	 */	
+	private String[] arrayStringToArrayLong(String primeiroCampoTemp,Double[] tempArray ){
+		String[] camposTemp = new String[QTD_CAMPOS];
+		camposTemp[0] = primeiroCampoTemp;
+		for(int i = 1; i< tempArray.length; i++){
+			if(tempArray[i]!=0.0)
+				camposTemp[i] = df.format(tempArray[i]);
+		}
+		return camposTemp;
+	}
 	
 	/**
 	 * Método que retorna todas clasificação.

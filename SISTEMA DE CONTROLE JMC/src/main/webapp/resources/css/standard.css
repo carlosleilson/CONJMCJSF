@@ -36,6 +36,21 @@ fieldset {
 	margin: -71px 0px 0px 90px;
 }
 
+.relatorioMensal {
+	width: 865px;
+	height: 500px;
+	overflow: scroll;	
+}
+
+.ui-datatable table {
+    border-collapse: collapse;
+}
+
+thead {
+	display: table-header-group;
+	vertical-align: middle;
+	border-color: inherit;
+}
 /* body,div,td {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;

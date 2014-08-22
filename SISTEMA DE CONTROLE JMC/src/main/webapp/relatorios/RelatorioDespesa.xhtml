@@ -17,19 +17,19 @@
 		<br/><br/>
 		<p:fieldset id="field" legend="Relatorio de Despesas - #{relatorioBean.dataLabel}">
 			<div class="relatorioMensal">
-		        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" draggableRows="true" stickyHeader="true" >
-		        	<f:facet name="header">Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
+		        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" >
+		        	<f:facet name="header" width="1800" >Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
 		        	<p:columnGroup type="header">
 			            <p:row>
 			                <p:column headerText="ITENS / DIAS" width="200"/>
 			                 <c:forEach var="campoCebecalho" begin="1" end="31">
-				                <p:column headerText="#{campoCebecalho}" />
+				                <p:column headerText="#{campoCebecalho}" width="50"/>
 			                 </c:forEach>
-			                 <p:column headerText="Total" />
+			                 <p:column headerText="Total" width="50"/>
 			            </p:row>        	
 		        	</p:columnGroup>
 		        	
-		        	<p:subTable var="iten" value="#{linha.itens}" >
+		        	<p:subTable var="iten" value="#{linha.itens}"  >
 		        	
 			        	<f:facet name="header">
 			        		<h:outputText  value="#{linha.name}" />
@@ -38,7 +38,7 @@
 			                 </c:forEach>	        		
 			        	</f:facet>
 			        	
-				        <p:column style="text-align:center" width="200">
+				        <p:column style="text-align:center">
 				        	<h:outputText value="#{iten.campos[0]}"/>
 				        </p:column>
 				           
@@ -53,7 +53,7 @@
 			        	</p:column>  	        			           
 		        	</p:subTable>
 		        	
-					<f:facet name="footer">Relatorio de Despesas</f:facet>        	       	
+					<f:facet name="footer" width="1800">Relatorio de Despesas</f:facet>        	       	
 		        </p:dataTable>
 		        <h:commandLink>
 			        <p:graphicImage name="/demo/images/excel.png" />

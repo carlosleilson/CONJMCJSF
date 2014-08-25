@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+     <h:outputStylesheet>
+     .ui-datepicker-calendar { display: none !important; }
+     </h:outputStylesheet>
+<ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Faturamento</title>
+	</ui:define>
+  <ui:define name="content">
+    <h:form prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Futuramento</legend>   	
+	          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+	          
+	          	<p:outputLabel value="Mês/Ano" for="mesDoAno"/>
+				<p:calendar 
+					id="mesDoAno" 
+					locale="pt_BR"
+					value="#{faturamentoBean.faturamento.periodo}"
+					pattern="MMM/yyyy" 
+					requiredMessage="O valor é obrigatório"
+					navigator="true"
+					showButtonPanel="true"
+					/>        	
+	          	<p:message for="mesDoAno"/>          
+	          
+	          	<p:outputLabel value="Valor Faturamento Bruto" for="valorBruto"/>
+	          	<p:inputText 
+	          		id="valorBruto"
+	          		styleClass="money" 
+	          		value="#{faturamentoBean.faturamento.faturamentoBruto}"
+	          		requiredMessage="O valor é obrigatório"
+	          		required="true"
+	          		/>
+	          	<p:message for="valorBruto"/>
+	          
+	          	<p:outputLabel value="  Valor Taxas de Entrega" for="valorEntrega"/>
+	          	<p:inputText 
+	          		id="valorEntrega"
+	          		styleClass="money" 
+	          		value="#{faturamentoBean.faturamento.taxaEntrega}"
+	          		/>
+	          	<p:message for="valorEntrega"/>  
+	          
+	          	<p:outputLabel value="Valor Serviço de Mesa" for="valorServico"/>
+	          	<p:inputText 
+	          		id="valorServico"
+	          		styleClass="money" 
+	          		value="#{sangriaBean.sangria.valor}"
+	          		/>
+	          	<p:message for="valorServico"/>
+	          	
+	          </h:panelGrid>
+          	<br/>
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{faturamentoBean.faturamento.persist}" />
+    	</fieldset>
+    	</h:form>
+  </ui:define>
+</ui:composition>
+</html>

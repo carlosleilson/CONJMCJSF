@@ -2,10 +2,12 @@ package br.com.conjmc.relatorios.relatoriodiadodes;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
@@ -28,6 +30,7 @@ public class RelatorioDoMes {
 	private NumberFormat df;
 	
 	public RelatorioDoMes(Date dataTemp){
+		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTemp);
 		data = c.getTime();
@@ -39,7 +42,7 @@ public class RelatorioDoMes {
 
 	private String[] inicializaArray(String[] campos){
 		for(int y =1; y < QTD_CAMPOS; y++){
-			campos[y] = "0";
+			campos[y] = df.format(0.0);
 		}
 		return campos;
 	}
@@ -57,8 +60,13 @@ public class RelatorioDoMes {
 	private List<Resumo> linhasDoRelatorio() {
 		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
 		resumosItens = new ArrayList<Resumo>();
-		for(Despesas classificacao :findAllClassificacao()){
-			resumosItens.add(criarLinhas(classificacao));
+		Resumo resumoIten = new Resumo();
+		resumoIten.setName("");
+		for(Despesas classificacao :findAllResumo()){
+			if(!classificacao.getIdResumo().equals(resumoIten.getName())){
+				resumoIten.setName(classificacao.getIdResumo());
+				resumosItens.add(criarLinhas(resumoIten));
+			}
 		}
 		return resumosItens;		
 	}
@@ -68,20 +76,16 @@ public class RelatorioDoMes {
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */
-	private Resumo criarLinhas(Despesas classificacao) {
-		Resumo resumoIten = new Resumo();
-		resumoIten.setName(classificacao.getIdResumo());
+	private Resumo criarLinhas(Resumo resumoIten) {
 		List<Classificacao> classificacaoItens = new ArrayList<Classificacao>();
 		Classificacao classificacaoTemp = new Classificacao();
-		for (Despesas dadosDoResumo : findAllDadosDaClassificacao(classificacao.getIdResumo())) {
-			if(classificacao.getId().equals(dadosDoResumo.getId())){
+		for (Despesas dadosDoResumo : findAllDadosDaClassificacao(resumoIten.getName())) {
 				classificacaoTemp.setCodigo(dadosDoResumo.getCodigo());
 				classificacaoTemp.setName(dadosDoResumo.getDescricao());
 				classificacaoTemp.setResumo(dadosDoResumo.getIdResumo());
 				classificacaoTemp.setItens(criarTotalDeTodasLinhas());
 				classificacaoItens.add(classificacaoTemp);
-				somarLinhas(classificacao);
-			}
+				somarLinhas(dadosDoResumo);
 		}	
 		resumoIten.setClassificacoes(classificacaoItens);
 		return resumoIten;
@@ -104,9 +108,9 @@ public class RelatorioDoMes {
 	}
 
 	/**
-	 * Método que retorna todas clasificação.
+	 * Método que retorna todos resumo.
 	 */		
-	public List<Despesas> findAllClassificacao() {
+	public List<Despesas> findAllResumo() {
         return  Despesas.findAllDespesases();
     }
 	
@@ -174,7 +178,11 @@ public class RelatorioDoMes {
 		Itens itensRelatorio = new Itens();
 		String[] campos = new String[QTD_CAMPOS];
 		campos[0]=item.getDescrisao();
-		itensRelatorio.setCampos( preencharCampos( inicializaArray(campos),item.getId() ));
+		try {
+			itensRelatorio.setCampos( preencharCampos( inicializaArray(campos),item.getId() ));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		return itensRelatorio;
 	}
 	
@@ -183,18 +191,17 @@ public class RelatorioDoMes {
 	 * @param campos -- 31 campos para representar o mês.
 	 * @param itenId -- itens do sangria.
 	 */
-	private String[] preencharCampos(String[] campos, Long itenId) {
-		DecimalFormat df = new DecimalFormat("#.##");
+	private String[] preencharCampos(String[] campos, Long itenId) throws ParseException {
 		List<Sangria> dadosItens = findAllSangriaByItens(itenId);
 		for(int i = 1; i<campos.length; i++){
 			for (Sangria dado : dadosItens) {
 				if(dado.getPeriodo().getDate() == i && dado.getValor()!=null){
-					campos[i] = String.valueOf(dado.getValor());
-					campos[QTD_CAMPOS-1] = df.format(Double.valueOf(campos[QTD_CAMPOS-1])+ dado.getValor()).replace(",", ".");
+					campos[i] = df.format(dado.getValor());
+					campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
 				}
 			}			
-			totalLinha[i] = df.format(Double.valueOf(totalLinha[i])+ Double.valueOf(campos[i])).replace(",", ".");
-			somarTotalPorClassificacao(i,Double.valueOf(campos[i]));
+			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
+			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
 		}
 		return campos;
 	}	
@@ -204,9 +211,8 @@ public class RelatorioDoMes {
 	 * @param dia O dai do mes.
 	 * @param valor é o valor do dia.
 	 */			
-	private void somarTotalPorClassificacao(int dia, Double valor) {
-		DecimalFormat df = new DecimalFormat("#.##");
+	private void somarTotalPorClassificacao(int dia, Double valor) throws ParseException {
 		campoTemp[0] ="Totals:";
-		campoTemp[dia] = df.format(Double.valueOf(campoTemp[dia]) + valor).replace(",", ".");
+		campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
 	}	
 }

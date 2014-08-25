@@ -17,17 +17,21 @@
 	<br/><br/>
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal - #{relatorioMesBean.dataLabel}">
         <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}"  >
+       	<f:facet name="header" width="1800" >Relatorio de Despenho Mensal</f:facet>
+       	<p:columnGroup type="header">
+            <p:row>
+                <p:column headerText="Resumo"/>
+            </p:row>        	
+       	</p:columnGroup>        
         	<p:subTable var="item" value="#{linha.classificacoes}" >
-            <f:facet name="header">
-            </f:facet>
-            	<p:column rowspan="3" >
-	                <h:outputText value="#{linha.name}" />
-            	</p:column>        	
+        	<f:facet name="header">
+        		<h:outputText  value="#{linha.name}" />
+        	</f:facet>        	
 	        	<p:column >
 	                <h:outputText value="#{item.codigo}" />
 	        	</p:column>	 
-	        	<p:column >
-	                <h:outputText value="#{item.name}" />
+	        	<p:column   width="200">
+	                <h:outputText value="#{item.name}"/>
 	        	</p:column>
 	        	<p:column >
 	                <h:outputText value="%" />
@@ -39,7 +43,8 @@
 		        		</h:outputText>
 	        	</ui:repeat>
 		        	</p:column> 
-        	</p:subTable>	        	        	       	       	
+        	</p:subTable>	
+        	<f:facet name="footer" width="1800">Relatorio de Despenho Mensal</f:facet>          	        	       	       	
         </p:dataTable>
     </p:fieldset>
     </h:form>

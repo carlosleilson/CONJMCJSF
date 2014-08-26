@@ -60,12 +60,14 @@ public class RelatorioDoMes {
 	private List<Resumo> linhasDoRelatorio() {
 		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
 		resumosItens = new ArrayList<Resumo>();
-		Resumo resumoIten = new Resumo();
-		resumoIten.setName("");
+		String valorTemp = "";
 		for(Despesas classificacao :findAllResumo()){
-			if(!classificacao.getIdResumo().equals(resumoIten.getName())){
+			if(!valorTemp.equals(classificacao.getIdResumo())){
+				Resumo resumoIten = new Resumo();
 				resumoIten.setName(classificacao.getIdResumo());
-				resumosItens.add(criarLinhas(resumoIten));
+				resumoIten.setClassificacoes(criarClassificacao(classificacao.getIdResumo()));
+				resumosItens.add(resumoIten);
+				valorTemp = classificacao.getIdResumo();
 			}
 		}
 		return resumosItens;		
@@ -76,10 +78,10 @@ public class RelatorioDoMes {
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */
-	private Resumo criarLinhas(Resumo resumoIten) {
+	private List<Classificacao> criarClassificacao(String idResumo) {
 		List<Classificacao> classificacaoItens = new ArrayList<Classificacao>();
-		Classificacao classificacaoTemp = new Classificacao();
-		for (Despesas dadosDoResumo : findAllDadosDaClassificacao(resumoIten.getName())) {
+		for (Despesas dadosDoResumo : findAllDadosDaClassificacao(idResumo)) {
+				Classificacao classificacaoTemp = new Classificacao();
 				classificacaoTemp.setCodigo(dadosDoResumo.getCodigo());
 				classificacaoTemp.setName(dadosDoResumo.getDescricao());
 				classificacaoTemp.setResumo(dadosDoResumo.getIdResumo());
@@ -87,8 +89,7 @@ public class RelatorioDoMes {
 				classificacaoItens.add(classificacaoTemp);
 				somarLinhas(dadosDoResumo);
 		}	
-		resumoIten.setClassificacoes(classificacaoItens);
-		return resumoIten;
+		return classificacaoItens;
 	}
 	
 	private List<Itens> criarTotalDeTodasLinhas(){
@@ -111,7 +112,7 @@ public class RelatorioDoMes {
 	 * Método que retorna todos resumo.
 	 */		
 	public List<Despesas> findAllResumo() {
-        return  Despesas.findAllDespesases();
+        return  Despesas.findAllDespesasesByResumo();
     }
 	
 	/**

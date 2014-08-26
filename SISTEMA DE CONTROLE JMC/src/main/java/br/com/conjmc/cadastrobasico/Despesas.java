@@ -133,6 +133,10 @@ public class Despesas {
         return entityManager().createQuery("SELECT o FROM Despesas o", Despesas.class).getResultList();
     }
 	
+	public static List<Despesas> findAllDespesasesByResumo() {
+        return entityManager().createQuery("SELECT o FROM Despesas o order by o.idResumo asc", Despesas.class).getResultList();
+    }
+	
 	public static List<Despesas> findAllDespesasAtivas() {
         return entityManager().createQuery("SELECT o FROM Despesas o where o.situacao = true", Despesas.class).getResultList();
     }

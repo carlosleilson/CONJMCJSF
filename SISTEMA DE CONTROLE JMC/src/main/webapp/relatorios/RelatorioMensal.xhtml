@@ -18,11 +18,6 @@
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal - #{relatorioMesBean.dataLabel}">
         <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}"  >
        	<f:facet name="header" width="1800" >Relatorio de Despenho Mensal</f:facet>
-       	<p:columnGroup type="header">
-            <p:row>
-                <p:column headerText="Resumo"/>
-            </p:row>        	
-       	</p:columnGroup>        
         	<p:subTable var="item" value="#{linha.classificacoes}" >
         	<f:facet name="header">
         		<h:outputText  value="#{linha.name}" />

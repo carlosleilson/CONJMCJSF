@@ -280,7 +280,7 @@ public class Sangria {
 	public static List< Sangria > paginaPorMes(Date data, Long id) {
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
-        q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.id = :item", Sangria.class);
+        q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.id = :item and o.item.naoDespesa=false", Sangria.class);
        	q.setParameter("item", id);
         q.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
         q.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));

@@ -47,14 +47,14 @@
 	          	<p:message for="funcionarioSituacao"/>
 	          	
 	          	<p:outputLabel value="CPF" for="funcionarioCPF"/>
-	          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99" required="true" requiredMessage="O CPF é obrigatório" />
+	          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99"/>
 	          	<p:message for="funcionarioCPF"/>
 	          </h:panelGrid>
           </div>
           <div class="gridFunc">
 	          <h:panelGrid id="createPanelGrid2" columns="3" styleClass="dialog">
 	          	<p:outputLabel value="Identidade" for="funcionarioIdentidade"/>
-	          	<p:inputText id="funcionarioIdentidade" value="#{funcionariosBean.funcionarios.identidade}" requiredMessage="A identidade é obrigatório" required="true" />
+	          	<p:inputText id="funcionarioIdentidade" value="#{funcionariosBean.funcionarios.identidade}" />
 	          	<p:message for="funcionarioIdentidade"/>
 	          	
 	          	<p:outputLabel value="Logradouro" for="funcionarioLogradouro"/>
@@ -70,11 +70,11 @@
 	          	<p:message for="funcionarioCidade"/>
 	          	
 	          	<p:outputLabel value="CEP" for="funcionarioCEP"/>
-	          	<p:inputMask id="funcionarioCEP" value="#{funcionariosBean.funcionarios.cep}" mask="99999-999" required="true" requiredMessage="O CEP é obrigatório" />
+	          	<p:inputMask id="funcionarioCEP" value="#{funcionariosBean.funcionarios.cep}" mask="99999-999" />
 	          	<p:message for="funcionarioCEP"/>
 	          	
 	          	<p:outputLabel value="Outras Informações" for="funcionarioInformacoes"/>
-	          	<p:inputTextarea id="funcionarioInformacoes" value="#{funcionariosBean.funcionarios.outrasInformacoes}" required="true" requiredMessage="Campo é obrigatório" />
+	          	<p:inputTextarea id="funcionarioInformacoes" value="#{funcionariosBean.funcionarios.outrasInformacoes}" />
 	          	<p:message for="funcionarioInformacoes"/>
 	          </h:panelGrid>
           </div>

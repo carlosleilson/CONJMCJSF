@@ -107,7 +107,7 @@ public class Faturamento {
     }
 
 	public static List<Faturamento> findAllMFaturamentoes() {
-        return entityManager().createQuery("SELECT o FROM Faturamentos o", Faturamento.class).getResultList();
+        return entityManager().createQuery("SELECT o FROM Faturamento o", Faturamento.class).getResultList();
     }
 
 	public static List<Faturamento> findAllFaturamentoes(String sortFieldName, String sortOrder) {

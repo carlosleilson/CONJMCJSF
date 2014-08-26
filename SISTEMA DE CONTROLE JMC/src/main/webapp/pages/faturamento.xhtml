@@ -23,14 +23,11 @@
 	          
 	          	<p:outputLabel value="Mês/Ano" for="mesDoAno"/>
 				<p:calendar 
-					id="mesDoAno" 
-					locale="pt_BR"
+					id="mesDoAno"
 					value="#{faturamentoBean.faturamento.periodo}"
-					pattern="MMM/yyyy" 
-					requiredMessage="O valor é obrigatório"
-					navigator="true"
-					showButtonPanel="true"
-					/>        	
+					pattern="dd/MM/yyyy" 
+					required="true"
+					requiredMessage="O valor é obrigatório"					/>        	
 	          	<p:message for="mesDoAno"/>          
 	          
 	          	<p:outputLabel value="Valor Faturamento Bruto" for="valorBruto"/>
@@ -47,23 +44,50 @@
 	          	<p:inputText 
 	          		id="valorEntrega"
 	          		styleClass="money" 
-	          		value="#{faturamentoBean.faturamento.taxaEntrega}"
-	          		/>
+	          		value="#{faturamentoBean.faturamento.taxaEntrega}"/>
 	          	<p:message for="valorEntrega"/>  
 	          
 	          	<p:outputLabel value="Valor Serviço de Mesa" for="valorServico"/>
 	          	<p:inputText 
 	          		id="valorServico"
 	          		styleClass="money" 
-	          		value="#{sangriaBean.sangria.valor}"
-	          		/>
+	          		value="#{faturamentoBean.faturamento.servicoMesa}"/>
 	          	<p:message for="valorServico"/>
 	          	
 	          </h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{faturamentoBean.faturamento.persist}" />
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{faturamentoBean.persist()}" />
     	</fieldset>
     	</h:form>
+    	<h:form prependId="false" id="dataForm">
+        <p:dataTable id="list" value="#{faturamentoBean.faturamentos}" var="fatura" paginator="true" rows="10">
+            <f:facet name="header">Classificação de Despesas</f:facet>
+            <p:column headerText="Data" sortBy="#{fatura.periodo}">
+            	<h:outputText value="#{fatura.periodo}">
+            		<f:convertDateTime pattern="dd/MM/yyyy"/>
+            	</h:outputText>
+            </p:column>
+            <p:column headerText="Faturamento Bruto" sortBy="#{fatura.faturamentoBruto}">
+            	<h:outputText value="#{fatura.faturamentoBruto}">
+            		<f:convertNumber minFractionDigits="2"/>
+            	</h:outputText>
+            </p:column>
+            <p:column headerText="Serviço de Mesa" sortBy="#{fatura.servicoMesa}">
+            	<h:outputText value="#{fatura.servicoMesa}">
+            		<f:convertNumber minFractionDigits="2"/>
+            	</h:outputText>
+            </p:column>
+            <p:column headerText="Situação" sortBy="#{fatura.taxaEntrega}">
+            	<h:outputText value="#{fatura.taxaEntrega}">
+            		<f:convertNumber minFractionDigits="2"/>
+            	</h:outputText>
+            </p:column>
+        </p:dataTable>
+        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{despesasBean.despesas.codigo}?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasBean.delete}" ajax="false" onclick="confirmation.hide()" />
+			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+		</p:confirmDialog>
+    </h:form>
   </ui:define>
 </ui:composition>
 </html>

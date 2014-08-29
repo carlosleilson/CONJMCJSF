@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Lojas</title>
+	</ui:define>
+  <ui:define name="content">
+    <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Lojas</legend>
+		    <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+		    	<p:outputLabel value="Loja" for="lojaNome" />
+		    	<p:inputText id="lojaNome" value="#{lojasBean.loja.nomeLoja}" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="lojaNome" />
+
+				<p:outputLabel value="CNPJ" for="cnpj" />
+		    	<p:inputMask id="cnpj" value="#{lojasBean.loja.cnpj}" mask="99.999.999/9999-99" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="cnpj" />
+			 </h:panelGrid>
+			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{lojasBean.persist()}" />
+		</fieldset>
+    </h:form>
+    <h:form styleClass="buttomLimpar">
+    	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{lojasBean.reset()}" action="cargos.xhtml" />
+    </h:form>
+    <h:form prependId="false" id="dataForm">
+			<p:dataTable id="list" var="list" value="#{lojasBean.lojas}" paginator="true" rows="10">
+				<f:facet name="header">Cargos</f:facet>
+				<p:column headerText="Lojas" sortBy="#{list.nomeLoja}">
+					<h:outputText value="#{list.nomeLoja}" />
+				</p:column>
+				<p:column headerText="CNPJ" sortBy="#{list.cnpj}">
+					<h:outputText value="#{list.cnpj}" />
+				</p:column>
+				<p:column headerText="Ações" styleClass="action-column" style="width:90px">
+					<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="lojas.xhtml">
+						<f:setPropertyActionListener target="#{lojasBean.loja}" value="#{list}" />
+					</p:commandButton>
+					<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
+						<f:setPropertyActionListener value="#{list}" target="#{lojasBean.loja}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:confirmDialog id="excluir" header="Excluir Loja" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+				<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{lojasBean.delete()}" ajax="false" onclick="confirmation.hide()" />
+				<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+			</p:confirmDialog>					
+		</h:form>
+		
+	    <p:dialog id="viewDialog" header="#{messages.label_view} Cargos" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
+	      <p:outputPanel id="viewPanel">
+	        <h:form id="viewForm" enctype="multipart/form-data">
+	          <h:panelGrid id="viewPanelGrid" columns="2" binding="#{cargosBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" />
+	          <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="viewDialogWidget.hide()" type="button" />
+	        </h:form>
+	      </p:outputPanel>
+	    </p:dialog>
+  </ui:define>
+</ui:composition>
+</html>

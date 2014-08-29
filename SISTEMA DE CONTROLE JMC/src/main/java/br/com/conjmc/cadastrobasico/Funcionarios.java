@@ -85,6 +85,9 @@ public class Funcionarios {
      */
     @Size(max = 120)
     private String outrasInformacoes;
+    
+    @ManyToOne
+    private Lojas loja;
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -206,6 +209,16 @@ public class Funcionarios {
 	public void setOutrasInformacoes(String outrasInformacoes) {
         this.outrasInformacoes = outrasInformacoes;
     }
+
+	public Lojas getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Lojas loja) {
+		this.loja = loja;
+	}
+
+
 
 	@PersistenceContext
     transient EntityManager entityManager;

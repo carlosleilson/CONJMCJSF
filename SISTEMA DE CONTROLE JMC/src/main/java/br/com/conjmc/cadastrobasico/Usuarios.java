@@ -3,7 +3,11 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.conjmc.jsf.util.Security;
+
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -52,7 +56,7 @@ public class Usuarios {
     }
 
 	public void setSenha(String senha) {
-        this.senha = senha;
+        this.senha = Security.sha256(senha);
     }
 
 	public Perfil getPerfil() {

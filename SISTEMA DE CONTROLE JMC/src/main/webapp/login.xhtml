@@ -14,11 +14,11 @@
     <h:body >
         <p:dialog header="Login" visible="true" closable="false" resizable="false" width="420">
          <h:outputText value="Usuário ou senha incorretos!" rendered="#{param.erro}" style="color: darkred"/>
-            <form action="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_check" method="post">
+            <form action="j_spring_security_check" method="post">
                 <h:panelGrid columns="2" cellpadding="5">
                 	<h:outputLabel for="j_loja" value="Loja: *" />
                 	<h:selectOneMenu id="j_loja" required="true">
-						<f:selectItem itemLabel="Selecione uma opção" itemValue="" />
+						<f:selectItem itemLabel="Selecione uma opção" itemValue="0" />
 						<f:selectItem itemValue="1" itemLabel="Guara" />
 						<f:selectItem itemValue="2" itemLabel="Taguatinga" />
 						<f:selectItem itemValue="3" itemLabel="Aguas Claras" />

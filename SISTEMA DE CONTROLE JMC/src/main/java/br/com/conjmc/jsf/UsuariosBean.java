@@ -1,10 +1,4 @@
 package br.com.conjmc.jsf;
-import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.cadastrobasico.Perfil;
-import br.com.conjmc.cadastrobasico.Usuarios;
-import br.com.conjmc.jsf.converter.FuncionariosConverter;
-import br.com.conjmc.jsf.util.MessageFactory;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +14,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.LengthValidator;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.inputtext.InputText;
@@ -28,6 +23,12 @@ import org.primefaces.component.outputlabel.OutputLabel;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
+
+import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.cadastrobasico.Perfil;
+import br.com.conjmc.cadastrobasico.Usuarios;
+import br.com.conjmc.jsf.converter.FuncionariosConverter;
+import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean(name = "usuariosBean")
 @SessionScoped
@@ -57,7 +58,21 @@ public class UsuariosBean implements Serializable {
 	private Perfil perfil;
 	
 	private List<Perfil> allTypes;
-
+	
+	private Usuarios usuarioLogado;	
+	
+	public Usuarios getUsuarioLogado() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+		usuarioLogado = (Usuarios) session.getAttribute("usuarioLogado");
+		
+		return usuarioLogado;
+	}
+	
+	public void setUsuarioLogado(Usuarios usuarioLogado) {
+		this.usuarioLogado = usuarioLogado;
+	} 
+	
 	public Perfil getPerfil() {
 		return perfil;
 	}

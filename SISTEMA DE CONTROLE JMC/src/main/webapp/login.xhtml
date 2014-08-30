@@ -17,11 +17,9 @@
             <form action="j_spring_security_check" method="post">
                 <h:panelGrid columns="2" cellpadding="5">
                 	<h:outputLabel for="j_loja" value="Loja: *" />
-                	<h:selectOneMenu id="j_loja" required="true">
+                	<h:selectOneMenu id="j_loja"  value="#{lojasBean.loja}" requiredMessage="O item é obrigatório" required="true">
 						<f:selectItem itemLabel="Selecione uma opção" itemValue="0" />
-						<f:selectItem itemValue="1" itemLabel="Guara" />
-						<f:selectItem itemValue="2" itemLabel="Taguatinga" />
-						<f:selectItem itemValue="3" itemLabel="Aguas Claras" />
+						<f:selectItems value="#{lojasBean.lojas}" var="lojas" itemLabel="#{lojas.nomeLoja}" itemValue="#{lojas}" />
 					</h:selectOneMenu>
                     <h:outputLabel for="j_username" value="Username: *" />
                     <h:inputText id="j_username" required="true"/>

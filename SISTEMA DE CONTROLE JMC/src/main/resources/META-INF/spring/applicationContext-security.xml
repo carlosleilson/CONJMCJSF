@@ -14,7 +14,8 @@
         <security:intercept-url pattern="/index.html" access="hasRole('ROLE_EXCLUSIVE')" />
 		<security:intercept-url pattern="/login.xhtml" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" /> 
-		<security:intercept-url pattern="/pages/**" access="isAuthenticated()" />     
+		<security:intercept-url pattern="/pages/**" access="isAuthenticated()" />
+		<security:intercept-url pattern="/relatorios/**" access="isAuthenticated()" />     
         <security:logout invalidate-session="true" logout-success-url="/login.xhtml" logout-url="/resources/j_spring_security_logout"/>
  
         <security:custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER"/>

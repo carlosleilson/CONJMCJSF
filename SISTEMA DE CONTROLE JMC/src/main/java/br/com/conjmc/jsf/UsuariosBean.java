@@ -29,6 +29,7 @@ import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean(name = "usuariosBean")
 @SessionScoped
@@ -62,11 +63,7 @@ public class UsuariosBean implements Serializable {
 	private Usuarios usuarioLogado;	
 	
 	public Usuarios getUsuarioLogado() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-		usuarioLogado = (Usuarios) session.getAttribute("usuarioLogado");
-		
-		return usuarioLogado;
+		return (Usuarios) ObejctSession.getObjectSession("usuarioLogado");
 	}
 	
 	public void setUsuarioLogado(Usuarios usuarioLogado) {

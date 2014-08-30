@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -29,31 +30,48 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
         String login = request.getParameter("j_username");
         String senha = Security.sha256(request.getParameter("j_password"));
         Integer codigoLoja = Integer.parseInt(request.getParameter("j_loja"));
+        
+        if(codigoLoja == 0)
+        	throw new BadCredentialsException("Por favor, selecione uma loja.");
  
+        Usuarios usuario = login(login, senha);
+        
+        if(usuario == null)
+        	throw new BadCredentialsException("Erro no login");
+        
+        lojas(regras, codigoLoja, usuario);
+        
         try {
-//                if (usuario.getLoja().getCodigo().equals(codigoLoja)) {
-//                    regras.add(new SimpleGrantedAuthority(usuario.getLoja().getRegra()));
-            usuarios = Usuarios.findAllUsuarioses();
-            Usuarios usuario = new Usuarios();
-            for (Usuarios user : usuarios) {
-            	if(login.equals(user.getNome().getApelido().trim())){
-            		if(senha.equals(user.getSenha().trim())){
-            			usuario = user;
-            		} 
-            	} 
-			}
-//                } else {
-//                    mensagem = "Acesso negado a loja selecionada!";
-//                    throw new BadCredentialsException(mensagem);
-//                }
-		request.getSession().setAttribute("usuarioLogado", usuario);
-		mensagem = "Bem vindo: " + usuario.getNome().getNome();
-        return new UsernamePasswordAuthenticationToken(usuario.getNome().getApelido(), usuario.getSenha(), regras);
+			request.getSession().setAttribute("usuarioLogado", usuario);
+			mensagem = "Bem vindo: " + usuario.getNome().getNome();
+	        return new UsernamePasswordAuthenticationToken(usuario.getNome().getApelido(), usuario.getSenha(), regras);
  
         } catch (Exception e) {
             throw new BadCredentialsException(e.getMessage());
         }
     }
+
+	private void lojas(Collection<GrantedAuthority> regras,
+			Integer codigoLoja, Usuarios usuario) {
+		if (usuario.getNome().getLoja().equals(codigoLoja)) {
+            regras.add(new SimpleGrantedAuthority(usuario.getNome().getCargo().getNome()));
+        } else {
+            mensagem = "Acesso negado a loja selecionada!";
+            throw new BadCredentialsException(mensagem);
+        }
+	}
+
+	private Usuarios login(String login, String senha) {
+		usuarios = Usuarios.findAllUsuarioses();
+		for (Usuarios user : usuarios) {
+			if(login.equals(user.getNome().getApelido().trim())){
+				if(senha.equals(user.getSenha().trim())){
+					return user;
+				} 
+			} 
+		}
+		return null;
+	}
  
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException, ServletException {
         SecurityContextHolder.getContext().setAuthentication(authResult);

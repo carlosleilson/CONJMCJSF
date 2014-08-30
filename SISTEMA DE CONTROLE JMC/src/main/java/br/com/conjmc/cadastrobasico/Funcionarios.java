@@ -35,7 +35,7 @@ public class Funcionarios {
     /**
      */
     @NotNull
-    @Size(max = 10)
+    @Size(min = 10)
     private String apelido;
 
     /**

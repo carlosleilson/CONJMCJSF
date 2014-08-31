@@ -29,7 +29,7 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
     	Collection<GrantedAuthority> regras = new ArrayList<GrantedAuthority>();
         String login = request.getParameter("j_username");
         String senha = Security.sha256(request.getParameter("j_password"));
-        Integer codigoLoja = Integer.parseInt(request.getParameter("j_loja"));
+        Long codigoLoja = Long.parseLong(request.getParameter("j_loja"));
         
         if(codigoLoja == 0)
         	throw new BadCredentialsException("Por favor, selecione uma loja.");
@@ -52,8 +52,8 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
     }
 
 	private void lojas(Collection<GrantedAuthority> regras,
-			Integer codigoLoja, Usuarios usuario) {
-		if (usuario.getNome().getLoja().equals(codigoLoja)) {
+			Long codigoLoja, Usuarios usuario) {
+		if (usuario.getNome().getLoja().getId().equals(codigoLoja)) {
             regras.add(new SimpleGrantedAuthority(usuario.getNome().getCargo().getNome()));
         } else {
             mensagem = "Acesso negado a loja selecionada!";

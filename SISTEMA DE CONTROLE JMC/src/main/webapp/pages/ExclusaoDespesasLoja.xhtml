@@ -89,12 +89,12 @@
 	          	</p:column>
 	        </p:dataTable>
 	        <p:confirmDialog id="excluir" header="Excluir Despesas" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-				<p:commandButton id="confirm" value="#{messages.label_yes}" oncomplete="confirmation.hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-				<p:commandButton id="decline" value="#{messages.label_no}" onclick="confirmation.hide()" type="button"/>
+				<p:commandButton id="confirm" value="#{messages.label_yes}" oncomplete="PF('confirmation').hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+				<p:commandButton id="decline" value="#{messages.label_no}" onclick="PF('confirmation').hide()" type="button"/>
 			</p:confirmDialog>        
        </h:form>
        
-		<p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 		<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 		    <p:graphicImage name="/images/carregando.gif" />
 		</p:dialog>

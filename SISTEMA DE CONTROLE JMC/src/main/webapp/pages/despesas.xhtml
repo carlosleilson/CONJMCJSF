@@ -60,14 +60,14 @@
               <f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" />
             </p:commandButton>
             
-            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
 				<f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" />
 			</p:commandButton>
           </p:column>
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{despesasBean.despesas.codigo}?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasBean.delete}" ajax="false" onclick="confirmation.hide()" />
-			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+			<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{despesasBean.delete}" ajax="false" onclick="confirmation.hide()" />
+			<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>
   </ui:define>

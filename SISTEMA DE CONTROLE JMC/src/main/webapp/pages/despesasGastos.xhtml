@@ -83,14 +83,14 @@
 				<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="despesasGastos.xhtml">
 					<f:setPropertyActionListener target="#{despesasGastosBean.despesasGastos}" value="#{despesa_Gastos}" />
 				</p:commandButton>
-				<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}">
+				<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
 					<f:setPropertyActionListener value="#{despesa_Gastos}" target="#{despesasGastosBean.despesasGastos}" />
 				</p:commandButton>
           </p:column>
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-			<p:commandButton id="confirm" value="Sim" oncomplete="confirmation.hide()" action="#{despesasGastosBean.delete}" ajax="false" onclick="confirmation.hide()" />
-			<p:commandButton id="decline" value="Não" onclick="confirmation.hide()" type="button"/>
+			<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{despesasGastosBean.delete}" ajax="false" onclick="confirmation.hide()" />
+			<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>
   </ui:define>

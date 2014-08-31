@@ -27,11 +27,13 @@ import org.springframework.beans.factory.annotation.Configurable;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.converter.DespesasGastosConverter;
 import br.com.conjmc.jsf.converter.FuncionariosConverter;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean(name = "sangriaBean")
 @SessionScoped
@@ -534,6 +536,7 @@ public class SangriaBean implements Serializable  {
         String message = "";
         if (sangria.getId() != null) {
 //        	sangria.setPeriodo(new Date());
+        	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
             sangria.merge();
             message = "message_successfully_updated";
         } else {
@@ -543,6 +546,7 @@ public class SangriaBean implements Serializable  {
         	} else {
         		sangria.setSangria(false);
         	}
+        	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
             sangria.persist();
             message = "message_successfully_created";
         }

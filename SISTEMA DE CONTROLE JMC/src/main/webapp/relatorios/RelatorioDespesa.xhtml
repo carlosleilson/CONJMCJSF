@@ -66,7 +66,7 @@
 	       	</div>
         </p:fieldset>
     </h:form>
-    <p:ajaxStatus onstart="statusDialog.show()" onsuccess="statusDialog.hide()" />
+    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 		<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 	    <p:graphicImage name="/images/carregando.gif" />
 	</p:dialog>

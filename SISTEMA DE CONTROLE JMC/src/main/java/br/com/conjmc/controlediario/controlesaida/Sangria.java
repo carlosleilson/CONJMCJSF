@@ -1,8 +1,4 @@
 package br.com.conjmc.controlediario.controlesaida;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Temporal;
@@ -21,16 +18,19 @@ import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
-
-import javax.persistence.ManyToOne;
-
 import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.cadastrobasico.Lojas;
+import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.util.DataUltil;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @Configurable
 @Entity
@@ -74,6 +74,8 @@ public class Sangria {
     
     /**
      */
+    @ManyToOne
+    private Lojas loja;
 
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -151,14 +153,19 @@ public class Sangria {
     }
 
 	public static List<Sangria> findAllSangrias() {
-        return entityManager().createQuery("SELECT o FROM Sangria o", Sangria.class).getResultList();
+		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja", Sangria.class);
+		query.setParameter("loja", ObejctSession.idLoja());
+        return query.getResultList();
     }
 	
 	public static List<Sangria> findAllSangriasAtivas() {
-        return entityManager().createQuery("SELECT o FROM Sangria o where o.sangria = true", Sangria.class).getResultList();
+		Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.sangria = true and o.loja.id = :loja", Sangria.class);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
     }
 
-	public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {
+	//Query do spring roo
+	/*public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Sangria o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
             jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
@@ -167,17 +174,19 @@ public class Sangria {
             }
         }
         return entityManager().createQuery(jpaQuery, Sangria.class).getResultList();
-    }
+    }*/
 
 	public static Sangria findSangria(Long id) {
         if (id == null) return null;
         return entityManager().find(Sangria.class, id);
     }
 
+	//Query do spring roo
 	public static List<Sangria> findSangriaEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Sangria o", Sangria.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
+	//Query do spring roo
 	public static List<Sangria> findSangriaEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Sangria o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
@@ -266,13 +275,16 @@ public class Sangria {
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
         if(item!=null){
-            q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item = :item", Sangria.class);
+            q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item = :item and o.loja.id = :loja", Sangria.class);
             q.setParameter("item", item);
+            q.setParameter("loja", ObejctSession.idLoja());
         }else{	
-        	q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal", Sangria.class);
+        	q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja", Sangria.class);
+        	q.setParameter("loja", ObejctSession.idLoja());
         }
         q.setParameter("dataInicial", dataInicial );
         q.setParameter("dataFinal", dataFinal);
+        q.setParameter("loja", ObejctSession.idLoja());
         //return (q.getResultList().isEmpty()? findAllDespesasLojas():q.getResultList());
         return q.getResultList();
     }
@@ -280,13 +292,22 @@ public class Sangria {
 	public static List< Sangria > paginaPorMes(Date data, Long id) {
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
-        q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.id = :item and o.item.naoDespesa=false", Sangria.class);
+        q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.id = :item and o.item.naoDespesa=false and o.loja.id = :loja", Sangria.class);
        	q.setParameter("item", id);
         q.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
         q.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));
+        q.setParameter("loja", ObejctSession.idLoja());
         return q.getResultList();
     }
 	
+	public Lojas getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Lojas loja) {
+		this.loja = loja;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -341,8 +362,9 @@ public class Sangria {
 	
 	public static List< Sangria > findSangriaByItens(Long id) {
         if (id == null) return null;
-		 Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.item.id = :item", Sangria.class);
+		 Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.item.id = :item and o.loja.id = :loja", Sangria.class);
 		 query.setParameter("item", id);
+		 query.setParameter("loja", ObejctSession.idLoja());
         return (List< Sangria >)query.getResultList();
 	}
 }

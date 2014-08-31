@@ -8,10 +8,6 @@
    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
  
     <security:http auto-config="false" use-expressions="true" access-denied-page="/index.html" entry-point-ref="authenticationEntryPoint" >
-        <security:intercept-url pattern="/index.html" access="hasRole('ROLE_USER')" />
-        <security:intercept-url pattern="/index.html" access="hasRole('ROLE_ADMIN')" />
-        <security:intercept-url pattern="/index.html" access="hasRole('ROLE_MANAGER')" />
-        <security:intercept-url pattern="/index.html" access="hasRole('ROLE_EXCLUSIVE')" />
 		<security:intercept-url pattern="/login.xhtml" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" /> 
 		<security:intercept-url pattern="/pages/**" access="isAuthenticated()" />

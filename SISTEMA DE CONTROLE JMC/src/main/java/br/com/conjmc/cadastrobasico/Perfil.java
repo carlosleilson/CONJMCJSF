@@ -1,7 +1,7 @@
 package br.com.conjmc.cadastrobasico;
 
 public enum Perfil {
-
+	ADMIN("Administrador"),
     EXCLUSIVO("Exclusivo"),
     SUPERVISOR("Supervisor"),
     GERENTE("Gerente"),

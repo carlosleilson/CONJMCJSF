@@ -54,7 +54,7 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
 	private void lojas(Collection<GrantedAuthority> regras,
 			Long codigoLoja, Usuarios usuario) {
 		if (usuario.getNome().getLoja().getId().equals(codigoLoja)) {
-            regras.add(new SimpleGrantedAuthority(usuario.getNome().getCargo().getNome()));
+            regras.add(new SimpleGrantedAuthority(usuario.getPerfil().getLabel().trim()));
         } else {
             mensagem = "Acesso negado a loja selecionada!";
             throw new BadCredentialsException(mensagem);

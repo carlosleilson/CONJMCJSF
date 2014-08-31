@@ -34,12 +34,12 @@
 		    	<p:password id="usuarioSenhaConfirme" value="#{usuariosBean.usuarios.senha}" required="true" />
 		    	<p:message for="usuarioSenhaConfirme" />
 
-				<p:outputLabel value="Perfil" for="peril" />
-				<p:selectOneMenu id="peril" value="#{usuariosBean.usuarios.perfil}" required="true">
+				<p:outputLabel value="Perfil" for="peril" rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
+				<p:selectOneMenu id="peril" value="#{usuariosBean.usuarios.perfil}" required="true" rendered="#{facesContext.externalContext.isUserInRole('Administrador')}">
 					<f:selectItem itemLabel="Selecione um Perfil" itemValue="" />
 					<f:selectItems value="#{usuariosBean.allTypes}" var="perfil" itemLabel="#{perfil.label}" />
 				</p:selectOneMenu>
-				<p:message for="peril"/>
+				<p:message for="peril" rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 		      </h:panelGrid>
 		      <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{usuariosBean.persist}"/>
 		      <p:commandButton id="createCloseButton" value="#{messages.label_reset}" action="#{usuariosBean.reset()}" update=":createForm" type="button" />

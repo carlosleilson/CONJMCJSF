@@ -564,12 +564,12 @@ public class SangriaBean implements Serializable  {
 	public String delete() {
 		try {
 			sangria.remove();
-			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Sangria");
 	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	        reset();
 	        init();
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item nÃ£o pode ser deletado porque possui dependÃªncias em outros mÃ³dulos", "O item nÃ£o pode ser deletado porque possui dependÃªncias em outros mÃ³dulos"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
 		}
         return findAllSangrias();
     }

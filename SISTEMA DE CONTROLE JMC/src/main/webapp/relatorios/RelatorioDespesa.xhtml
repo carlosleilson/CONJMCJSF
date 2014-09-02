@@ -22,7 +22,7 @@
 		        	<p:columnGroup type="header">
 			            <p:row>
 			                <p:column headerText="ITENS / DIAS" width="200"/>
-			                 <c:forEach var="campoCebecalho" begin="1" end="31">
+			                 <c:forEach var="campoCebecalho" begin="1" end="#{relatorioBean.ultimoDiaDoMes}">
 				                <p:column headerText="#{campoCebecalho}" width="50"/>
 			                 </c:forEach>
 			                 <p:column headerText="Total" width="50"/>
@@ -33,7 +33,7 @@
 		        	
 			        	<f:facet name="header">
 			        		<h:outputText  value="#{linha.name}" />
-			                 <c:forEach var="campoCebecalho" begin="1" end="31">
+			                 <c:forEach var="campoCebecalho" begin="1" end="#{relatorioBean.ultimoDiaDoMes}">
 				                <p:column headerText="#{campoCebecalho}" />
 			                 </c:forEach>	        		
 			        	</f:facet>
@@ -42,14 +42,14 @@
 				        	<h:outputText value="#{iten.campos[0]}"/>
 				        </p:column>
 				           
-			        	<c:forEach var="item" begin="1" end="31">
+			        	<c:forEach var="item" begin="1" end="#{relatorioBean.ultimoDiaDoMes}">
 				        	<p:column style="text-align:center">
 				        		<h:outputText value="#{iten.campos[item]}" />
 				        	</p:column> 
 			        	</c:forEach> 
 		        		           
 			        	<p:column style="text-align:center">
-			        		<h:outputText value="#{iten.campos[32]}"/>
+			        		<h:outputText value="#{iten.campos[relatorioBean.ultimoDiaDoMes]}"/>
 			        	</p:column>  	        			           
 		        	</p:subTable>
 		        	

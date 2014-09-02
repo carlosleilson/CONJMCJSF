@@ -33,7 +33,7 @@
 	        	</p:column>
 		        	<p:column style="text-align:center">
 	        	<ui:repeat var="total" value="#{item.itens}">
-		        		<h:outputText value="#{total.campos[32]}">
+		        		<h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes]}">
 			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
 		        		</h:outputText>
 	        	</ui:repeat>

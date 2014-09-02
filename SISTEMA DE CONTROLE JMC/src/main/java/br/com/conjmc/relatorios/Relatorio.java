@@ -19,6 +19,7 @@ public class Relatorio {
 	private SimpleDateFormat sdf;
 	private static int mesTemp;
 	private Date dataTemp;
+	private Integer ultimoDiaDoMes;
 	
 	@PostConstruct
     public void init() {
@@ -30,6 +31,7 @@ public class Relatorio {
 		Calendar c = Calendar.getInstance();
 		dataTemp =c.getTime();
 		dataLabel = sdf.format(dataTemp).toString();
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)+1;
     	this.classificacaoItens = new RelatorioDiaDoMes(dataTemp).criarRelatorio();
     	if(mesTemp==0)
     		mesTemp=dataTemp.getMonth();
@@ -73,5 +75,13 @@ public class Relatorio {
 
 	public void setDataLabel(String dataLabel) {
 		this.dataLabel = dataLabel;
+	}
+
+	public Integer getUltimoDiaDoMes() {
+		return ultimoDiaDoMes;
+	}
+
+	public void setUltimoDiaDoMes(Integer ultimoDiaDoMes) {
+		this.ultimoDiaDoMes = ultimoDiaDoMes;
 	}
 }

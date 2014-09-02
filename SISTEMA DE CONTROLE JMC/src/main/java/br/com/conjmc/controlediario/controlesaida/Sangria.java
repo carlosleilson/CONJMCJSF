@@ -27,7 +27,6 @@ import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
-import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;

@@ -66,7 +66,7 @@
 	          	<p:message for="funcionario"/>
           	</h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
+          <p:commandButton id="createSaveButton" ajax="true" value="#{messages.label_save}" actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
     	</fieldset>
     	</h:form>
     	<h:form styleClass="buttomLimpar">
@@ -116,6 +116,10 @@
 	        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 				<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
 				<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
+			</p:confirmDialog>
+			<p:confirmDialog id="duplicate" header="Atenção!" message="Já foi inserido um registro para o item com a mesma data e valor, tem certeza que deseja inserir o registro?" hideEffect="explode" widgetVar="duplicate" severity="alert">
+				<p:commandButton id="optionSin" value="Sim" oncomplete="PF('duplicate').hide()" action="#{sangriaBean.persist()}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+				<p:commandButton id="optionNao" value="Não" onclick="PF('duplicate').hide()" type="button"/>
 			</p:confirmDialog>
 	       </h:form>
   </ui:define>

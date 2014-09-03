@@ -150,6 +150,13 @@ public class Sangria {
 	public static long countSangrias() {
         return entityManager().createQuery("SELECT COUNT(o) FROM Sangria o", Long.class).getSingleResult();
     }
+	
+	public static long countSangriaValidation(Sangria sangria) {
+        Query query = entityManager().createQuery("SELECT COUNT(o) FROM Sangria o where o.periodo = :data and o.valor = :valor", Long.class);
+        query.setParameter("data", sangria.periodo);
+        query.setParameter("valor", sangria.valor);
+        return (long) query.getSingleResult();
+    }
 
 	public static List<Sangria> findAllSangrias() {
 		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja", Sangria.class);

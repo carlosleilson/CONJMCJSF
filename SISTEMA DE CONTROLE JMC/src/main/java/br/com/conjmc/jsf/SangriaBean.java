@@ -557,6 +557,7 @@ public class SangriaBean implements Serializable  {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Sangria");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        codigo = null;
         reset();
         init();
         return findAllSangrias();

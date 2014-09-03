@@ -74,6 +74,8 @@ public class SangriaBean implements Serializable  {
 	
 	private String classificacao;
 	
+	private long validation;
+	
 	/*----------- Search ------------*/
 	private Date dataInicial;
 	
@@ -532,25 +534,31 @@ public class SangriaBean implements Serializable  {
         createDialogVisible = true;
         return "sangria";
     }
+	
+	public void validarSangria(){
+		this.validation = sangria.countSangriaValidation(sangria);
+		System.out.println(validation);
+	}
+	
+	public void persistCofirmation() {
+		if(validation > 0 ) {
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('duplicate').show();");
+    	} else {
+    		persist();        		
+    	}
+	}
 
 	public String persist() {
         String message = "";
-        if (sangria.getId() != null) {
-//        	sangria.setPeriodo(new Date());
-        	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-            sangria.merge();
-            message = "message_successfully_updated";
-        } else {
-        	if(sangria.getOrigem() != null) {
+    	if(sangria.getOrigem() != null) {
 //        		sangria.setPeriodo(new Date());
-        		sangria.setSangria(true);
-        	} else {
-        		sangria.setSangria(false);
-        	}
-        	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-            sangria.persist();
-            message = "message_successfully_created";
-        }
+    		sangria.setSangria(true);
+    	} else {
+    		sangria.setSangria(false);
+    	}
+    	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+        sangria.persist();
+        message = "message_successfully_created";
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("createDialogWidget.hide()");
         context.execute("editDialogWidget.hide()");

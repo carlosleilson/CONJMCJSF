@@ -136,6 +136,7 @@ public class SangriaBean implements Serializable  {
 	
 	public void search() {
 		sangria.setItem(DespesasGastos.findByCondigo(codigo));
+		carregaClassificacao();
 	}
 
 	public String getName() {

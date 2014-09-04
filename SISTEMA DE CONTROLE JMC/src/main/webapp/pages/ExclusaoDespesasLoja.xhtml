@@ -83,7 +83,7 @@
 <!-- 	          	</p:column> -->
 	          	</ui:remove>
 	          	<p:column headerText="Ações" styleClass="action-column" style="width:40px;"> 
-		            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="confirmation.show()" title="#{messages.label_delete}" rendered="#{sangria.sangria != true}">
+		            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}" rendered="#{sangria.sangria != true}">
 						<f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
 					</p:commandButton>
 	          	</p:column>
@@ -99,14 +99,14 @@
 		    <p:graphicImage name="/images/carregando.gif" />
 		</p:dialog>
 		
-    <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
+    <!-- <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
       <p:outputPanel id="viewPanel">
         <h:form id="viewForm" enctype="multipart/form-data">
           <h:panelGrid id="viewPanelGrid" columns="2" binding="#{despesasLojaBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" />
           <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="viewDialogWidget.hide()" type="button" />
         </h:form>
       </p:outputPanel>
-    </p:dialog>
+    </p:dialog> -->
   </ui:define>
 </ui:composition>
 </html>

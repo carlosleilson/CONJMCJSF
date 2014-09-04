@@ -152,10 +152,11 @@ public class Sangria {
     }
 	
 	public static long countSangriaValidation(Sangria sangria) {
-        Query query = entityManager().createQuery("SELECT COUNT(o) FROM Sangria o where o.periodo=:data and o.valor=:valor and o.item.descrisao=:descricao", Long.class);
+        Query query = entityManager().createQuery("SELECT COUNT(o) FROM Sangria o where o.periodo=:data and o.valor=:valor and o.item.descrisao=:descricao and o.loja.id = :loja", Long.class);
         query.setParameter("data", sangria.periodo);
         query.setParameter("valor", sangria.valor);
         query.setParameter("descricao", sangria.getItem().getDescrisao());
+        query.setParameter("loja", ObejctSession.idLoja());
         return (long) query.getSingleResult();
     }
 

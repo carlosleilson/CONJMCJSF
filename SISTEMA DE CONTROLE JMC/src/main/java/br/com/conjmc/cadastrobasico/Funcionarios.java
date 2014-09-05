@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -24,9 +25,11 @@ import javax.validation.constraints.AssertTrue;
 
 @Entity
 @Configurable
-public class Funcionarios {
+public class Funcionarios implements Serializable {
 
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      */
     @NotNull
     @Size(min = 10)

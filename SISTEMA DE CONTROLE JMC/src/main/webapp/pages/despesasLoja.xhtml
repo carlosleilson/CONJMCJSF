@@ -47,7 +47,7 @@
        		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
           </h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{sangriaBean.persist}" />
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
     	</fieldset>
     	</h:form>
     	<h:form styleClass="buttomLimpar">
@@ -70,6 +70,10 @@
 	          		</h:outputText>
 	          	</p:column>
 	        </p:dataTable>
+		       <p:confirmDialog id="duplicate" header="Atenção!" message="Já foi inserido um registro para o item com a mesma data e valor, tem certeza que deseja inserir o registro?" hideEffect="explode" widgetVar="duplicate" severity="alert">
+					<p:commandButton id="optionSin" value="Sim" oncomplete="PF('duplicate').hide()" action="#{sangriaBean.persist()}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+					<p:commandButton id="optionNao" value="Não" onclick="PF('duplicate').hide()" type="button"/>
+				</p:confirmDialog>
 	       </h:form>
   </ui:define>
 </ui:composition>

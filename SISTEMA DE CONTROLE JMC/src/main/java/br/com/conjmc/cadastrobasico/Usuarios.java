@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conjmc.jsf.util.Security;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -23,9 +24,11 @@ import javax.persistence.Enumerated;
 
 @Configurable
 @Entity
-public class Usuarios {
+public class Usuarios implements Serializable {
 
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      */
     @NotNull
     @OneToOne

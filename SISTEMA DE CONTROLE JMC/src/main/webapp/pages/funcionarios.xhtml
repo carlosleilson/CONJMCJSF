@@ -50,12 +50,12 @@
 	          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99"/>
 	          	<p:message for="funcionarioCPF"/>
 	          	
-	          	<p:outputLabel value="Loja" for="loja"/>
-	          	<p:selectOneMenu id="loja" value="#{funcionariosBean.funcionarios.loja}" converter="lojasConverter" required="true" requiredMessage="A loja é obrigatório">
+	          	<p:outputLabel value="Loja" for="loja"  rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
+	          	<p:selectOneMenu id="loja" value="#{funcionariosBean.funcionarios.loja}" converter="lojasConverter" rendered="#{facesContext.externalContext.isUserInRole('Administrador')}">
 		    		<f:selectItem itemLabel="Selecione uma loja" itemValue="" />
 					<f:selectItems value="#{lojasBean.lojas}" var="loja" itemLabel="#{loja.nomeLoja}" itemValue="#{loja}" />
 				</p:selectOneMenu>
-	          	<p:message for="loja"/>
+	          	<p:message for="loja"  rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 	          </h:panelGrid>
           </div>
           <div class="gridFunc">

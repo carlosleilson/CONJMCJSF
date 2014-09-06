@@ -31,7 +31,7 @@ public class RelatorioMes {
 		Calendar c = Calendar.getInstance();
 		dataTemp =c.getTime();
 		dataLabel = sdf.format(dataTemp).toString();
-		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)+1;
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
     	this.resumos = new RelatorioDoMes(dataTemp).criarRelatorio();
     	if(mesTemp==0)
     		mesTemp=dataTemp.getMonth();
@@ -40,20 +40,22 @@ public class RelatorioMes {
 	
 	public void anterior(){
 		Calendar c = Calendar.getInstance();
-		dataTemp =c.getTime();
 		dataTemp.setMonth(mesTemp-1);
 		dataLabel = sdf.format(dataTemp).toString();
 		this.resumos = new RelatorioDoMes(dataTemp).criarRelatorio();
 		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
 	}
 	
 	public void proximo(){
 		Calendar c = Calendar.getInstance();
-		dataTemp =c.getTime();
 		dataTemp.setMonth(mesTemp+1);
 		dataLabel = sdf.format(dataTemp).toString();
 		this.resumos = new RelatorioDoMes(dataTemp).criarRelatorio();	
 		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)-1;		
 	}
 	
 	public List<Sangria> getAllSangrias() {

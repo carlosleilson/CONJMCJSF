@@ -118,12 +118,11 @@ public class RelatorioDiaDoMes {
 	 * @throws ParseException 
 	 */
 	private Double[] preencharCampos(Double[] campos, Long itenId) throws ParseException {
-		List<Sangria> dadosItens = findAllSangriaByItens(itenId);
 		for(int i = 1; i<campos.length; i++){
-			for (Sangria dado : dadosItens) {
-				if(dado.getPeriodo().getDate() == i && dado.getValor()!=null){
+			for (Sangria dado : findAllSangriaByItens(itenId)) {
+				if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear() ){
 					campos[i] = campos[i] + dado.getValor();
-					campos[QTD_CAMPOS-1] = campos[QTD_CAMPOS-1] + dado.getValor();
+					campos[campos.length-1] = campos[campos.length-1] + dado.getValor();
 				}
 			}			
 			totalLinha[i] = totalLinha[i] + campos[i];

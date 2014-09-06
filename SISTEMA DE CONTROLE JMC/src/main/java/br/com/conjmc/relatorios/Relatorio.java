@@ -31,7 +31,7 @@ public class Relatorio {
 		Calendar c = Calendar.getInstance();
 		dataTemp =c.getTime();
 		dataLabel = sdf.format(dataTemp).toString();
-		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)+1;
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
     	this.classificacaoItens = new RelatorioDiaDoMes(dataTemp).criarRelatorio();
     	if(mesTemp==0)
     		mesTemp=dataTemp.getMonth();
@@ -40,20 +40,22 @@ public class Relatorio {
 	
 	public void anterior(){
 		Calendar c = Calendar.getInstance();
-		dataTemp =c.getTime();
 		dataTemp.setMonth(mesTemp-1);
 		dataLabel = sdf.format(dataTemp).toString();
 		this.classificacaoItens = new RelatorioDiaDoMes(dataTemp).criarRelatorio();
 		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
 	public void proximo(){
 		Calendar c = Calendar.getInstance();
-		dataTemp =c.getTime();
 		dataTemp.setMonth(mesTemp+1);
 		dataLabel = sdf.format(dataTemp).toString();
 		this.classificacaoItens = new RelatorioDiaDoMes(dataTemp).criarRelatorio();	
 		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
 	public List<Classificacao> getClassificacaoItens() {

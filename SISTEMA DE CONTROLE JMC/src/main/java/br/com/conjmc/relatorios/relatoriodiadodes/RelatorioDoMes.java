@@ -34,7 +34,7 @@ public class RelatorioDoMes {
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTemp);
 		data = c.getTime();
-		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
+		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
 		
@@ -196,7 +196,7 @@ public class RelatorioDoMes {
 		List<Sangria> dadosItens = findAllSangriaByItens(itenId);
 		for(int i = 1; i<campos.length; i++){
 			for (Sangria dado : dadosItens) {
-				if(dado.getPeriodo().getDate() == i && dado.getValor()!=null){
+				if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear()  ){
 					campos[i] = df.format(dado.getValor());
 					campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
 				}

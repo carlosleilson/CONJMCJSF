@@ -66,7 +66,7 @@
 	          	<p:message for="funcionario"/>
           	</h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="true" value="#{messages.label_save}" actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
     	</fieldset>
     	</h:form>
     	<h:form styleClass="buttomLimpar">

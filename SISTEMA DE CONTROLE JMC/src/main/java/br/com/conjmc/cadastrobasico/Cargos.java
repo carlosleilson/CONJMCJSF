@@ -1,21 +1,14 @@
 package br.com.conjmc.cadastrobasico;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Configurable;
 
 @Entity
 @Configurable
@@ -28,10 +21,10 @@ public class Cargos {
     @Enumerated
     private Setor setor;
 
-	public String toString() {
+	/*public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-
+*/
 	public String getNome() {
         return this.nome;
     }
@@ -48,7 +41,7 @@ public class Cargos {
         this.setor = setor;
     }
 
-	@PersistenceContext
+	/*@PersistenceContext
     transient EntityManager entityManager;
 
 	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("nome", "setor");
@@ -133,7 +126,7 @@ public class Cargos {
         Cargos merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
-    }
+    }*/
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)

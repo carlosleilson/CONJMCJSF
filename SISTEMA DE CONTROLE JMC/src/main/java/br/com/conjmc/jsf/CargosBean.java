@@ -62,7 +62,7 @@ public class CargosBean implements Serializable {
 	@PostConstruct
     public void init() {
         cargos = new Cargos();
-        findAllCargoses();
+       /* findAllCargoses();*/
     }
 
 	public String getName() {
@@ -75,12 +75,6 @@ public class CargosBean implements Serializable {
 
 	public void setAllCargoses(List<Cargos> allCargoses) {
         this.allCargoses = allCargoses;
-    }
-
-	public String findAllCargoses() {
-		CargosServiceImpl cargoService = new CargosServiceImpl();
-        allCargoses = cargoService.findAllCargos();
-        return null;
     }
 
 	public Cargos getCargos() {
@@ -98,13 +92,12 @@ public class CargosBean implements Serializable {
 		CargosServiceImpl cargoService = new CargosServiceImpl();
         String message = "";
         if (cargos.getId() != null) {
-            cargoService.alterar(cargos);
             message = "message_successfully_updated";
         } else {
-        	cargoService.persist(cargos);
             message = "message_successfully_created";
         }
-       
+        cargoService.persist(cargos);
+        
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Cargos");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         init();

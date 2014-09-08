@@ -21,6 +21,7 @@ public abstract class DaoImpl<T, ID extends Serializable> implements IDao<T, ID>
   
   @PersistenceContext(name = "connectionConjmc")
   protected EntityManager entityManager;
+  
   Root<T> root;
   @SuppressWarnings("rawtypes")
   TypedQuery q;

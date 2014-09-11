@@ -19,7 +19,7 @@
           <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
           	<p:outputLabel value="Código" for="codigo"/>
     		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
-    			<p:ajax event="keyup" update=":createForm:itens" listener="#{sangriaBean.search()}"/>
+    			<p:ajax event="keyup" update=":createForm:itens :createForm:classific" listener="#{sangriaBean.search()}"/>
     		</p:inputText>
           	<span></span>
           
@@ -47,7 +47,7 @@
        		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
           </h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}"  actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
     	</fieldset>
     	</h:form>
     	<h:form styleClass="buttomLimpar">

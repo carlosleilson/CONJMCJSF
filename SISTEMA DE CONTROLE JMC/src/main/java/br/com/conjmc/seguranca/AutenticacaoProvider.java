@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,14 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import br.com.conjmc.cadastrobasico.Usuarios;
-import br.com.conjmc.dao.impl.UsuariosDaoImpl;
 import br.com.conjmc.jsf.util.Security;
-import br.com.conjmc.service.impl.UsuariosServiceImpl;
 
 
 public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
-	@Inject
-	private UsuariosServiceImpl usuariosService; 
 	private List<Usuarios> usuarios;
     private String mensagem;
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, BadCredentialsException {
@@ -67,7 +62,7 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
 	}
 
 	private Usuarios login(String login, String senha) {
-		usuarios =  usuariosService.findAllUsuarios(); //Usuarios.findAllUsuarioses();
+		usuarios = Usuarios.findAllUsuarioses();
 		for (Usuarios user : usuarios) {
 			if(login.equals(user.getNome().getApelido().trim())){
 				if(senha.equals(user.getSenha().trim())){

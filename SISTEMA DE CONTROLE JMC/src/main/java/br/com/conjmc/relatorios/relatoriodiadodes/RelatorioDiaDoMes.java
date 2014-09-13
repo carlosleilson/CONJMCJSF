@@ -11,15 +11,15 @@ import java.util.Locale;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
-import br.com.conjmc.relatorios.Classificacao;
-import br.com.conjmc.relatorios.Itens;
+import br.com.conjmc.relatorios.ClassificacaoVO;
+import br.com.conjmc.relatorios.ItensVO;
 
 /**
  * @author leilson
  *
  */
 public class RelatorioDiaDoMes {
-	private List<Classificacao> classificacaoItens;
+	private List<ClassificacaoVO> classificacaoItens;
 	private List<Sangria> allSangrias;
 	private int QTD_CAMPOS = 33; 
 	private Double[] campoTemp;
@@ -46,16 +46,16 @@ public class RelatorioDiaDoMes {
 	/**
 	 * Método para criar relatorio.
 	 */	
-	public List<Classificacao> criarRelatorio(){
+	public List<ClassificacaoVO> criarRelatorio(){
 		return linhasDoRelatorio();
 	}
 	
 	/**
 	 * Método que cria cada Linha do relatorio, dinamicamente.
 	 */	
-	private List<Classificacao> linhasDoRelatorio() {
+	private List<ClassificacaoVO> linhasDoRelatorio() {
 		campoTemp = inicializaArray(new Double[QTD_CAMPOS]);
-		classificacaoItens = new ArrayList<Classificacao>();
+		classificacaoItens = new ArrayList<ClassificacaoVO>();
 		for(Despesas classificacao :findAllClassificacao()){
 			classificacaoItens.add(criarLinhas(classificacao));
 		}
@@ -63,16 +63,16 @@ public class RelatorioDiaDoMes {
 		return classificacaoItens;		
 	}
 	
-	private Classificacao criarTotalDeTodasLinhas(){
-		Classificacao classificacaoIten = new Classificacao();
-		List<Itens> listItens = new ArrayList<Itens>();
+	private ClassificacaoVO criarTotalDeTodasLinhas(){
+		ClassificacaoVO classificacaoIten = new ClassificacaoVO();
+		List<ItensVO> listItens = new ArrayList<ItensVO>();
 			listItens.add(criarSomarTotalLinha());
 		classificacaoIten.setItens(listItens);
 		return classificacaoIten;
 	}
 	
-	private Itens criarSomarTotalLinha() {
-		Itens itensRelatorio = new Itens();
+	private ItensVO criarSomarTotalLinha() {
+		ItensVO itensRelatorio = new ItensVO();
 			itensRelatorio.setCampos(arrayStringToArrayLong("TOTAL GERAL",totalLinha));
 		return itensRelatorio;
 	}		
@@ -82,11 +82,11 @@ public class RelatorioDiaDoMes {
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */
-	private Classificacao criarLinhas(Despesas classificacao) {
-		Classificacao classificacaoIten = new Classificacao();
+	private ClassificacaoVO criarLinhas(Despesas classificacao) {
+		ClassificacaoVO classificacaoIten = new ClassificacaoVO();
 		classificacaoIten.setName(classificacao.getCodigo() + " - "	+ classificacao.getDescricao());
 		classificacaoIten.setResumo(classificacao.getIdResumo());
-		List<Itens> listItens = new ArrayList<Itens>();
+		List<ItensVO> listItens = new ArrayList<ItensVO>();
 		for (DespesasGastos item : findAllDespasGastosByClassificao(classificacao.getId())) {
 			listItens.add(criarDadosDeItem(item));
 		}		
@@ -100,8 +100,8 @@ public class RelatorioDiaDoMes {
 	 * Método que carrega dado de valor e periodo do itens.
 	 * @param item -- id do itens
 	 */
-	private Itens criarDadosDeItem(DespesasGastos item) {
-		Itens itensRelatorio = new Itens();
+	private ItensVO criarDadosDeItem(DespesasGastos item) {
+		ItensVO itensRelatorio = new ItensVO();
 		Double[] campos = new Double[QTD_CAMPOS];
 		try {
 			itensRelatorio.setCampos( arrayStringToArrayLong(item.getDescrisao(),preencharCampos( inicializaArray(campos),item.getId() )));
@@ -134,8 +134,8 @@ public class RelatorioDiaDoMes {
 	/**
 	 * Método para incluir o total:
 	 */		
-	private Itens criarTotalLinha() {
-		Itens itensRelatorio = new Itens();
+	private ItensVO criarTotalLinha() {
+		ItensVO itensRelatorio = new ItensVO();
 		itensRelatorio.setCampos(arrayStringToArrayLong("Totals:",campoTemp));
 		return itensRelatorio;
 	}	
@@ -194,11 +194,11 @@ public class RelatorioDiaDoMes {
 		return allSangrias;
 	}
 
-	public List<Classificacao> getClassificacaoItens() {
+	public List<ClassificacaoVO> getClassificacaoItens() {
 		return classificacaoItens;
 	}
 
-	public void setClassificacaoItens(List<Classificacao> classificacaoItens) {
+	public void setClassificacaoItens(List<ClassificacaoVO> classificacaoItens) {
 		this.classificacaoItens = classificacaoItens;
 	}
 }

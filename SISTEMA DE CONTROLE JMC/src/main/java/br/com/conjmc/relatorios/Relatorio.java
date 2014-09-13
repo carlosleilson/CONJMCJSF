@@ -13,7 +13,7 @@ import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 
 @ManagedBean(name = "relatorioBean")
 public class Relatorio {
-	private List<Classificacao> classificacaoItens;
+	private List<ClassificacaoVO> classificacaoItens;
 	private List<Sangria> allSangrias;	
 	private String dataLabel;
 	private SimpleDateFormat sdf;
@@ -58,10 +58,10 @@ public class Relatorio {
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
-	public List<Classificacao> getClassificacaoItens() {
+	public List<ClassificacaoVO> getClassificacaoItens() {
 		return classificacaoItens;
 	}
-	public void setClassificacaoItens(List<Classificacao> classificacaoItens) {
+	public void setClassificacaoItens(List<ClassificacaoVO> classificacaoItens) {
 		this.classificacaoItens = classificacaoItens;
 	}
 	public List<Sangria> getAllSangrias() {

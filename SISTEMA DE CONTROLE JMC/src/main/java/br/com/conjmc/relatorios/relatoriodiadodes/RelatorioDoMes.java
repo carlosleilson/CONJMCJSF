@@ -12,16 +12,16 @@ import java.util.Locale;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
-import br.com.conjmc.relatorios.Classificacao;
-import br.com.conjmc.relatorios.Itens;
-import br.com.conjmc.relatorios.Resumo;
+import br.com.conjmc.relatorios.ClassificacaoVO;
+import br.com.conjmc.relatorios.ItensVO;
+import br.com.conjmc.relatorios.ResumoVO;
 
 /**
  * @author leilson
  *
  */
 public class RelatorioDoMes {
-	private List<Resumo> resumosItens;
+	private List<ResumoVO> resumosItens;
 	private List<Sangria> allSangrias;
 	private int QTD_CAMPOS = 33; 
 	private String[] campoTemp;
@@ -34,7 +34,7 @@ public class RelatorioDoMes {
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTemp);
 		data = c.getTime();
-		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
 		
@@ -50,20 +50,20 @@ public class RelatorioDoMes {
 	/**
 	 * Método para criar relatorio.
 	 */	
-	public List<Resumo> criarRelatorio(){
+	public List<ResumoVO> criarRelatorio(){
 		return linhasDoRelatorio();
 	}
 	
 	/**
 	 * Método que cria cada Linha do relatorio, dinamicamente.
 	 */	
-	private List<Resumo> linhasDoRelatorio() {
+	private List<ResumoVO> linhasDoRelatorio() {
 		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
-		resumosItens = new ArrayList<Resumo>();
+		resumosItens = new ArrayList<ResumoVO>();
 		String valorTemp = "";
 		for(Despesas classificacao :findAllResumo()){
 			if(!valorTemp.equals(classificacao.getIdResumo())){
-				Resumo resumoIten = new Resumo();
+				ResumoVO resumoIten = new ResumoVO();
 				resumoIten.setName(classificacao.getIdResumo());
 				resumoIten.setClassificacoes(criarClassificacao(classificacao.getIdResumo()));
 				resumosItens.add(resumoIten);
@@ -78,10 +78,10 @@ public class RelatorioDoMes {
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */
-	private List<Classificacao> criarClassificacao(String idResumo) {
-		List<Classificacao> classificacaoItens = new ArrayList<Classificacao>();
+	private List<ClassificacaoVO> criarClassificacao(String idResumo) {
+		List<ClassificacaoVO> classificacaoItens = new ArrayList<ClassificacaoVO>();
 		for (Despesas dadosDoResumo : findAllDadosDaClassificacao(idResumo)) {
-				Classificacao classificacaoTemp = new Classificacao();
+				ClassificacaoVO classificacaoTemp = new ClassificacaoVO();
 				classificacaoTemp.setCodigo(dadosDoResumo.getCodigo());
 				classificacaoTemp.setName(dadosDoResumo.getDescricao());
 				classificacaoTemp.setResumo(dadosDoResumo.getIdResumo());
@@ -92,14 +92,14 @@ public class RelatorioDoMes {
 		return classificacaoItens;
 	}
 	
-	private List<Itens> criarTotalDeTodasLinhas(){
-		List<Itens> listItens = new ArrayList<Itens>();
+	private List<ItensVO> criarTotalDeTodasLinhas(){
+		List<ItensVO> listItens = new ArrayList<ItensVO>();
 			listItens.add(criarSomarTotalLinha());
 		return listItens;
 	}
 	
-	private Itens criarSomarTotalLinha() {
-		Itens itensRelatorio = new Itens();
+	private ItensVO criarSomarTotalLinha() {
+		ItensVO itensRelatorio = new ItensVO();
 			itensRelatorio.setCampos(campoTemp);
 		return itensRelatorio;
 	}		
@@ -136,11 +136,11 @@ public class RelatorioDoMes {
 		return allSangrias;
 	}
 
-	public List<Resumo> getResumosItens() {
+	public List<ResumoVO> getResumosItens() {
 		return resumosItens;
 	}
 
-	public void setResumosItens(List<Resumo> resumosItens) {
+	public void setResumosItens(List<ResumoVO> resumosItens) {
 		this.resumosItens = resumosItens;
 	}
 //////////////////////////////////////////////////////////
@@ -149,11 +149,11 @@ public class RelatorioDoMes {
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */
-	private Classificacao somarLinhas(Despesas classificacao) {
-		Classificacao classificacaoIten = new Classificacao();
+	private ClassificacaoVO somarLinhas(Despesas classificacao) {
+		ClassificacaoVO classificacaoIten = new ClassificacaoVO();
 		classificacaoIten.setName(classificacao.getCodigo() + " - "	+ classificacao.getDescricao());
 		classificacaoIten.setResumo(classificacao.getIdResumo());
-		List<Itens> listItens = new ArrayList<Itens>();
+		List<ItensVO> listItens = new ArrayList<ItensVO>();
 		for (DespesasGastos item : findAllDespasGastosByClassificao(classificacao.getId())) {
 			listItens.add(criarDadosDeItem(item));
 		}		
@@ -166,8 +166,8 @@ public class RelatorioDoMes {
 	/**
 	 * Método para incluir o total:
 	 */		
-	private Itens criarTotalLinha() {
-		Itens itensRelatorio = new Itens();
+	private ItensVO criarTotalLinha() {
+		ItensVO itensRelatorio = new ItensVO();
 		itensRelatorio.setCampos(campoTemp);
 		return itensRelatorio;
 	}	
@@ -175,8 +175,8 @@ public class RelatorioDoMes {
 	 * Método que carrega dado de valor e periodo do itens.
 	 * @param item -- id do itens
 	 */
-	private Itens criarDadosDeItem(DespesasGastos item) {
-		Itens itensRelatorio = new Itens();
+	private ItensVO criarDadosDeItem(DespesasGastos item) {
+		ItensVO itensRelatorio = new ItensVO();
 		String[] campos = new String[QTD_CAMPOS];
 		campos[0]=item.getDescrisao();
 		try {

@@ -3,11 +3,11 @@ package br.com.conjmc.relatorios;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Resumo {
+public class ResumoVO {
 	private String name;
-	private List<Classificacao> classificacoes;
-	public Resumo() {
-		this.classificacoes =new ArrayList<Classificacao>();
+	private List<ClassificacaoVO> classificacoes;
+	public ResumoVO() {
+		this.classificacoes =new ArrayList<ClassificacaoVO>();
 	}
 	public String getName() {
 		return name;
@@ -15,10 +15,10 @@ public class Resumo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Classificacao> getClassificacoes() {
+	public List<ClassificacaoVO> getClassificacoes() {
 		return classificacoes;
 	}
-	public void setClassificacoes(List<Classificacao> classificacoes) {
+	public void setClassificacoes(List<ClassificacaoVO> classificacoes) {
 		this.classificacoes = classificacoes;
 	}
 }

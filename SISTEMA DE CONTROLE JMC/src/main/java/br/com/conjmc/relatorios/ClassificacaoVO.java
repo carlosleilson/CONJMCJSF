@@ -3,14 +3,14 @@ package br.com.conjmc.relatorios;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Classificacao {
+public class ClassificacaoVO {
 	private String name;
 	private String resumo;
 	private String codigo;
-	private List<Itens> itens;
+	private List<ItensVO> itens;
 	
-	public Classificacao() {
-		this.itens = new ArrayList<Itens>();
+	public ClassificacaoVO() {
+		this.itens = new ArrayList<ItensVO>();
 	}
 	
 	public String getName() {
@@ -20,10 +20,10 @@ public class Classificacao {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Itens> getItens() {
+	public List<ItensVO> getItens() {
 		return itens;
 	}
-	public void setItens(List<Itens> itens) {
+	public void setItens(List<ItensVO> itens) {
 		this.itens = itens;
 	}
 

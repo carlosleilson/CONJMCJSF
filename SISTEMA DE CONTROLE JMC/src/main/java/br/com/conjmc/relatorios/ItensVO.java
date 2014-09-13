@@ -1,10 +1,10 @@
 package br.com.conjmc.relatorios;
 
-public class Itens {
+public class ItensVO {
 	 private final int QTD_CAMPOS = 33; 
 	 private String[] campos;
 	 
-	public Itens() {
+	public ItensVO() {
 		this.campos = new String[QTD_CAMPOS];
 	}
 	

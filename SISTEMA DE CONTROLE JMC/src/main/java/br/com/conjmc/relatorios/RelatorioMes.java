@@ -13,7 +13,7 @@ import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDoMes;
 
 @ManagedBean(name = "relatorioMesBean")
 public class RelatorioMes {
-	private List<Resumo> resumos;
+	private List<ResumoVO> resumos;
 	private List<Sangria> allSangrias;	
 	private String dataLabel;
 	private SimpleDateFormat sdf;
@@ -31,7 +31,7 @@ public class RelatorioMes {
 		Calendar c = Calendar.getInstance();
 		dataTemp =c.getTime();
 		dataLabel = sdf.format(dataTemp).toString();
-		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
     	this.resumos = new RelatorioDoMes(dataTemp).criarRelatorio();
     	if(mesTemp==0)
     		mesTemp=dataTemp.getMonth();
@@ -45,7 +45,7 @@ public class RelatorioMes {
 		this.resumos = new RelatorioDoMes(dataTemp).criarRelatorio();
 		mesTemp=dataTemp.getMonth();
 		c.setTime(dataTemp);
-		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)-1;
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
 	public void proximo(){
@@ -55,7 +55,7 @@ public class RelatorioMes {
 		this.resumos = new RelatorioDoMes(dataTemp).criarRelatorio();	
 		mesTemp=dataTemp.getMonth();
 		c.setTime(dataTemp);
-		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH)-1;		
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);		
 	}
 	
 	public List<Sangria> getAllSangrias() {
@@ -73,11 +73,11 @@ public class RelatorioMes {
 		this.dataLabel = dataLabel;
 	}
 
-	public List<Resumo> getResumos() {
+	public List<ResumoVO> getResumos() {
 		return resumos;
 	}
 
-	public void setResumos(List<Resumo> resumos) {
+	public void setResumos(List<ResumoVO> resumos) {
 		this.resumos = resumos;
 	}
 

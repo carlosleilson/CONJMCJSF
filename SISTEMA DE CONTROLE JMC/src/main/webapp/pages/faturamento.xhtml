@@ -27,7 +27,7 @@
 					value="#{faturamentoBean.faturamento.periodo}"
 					pattern="dd/MM/yyyy" 
 					required="true"
-					requiredMessage="O valor é obrigatório"					/>        	
+					requiredMessage="O valor é obrigatório"/>        	
 	          	<p:message for="mesDoAno"/>          
 	          
 	          	<p:outputLabel value="Valor Faturamento Bruto" for="valorBruto"/>
@@ -36,22 +36,27 @@
 	          		styleClass="money" 
 	          		value="#{faturamentoBean.faturamento.faturamentoBruto}"
 	          		requiredMessage="O valor é obrigatório"
-	          		required="true"
-	          		/>
+	          		required="true">
+	          		<f:convertNumber minFractionDigits="2" />
+	          	</p:inputText>
 	          	<p:message for="valorBruto"/>
 	          
 	          	<p:outputLabel value="  Valor Taxas de Entrega" for="valorEntrega"/>
 	          	<p:inputText 
 	          		id="valorEntrega"
 	          		styleClass="money" 
-	          		value="#{faturamentoBean.faturamento.taxaEntrega}"/>
+	          		value="#{faturamentoBean.faturamento.taxaEntrega}">
+	          		<f:convertNumber minFractionDigits="2" />
+	          	</p:inputText>
 	          	<p:message for="valorEntrega"/>  
 	          
 	          	<p:outputLabel value="Valor Serviço de Mesa" for="valorServico"/>
 	          	<p:inputText 
 	          		id="valorServico"
 	          		styleClass="money" 
-	          		value="#{faturamentoBean.faturamento.servicoMesa}"/>
+	          		value="#{faturamentoBean.faturamento.servicoMesa}">
+	          		<f:convertNumber minFractionDigits="2" />
+	          	</p:inputText>
 	          	<p:message for="valorServico"/>
 	          	
 	          </h:panelGrid>

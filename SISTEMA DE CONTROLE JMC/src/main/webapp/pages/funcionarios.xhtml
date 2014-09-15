@@ -37,9 +37,11 @@
 	          	<p:inputText id="funcionarioSalario" 
 	          		styleClass="money" 
 	          		value="#{funcionariosBean.funcionarios.salario}"
-	          		converter="moneyConverter" 
-	          		required="true" 
-	          		requiredMessage="O salario é obrigatório" />
+	          		required="true"
+	          		maxlength="6" 
+	          		requiredMessage="O salario é obrigatório">
+	          			<f:convertNumber minFractionDigits="2" />
+	          		</p:inputText>	
 	          	<p:message for="funcionarioSalario"/>
 	          	
 	          	<p:outputLabel value="Ativo" for="funcionarioSituacao"/>

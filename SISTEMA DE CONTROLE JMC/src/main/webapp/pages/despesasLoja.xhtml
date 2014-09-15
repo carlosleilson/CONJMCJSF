@@ -34,7 +34,9 @@
           		value="#{sangriaBean.sangria.valor}"
           		converter="moneyConverter" 
           		required="true" 
-          		requiredMessage="O valor é obrigatório"/>
+          		requiredMessage="O valor é obrigatório">
+          			<f:convertNumber minFractionDigits="2" />
+          		</p:inputText>
           	<p:message for="valor"/>
           	
           	<p:outputLabel value="Itens" for="itens"/>

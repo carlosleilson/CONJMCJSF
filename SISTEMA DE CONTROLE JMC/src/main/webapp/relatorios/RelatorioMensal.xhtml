@@ -13,27 +13,39 @@
     </h:form>
     <h:form prependId="false" id="dataForm">       
 	<p:commandButton id="anteriorButton" update=":dataForm:field" value="Anterior" action="#{relatorioMesBean.anterior}" />
-	<p:commandButton id="proximoButton" update=":dataForm:field" value="Próximo" action="#{relatorioMesBean.proximo}" />	
+	<p:commandButton id="proximoButton" update=":dataForm:field" value="Próximo" action="#{relatorioMesBean.proximo}" />
+	<p:tooltip for="faturamentoButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
+	<p:commandButton id="faturamentoButton" icon="ui-icon-calculator" update=":createFaturamentoForm:createPanelFaturamentoGrid" value="Faturamento" oncomplete="PF('createDialogfaturamentoWidget').show()" />	
 	<br/><br/>
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal - #{relatorioMesBean.dataLabel}">
-        <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}"  >
+        <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}" >
+       	<p:columnGroup type="header">
+            <p:row>
+            	<p:column width="10"/>
+                <p:column width="200"/>
+                <p:column width="15"/>
+                <p:column width="15"/>
+            </p:row>        	
+       	</p:columnGroup>        
        	<f:facet name="header" width="1800" >Relatorio de Despenho Mensal</f:facet>
-        	<p:subTable var="item" value="#{linha.classificacoes}" >
+        	<p:subTable var="item" value="#{linha.classificacoes}"  >
         	<f:facet name="header">
         		<h:outputText  value="#{linha.name}" />
         	</f:facet>        	
 	        	<p:column >
 	                <h:outputText value="#{item.codigo}" />
 	        	</p:column>	 
-	        	<p:column   width="200">
+	        	<p:column>
 	                <h:outputText value="#{item.name}"/>
 	        	</p:column>
 	        	<p:column >
-	                <h:outputText value="%" />
+	        	<ui:repeat var="total" value="#{item.itens}">
+	                <h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes+1]}" />
+	            </ui:repeat>    
 	        	</p:column>
 		        	<p:column style="text-align:center">
 	        	<ui:repeat var="total" value="#{item.itens}">
-		        		<h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes+1]}">
+		        		<h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes+2]}">
 			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
 		        		</h:outputText>
 	        	</ui:repeat>
@@ -43,8 +55,59 @@
         </p:dataTable>
     </p:fieldset>
     </h:form>
-     <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-		<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+    <p:dialog id="createFaturamentoDialog" header="#{messages.label_create} Faturamento" modal="true" widgetVar="createDialogfaturamentoWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
+     <h:form id="createFaturamentoForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Futuramento</legend>   	
+	          <h:panelGrid id="createPanelFaturamentoGrid" columns="3" styleClass="dialog">
+	          
+	          	<p:outputLabel value="Mês/Ano" for="mesDoAno"/>
+				<p:calendar 
+					id="mesDoAno"
+					value="#{relatorioMesBean.faturamento.periodo}"
+					pattern="MM/yyyy" 
+					required="true"
+					requiredMessage="O valor é obrigatório"	
+					disabled="true"
+					/>        	
+	          	<p:message for="mesDoAno"/>          
+	          
+	          	<p:outputLabel value="Valor Faturamento Bruto" for="valorBruto"/>
+	          	<p:inputText 
+	          		id="valorBruto"
+	          		styleClass="money" 
+	          		value="#{relatorioMesBean.faturamento.faturamentoBruto}"
+	          		requiredMessage="O valor é obrigatório"
+	          		required="true"
+	          		/>
+	          	<p:message for="valorBruto"/>
+	          
+	          	<p:outputLabel value="  Valor Taxas de Entrega" for="valorEntrega"/>
+	          	<p:inputText 
+	          		id="valorEntrega"
+	          		styleClass="money" 
+	          		value="#{relatorioMesBean.faturamento.taxaEntrega}"
+	          		disabled="true"
+	          		/>
+	          	<p:message for="valorEntrega"/>  
+	          
+	          	<p:outputLabel value="Valor Serviço de Mesa" for="valorServico"/>
+	          	<p:inputText 
+	          		id="valorServico"
+	          		styleClass="money" 
+	          		value="#{relatorioMesBean.faturamento.servicoMesa}"
+	          		disabled="true"
+	          		/>
+	          	<p:message for="valorServico"/>
+	          	
+	          </h:panelGrid>
+          	<br/>
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{relatorioMesBean.persist}"  onclick="createDialogfaturamentoWidget.hide()"  oncomplete="PF('createDialogfaturamentoWidget').hide()"  />
+    	</fieldset>
+    	</h:form>
+    </p:dialog>    
+    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+	<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 	    <p:graphicImage name="/images/carregando.gif" />
 	</p:dialog>
   </ui:define>

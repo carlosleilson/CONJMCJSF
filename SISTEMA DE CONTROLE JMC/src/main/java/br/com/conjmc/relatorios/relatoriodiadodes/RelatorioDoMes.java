@@ -1,6 +1,5 @@
 package br.com.conjmc.relatorios.relatoriodiadodes;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.Locale;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.relatorios.ClassificacaoVO;
 import br.com.conjmc.relatorios.ItensVO;
@@ -34,7 +34,7 @@ public class RelatorioDoMes {
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTemp);
 		data = c.getTime();
-		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
+		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+3;
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
 		
@@ -200,11 +200,22 @@ public class RelatorioDoMes {
 					campos[i] = df.format(dado.getValor());
 					campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
 				}
-			}			
+			}		
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
 			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
 		}
 		return campos;
+	}
+
+	private Double extracted() {
+		Double valor = null;
+		List<Faturamento> faturamento = Faturamento.faturamentoesPorDate(data);
+		for (Faturamento faturamento2 : faturamento) {
+			valor = faturamento2.getFaturamentoBruto();
+		}
+		if( valor == null )
+			valor = 1.0;
+		return valor;
 	}	
 	
 	/**
@@ -214,6 +225,10 @@ public class RelatorioDoMes {
 	 */			
 	private void somarTotalPorClassificacao(int dia, Double valor) throws ParseException {
 		campoTemp[0] ="Totals:";
-		campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
+		if(dia==QTD_CAMPOS-2){
+			campoTemp[QTD_CAMPOS-2] = String.valueOf((df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue() / extracted() )*100);
+		}
+		else			
+			campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
 	}	
 }

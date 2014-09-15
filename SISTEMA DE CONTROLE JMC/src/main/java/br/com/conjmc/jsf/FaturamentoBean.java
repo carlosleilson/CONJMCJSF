@@ -1,5 +1,6 @@
 package br.com.conjmc.jsf;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,10 @@ public class FaturamentoBean implements Serializable  {
 		carregaFaturamento();
     }
 	
+	public void carregarPeriodo(Date tempData){
+		faturamento.setPeriodo(tempData);
+	}
+	
 	private void carregaFaturamento() {
 		faturamentos = Faturamento.findAllMFaturamentoes();
 	}
@@ -50,10 +55,9 @@ public class FaturamentoBean implements Serializable  {
             message = "message_successfully_created";
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("createDialogWidget.hide()");
-        context.execute("editDialogWidget.hide()");
+        context.execute("createDialogfaturamentoWidget.hide()");
         
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "Faturamento");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         init();
         return "/pages/faturamento.xhtml";

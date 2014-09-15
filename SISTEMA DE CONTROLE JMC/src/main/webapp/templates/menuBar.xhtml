@@ -36,7 +36,6 @@
    		<p:menuitem value="Mensal"  url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioMensal.xhtml"/>
    		<p:menuitem value="Despesas" url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioDespesa.xhtml"/>
    	</p:submenu> 
-   	<p:menuitem value="Faturamento" url="#{pageContext.servletContext.contextPath}/pages/faturamento.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
    	<p:menuitem ajax="false" value="Sair" url="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_logout" />   	
    </p:menubar>
 </ui:composition>

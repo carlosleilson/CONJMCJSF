@@ -18,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Configurable
@@ -127,6 +128,14 @@ public class Faturamento {
         return query.getResultList();
     }
 
+	public static List<Faturamento> faturamentoesPorDate(Date data) {
+		Query query = entityManager().createQuery("FROM Faturamento o where o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal ", Faturamento.class);
+		query.setParameter("loja", ObejctSession.idLoja());
+		query.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));		
+        return query.getResultList();
+    }	
+	
 	// spring roo
 	/*public static List<Faturamento> findAllFaturamentoes(String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Faturamento o";

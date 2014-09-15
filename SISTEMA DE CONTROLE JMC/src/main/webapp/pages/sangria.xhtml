@@ -33,7 +33,9 @@
           	<span></span>
     		
           	<p:outputLabel value="Valor" for="valor" />
-          	<p:inputText styleClass="money" id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório"/>
+          	<p:inputText styleClass="money" id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
+          		<f:convertNumber minFractionDigits="2" />
+          	</p:inputText>
           	<p:message for="valor"/>
           	<span></span>
           	

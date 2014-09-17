@@ -468,7 +468,7 @@ public class DespesasGastosBean implements Serializable {
 
 	public void reset() {
         despesasGastos = null;
-        createDialogVisible = false;
+        init();
     }
 
 	public void handleDialogClose(CloseEvent event) {

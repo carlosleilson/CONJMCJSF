@@ -22,7 +22,7 @@
           <h:panelGrid id="createPanelGrid" columns="4" styleClass="dialog">
           	<p:outputLabel value="Código" for="codigo"/>
     		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
-    			<p:ajax event="keyup" update=":createForm:itens :createForm:classific" listener="#{sangriaBean.search()}"/>
+    			<p:ajax event="keyup" update=":createForm:itens :createForm:funcionarioGrid :createForm:classific" listener="#{sangriaBean.search()}"/>
     		</p:inputText>
     		<p:message for="codigo"/>
           	<span></span>

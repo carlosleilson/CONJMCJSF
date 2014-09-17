@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,6 +21,8 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
 @Configurable
@@ -241,7 +244,9 @@ public class Funcionarios implements Serializable {
     }
 	
 	public static List<Funcionarios> findAllFuncionariosAtivos() {
-        return entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true", Funcionarios.class).getResultList();
+        Query query = entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true and o.loja.id = :loja", Funcionarios.class);
+        query.setParameter("loja", ObejctSession.idLoja());
+        return query.getResultList();
     }
 
 	public static List<Funcionarios> findAllFuncionarioses(String sortFieldName, String sortOrder) {

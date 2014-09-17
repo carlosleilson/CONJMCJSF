@@ -14,62 +14,74 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
 	   <h:form id="searchForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-	    	<fieldset>
-	    	<legend>Conta Funcionário</legend>
-	    	<h:panelGrid id="searchPanelGrid">
-	    	 <p:row>
-	    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
-		          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-		          	<p:calendar id="mes_ano" value="#{contaUsuarioBean.dataInicial}"
-		          		pattern="dd/MM/yyyy" 
-		          		required="true"
-		          		requiredMessage="A data Mes/ano não pode ser nula" />
-		          	<p:message for="mes_ano"/> 
-		          	
-		          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
-		          	<p:calendar id="Atemes_ano" size="8" value="#{contaUsuarioBean.dataFinal}" 
-		          		pattern="dd/MM/yyyy" required="true"
-		          		requiredMessage="A data Até Mes/ano não pode ser nula" />
-		          	<p:message for="Atemes_ano"/>
-		         </h:panelGrid> 	
-			</p:row>
-			<p:row>	
-			<p:column  colspan="3">
-	          	<p:outputLabel  value="Funcionário" for="funcionario"/>
-	          	<p:selectOneMenu id="funcionario" value="#{contaUsuarioBean.funcionario}" converter="funcionariosConverter" filter="true" required="true">
-		    		<f:selectItem itemLabel="Selecione um funcionario" itemValue="" />
-					<f:selectItems value="#{funcionariosBean.allFuncionariosAtivos}" var="func" 
-					itemLabel="#{func.apelido}" itemValue="#{func}" />
-				</p:selectOneMenu>
-	          	<p:message for="funcionario"/>
-	         </p:column>
-	        </p:row>
-	          </h:panelGrid>
-	          <p:commandButton id="createSaveButton" value="Buscar" update=":dataForm" action="#{contaUsuarioBean.buscaContaFuncionario()}" />
-	        </fieldset>
+			<fieldset>
+	    		<legend>Conta Funcionário</legend>
+		    	<h:panelGrid id="searchPanelGrid">
+		    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
+			          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
+			          	<p:calendar id="mes_ano" value="#{contaUsuarioBean.dataInicial}"
+			          		pattern="dd/MM/yyyy" 
+			          		required="true"
+			          		requiredMessage="A data Mes/ano não pode ser nula" />
+			          	<p:message for="mes_ano"/> 
+			          	
+			          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
+			          	<p:calendar id="Atemes_ano" size="8" value="#{contaUsuarioBean.dataFinal}" 
+			          		pattern="dd/MM/yyyy" required="true"
+			          		requiredMessage="A data Até Mes/ano não pode ser nula" />
+			          	<p:message for="Atemes_ano"/>
+			         </h:panelGrid>
+					<p:column  colspan="3">
+			          	<p:outputLabel  value="Funcionário" for="funcionario"/>
+			          	<p:selectOneMenu id="funcionario" value="#{contaUsuarioBean.funcionario}" converter="funcionariosConverter" filter="true" required="true">
+				    		<f:selectItem itemLabel="Selecione um funcionario" itemValue="" />
+							<f:selectItems value="#{funcionariosBean.allFuncionariosAtivos}" var="func" 
+							itemLabel="#{func.apelido}" itemValue="#{func}" />
+						</p:selectOneMenu>
+			          	<p:message for="funcionario"/>
+			         </p:column>
+		         </h:panelGrid>
+				<p:commandButton id="createSaveButton" value="Buscar" update=":dataForm:list" action="#{contaUsuarioBean.buscaContaFuncionario()}" />
+		</fieldset>
 	  </h:form>   
       <h:form prependId="false" id="dataForm">
-      		<h:outputText value="#{contaUsuarioBean.funcionario.apelido}"/>
-		    <h:outputText value="R$ #{contaUsuarioBean.funcionario.salario}"/>
-	        <p:dataTable id="list" value="#{contaUsuarioBean.contaFuncionario}" var="conta">
+	        <p:dataTable id="list" value="#{contaUsuarioBean.contaFuncionario}" var="conta">	        	
 	        	<f:facet name="header">Conta do funcionário</f:facet>
-	          	<p:column headerText="Item" sortBy="#{conta.item.descrisao}">
+	        	<p:columnGroup type="header">
+		            <p:row>
+		                <p:column colspan="2" style="text-align:left" headerText="#{contaUsuarioBean.funcionario.apelido}" />
+		                <p:column headerText="R$ #{contaUsuarioBean.funcionario.salario}" />
+		            </p:row>
+		            <p:row>
+		                <p:column headerText="Item" sortBy="#{conta.item.descrisao}" />
+		                <p:column headerText="Data" sortBy="#{conta.periodo}" />
+		                <p:column headerText="Valor" sortBy="#{conta.valor}" />
+		            </p:row>
+		        </p:columnGroup>
+	          	<p:column>
 	          		<h:outputText value="#{conta.item.descrisao}"/>
 	          	</p:column>
-	        	<p:column headerText="Data" sortBy="#{conta.periodo}">
+	        	<p:column >
 	          		<h:outputText value="#{conta.periodo}">
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<p:column headerText="Valor" sortBy="#{conta.valor}">
+	          	<p:column>
 	          		<h:outputText value="#{conta.valor}">
 	          			<f:convertNumber minFractionDigits="2"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<f:facet name="footer">Total</f:facet> 
+		        <p:columnGroup type="footer">
+		            <p:row>
+		                <p:column colspan="2" style="text-align:left" footerText="Total de desconto" />
+		                <p:column footerText="R$ #{contaUsuarioBean.totalDesconto}" />
+		            </p:row>
+		             <p:row>
+		                <p:column colspan="2" style="text-align:left" footerText="Valor a recebe" />
+		                <p:column footerText="R$  #{contaUsuarioBean.valorReceber}" />
+		            </p:row>
+		        </p:columnGroup>     
 	        </p:dataTable>
-	        <h:outputText value="Total de descontos #{contaUsuarioBean.totalDesconto}"/>
-		    <h:outputText value="Valor a receber #{contaUsuarioBean.valorReceber}"/>        
        </h:form>
        
 		<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />

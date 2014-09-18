@@ -57,7 +57,7 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-		faturamento.setPeriodo(dataTemp);
+		faturamento.setPeriodo(getDataTemp());
 	}
 	
 	public void proximo(){
@@ -68,7 +68,7 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);	
-		faturamento.setPeriodo(dataTemp);
+		faturamento.setPeriodo(getDataTemp());
 	}
 
 	public String persist() {

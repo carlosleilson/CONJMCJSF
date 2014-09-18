@@ -26,14 +26,18 @@ public class FaturamentoBean implements Serializable  {
 	@PostConstruct
     public void init() {
 		faturamento = new Faturamento();
-		carregaFaturamento();
+		carregaFaturamentos();
     }
 	
 	public void carregarPeriodo(Date tempData){
 		faturamento.setPeriodo(tempData);
 	}
 	
-	private void carregaFaturamento() {
+	public Faturamento carregaFaturamento(Date data){
+		return Faturamento.findFaturamentoPorData(data);
+	}
+	
+	private void carregaFaturamentos() {
 		faturamentos = Faturamento.findAllMFaturamentoes();
 	}
 	public Faturamento getFaturamento() {

@@ -225,10 +225,9 @@ public class RelatorioDoMes {
 	 */			
 	private void somarTotalPorClassificacao(int dia, Double valor) throws ParseException {
 		campoTemp[0] ="Totals:";
-		if(dia==QTD_CAMPOS-2){
-			campoTemp[QTD_CAMPOS-2] = String.valueOf((df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue() / extracted() )*100);
+		campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
+		if(dia==QTD_CAMPOS-1){
+			campoTemp[QTD_CAMPOS-2] = String.valueOf(( df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue() / extracted() )*100);
 		}
-		else			
-			campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
 	}	
 }

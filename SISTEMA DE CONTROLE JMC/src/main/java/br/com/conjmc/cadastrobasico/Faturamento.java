@@ -131,8 +131,8 @@ public class Faturamento {
 	public static List<Faturamento> faturamentoesPorDate(Date data) {
 		Query query = entityManager().createQuery("FROM Faturamento o where o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal ", Faturamento.class);
 		query.setParameter("loja", ObejctSession.idLoja());
-		query.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
-		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));		
+		query.setParameter("dataInicial", DataUltil.primeiroDiaMes(DataUltil.porMes(data)));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(DataUltil.porMes(data)));		
         return query.getResultList();
     }	
 	
@@ -153,6 +153,14 @@ public class Faturamento {
         return entityManager().find(Faturamento.class, id);
     }
 	
+	public static Faturamento findFaturamentoPorData(Date data) {
+        if (data == null) return null;
+        List results = entityManager().createQuery("SELECT o FROM Faturamento o where o.periodo = :data", Faturamento.class)
+        .setParameter("data",  DataUltil.porMes(data))
+        .getResultList();
+        if (results.isEmpty()) return null;
+        return (Faturamento) results.get(0);
+    }	
 	// Spring Roo
 	/*public static List<Faturamento> findFaturamentoEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Faturamento o", Faturamento.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();

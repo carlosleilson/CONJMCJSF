@@ -34,6 +34,13 @@ public class DataUltil {
 		return sdf.format(data).toString();
 	}
 	
+	public static Date porMes(Date dataTEmp){
+		sdf = new SimpleDateFormat("MM/yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(dataTEmp);
+		return c.getTime();
+	}
+	
 	public static String mesAnterior(){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();

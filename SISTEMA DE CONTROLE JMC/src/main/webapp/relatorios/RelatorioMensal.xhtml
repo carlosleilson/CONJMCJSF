@@ -15,7 +15,7 @@
 	<p:commandButton id="anteriorButton" update=":dataForm:field" value="Anterior" action="#{relatorioMesBean.anterior}" />
 	<p:commandButton id="proximoButton" update=":dataForm:field" value="Próximo" action="#{relatorioMesBean.proximo}" />
 	<p:tooltip for="faturamentoButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
-	<p:commandButton id="faturamentoButton" icon="ui-icon-calculator" update=":createFaturamentoForm:createPanelFaturamentoGrid" value="Faturamento" oncomplete="PF('createDialogfaturamentoWidget').show()" />	
+	<p:commandButton id="faturamentoButton" icon="ui-icon-calculator" update=":createFaturamentoForm:createPanelFaturamentoGrid" actionListener="#{faturamentoBean.findFaturamentoPorData(relatorioMesBean.dataLabel)}" value="Faturamento" oncomplete="PF('createDialogfaturamentoWidget').show()" />	
 	<br/><br/>
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal - #{relatorioMesBean.dataLabel}">
         <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}" >
@@ -40,7 +40,9 @@
 	        	</p:column>
 	        	<p:column >
 	        	<ui:repeat var="total" value="#{item.itens}">
-	                <h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes+1]}" />
+	                <h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes+1]}" >
+	                	<f:convertNumber type ="percent" pattern="###.##" />
+	                </h:outputText>
 	            </ui:repeat>    
 	        	</p:column>
 		        	<p:column style="text-align:center">

@@ -25,20 +25,20 @@
 				<p:inputText id="valor" styleClass="money" value="#{contasBean.conta.valor}"/>
 				<p:message for="valor"/> -->
 				
-				<p:outputLabel value="Setor" for="detalhamento" />
-				<p:inputTextarea value="#{contasBean.conta.detalhamento}"/>
+				<p:outputLabel value="Detalhamento" for="detalhamento" />
+				<p:inputTextarea id="detalhamento" value="#{contasBean.conta.detalhamento}"/>
 				<p:message for="detalhamento"/>
 				
 				<p:outputLabel value="Data Pagamento" for="pagamento" />
-		    	<p:calendar id="pagamento" value="#{contasBean.conta.pagamento}" required="true" requiredMessage="O campo não pode ser nulo"/>
+		    	<p:calendar id="pagamento" value="#{contasBean.conta.dataPagamento}" required="true" requiredMessage="O campo não pode ser nulo"/>
 		    	<p:message for="pagamento" />
 			 </h:panelGrid>
 			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{cargosBean.persist}" />
 		</fieldset>
     </h:form>
-    <h:form styleClass="buttomLimpar">
+    <!-- <h:form styleClass="buttomLimpar">
     	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{cargosBean.reset}" action="cargos.xhtml" />
-    </h:form>
+    </h:form> -->
     <!-- <h:form prependId="false" id="dataForm">
 			<p:dataTable id="list" var="list" value="#{cargosBean.allCargoses}" paginator="true" rows="10">
 				<f:facet name="header">Cargos</f:facet>

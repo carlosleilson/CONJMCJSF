@@ -6,12 +6,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.Contas;
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean
 public class ContasBean {
 
 	private Contas conta;
+	private Sangria sangria;
 	
 	@PostConstruct
 	public void init() {
@@ -27,6 +29,14 @@ public class ContasBean {
 		this.conta = conta;
 	}
 	
+	public Sangria getSangria() {
+		return sangria;
+	}
+
+	public void setSangria(Sangria sangria) {
+		this.sangria = sangria;
+	}
+
 	public String persist() {
         String message = "";
         if (conta.getId() != null) {
@@ -54,5 +64,15 @@ public class ContasBean {
 		}
         return "contas.xhtml";
     }
+	 
+	public void reset(){
+		init();
+	}
+	
+	public void adicionar(){
+		conta.getSangria().add(sangria);
+		sangria = new Sangria();
+	}
+	
 		
 }

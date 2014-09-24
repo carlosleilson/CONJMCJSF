@@ -110,7 +110,7 @@ public class Faturamento {
 	@PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("apelido", "nome", "situacao");
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "faturamentoBruto", "taxaEntrega", "servicoMesa", "loja");
 
 	public static final EntityManager entityManager() {
         EntityManager em = new Faturamento().entityManager;

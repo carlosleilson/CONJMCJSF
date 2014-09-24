@@ -33,7 +33,8 @@ public class RelatorioMes {
 	@PostConstruct
     public void init() {
 		sdf = new SimpleDateFormat("MM/yyyy");
-		faturamento = new Faturamento();
+		if(faturamento == null)
+			faturamento = new Faturamento();
 		relatorio();
 	}
 	
@@ -45,7 +46,6 @@ public class RelatorioMes {
     	this.resumos = new RelatorioDoMes(getDataTemp()).criarRelatorio();
     	if(mesTemp==0)
     		mesTemp=getDataTemp().getMonth();
-    	faturamento.setPeriodo(dataTemp);
     	return null;
 	}
 	
@@ -57,7 +57,6 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-		faturamento.setPeriodo(getDataTemp());
 	}
 	
 	public void proximo(){
@@ -68,7 +67,6 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);	
-		faturamento.setPeriodo(getDataTemp());
 	}
 
 	public String persist() {
@@ -90,6 +88,13 @@ public class RelatorioMes {
         init();
         return "/relatorios/RelatorioMensal.xhtml";
     }	
+	
+	public void carregarPeriodo(String tempData){
+		Calendar c = Calendar.getInstance();
+		c.set(c.MONTH, Integer.valueOf(tempData.substring(1, 2).trim())-1);
+		c.set(c.YEAR, Integer.valueOf(tempData.substring(3, 7).trim()));
+		faturamento.setPeriodo(c.getTime());
+	}
 	
 	public List<Sangria> getAllSangrias() {
 		return allSangrias;

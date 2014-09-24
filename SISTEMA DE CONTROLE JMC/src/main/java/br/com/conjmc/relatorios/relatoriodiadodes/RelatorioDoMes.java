@@ -1,5 +1,6 @@
 package br.com.conjmc.relatorios.relatoriodiadodes;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -202,7 +203,7 @@ public class RelatorioDoMes {
 				}
 			}		
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
-			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
+			somarTotalPorClassificacaoEPorcentagem(i,df.parse(campos[i]).doubleValue());
 		}
 		return campos;
 	}
@@ -223,11 +224,12 @@ public class RelatorioDoMes {
 	 * @param dia O dai do mes.
 	 * @param valor é o valor do dia.
 	 */			
-	private void somarTotalPorClassificacao(int dia, Double valor) throws ParseException {
+	private void somarTotalPorClassificacaoEPorcentagem(int dia, Double valor) throws ParseException {
 		campoTemp[0] ="Totals:";
-		campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
+		if (dia != QTD_CAMPOS-2) 
+			campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
 		if(dia==QTD_CAMPOS-1){
-			campoTemp[QTD_CAMPOS-2] = String.valueOf(( df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue() / extracted() )*100);
+			campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( valor / extracted() )*100)+" %";
 		}
 	}	
 }

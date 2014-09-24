@@ -1,5 +1,6 @@
 package br.com.conjmc.jsf;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +30,11 @@ public class FaturamentoBean implements Serializable  {
 		carregaFaturamentos();
     }
 	
-	public void carregarPeriodo(Date tempData){
-		faturamento.setPeriodo(tempData);
+	public void carregarPeriodo(String tempData){
+		Calendar c = Calendar.getInstance();
+		c.set(c.MONTH, Integer.valueOf(tempData.substring(1, 2).trim()));
+		c.set(c.YEAR, Integer.valueOf(tempData.substring(3, 7).trim()));
+		faturamento.setPeriodo(c.getTime());
 	}
 	
 	public Faturamento carregaFaturamento(Date data){

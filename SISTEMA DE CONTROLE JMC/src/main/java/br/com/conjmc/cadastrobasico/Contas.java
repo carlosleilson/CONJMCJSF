@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 
 @Entity
 @Configurable
@@ -69,6 +72,9 @@ public class Contas {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
+	
+	@OneToMany (mappedBy="conta")
+    private List<Sangria> sangria;
 
 	/*public Fornecedores getFornecedor() {
 		return fornecedor;
@@ -116,6 +122,14 @@ public class Contas {
 
 	public void setVersion(Integer version) {
 		this.version = version;
+	}
+
+	public List<Sangria> getSangria() {
+		return sangria;
+	}
+
+	public void setSangria(List<Sangria> sangria) {
+		this.sangria = sangria;
 	}
 
 	// DAO

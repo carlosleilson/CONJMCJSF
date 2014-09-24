@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.cadastrobasico.Contas;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
@@ -75,6 +77,10 @@ public class Sangria {
      */
     @ManyToOne
     private Lojas loja;
+    
+    @ManyToOne
+    @JoinColumn(name="conta_id")
+    private Contas conta;
 
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -134,6 +140,14 @@ public class Sangria {
 
 	public void setTurno(String turno) {
 		this.turno = turno;
+	}
+
+	public Contas getConta() {
+		return conta;
+	}
+
+	public void setConta(Contas conta) {
+		this.conta = conta;
 	}
 
 	@PersistenceContext

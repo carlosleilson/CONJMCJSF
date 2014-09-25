@@ -1,4 +1,5 @@
 package br.com.conjmc.cadastrobasico;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,15 +24,13 @@ import br.com.conjmc.jsf.util.ObejctSession;
 
 @Configurable
 @Entity
-public class Faturamento {
+public class Faturamento implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private Date periodo;
 
 	private Double faturamentoBruto;
-	
-	private Double taxaEntrega;
-	
-	private Double servicoMesa;
 	
 	@ManyToOne
     private Lojas loja;
@@ -79,22 +78,6 @@ public class Faturamento {
 
 	public void setFaturamentoBruto(Double faturamentoBruto) {
 		this.faturamentoBruto = faturamentoBruto;
-	}
-
-	public Double getTaxaEntrega() {
-		return taxaEntrega;
-	}
-
-	public void setTaxaEntrega(Double taxaEntrega) {
-		this.taxaEntrega = taxaEntrega;
-	}
-
-	public Double getServicoMesa() {
-		return servicoMesa;
-	}
-
-	public void setServicoMesa(Double servicoMesa) {
-		this.servicoMesa = servicoMesa;
 	}
 
 	public Lojas getLoja() {

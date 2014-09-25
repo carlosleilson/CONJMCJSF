@@ -40,24 +40,6 @@
 	          		<f:convertNumber minFractionDigits="2" />
 	          	</p:inputText>
 	          	<p:message for="valorBruto"/>
-	          
-	          	<p:outputLabel value="  Valor Taxas de Entrega" for="valorEntrega"/>
-	          	<p:inputText 
-	          		id="valorEntrega"
-	          		styleClass="money" 
-	          		value="#{faturamentoBean.faturamento.taxaEntrega}">
-	          		<f:convertNumber minFractionDigits="2" />
-	          	</p:inputText>
-	          	<p:message for="valorEntrega"/>  
-	          
-	          	<p:outputLabel value="Valor Serviço de Mesa" for="valorServico"/>
-	          	<p:inputText 
-	          		id="valorServico"
-	          		styleClass="money" 
-	          		value="#{faturamentoBean.faturamento.servicoMesa}">
-	          		<f:convertNumber minFractionDigits="2" />
-	          	</p:inputText>
-	          	<p:message for="valorServico"/>
 	          	
 	          </h:panelGrid>
           	<br/>
@@ -77,19 +59,14 @@
             		<f:convertNumber minFractionDigits="2"/>
             	</h:outputText>
             </p:column>
-            <p:column headerText="Serviço de Mesa" sortBy="#{fatura.servicoMesa}">
-            	<h:outputText value="#{fatura.servicoMesa}">
-            		<f:convertNumber minFractionDigits="2"/>
-            	</h:outputText>
-            </p:column>
-            <p:column headerText="Situação" sortBy="#{fatura.taxaEntrega}">
-            	<h:outputText value="#{fatura.taxaEntrega}">
-            		<f:convertNumber minFractionDigits="2"/>
-            	</h:outputText>
+            <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
+	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
+					<f:setPropertyActionListener value="#{faturamento}" target="#{faturamentoBean.faturamento}" />
+				</p:commandButton>            
             </p:column>
         </p:dataTable>
-        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{despesasBean.despesas.codigo}?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-			<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{despesasBean.delete}" ajax="false" onclick="confirmation.hide()" />
+        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{faturamentoBean.faturamento.faturamentoBruto}?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+			<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{faturamentoBean.delete}" ajax="false" onclick="confirmation.hide()" />
 			<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 		</p:confirmDialog>
     </h:form>

@@ -70,7 +70,19 @@ public class FaturamentoBean implements Serializable  {
         init();
         return "/pages/faturamento.xhtml";
     }
-
+	
+	public String delete() {
+		try {
+			faturamento.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Faturamento");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        init();
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
+		}
+        return "/pages/faturamento.xhtml";
+    }
+	
 	public List<Faturamento> getFaturamentos() {
 		return faturamentos;
 	}

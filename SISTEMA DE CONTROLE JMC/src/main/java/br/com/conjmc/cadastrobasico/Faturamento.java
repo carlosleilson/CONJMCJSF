@@ -1,5 +1,4 @@
 package br.com.conjmc.cadastrobasico;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -22,11 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
 
-@Configurable
 @Entity
-public class Faturamento implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+@Configurable
+public class Faturamento {
 	
 	private Date periodo;
 
@@ -88,12 +85,10 @@ public class Faturamento implements Serializable {
 		this.loja = loja;
 	}
 
-
-
 	@PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "faturamentoBruto", "taxaEntrega", "servicoMesa", "loja");
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "faturamentoBruto", "loja");
 
 	public static final EntityManager entityManager() {
         EntityManager em = new Faturamento().entityManager;
@@ -138,8 +133,10 @@ public class Faturamento implements Serializable {
 	
 	public static Faturamento findFaturamentoPorData(Date data) {
         if (data == null) return null;
-        List results = entityManager().createQuery("SELECT o FROM Faturamento o where o.periodo = :data", Faturamento.class)
-        .setParameter("data",  DataUltil.porMes(data))
+        List results = entityManager().createQuery("SELECT o FROM Faturamento o where o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja", Faturamento.class)
+        .setParameter("loja", ObejctSession.idLoja())	
+		.setParameter("dataInicial", DataUltil.primeiroDiaMes(DataUltil.porMes(data)))
+		.setParameter("dataFinal", DataUltil.ultimoDiaMes(DataUltil.porMes(data)))
         .getResultList();
         if (results.isEmpty()) return null;
         return (Faturamento) results.get(0);

@@ -40,18 +40,18 @@
 	          		<f:convertNumber minFractionDigits="2" />
 	          	</p:inputText>
 	          	<p:message for="valorBruto"/>
-	          	
+	          
 	          </h:panelGrid>
           	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{faturamentoBean.persist()}" />
     	</fieldset>
     	</h:form>
     	<h:form prependId="false" id="dataForm">
-        <p:dataTable id="list" value="#{faturamentoBean.faturamentos}" var="fatura" paginator="true" rows="10">
+        <p:dataTable id="list" value="#{faturamentoBean.faturamentos}" var="fatura" paginator="true" rows="13">
             <f:facet name="header">Classificação de Despesas</f:facet>
             <p:column headerText="Data" sortBy="#{fatura.periodo}">
             	<h:outputText value="#{fatura.periodo}">
-            		<f:convertDateTime pattern="dd/MM/yyyy"/>
+            		<f:convertDateTime pattern="MM/yyyy"/>
             	</h:outputText>
             </p:column>
             <p:column headerText="Faturamento Bruto" sortBy="#{fatura.faturamentoBruto}">
@@ -59,13 +59,16 @@
             		<f:convertNumber minFractionDigits="2"/>
             	</h:outputText>
             </p:column>
-            <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
-	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
-					<f:setPropertyActionListener value="#{faturamento}" target="#{faturamentoBean.faturamento}" />
-				</p:commandButton>            
-            </p:column>
+             <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
+	            <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="faturamento.xhtml" title="#{messages.label_edit}">
+	              <f:setPropertyActionListener value="#{fatura}" target="#{faturamentoBean.faturamento}" />
+	            </p:commandButton>             
+	            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
+					<f:setPropertyActionListener value="#{fatura}" target="#{faturamentoBean.faturamento}" />
+				</p:commandButton>	             
+             </p:column>
         </p:dataTable>
-        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{faturamentoBean.faturamento.faturamentoBruto}?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+        <p:confirmDialog id="excluir" header="Excluir Faturamento" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 			<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{faturamentoBean.delete}" ajax="false" onclick="confirmation.hide()" />
 			<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 		</p:confirmDialog>

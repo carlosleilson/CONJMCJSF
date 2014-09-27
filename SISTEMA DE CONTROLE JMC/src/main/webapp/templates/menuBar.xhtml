@@ -33,8 +33,8 @@
    	</p:submenu>
    	<p:menuitem value="Contas" url="#{pageContext.servletContext.contextPath}/pages/contas.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
    	<p:submenu label="Relatorios" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }">
-   		<p:menuitem value="Faturamento" action="/pages/faturamento.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
-   		<p:menuitem value="Mensal"  url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioMensal.xhtml"/>
+   		<p:menuitem value="Faturamento" url="/pages/faturamento.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
+   		<p:menuitem value="Mensal" url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioMensal.xhtml"/>
    		<p:menuitem value="Despesas" url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioDespesa.xhtml"/>
    	</p:submenu> 
    	<p:menuitem ajax="false" value="Sair" url="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_logout" />   	

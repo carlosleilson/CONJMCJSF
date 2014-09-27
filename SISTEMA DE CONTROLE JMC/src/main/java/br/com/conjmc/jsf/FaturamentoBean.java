@@ -53,6 +53,7 @@ public class FaturamentoBean implements Serializable  {
 	
 	public String persist() {
         String message = "";
+        faturamento = faturamentoPorData(faturamento.getPeriodo(),faturamento.getFaturamentoBruto());
         if (faturamento.getId() != null) {
         	faturamento.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
             faturamento.merge();
@@ -71,18 +72,28 @@ public class FaturamentoBean implements Serializable  {
         return "/pages/faturamento.xhtml";
     }
 	
-	public String delete() {
-		try {
-			faturamento.remove();
-			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Faturamento");
-	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        init();
-		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
+	private Faturamento faturamentoPorData(Date periodo, Double valorBruto) {
+		Faturamento faturamentotmp = new Faturamento();
+		if(periodo!=null && faturamento.getId() == null){
+			faturamentotmp = faturamento.findFaturamentoPorData(periodo);
+			if(faturamentotmp!=null){
+				faturamento.setFaturamentoBruto(valorBruto);
+			}
+			
+			if(faturamentotmp == null){
+				faturamentotmp = faturamento;
+			}
 		}
+		return faturamentotmp;
+	}
+
+	public String delete() {
+		faturamento.remove();
+		FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Faturamento");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
         return "/pages/faturamento.xhtml";
     }
-	
 	public List<Faturamento> getFaturamentos() {
 		return faturamentos;
 	}

@@ -7,9 +7,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import br.com.conjmc.cadastrobasico.Faturamento;
@@ -19,6 +21,7 @@ import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean(name = "faturamentoBean")
 @Configurable
+@SessionScoped
 public class FaturamentoBean implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
@@ -68,7 +71,8 @@ public class FaturamentoBean implements Serializable  {
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Faturamento");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
+        reset();
+        carregaFaturamentos();
         return "/pages/faturamento.xhtml";
     }
 	
@@ -79,11 +83,11 @@ public class FaturamentoBean implements Serializable  {
 			if(faturamentotmp!=null){
 				faturamento.setFaturamentoBruto(valorBruto);
 			}
-			
-			if(faturamentotmp == null){
+			if(faturamentotmp==null){
 				faturamentotmp = faturamento;
 			}
-		}
+		}else
+			faturamentotmp = faturamento;
 		return faturamentotmp;
 	}
 
@@ -94,6 +98,14 @@ public class FaturamentoBean implements Serializable  {
         init();
         return "/pages/faturamento.xhtml";
     }
+	
+	public void reset() {
+		faturamento = new Faturamento();
+    }
+
+	public void handleDialogClose(CloseEvent event) {
+        reset();
+    }	
 	public List<Faturamento> getFaturamentos() {
 		return faturamentos;
 	}

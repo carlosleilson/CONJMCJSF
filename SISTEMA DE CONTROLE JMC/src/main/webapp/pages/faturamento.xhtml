@@ -49,6 +49,7 @@
     	<h:form prependId="false" id="dataForm">
         <p:dataTable id="list" value="#{faturamentoBean.faturamentos}" var="fatura" paginator="true" rows="13">
             <f:facet name="header">Classificação de Despesas</f:facet>
+            
             <p:column headerText="Data" sortBy="#{fatura.periodo}">
             	<h:outputText value="#{fatura.periodo}">
             		<f:convertDateTime pattern="MM/yyyy"/>

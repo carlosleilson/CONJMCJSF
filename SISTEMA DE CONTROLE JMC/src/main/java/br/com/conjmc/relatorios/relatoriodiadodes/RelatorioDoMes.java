@@ -1,6 +1,5 @@
 package br.com.conjmc.relatorios.relatoriodiadodes;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class RelatorioDoMes {
 	private static String[] totalLinha;
 	private static Date data;
 	private NumberFormat df;
+	private Double faturamentoBruto;
 	
 	public RelatorioDoMes(Date dataTemp){
 		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -38,6 +38,7 @@ public class RelatorioDoMes {
 		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+3;
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
+		faturamentoBruto = extracted();
 		
 	}
 
@@ -189,7 +190,7 @@ public class RelatorioDoMes {
 	}
 	
 	/**
-	 * Método que preenche os campos.
+	 * Método que preenche os campos.campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( valor / faturamentoBruto )*100)+" %";
 	 * @param campos -- 31 campos para representar o mês.
 	 * @param itenId -- itens do sangria.
 	 */
@@ -201,11 +202,19 @@ public class RelatorioDoMes {
 					campos[i] = df.format(dado.getValor());
 					campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
 				}
+				porcentagem(i,dado.getValor());
 			}		
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
-			somarTotalPorClassificacaoEPorcentagem(i,df.parse(campos[i]).doubleValue());
+			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
 		}
 		return campos;
+	}
+
+	private void porcentagem(int dia, Double valor) {
+		//calcular a porcentagem.
+		if(dia == QTD_CAMPOS-1){
+			campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( valor / faturamentoBruto )*100)+" %";
+		}
 	}
 
 	private Double extracted() {
@@ -224,12 +233,14 @@ public class RelatorioDoMes {
 	 * @param dia O dai do mes.
 	 * @param valor é o valor do dia.
 	 */			
-	private void somarTotalPorClassificacaoEPorcentagem(int dia, Double valor) throws ParseException {
+	private void somarTotalPorClassificacao(int dia, Double valor) throws ParseException {
 		campoTemp[0] ="Totals:";
-		if (dia != QTD_CAMPOS-2) 
+		 //não escrever na ultima casas
+		if (dia != QTD_CAMPOS-2){
 			campoTemp[dia] = df.format(df.parse(campoTemp[dia]).doubleValue() + valor);
-		if(dia==QTD_CAMPOS-1){
-			campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( valor / extracted() )*100)+" %";
+		}
+		if(campoTemp[QTD_CAMPOS-2].contains("R$ 0,00")){
+			campoTemp[QTD_CAMPOS-2] = "0,00 %";
 		}
 	}	
 }

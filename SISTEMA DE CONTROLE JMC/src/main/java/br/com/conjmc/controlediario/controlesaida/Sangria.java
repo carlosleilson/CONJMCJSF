@@ -39,7 +39,6 @@ public class Sangria {
 
     /**
      */
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodo;
 

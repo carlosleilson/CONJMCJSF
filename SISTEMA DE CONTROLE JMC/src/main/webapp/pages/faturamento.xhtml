@@ -5,18 +5,12 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-     <h:outputStylesheet>
-     .ui-datepicker-calendar { display: none !important; }
-     </h:outputStylesheet>
-<ui:composition template="../templates/administrador.xhtml">
+<p:dialog header="Faturamento" widgetVar="dlgFaturamento" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" height="600" width="300" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }">
+    <h:outputScript library="js" name="jquery.maskMoney.js"/>       
 	<ui:define name="title">
 		<title>Faturamento</title>
 	</ui:define>
-  <ui:define name="content">
-    <h:form prependId="false" id="growlForm">
-      <p:growl id="growl" showDetail="false" />
-    </h:form>
-    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    <h:form id="createFormFaturamento" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
     		<legend>Futuramento</legend>   	
 	          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
@@ -43,11 +37,11 @@
 	          
 	          </h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{faturamentoBean.persist()}" />
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{faturamentoBean.persist()}" onclick="PF('dlgFaturamento').show();" />
     	</fieldset>
     	</h:form>
-    	<h:form prependId="false" id="dataForm">
-        <p:dataTable id="list" value="#{faturamentoBean.faturamentos}" var="fatura" paginator="true" rows="13">
+    	<h:form prependId="false" id="dataFormList">
+        <p:dataTable id="listFaturamento" value="#{faturamentoBean.faturamentos}" var="fatura" paginator="true" rows="13">
             <f:facet name="header">Classificação de Despesas</f:facet>
             
             <p:column headerText="Data" sortBy="#{fatura.periodo}">
@@ -60,20 +54,12 @@
             		<f:convertNumber minFractionDigits="2"/>
             	</h:outputText>
             </p:column>
-             <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
-	            <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="faturamento.xhtml" title="#{messages.label_edit}">
-	              <f:setPropertyActionListener value="#{fatura}" target="#{faturamentoBean.faturamento}" />
-	            </p:commandButton>             
-	            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
-					<f:setPropertyActionListener value="#{fatura}" target="#{faturamentoBean.faturamento}" />
-				</p:commandButton>	             
-             </p:column>
+<!--              <p:column headerText="Ações" styleClass="action-column" style="width:90px;"> -->
+<!-- 	            <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="faturamento.xhtml" title="#{messages.label_edit}" onclick="PF('dlgFaturamento').show();" > -->
+<!-- 	              <f:setPropertyActionListener value="#{fatura}" target="#{faturamentoBean.faturamento}" /> -->
+<!-- 	            </p:commandButton>              -->
+<!--              </p:column> -->
         </p:dataTable>
-        <p:confirmDialog id="excluir" header="Excluir Faturamento" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-			<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{faturamentoBean.delete}" ajax="false" onclick="confirmation.hide()" />
-			<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
-		</p:confirmDialog>
     </h:form>
-  </ui:define>
-</ui:composition>
+</p:dialog>    
 </html>

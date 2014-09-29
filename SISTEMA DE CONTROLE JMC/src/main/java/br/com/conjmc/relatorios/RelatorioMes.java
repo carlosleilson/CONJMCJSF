@@ -27,14 +27,11 @@ public class RelatorioMes {
 	private SimpleDateFormat sdf;
 	private static int mesTemp;
 	private Date dataTemp;
-	private Faturamento faturamento;
 	private Integer ultimoDiaDoMes;
 	
 	@PostConstruct
     public void init() {
 		sdf = new SimpleDateFormat("MM/yyyy");
-		if(faturamento == null)
-			faturamento = new Faturamento();
 		relatorio();
 	}
 	
@@ -67,33 +64,6 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);	
-	}
-
-	public String persist() {
-        String message = "";
-        if (faturamento.getId() != null) {
-        	faturamento.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-            faturamento.merge();
-            message = "message_successfully_updated";
-        } else {
-        	faturamento.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-            faturamento.persist();
-            message = "message_successfully_created";
-        }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("createDialogfaturamentoWidget.hide()");
-        
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Faturamento");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
-        return "/relatorios/RelatorioMensal.xhtml";
-    }	
-	
-	public void carregarPeriodo(String tempData){
-		Calendar c = Calendar.getInstance();
-		c.set(c.MONTH, Integer.valueOf(tempData.substring(1, 2).trim())-1);
-		c.set(c.YEAR, Integer.valueOf(tempData.substring(3, 7).trim()));
-		faturamento.setPeriodo(c.getTime());
 	}
 	
 	public List<Sangria> getAllSangrias() {
@@ -133,13 +103,5 @@ public class RelatorioMes {
 
 	public void setDataTemp(Date dataTemp) {
 		this.dataTemp = dataTemp;
-	}
-
-	public Faturamento getFaturamento() {
-		return faturamento;
-	}
-
-	public void setFaturamento(Faturamento faturamento) {
-		this.faturamento = faturamento;
 	}
 }

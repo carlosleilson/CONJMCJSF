@@ -73,7 +73,7 @@ public class FaturamentoBean implements Serializable  {
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
         carregaFaturamentos();
-        return "/pages/faturamento.xhtml";
+        return "relatorios/RelatorioMensal.xhtml";
     }
 	
 	private Faturamento faturamentoPorData(Date periodo, Double valorBruto) {
@@ -81,7 +81,7 @@ public class FaturamentoBean implements Serializable  {
 		if(periodo!=null && faturamento.getId() == null){
 			faturamentotmp = faturamento.findFaturamentoPorData(periodo);
 			if(faturamentotmp!=null){
-				faturamento.setFaturamentoBruto(valorBruto);
+				faturamentotmp.setFaturamentoBruto(valorBruto);
 			}
 			if(faturamentotmp==null){
 				faturamentotmp = faturamento;
@@ -96,7 +96,7 @@ public class FaturamentoBean implements Serializable  {
 		FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Faturamento");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         init();
-        return "/pages/faturamento.xhtml";
+        return "relatorios/RelatorioMensal.xhtml";
     }
 	
 	public void reset() {

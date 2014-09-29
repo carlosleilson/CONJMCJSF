@@ -1,11 +1,14 @@
 package br.com.conjmc.jsf;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.cadastrobasico.Resumos;
+import br.com.conjmc.cadastrobasico.Setor;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -55,6 +58,8 @@ public class DespesasBean implements Serializable {
 
 	private HtmlPanelGrid viewPanelGrid;
 
+	private List<Resumos> allResumos;
+	
 	private boolean createDialogVisible = false;
 
 	@PostConstruct
@@ -485,5 +490,13 @@ public class DespesasBean implements Serializable {
 	public List<Sangria> findAllSangriaByItens(Long id) {
 		allSangrias =  Sangria.findSangriaByItens(id);
 		return allSangrias;
+	}
+
+	public List<Resumos> getAllResumos() {
+		return Arrays.asList(Resumos.values());
+	}
+
+	public void setAllResumos(List<Resumos> allResumos) {
+		this.allResumos = allResumos;
 	}	
 }

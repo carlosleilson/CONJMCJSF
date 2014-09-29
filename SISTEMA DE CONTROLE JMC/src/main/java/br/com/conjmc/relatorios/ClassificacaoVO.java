@@ -3,9 +3,11 @@ package br.com.conjmc.relatorios;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.conjmc.cadastrobasico.Resumos;
+
 public class ClassificacaoVO {
 	private String name;
-	private String resumo;
+	private Resumos resumo;
 	private String codigo;
 	private List<ItensVO> itens;
 	
@@ -27,11 +29,11 @@ public class ClassificacaoVO {
 		this.itens = itens;
 	}
 
-	public String getResumo() {
+	public Resumos getResumo() {
 		return resumo;
 	}
 
-	public void setResumo(String resumo) {
+	public void setResumo(Resumos resumo) {
 		this.resumo = resumo;
 	}
 

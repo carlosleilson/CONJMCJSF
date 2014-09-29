@@ -3,12 +3,15 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.Query;
+
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,8 +45,8 @@ public class Despesas {
     /**
      */
     @NotNull
-    @Size(max = 5)
-    private String idResumo;
+    @Enumerated
+    private Resumos idResumo;
 
     /**
      */
@@ -73,11 +76,11 @@ public class Despesas {
         this.descricao = descricao;
     }
 
-	public String getIdResumo() {
+	public Resumos getIdResumo() {
         return this.idResumo;
     }
 
-	public void setIdResumo(String idResumo) {
+	public void setIdResumo(Resumos idResumo) {
         this.idResumo = idResumo;
     }
 
@@ -209,47 +212,6 @@ public class Despesas {
         return merged;
     }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Despesas other = (Despesas) obj;
-		if (codigo == null) {
-			if (other.codigo != null)
-				return false;
-		} else if (!codigo.equals(other.codigo))
-			return false;
-		if (descricao == null) {
-			if (other.descricao != null)
-				return false;
-		} else if (!descricao.equals(other.descricao))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (idResumo == null) {
-			if (other.idResumo != null)
-				return false;
-		} else if (!idResumo.equals(other.idResumo))
-			return false;
-		if (situacao == null) {
-			if (other.situacao != null)
-				return false;
-		} else if (!situacao.equals(other.situacao))
-			return false;
-		if (version == null) {
-			if (other.version != null)
-				return false;
-		} else if (!version.equals(other.version))
-			return false;
-		return true;
-	}
 
 	/*public List<DespesasGastos> getClassificacao() {
 		return classificacao;
@@ -258,7 +220,7 @@ public class Despesas {
 	public void setClassificacao(List<DespesasGastos> classificacao) {
 		this.classificacao = classificacao;
 	}*/
-    public static List<Despesas> findAllIdResumo(String idResumo) {
+    public static List<Despesas> findAllIdResumo(Resumos idResumo) {
         Query query = entityManager().createQuery("SELECT o FROM Despesas o where o.idResumo = :idResumo", Despesas.class);
         query.setParameter("idResumo", idResumo);
        return (List< Despesas >)query.getResultList();        

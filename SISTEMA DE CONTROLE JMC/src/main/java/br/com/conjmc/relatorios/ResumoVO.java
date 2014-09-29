@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ResumoVO {
 	private String name;
+	private Double valorTemp;
 	private List<ClassificacaoVO> classificacoes;
 	public ResumoVO() {
 		this.classificacoes =new ArrayList<ClassificacaoVO>();
@@ -20,5 +21,11 @@ public class ResumoVO {
 	}
 	public void setClassificacoes(List<ClassificacaoVO> classificacoes) {
 		this.classificacoes = classificacoes;
+	}
+	public Double getValorTemp() {
+		return valorTemp;
+	}
+	public void setValorTemp(Double valorTemp) {
+		this.valorTemp = valorTemp;
 	}
 }

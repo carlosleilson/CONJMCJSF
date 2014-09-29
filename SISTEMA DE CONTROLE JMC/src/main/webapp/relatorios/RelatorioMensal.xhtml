@@ -23,15 +23,20 @@
             <p:row>
             	<p:column width="10"/>
                 <p:column width="200"/>
-                <p:column width="15"/>
-                <p:column width="15"/>
+                <p:column width="15" headerText="% fat bruto"/>
+                <p:column width="15" headerText="Valor R$" />
             </p:row>        	
        	</p:columnGroup>        
        	<f:facet name="header" width="1800" >Relatorio de Despenho Mensal</f:facet>
         	<p:subTable var="item" value="#{linha.classificacoes}"  >
-        	<f:facet name="header">
-        		<h:outputText  value="#{linha.name}" />
-        	</f:facet>        	
+	      	<p:columnGroup type="header">
+	            <p:row>
+	        		<p:column width="10" headerText="#{linha.name}"/>
+	                <p:column width="200"/>
+	                <p:column width="15"/>
+	        		<p:column width="15" headerText="#{linha.valorTemp}"/>
+	            </p:row>        	
+	       	</p:columnGroup>                	
 	        	<p:column >
 	                <h:outputText value="#{item.codigo}" />
 	        	</p:column>	 
@@ -57,57 +62,6 @@
         </p:dataTable>
     </p:fieldset>
     </h:form>
-    <p:dialog id="createFaturamentoDialog" header="#{messages.label_create} Faturamento" modal="true" widgetVar="createDialogfaturamentoWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-     <h:form id="createFaturamentoForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-    	<fieldset>
-    		<legend>Futuramento</legend>   	
-	          <h:panelGrid id="createPanelFaturamentoGrid" columns="3" styleClass="dialog">
-	          
-	          	<p:outputLabel value="Mês/Ano" for="mesDoAno"/>
-				<p:calendar 
-					id="mesDoAno"
-					value="#{relatorioMesBean.faturamento.periodo}"
-					pattern="MM/yyyy" 
-					required="true"
-					requiredMessage="O valor é obrigatório"	
-					disabled="true"
-					/>        	
-	          	<p:message for="mesDoAno"/>          
-	          
-	          	<p:outputLabel value="Valor Faturamento Bruto" for="valorBruto"/>
-	          	<p:inputText 
-	          		id="valorBruto"
-	          		styleClass="money" 
-	          		value="#{relatorioMesBean.faturamento.faturamentoBruto}"
-	          		requiredMessage="O valor é obrigatório"
-	          		required="true"
-	          		/>
-	          	<p:message for="valorBruto"/>
-	          
-	          	<p:outputLabel value="  Valor Taxas de Entrega" for="valorEntrega"/>
-	          	<p:inputText 
-	          		id="valorEntrega"
-	          		styleClass="money" 
-	          		value="#{relatorioMesBean.faturamento.taxaEntrega}"
-	          		disabled="true"
-	          		/>
-	          	<p:message for="valorEntrega"/>  
-	          
-	          	<p:outputLabel value="Valor Serviço de Mesa" for="valorServico"/>
-	          	<p:inputText 
-	          		id="valorServico"
-	          		styleClass="money" 
-	          		value="#{relatorioMesBean.faturamento.servicoMesa}"
-	          		disabled="true"
-	          		/>
-	          	<p:message for="valorServico"/>
-	          	
-	          </h:panelGrid>
-          	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{relatorioMesBean.persist}"  onclick="createDialogfaturamentoWidget.hide()"  oncomplete="PF('createDialogfaturamentoWidget').hide()"  />
-    	</fieldset>
-    	</h:form>
-    </p:dialog>    
     <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 	<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 	    <p:graphicImage name="/images/carregando.gif" />

@@ -74,7 +74,7 @@ public class Classificacao {
 			Despesas despesas = new Despesas();
 			despesas.setCodigo(dado[0].toUpperCase().trim());
 			despesas.setDescricao(dado[1].trim());
-			despesas.setIdResumo(dado[2].toUpperCase().trim());
+			//despesas.setIdResumo(dado[2].toUpperCase().trim());
 			despesas.setSituacao(true);
 			despesas.setVersion(1);
 			despesas.persist();

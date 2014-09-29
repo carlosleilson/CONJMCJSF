@@ -3,6 +3,7 @@ package br.com.conjmc.relatorios.relatoriodiadodes;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Locale;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Faturamento;
+import br.com.conjmc.cadastrobasico.Resumos;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.relatorios.ClassificacaoVO;
 import br.com.conjmc.relatorios.ItensVO;
@@ -25,7 +27,7 @@ public class RelatorioDoMes {
 	private List<Sangria> allSangrias;
 	private int QTD_CAMPOS = 33; 
 	private String[] campoTemp;
-	private static String[] totalLinha;
+	private String[] totalLinha;
 	private static Date data;
 	private NumberFormat df;
 	private Double faturamentoBruto;
@@ -53,26 +55,37 @@ public class RelatorioDoMes {
 	 * Método para criar relatorio.
 	 */	
 	public List<ResumoVO> criarRelatorio(){
-		return linhasDoRelatorio();
+		try {
+			return linhasDoRelatorio();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
 	 * Método que cria cada Linha do relatorio, dinamicamente.
 	 */	
-	private List<ResumoVO> linhasDoRelatorio() {
+	private List<ResumoVO> linhasDoRelatorio() throws ParseException{
 		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
 		resumosItens = new ArrayList<ResumoVO>();
-		String valorTemp = "";
-		for(Despesas classificacao :findAllResumo()){
-			if(!valorTemp.equals(classificacao.getIdResumo())){
-				ResumoVO resumoIten = new ResumoVO();
-				resumoIten.setName(classificacao.getIdResumo());
-				resumoIten.setClassificacoes(criarClassificacao(classificacao.getIdResumo()));
-				resumosItens.add(resumoIten);
-				valorTemp = classificacao.getIdResumo();
-			}
+		for(Resumos resumo :Resumos.values()){
+			ResumoVO resumoIten = new ResumoVO();
+			resumoIten.setName(resumo.getLabel());
+			totalResumo(resumoIten);
+			resumoIten.setClassificacoes(criarClassificacao(resumo));
+			resumosItens.add(resumoIten);
 		}
 		return resumosItens;		
+	}
+
+	private void totalResumo(ResumoVO resumoIten) throws ParseException {
+		if(resumoIten.getName().equals("RES01")){
+			resumoIten.setValorTemp(faturamentoBruto);
+		}else{
+			resumoIten.setValorTemp(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue());
+		}
+		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 	}
 	
 	/**
@@ -80,7 +93,7 @@ public class RelatorioDoMes {
 	 * @param classificacaoIten -- Objeto da lista classificação
 	 * @param classificacao -- Objeto da classificação
 	 */
-	private List<ClassificacaoVO> criarClassificacao(String idResumo) {
+	private List<ClassificacaoVO> criarClassificacao(Resumos idResumo) {
 		List<ClassificacaoVO> classificacaoItens = new ArrayList<ClassificacaoVO>();
 		for (Despesas dadosDoResumo : findAllDadosDaClassificacao(idResumo)) {
 				ClassificacaoVO classificacaoTemp = new ClassificacaoVO();
@@ -106,7 +119,7 @@ public class RelatorioDoMes {
 		return itensRelatorio;
 	}		
 	
-	private List<Despesas>  findAllDadosDaClassificacao(String idResumo) {
+	private List<Despesas>  findAllDadosDaClassificacao(Resumos idResumo) {
 		return  Despesas.findAllIdResumo(idResumo);
 	}
 

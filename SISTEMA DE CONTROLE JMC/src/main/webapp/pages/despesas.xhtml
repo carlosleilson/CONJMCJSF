@@ -26,8 +26,11 @@
 				<p:message for="descricao" />
 				
 				<p:outputLabel value="Id Resumo" for="resumo" />
-				<p:inputText id="resumo" value="#{despesasBean.despesas.idResumo}" maxlength="5" required="true" requiredMessage="O Id Resumo é Obrigatório" />
-				<p:message for="resumo" />
+				<p:selectOneMenu id="resumo" value="#{despesasBean.despesas.idResumo}" required="true" requiredMessage="O Id Resumo é Obrigatório" >
+					<f:selectItem itemLabel="Selecione um resumo" itemValue="" />
+					<f:selectItems value="#{despesasBean.allResumos}" var="idResumo" itemLabel="#{idResumo.label}" />
+				</p:selectOneMenu>
+				<p:message for="resumo"/>				
 				
 				<p:outputLabel value="Ativo" for="situacao"/>
 	          	<p:selectBooleanCheckbox id="situacao" value="#{despesasBean.despesas.situacao}" required="true"/>

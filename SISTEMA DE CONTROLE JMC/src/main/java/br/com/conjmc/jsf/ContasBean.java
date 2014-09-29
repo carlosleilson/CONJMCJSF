@@ -1,23 +1,36 @@
 package br.com.conjmc.jsf;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.Contas;
+import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean
+@SessionScoped
 public class ContasBean {
 
 	private Contas conta;
 	private Sangria sangria;
+	private List<Sangria> sangrias;
+	private Date periodo;
+	private String origem;
 	
 	@PostConstruct
 	public void init() {
 		conta = new Contas();
+		sangria = new Sangria();
+		sangrias = new ArrayList<Sangria>();
 	}
 
 	//Generate getters and setters
@@ -37,13 +50,47 @@ public class ContasBean {
 		this.sangria = sangria;
 	}
 
+	public List<Sangria> getSangrias() {
+		return sangrias;
+	}
+
+	public void setSangrias(List<Sangria> sangrias) {
+		this.sangrias = sangrias;
+	}
+	
+	public Date getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(Date periodo) {
+		this.periodo = periodo;
+	}
+
+	public String getOrigem() {
+		return origem;
+	}
+
+	public void setOrigem(String origem) {
+		this.origem = origem;
+	}
+
 	public String persist() {
         String message = "";
         if (conta.getId() != null) {
             conta.merge();
             message = "message_successfully_updated";
         } else {
-            conta.persist();
+        	conta.persist();
+        	for (int i = 0; i < sangrias.size(); i++) {
+				sangrias.get(i).setPeriodo(conta.getDataPagamento());
+				sangria = sangrias.get(i);
+				sangria.setOrigem(origem);
+				sangria.setConta(conta);
+				sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+				sangria.setConta(conta);
+				sangria.persist();
+			}
+        	
             message = "message_successfully_created";
         }
         
@@ -70,8 +117,23 @@ public class ContasBean {
 	}
 	
 	public void adicionar(){
-		conta.getSangria().add(sangria);
+		sangrias.add(sangria);
 		sangria = new Sangria();
+		calcularValor();
+	}
+	
+	public void remove(){
+		sangrias.remove(sangria);
+		sangria = new Sangria();
+		calcularValor();
+	}
+	
+	private void calcularValor(){
+		double total = 0;
+		for (Sangria sang : sangrias) {
+			total += sang.getValor();
+		}
+		conta.setValor(total);
 	}
 	
 		

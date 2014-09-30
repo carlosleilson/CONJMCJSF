@@ -75,29 +75,35 @@ public class ContasBean {
 	}
 
 	public String persist() {
-        String message = "";
-        if (conta.getId() != null) {
-            conta.merge();
-            message = "message_successfully_updated";
-        } else {
-        	conta.persist();
-        	for (int i = 0; i < sangrias.size(); i++) {
-				sangrias.get(i).setPeriodo(conta.getDataPagamento());
-				sangria = sangrias.get(i);
-				sangria.setOrigem(origem);
-				sangria.setConta(conta);
-				sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-				sangria.setConta(conta);
-				sangria.persist();
-			}
-        	
-            message = "message_successfully_created";
-        }
-        
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
-        return "contas.xhtml";
+		if(sangrias.size() > 0) {
+	        String message = "";
+	        if (conta.getId() != null) {
+	            conta.merge();
+	            message = "message_successfully_updated";
+	        } else {
+	        	conta.persist();
+	        	for (int i = 0; i < sangrias.size(); i++) {
+					sangrias.get(i).setPeriodo(conta.getDataPagamento());
+					sangria = sangrias.get(i);
+					sangria.setOrigem(origem);
+					sangria.setConta(conta);
+					sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+					sangria.setConta(conta);
+					sangria.persist();
+				}
+	        	
+	            message = "message_successfully_created";
+	        }
+	        
+	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        this.origem = null;
+	        init();
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
+		}
+	        return "contas.xhtml";
+	        
     }
 
 	public String delete() {

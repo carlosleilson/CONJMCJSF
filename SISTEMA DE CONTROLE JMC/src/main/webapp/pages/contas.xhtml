@@ -76,7 +76,7 @@
 		</h:form>
  	</p:dialog>	 	
     <h:form id="dataTable">
-    	 <p:dataTable id="list" value="#{contasBean.sangrias}" var="sang" paginator="true" rows="10">
+    	 <p:dataTable id="list" value="#{contasBean.sangrias}" var="sang">
 	        	<f:facet name="header">Itens do Boleto</f:facet>
 	          	<p:column headerText="Item">
 	          		<h:outputText value="#{sang.item.descrisao}"/>

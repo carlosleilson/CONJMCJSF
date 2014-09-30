@@ -224,5 +224,29 @@ public class Despesas {
         Query query = entityManager().createQuery("SELECT o FROM Despesas o where o.idResumo = :idResumo", Despesas.class);
         query.setParameter("idResumo", idResumo);
        return (List< Despesas >)query.getResultList();        
-   }  	
+   }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Despesas other = (Despesas) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}  	
+    
+   
 }

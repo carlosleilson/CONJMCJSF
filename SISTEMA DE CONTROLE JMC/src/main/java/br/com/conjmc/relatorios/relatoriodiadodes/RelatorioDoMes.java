@@ -31,6 +31,7 @@ public class RelatorioDoMes {
 	private static Date data;
 	private NumberFormat df;
 	private Double faturamentoBruto;
+	private Double tempTotalPercente;
 	
 	public RelatorioDoMes(Date dataTemp){
 		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -73,6 +74,7 @@ public class RelatorioDoMes {
 			ResumoVO resumoIten = new ResumoVO();
 			resumoIten.setName(resumo.getLabel());
 			totalResumo(resumoIten);
+			resumoIten.setPorcentagem(tempTotalPercente);
 			resumoIten.setClassificacoes(criarClassificacao(resumo));
 			resumosItens.add(resumoIten);
 		}
@@ -84,6 +86,7 @@ public class RelatorioDoMes {
 			resumoIten.setValorTemp(faturamentoBruto);
 		}else{
 			resumoIten.setValorTemp(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue());
+			tempTotalPercente =  (df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100;
 		}
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 	}

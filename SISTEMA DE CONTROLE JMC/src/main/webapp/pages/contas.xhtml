@@ -41,7 +41,7 @@
 				<p:message for="detalhamento"/>
 				
 				<p:outputLabel value="Data Pagamento" for="pagamento" />
-		    	<p:calendar id="pagamento" value="#{contasBean.conta.dataPagamento}" required="true" requiredMessage="O campo não pode ser nulo"/>
+		    	<p:calendar id="pagamento" value="#{contasBean.conta.dataPagamento}"/>
 		    	<p:message for="pagamento" />
 			 </h:panelGrid>
 			 <br/>
@@ -72,7 +72,7 @@
 	          	<p:message for="itens"/>	          	
 			 </h:panelGrid>
 			 <p:commandButton value="Adicionar" ajax="true" update=":dataTable:list :item:createPanelGridItem :createForm:valorConta" action="#{contasBean.adicionar()}" />
-			 <p:commandButton id="Fechar" value="Cancelar" onclick="PF('itemBoleto').hide()" type="button"/>
+			 <p:commandButton id="fechar" value="Fechar" onclick="PF('itemBoleto').hide()" type="button"/>
 		</h:form>
  	</p:dialog>	 	
     <h:form id="dataTable">

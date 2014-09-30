@@ -21,9 +21,20 @@
 		    	<p:calendar id="vencimento" value="#{contasBean.conta.vencimento}" required="true" requiredMessage="O campo não pode ser nulo"/>
 		    	<p:message for="vencimento" />
 
-				<!-- <p:outputLabel value="Setor" for="valor" />
-				<p:inputText id="valor" styleClass="money" value="#{contasBean.conta.valor}"/>
-				<p:message for="valor"/> -->
+				<p:outputLabel value="Valor" for="valorConta" />
+				<p:inputText id="valorConta" value="#{contasBean.conta.valor}" readonly="true">
+					<f:convertNumber minFractionDigits="2" />
+				</p:inputText>
+				<p:message for="valorConta"/>
+				
+				<p:outputLabel value="Origem" for="origem" />
+				<p:selectOneMenu id="origem" value="#{contasBean.origem}" required="true" requiredMessage="A origem é obrigatório">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
+	          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
+	          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="origem"/>
 				
 				<p:outputLabel value="Detalhamento" for="detalhamento" />
 				<p:inputTextarea id="detalhamento" value="#{contasBean.conta.detalhamento}"/>
@@ -33,44 +44,58 @@
 		    	<p:calendar id="pagamento" value="#{contasBean.conta.dataPagamento}" required="true" requiredMessage="O campo não pode ser nulo"/>
 		    	<p:message for="pagamento" />
 			 </h:panelGrid>
-			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{cargosBean.persist}" />
+			 <br/>
+			 <p:commandLink onclick="PF('itemBoleto').show()">
+			 	<span class="ui-button-icon-left ui-icon ui-c ui-icon-circle-plus" style="float:left;margin-right:3px;"></span>
+			 	<h:outputText value="Adicionar item"/>
+			 </p:commandLink>
+			 <br/>
+			 <br/>
+			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contasBean.persist()}" />
 		</fieldset>
     </h:form>
-    <!-- <h:form styleClass="buttomLimpar">
-    	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{cargosBean.reset}" action="cargos.xhtml" />
-    </h:form> -->
-    <!-- <h:form prependId="false" id="dataForm">
-			<p:dataTable id="list" var="list" value="#{cargosBean.allCargoses}" paginator="true" rows="10">
-				<f:facet name="header">Cargos</f:facet>
-				<p:column headerText="Nome" sortBy="#{list.nome}">
-					<h:outputText value="#{list.nome}" />
-				</p:column>
-				<p:column headerText="Setor" sortBy="#{list.setor.label}">
-					<h:outputText value="#{list.setor.label}" />
-				</p:column>
-				<p:column headerText="Ações" styleClass="action-column" style="width:90px">
-					<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="cargos.xhtml">
-						<f:setPropertyActionListener target="#{cargosBean.cargos}" value="#{list}" />
-					</p:commandButton>
-					<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
-						<f:setPropertyActionListener value="#{list}" target="#{cargosBean.cargos}" />
-					</p:commandButton>
-				</p:column>
-			</p:dataTable>
-			<p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-				<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{cargosBean.delete}" ajax="false" onclick="confirmation.hide()" />
-				<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
-			</p:confirmDialog>					
+ 	<p:dialog id="itemBoleto" header="Adicionar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode">
+	    <h:form id="item">
+		 	<h:panelGrid id="createPanelGridItem" columns="3" styleClass="dialog">
+			 	<p:outputLabel value="Valor" for="valor" />
+	          	<p:inputText styleClass="money" id="valor" value="#{contasBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
+	          		<f:convertNumber minFractionDigits="2" />
+	          	</p:inputText>
+	          	<p:message for="valor"/>
+	          	
+	          	<p:outputLabel value="Itens" for="itens"/>
+	          	<p:selectOneMenu id="itens" value="#{contasBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
+	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+	          	</p:selectOneMenu>
+	          	<p:message for="itens"/>	          	
+			 </h:panelGrid>
+			 <p:commandButton value="Adicionar" ajax="true" update=":dataTable:list :item:createPanelGridItem :createForm:valorConta" action="#{contasBean.adicionar()}" />
+			 <p:commandButton id="Fechar" value="Cancelar" onclick="PF('itemBoleto').hide()" type="button"/>
 		</h:form>
-		
-	    <p:dialog id="viewDialog" header="#{messages.label_view} Cargos" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-	      <p:outputPanel id="viewPanel">
-	        <h:form id="viewForm" enctype="multipart/form-data">
-	          <h:panelGrid id="viewPanelGrid" columns="2" binding="#{cargosBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" />
-	          <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="PF('viewDialogWidget').hide()" type="button" />
-	        </h:form>
-	      </p:outputPanel>
-	    </p:dialog> -->
+ 	</p:dialog>	 	
+    <h:form id="dataTable">
+    	 <p:dataTable id="list" value="#{contasBean.sangrias}" var="sang" paginator="true" rows="10">
+	        	<f:facet name="header">Itens do Boleto</f:facet>
+	          	<p:column headerText="Item">
+	          		<h:outputText value="#{sang.item.descrisao}"/>
+	          	</p:column>
+	          	<p:column headerText="Valor">
+	        		<h:outputText value="#{sang.valor}">
+	        			<f:convertNumber minFractionDigits="2"/>
+	        		</h:outputText>
+	        	</p:column>
+	          	<p:column headerText="Classificação">
+	          		<h:outputText value="#{sang.item.classificacao.descricao}"/>
+	          	</p:column>
+	          	<p:column headerText="Ações">
+	          		<p:commandButton id="deleteButton" icon="ui-icon-trash" update=":dataTable:list :createForm:valorConta" title="#{messages.label_delete}" action="#{contasBean.remove()}">
+						<f:setPropertyActionListener value="#{sang}" target="#{contasBean.sangria}" />
+					</p:commandButton>
+	          	</p:column>
+	        </p:dataTable>
+    </h:form>
   </ui:define>
 </ui:composition>
 </html>

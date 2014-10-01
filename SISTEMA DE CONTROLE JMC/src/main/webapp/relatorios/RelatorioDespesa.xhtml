@@ -17,20 +17,19 @@
 		<br/><br/>
 		<p:fieldset id="field" legend="Relatorio de Despesas - #{relatorioBean.dataLabel}">
 			<div class="relatorioMensal">
-		        <p:dataTable id="list"  var="linha" value="#{relatorioBean.classificacaoItens}" selectionMode="single" >
-		        	<f:facet name="header" width="1800" >Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
+		        <p:dataTable id="relatorioDespesa" var="linha" value="#{relatorioBean.classificacaoItens}"  scrollable="true" scrollHeight="440" scrollWidth="865">
+		        	<f:facet name="header">Relatorio de Despesas - #{relatorioBean.dataLabel}</f:facet>
 		        	<p:columnGroup type="header">
 			            <p:row>
-			                <p:column headerText="ITENS / DIAS" width="200"/>
+			                <p:column headerText="ITENS / DIAS" styleClass="first"/>
 			                 <c:forEach var="campoCebecalho" begin="1" end="#{relatorioBean.ultimoDiaDoMes}">
-				                <p:column headerText="#{campoCebecalho}" width="50"/>
+				                <p:column headerText="#{campoCebecalho}"/>
 			                 </c:forEach>
-			                 <p:column headerText="Total" width="50"/>
+			                 <p:column headerText="Total"/>
 			            </p:row>        	
 		        	</p:columnGroup>
 		        	
-		        	<p:subTable var="iten" value="#{linha.itens}"  >
-		        	
+		        	<p:subTable var="iten" value="#{linha.itens}">
 			        	<f:facet name="header">
 			        		<h:outputText  value="#{linha.name}" />
 			                 <c:forEach var="campoCebecalho" begin="1" end="#{relatorioBean.ultimoDiaDoMes}">
@@ -38,7 +37,7 @@
 			                 </c:forEach>	        		
 			        	</f:facet>
 			        	
-				        <p:column style="text-align:center">
+				        <p:column style="text-align:center" styleClass="first">
 				        	<h:outputText value="#{iten.campos[0]}"/>
 				        </p:column>
 				           
@@ -55,14 +54,6 @@
 		        	
 					<f:facet name="footer" width="1800">Relatorio de Despesas</f:facet>        	       	
 		        </p:dataTable>
-		        <h:commandLink>
-			        <p:graphicImage name="/demo/images/excel.png" />
-			        <p:dataExporter type="xls" target=":dataForm:list" fileName="despesas" pageOnly="true"/>
-			    </h:commandLink>
-			    <h:commandLink>
-			       <p:graphicImage name="/demo/images/pdf.png" />
-			        <p:dataExporter type="pdf" target="list" fileName="despesas" pageOnly="true" />
-			    </h:commandLink>
 	       	</div>
         </p:fieldset>
     </h:form>

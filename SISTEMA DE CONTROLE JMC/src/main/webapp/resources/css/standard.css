@@ -36,10 +36,26 @@ fieldset {
 	margin: -71px 0px 0px 90px;
 }
 
-.relatorioMensal {
+/* .relatorioMensal {
 	width: 865px;
 	height: 500px;
 	overflow: scroll;	
+} */
+
+div.relatorioMensal .ui-datatable table {
+	table-layout: inherit !important;
+}
+
+div.relatorioMensal td, div.relatorioMensal th {
+	min-width: 70px !important;
+}
+
+div.relatorioMensal .first {
+	min-width: 250px !important;
+}
+
+div.relatorioMensal ui-datatable-scrollable-header-box {
+	width: 6000px;
 }
 
 .ui-datatable table {

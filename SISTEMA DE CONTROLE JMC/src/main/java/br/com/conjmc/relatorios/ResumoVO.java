@@ -5,8 +5,8 @@ import java.util.List;
 
 public class ResumoVO {
 	private String name;
-	private Double porcentagem;
-	private Double valorTemp;
+	private String porcentagem;
+	private String valorTemp;
 	private List<ClassificacaoVO> classificacoes;
 	public ResumoVO() {
 		this.classificacoes =new ArrayList<ClassificacaoVO>();
@@ -23,16 +23,16 @@ public class ResumoVO {
 	public void setClassificacoes(List<ClassificacaoVO> classificacoes) {
 		this.classificacoes = classificacoes;
 	}
-	public Double getValorTemp() {
-		return valorTemp;
-	}
-	public void setValorTemp(Double valorTemp) {
-		this.valorTemp = valorTemp;
-	}
-	public Double getPorcentagem() {
+	public String getPorcentagem() {
 		return porcentagem;
 	}
-	public void setPorcentagem(Double porcentagem) {
+	public void setPorcentagem(String porcentagem) {
 		this.porcentagem = porcentagem;
+	}
+	public String getValorTemp() {
+		return valorTemp;
+	}
+	public void setValorTemp(String valorTemp) {
+		this.valorTemp = valorTemp;
 	}
 }

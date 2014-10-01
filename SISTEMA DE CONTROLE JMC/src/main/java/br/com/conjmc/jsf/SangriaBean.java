@@ -129,6 +129,7 @@ public class SangriaBean implements Serializable  {
         columns.add("valor");
         columns.add("origem");
         sangria = new Sangria();
+        sangria.setPeriodo(new Date());
         findAllSangrias();
         findAllDespesaLoja();
         dataAtual = DataUltil.dataAtual();
@@ -575,7 +576,7 @@ public class SangriaBean implements Serializable  {
 	        reset();
 	        init();
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item nï¿½o pode ser deletado porque possui dependï¿½ncias em outros mï¿½dulos", "O item nï¿½o pode ser deletado porque possui dependï¿½ncias em outros mï¿½dulos"));
 		}
         return findAllSangrias();
     }

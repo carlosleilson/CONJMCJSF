@@ -31,7 +31,7 @@ public class RelatorioDoMes {
 	private static Date data;
 	private NumberFormat df;
 	private Double faturamentoBruto;
-	private Double tempTotalPercente;
+	private String tempTotalPercente;
 	
 	public RelatorioDoMes(Date dataTemp){
 		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -83,10 +83,11 @@ public class RelatorioDoMes {
 
 	private void totalResumo(ResumoVO resumoIten) throws ParseException {
 		if(resumoIten.getName().equals("RES01")){
-			resumoIten.setValorTemp(faturamentoBruto);
+			resumoIten.setValorTemp(df.format(faturamentoBruto));
+			tempTotalPercente =  "0,00 %";
 		}else{
-			resumoIten.setValorTemp(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue());
-			tempTotalPercente =  (df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100;
+			resumoIten.setValorTemp(totalLinha[QTD_CAMPOS-1]);
+			tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 		}
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 	}
@@ -218,10 +219,10 @@ public class RelatorioDoMes {
 					campos[i] = df.format(dado.getValor());
 					campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
 				}
-				porcentagem(i,dado.getValor());
 			}		
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
 			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
+			porcentagem(i,df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue());
 		}
 		return campos;
 	}

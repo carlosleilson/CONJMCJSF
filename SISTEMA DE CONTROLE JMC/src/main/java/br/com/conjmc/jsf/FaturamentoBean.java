@@ -35,7 +35,7 @@ public class FaturamentoBean implements Serializable  {
 	
 	public void carregarPeriodo(String tempData){
 		Calendar c = Calendar.getInstance();
-		c.set(c.MONTH, Integer.valueOf(tempData.substring(1, 2).trim()));
+		c.set(c.MONTH, Integer.valueOf(tempData.substring(1, 2).trim())-1);
 		c.set(c.YEAR, Integer.valueOf(tempData.substring(3, 7).trim()));
 		faturamento.setPeriodo(c.getTime());
 	}

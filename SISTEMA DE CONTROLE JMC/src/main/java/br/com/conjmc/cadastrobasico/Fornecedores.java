@@ -3,7 +3,9 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.AssertTrue;
@@ -30,7 +32,6 @@ public class Fornecedores {
     /**
      */
     @NotNull
-    @Size(max = 10)
     private String apelido;
 
     /**
@@ -204,4 +205,70 @@ public class Fornecedores {
 	public void setProdutosFornecidos(Despesas produtosFornecidos) {
         this.produtosFornecidos = produtosFornecidos;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((apelido == null) ? 0 : apelido.hashCode());
+		result = prime * result + ((cnpj == null) ? 0 : cnpj.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime
+				* result
+				+ ((produtosFornecidos == null) ? 0 : produtosFornecidos
+						.hashCode());
+		result = prime * result
+				+ ((situacao == null) ? 0 : situacao.hashCode());
+		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Fornecedores other = (Fornecedores) obj;
+		if (apelido == null) {
+			if (other.apelido != null)
+				return false;
+		} else if (!apelido.equals(other.apelido))
+			return false;
+		if (cnpj == null) {
+			if (other.cnpj != null)
+				return false;
+		} else if (!cnpj.equals(other.cnpj))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (produtosFornecidos == null) {
+			if (other.produtosFornecidos != null)
+				return false;
+		} else if (!produtosFornecidos.equals(other.produtosFornecidos))
+			return false;
+		if (situacao == null) {
+			if (other.situacao != null)
+				return false;
+		} else if (!situacao.equals(other.situacao))
+			return false;
+		if (version == null) {
+			if (other.version != null)
+				return false;
+		} else if (!version.equals(other.version))
+			return false;
+		return true;
+	}
+	
 }

@@ -1,11 +1,14 @@
 package br.com.conjmc.jsf;
 import br.com.conjmc.cadastrobasico.Despesas;
+import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Fornecedores;
 import br.com.conjmc.jsf.converter.DespesasConverter;
 import br.com.conjmc.jsf.util.MessageFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
@@ -16,6 +19,7 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.LengthValidator;
+
 import org.primefaces.component.autocomplete.AutoComplete;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.message.Message;
@@ -33,14 +37,20 @@ public class FornecedoresBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Fornecedores fornecedores;
-
+	
+	private List<Despesas> allDespesasAtivas;
 	private List<Fornecedores> allFornecedoreses;
 
 	@PostConstruct
     public void init() {
         findAllFornecedoreses();
+        findAllDespesasAtivas();
     }
-
+	
+	private void findAllDespesasAtivas() {
+		setAllDespesasAtivas(Despesas.findAllDespesasAtivas());	
+	}
+	
 	public List<Fornecedores> getAllFornecedoreses() {
         return allFornecedoreses;
     }
@@ -103,5 +113,13 @@ public class FornecedoresBean implements Serializable {
 	public void reset() {
         fornecedores = null;
     }
+
+	public List<Despesas> getAllDespesasAtivas() {
+		return allDespesasAtivas;
+	}
+
+	public void setAllDespesasAtivas(List<Despesas> allDespesasAtivas) {
+		this.allDespesasAtivas = allDespesasAtivas;
+	}
 
 }

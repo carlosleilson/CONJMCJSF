@@ -47,7 +47,7 @@ div.relatorioMensal .ui-datatable table {
 }
 
 div.relatorioMensal td, div.relatorioMensal th {
-	min-width: 70px !important;
+	min-width: 80px !important;
 }
 
 div.relatorioMensal .first {

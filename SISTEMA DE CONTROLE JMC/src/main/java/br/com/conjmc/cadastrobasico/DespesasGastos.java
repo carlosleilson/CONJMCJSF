@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -46,6 +47,10 @@ public class DespesasGastos {
      */
     @NotNull
     private Boolean situacao;
+    
+    @ManyToOne
+    @JoinColumn(name="fornecedor_id")
+    private Fornecedores fornecedor;
     
     /*@OneToMany (mappedBy="item")
     private List<Sangria> sangria;*/
@@ -266,6 +271,14 @@ public class DespesasGastos {
 
 	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
+	}
+
+	public Fornecedores getFornecedor() {
+		return fornecedor;
+	}
+
+	public void setFornecedor(Fornecedores fornecedor) {
+		this.fornecedor = fornecedor;
 	}
 
 	/*public List<Sangria> getSangria() {

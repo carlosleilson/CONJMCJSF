@@ -56,8 +56,7 @@ public class Fornecedores {
     /**
      * Lista de produdos dos fornecedores. 
      */
-    @OneToMany(targetEntity=DespesasGastos.class, fetch=FetchType.EAGER)
-    @JoinTable(name="fornecedores_produtos_fornecidos", joinColumns={@JoinColumn(name="fornecedores", referencedColumnName="id")}, inverseJoinColumns={@JoinColumn(name="produtos_fornecidos", referencedColumnName="id", unique=false)})
+    @OneToMany(mappedBy="fornecedor")
     private List<DespesasGastos> produtosFornecidos;
 
 	@Id

@@ -43,11 +43,11 @@ public class FornecedoresBean implements Serializable {
 
 	@PostConstruct
     public void init() {
+		if(fornecedores==null)
+			fornecedores = new Fornecedores();
+		fornecedores.setSituacao(true);
         findAllFornecedoreses();
         findAllDespesasGastosAtivos();
-        if(fornecedores==null)
-        	fornecedores = new Fornecedores();
-        fornecedores.setSituacao(true);
     }
 	
 	private void findAllDespesasGastosAtivos() {
@@ -101,12 +101,12 @@ public class FornecedoresBean implements Serializable {
 	        }
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Esse(s) Item j&aacute; tem um fornecedor", "Esse Item(s) j&aacute; tem um fornecedor"));
-			reset();
+			init();
 		    return "/pages/fornecedor.xhtml";
 		}        
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Fornecedores");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+        init();
         findAllFornecedoreses();
         return "/pages/fornecedor.xhtml";
     }
@@ -115,7 +115,7 @@ public class FornecedoresBean implements Serializable {
         fornecedores.remove();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Fornecedores");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
+        init();
         return findAllFornecedoreses();
     }
 

@@ -1,54 +1,64 @@
 package br.com.conjmc.cadastrobasico;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Version;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.AssertTrue;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Version;
 
 @Entity
 @Configurable
 public class Fornecedores {
 
     /**
+     * Nome dos Fornecedores
      */
     @NotNull
     @Size(max = 10)
     private String nome;
 
     /**
+     * Nome fantansia dos fonecedores
      */
     @NotNull
     private String apelido;
 
     /**
+     *  Cadastro Nacional da Pessoa Jurídica dos fonecedores.
      */
     @Size(max = 18)
     private String cnpj;
 
     /**
+     * Se esta ativo ou não.
      */
     @NotNull
     @AssertTrue
     private Boolean situacao;
 
     /**
+     * Lista de produdos dos fornecedores. 
      */
-    @ManyToOne
-    private Despesas produtosFornecidos;
+    @OneToMany(targetEntity=DespesasGastos.class, fetch=FetchType.EAGER)
+    @JoinTable(name="fornecedores_produtos_fornecidos", joinColumns={@JoinColumn(name="fornecedores", referencedColumnName="id")}, inverseJoinColumns={@JoinColumn(name="produtos_fornecidos", referencedColumnName="id", unique=false)})
+    private List<DespesasGastos> produtosFornecidos;
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -198,14 +208,6 @@ public class Fornecedores {
         this.situacao = situacao;
     }
 
-	public Despesas getProdutosFornecidos() {
-        return this.produtosFornecidos;
-    }
-
-	public void setProdutosFornecidos(Despesas produtosFornecidos) {
-        this.produtosFornecidos = produtosFornecidos;
-    }
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -270,5 +272,12 @@ public class Fornecedores {
 			return false;
 		return true;
 	}
+
+	public List<DespesasGastos> getProdutosFornecidos() {
+		return produtosFornecidos;
+	}
 	
+	public void setProdutosFornecidos(List<DespesasGastos> produtosFornecidos) {
+		this.produtosFornecidos = produtosFornecidos;
+	}
 }

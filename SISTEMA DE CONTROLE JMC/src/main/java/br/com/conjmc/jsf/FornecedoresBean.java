@@ -38,17 +38,20 @@ public class FornecedoresBean implements Serializable {
 
 	private Fornecedores fornecedores;
 	
-	private List<Despesas> allDespesasAtivas;
+	private List<DespesasGastos> allItensAtivas;
 	private List<Fornecedores> allFornecedoreses;
 
 	@PostConstruct
     public void init() {
         findAllFornecedoreses();
-        findAllDespesasAtivas();
+        findAllDespesasGastosAtivos();
+        if(fornecedores==null)
+        	fornecedores = new Fornecedores();
+        fornecedores.setSituacao(true);
     }
 	
-	private void findAllDespesasAtivas() {
-		setAllDespesasAtivas(Despesas.findAllDespesasAtivas());	
+	private void findAllDespesasGastosAtivos() {
+		allItensAtivas = DespesasGastos.findAllDespesasGastosAtivos();		
 	}
 	
 	public List<Fornecedores> getAllFornecedoreses() {
@@ -88,13 +91,19 @@ public class FornecedoresBean implements Serializable {
 
 	public String persist() {
         String message = "";
-        if (fornecedores.getId() != null) {
-            fornecedores.merge();
-            message = "message_successfully_updated";
-        } else {
-            fornecedores.persist();
-            message = "message_successfully_created";
-        }
+		try {        
+	        if (fornecedores.getId() != null) {
+	            fornecedores.merge();
+	            message = "message_successfully_updated";
+	        } else {
+	            fornecedores.persist();
+	            message = "message_successfully_created";
+	        }
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Esse(s) Item j&aacute; tem um fornecedor", "Esse Item(s) j&aacute; tem um fornecedor"));
+			reset();
+		    return "/pages/fornecedor.xhtml";
+		}        
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Fornecedores");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         reset();
@@ -112,14 +121,15 @@ public class FornecedoresBean implements Serializable {
 
 	public void reset() {
         fornecedores = null;
+        init();
     }
 
-	public List<Despesas> getAllDespesasAtivas() {
-		return allDespesasAtivas;
+	public List<DespesasGastos> getAllItensAtivas() {
+		return allItensAtivas;
 	}
 
-	public void setAllDespesasAtivas(List<Despesas> allDespesasAtivas) {
-		this.allDespesasAtivas = allDespesasAtivas;
+	public void setAllItensAtivas(List<DespesasGastos> allItensAtivas) {
+		this.allItensAtivas = allItensAtivas;
 	}
 
 }

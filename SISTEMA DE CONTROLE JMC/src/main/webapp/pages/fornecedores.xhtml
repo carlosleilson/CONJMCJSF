@@ -30,13 +30,12 @@
 	          	<p:selectBooleanCheckbox id="situacao" value="#{fornecedoresBean.fornecedores.situacao}" required="true"/>
 	          	<p:message for="situacao"/>
 
-          	<p:outputLabel value="Classificação" for="classificacao"/>
-          	<p:selectOneMenu id="classificacao" value="#{fornecedoresBean.fornecedores.produtosFornecidos}" converter="despesasConverter" required="true" 
-          		requiredMessage="A Classificação é obrigatório " filter="true">
-          		<f:selectItem itemLabel="Selecione uma Classificação" itemValue=""/>
-          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" item="#{despesa}" />
-          	</p:selectOneMenu>
-          	<p:message for="classificacao"/>
+          	<p:outputLabel value="Itens" for="item"/>
+          	<p:selectCheckboxMenu  id="item" value="#{fornecedoresBean.fornecedores.produtosFornecidos}" label="Selecione uma item"  converter="despesasGastosConverter" required="true" 
+          		requiredMessage="A Classificação é obrigatório " filter="true" filterMatchMode="startsWith">
+          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="itens" itemLabel="#{itens.descrisao}" item="#{itens}" />
+          	</p:selectCheckboxMenu >
+          	<p:message for="item"/>
           		          			    		          	
 			 </h:panelGrid>
 	          <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{fornecedoresBean.persist}"/>
@@ -48,15 +47,17 @@
         	<p:column headerText="Nome" sortBy="#{fornecedores.nome}">
         		<h:outputText value="#{fornecedores.nome}"/>
         	</p:column>
-        	<p:column headerText="Nome" sortBy="#{fornecedores.apelido}">
+        	<p:column headerText="Apelido" sortBy="#{fornecedores.apelido}">
         		<h:outputText value="#{fornecedores.apelido}"/>
         	</p:column>
-        	<p:column headerText="Nome" sortBy="#{fornecedores.situacao}">
-            	<h:outputText value="Ativo" rendered="#{despesas.situacao == true}"/>
-            	<h:outputText value="Inativo" rendered="#{despesas.situacao == false}"/>
+        	<p:column headerText="Situação" sortBy="#{fornecedores.situacao}">
+            	<h:outputText value="Ativo" rendered="#{fornecedores.situacao == true}"/>
+            	<h:outputText value="Inativo" rendered="#{fornecedores.situacao == false}"/>
         	</p:column>  
-        	<p:column headerText="Nome" sortBy="#{fornecedores.produtosFornecidos}">
-        		<h:outputText value="#{fornecedores.produtosFornecidos.descricao}"/>
+        	<p:column headerText="Itens" sortBy="#{fornecedores.produtosFornecidos}">
+        		<ui:repeat var="itens" value="#{fornecedores.produtosFornecidos}">
+	        		<h:outputText value="#{itens.descrisao}" style="display:block;" />
+        		</ui:repeat>
         	</p:column>         	      
         		       	
 			<p:column headerText="Ações" styleClass="action-column" style="width:90px;">
@@ -65,7 +66,7 @@
 			    <f:setPropertyActionListener value="#{fornecedores}" target="#{fornecedoresBean.fornecedores}" />
 			  </p:commandButton>
 			  
-			  <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="deleteDialogWidget.show()" title="#{messages.label_delete}">
+			  <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('deleteDialogWidget').show()" title="#{messages.label_delete}" >
 			    <f:setPropertyActionListener value="#{fornecedores}" target="#{fornecedoresBean.fornecedores}" />
 			  </p:commandButton>
 			</p:column>
@@ -75,8 +76,8 @@
     <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm">
       <p:outputPanel id="deletePanel">
         <h:form id="deleteForm">
-          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{fornecedoresBean.delete}" oncomplete="deleteDialogWidget.hide()" />
-          <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="deleteDialogWidget.hide()" type="button" />
+          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{fornecedoresBean.delete}"  update=":dataForm:list :growlForm:growl" oncomplete="PF('deleteDialogWidget').hide()" />
+          <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="PF('deleteDialogWidget').hide()" type="button" />
         </h:form>
       </p:outputPanel>
     </p:confirmDialog>

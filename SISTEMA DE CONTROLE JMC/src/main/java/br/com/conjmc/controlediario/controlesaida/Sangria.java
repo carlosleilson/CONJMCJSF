@@ -201,6 +201,12 @@ public class Sangria {
         if (id == null) return null;
         return entityManager().find(Sangria.class, id);
     }
+	
+	public static List<Sangria> findSangriaConta(Contas conta) {
+		Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.conta = :conta", Sangria.class);
+		query.setParameter("conta", conta);
+        return query.getResultList();
+    }
 
 	//Query do spring roo
 	public static List<Sangria> findSangriaEntries(int firstResult, int maxResults) {

@@ -27,22 +27,9 @@
 				</p:inputText>
 				<p:message for="valorConta"/>
 				
-				<p:outputLabel value="Origem" for="origem" />
-				<p:selectOneMenu id="origem" value="#{contasBean.origem}" required="true" requiredMessage="A origem é obrigatório">
-	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-	          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
-	          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
-	          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
-	          	</p:selectOneMenu>
-	          	<p:message for="origem"/>
-				
 				<p:outputLabel value="Detalhamento" for="detalhamento" />
 				<p:inputTextarea id="detalhamento" value="#{contasBean.conta.detalhamento}"/>
 				<p:message for="detalhamento"/>
-				
-				<p:outputLabel value="Data Pagamento" for="pagamento" />
-		    	<p:calendar id="pagamento" value="#{contasBean.conta.dataPagamento}"/>
-		    	<p:message for="pagamento" />
 			 </h:panelGrid>
 			 <br/>
 			 <p:commandLink onclick="PF('itemBoleto').show()">

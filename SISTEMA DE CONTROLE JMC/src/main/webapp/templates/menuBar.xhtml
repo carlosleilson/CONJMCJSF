@@ -31,7 +31,10 @@
    		<p:menuitem value="Inclusão"  url="#{pageContext.servletContext.contextPath}/pages/despesasLoja.xhtml"/>
    		<p:menuitem value="Exclusão"  url="#{pageContext.servletContext.contextPath}/pages/ExclusaoDespesasLoja.xhtml"/>
    	</p:submenu>
-   	<p:menuitem value="Contas" url="#{pageContext.servletContext.contextPath}/pages/contas.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
+   	<p:submenu label="Contas">
+   		<p:menuitem value="Cadastro de Contas" url="#{pageContext.servletContext.contextPath}/pages/contas.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
+   		<p:menuitem value="Gerenciamentos de Contas" url="#{pageContext.servletContext.contextPath}/pages/contasPendentes.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
+   	</p:submenu>
    	<p:submenu label="Relatorios" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }">
    		<p:menuitem value="Mensal (RDM)" url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioMensal.xhtml"/>
    		<p:menuitem value="Despesas" url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioDespesa.xhtml"/>

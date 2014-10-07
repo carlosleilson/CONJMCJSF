@@ -3,11 +3,14 @@ package br.com.conjmc.jsf;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.Contas;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean
 @SessionScoped
@@ -41,35 +44,17 @@ public class ContasPendentesBean {
 		return "contasPendentes.xhtml";
 	}
 
-	/*public String persist() {
-		if(sangrias.size() > 0) {
-	        String message = "";
-	        if (conta.getId() != null) {
-	            conta.merge();
-	            message = "message_successfully_updated";
-	        } else {
-	        	conta.persist();
-	        	for (int i = 0; i < sangrias.size(); i++) {
-					sangrias.get(i).setPeriodo(conta.getDataPagamento());
-					sangria = sangrias.get(i);
-					sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-					sangria.setConta(conta);
-					sangria.persist();
-				}
-	        	
-	            message = "message_successfully_created";
-	        }
-	        
-	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
+	public String delete() {
+		try {
+			conta.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Conta");
 	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        this.origem = null;
 	        init();
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependencias em outros módulos", "O item não pode ser deletado porque possui dependencias em outros módulos"));
 		}
-	        return "contas.xhtml";
-	        
-    }*/
+        return "contasPendentes.xhtml";
+    }
 
 	//Generate getters and setters
 	public Contas getConta() {

@@ -2,6 +2,7 @@ package br.com.conjmc.cadastrobasico;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -73,7 +74,7 @@ public class Contas {
 		this.valor = valor;
 	}
 	
-	@OneToMany (mappedBy="conta")
+	@OneToMany (mappedBy="conta", cascade=CascadeType.REMOVE)
     private List<Sangria> sangria;
 
 	/*public Fornecedores getFornecedor() {

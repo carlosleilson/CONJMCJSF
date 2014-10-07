@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Contas</title>
+	</ui:define>
+  <ui:define name="content">
+    <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+ 	<p:dialog id="itemBoleto" header="Adicionar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode" width="545">
+	    <h:form id="item">
+		 	<h:panelGrid id="createPanelGridItem" columns="3" styleClass="dialog">
+			 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
+			 	<p:calendar id="dataPagamento" value="#{contasPendentesBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
+			 	<p:message for="dataPagamento" />
+			 	
+			 	<p:outputLabel value="Origem" for="origem"/>
+	          	<p:selectOneMenu id="origem" value="#{contasPendentesBean.origem}" required="true" requiredMessage="A origem é obrigatório">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
+	          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
+	          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="origem"/>
+			</h:panelGrid>
+			<p:commandButton ajax="false" value="Salvar" action="#{contasPendentesBean.persist()}" />
+			<p:commandButton id="fechar" value="Fechar" onclick="PF('itemBoleto').hide()" type="button"/> 	
+		</h:form>
+ 	</p:dialog>	
+    <h:form id="dataTable">
+    	 <p:dataTable id="list" value="#{contasPendentesBean.contas}" var="contaPendente">
+	        	<f:facet name="header">Itens do Boleto</f:facet>
+	          	<p:column headerText="Detalhamento">
+	          		<h:outputText value="#{contaPendente.detalhamento}"/>
+	          	</p:column>
+	          	<p:column headerText="Valor">
+	        		<h:outputText value="#{contaPendente.valor}">
+	        			<f:convertNumber minFractionDigits="2"/>
+	        		</h:outputText>
+	        	</p:column>
+	          	<p:column headerText="Vencimento">
+	          		<h:outputText value="#{contaPendente.vencimento}">
+	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+	          		</h:outputText>
+	          	</p:column>
+	          	<p:column headerText="Status">
+	          		<h:outputText value="Paga" rendered="#{not empty contaPendente.dataPagamento}" />
+	          		<h:outputText value="Pendente" rendered="#{empty contaPendente.dataPagamento}"/>
+	          	</p:column>
+     			<p:column headerText="Ações">
+	          		<p:commandLink id="registrarPagamento" value="Registrar Pagamento" rendered="#{empty contaPendente.dataPagamento}" onclick="PF('itemBoleto').show()">
+						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasPendentesBean.conta}" />
+					</p:commandLink>
+					 <p:commandButton id="deleteButton" icon="ui-icon-trash" rendered="#{empty contaPendente.dataPagamento}" oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
+						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasPendentesBean.conta}" />
+					</p:commandButton>
+	          	</p:column>
+	        </p:dataTable>
+	         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+				<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{contasPendentesBean.delete()}" update=":dataTable:list" onclick="confirmation.hide()" />
+				<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
+			</p:confirmDialog>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

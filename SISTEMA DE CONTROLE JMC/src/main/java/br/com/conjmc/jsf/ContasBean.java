@@ -83,10 +83,7 @@ public class ContasBean {
 	        } else {
 	        	conta.persist();
 	        	for (int i = 0; i < sangrias.size(); i++) {
-					sangrias.get(i).setPeriodo(conta.getDataPagamento());
 					sangria = sangrias.get(i);
-					sangria.setOrigem(origem);
-					sangria.setConta(conta);
 					sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 					sangria.setConta(conta);
 					sangria.persist();

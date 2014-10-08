@@ -3,7 +3,6 @@ package br.com.conjmc.relatorios.relatoriodiadodes;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,8 +31,10 @@ public class RelatorioDoMes {
 	private NumberFormat df;
 	private Double faturamentoBruto;
 	private String tempTotalPercente;
-	
+	private Double tempPercente;
+	private String[] tempRESTotalPercente;
 	public RelatorioDoMes(Date dataTemp){
+		tempRESTotalPercente = new String[2];
 		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTemp);
@@ -76,18 +77,77 @@ public class RelatorioDoMes {
 			totalResumo(resumoIten);
 			resumoIten.setPorcentagem(tempTotalPercente);
 			resumoIten.setClassificacoes(criarClassificacao(resumo));
+			percenteTotal(resumoIten);
 			resumosItens.add(resumoIten);
 		}
 		return resumosItens;		
 	}
-
+	
+	private void percenteTotal(ResumoVO resumoIten) throws ParseException {
+		if(!resumoIten.getClassificacoes().isEmpty()){
+			if (resumoIten.getClassificacoes().get(0).getCodigo().equals("A1")) {
+				tempPercente = Double.parseDouble(tempTotalPercente.replace("%", "").replace(",", ".").trim());
+			}
+			if (resumoIten.getClassificacoes().get(0).getCodigo().equals("B1")) {
+				tempPercente = Double.parseDouble(tempTotalPercente.replace("%", "").replace(",", ".").trim());
+			}
+			if (resumoIten.getName().equals("RES03")) {
+				tempPercente = Double.parseDouble(tempTotalPercente.replace("%", "").replace(",", ".").trim());
+			}			
+		}
+	}
+	
 	private void totalResumo(ResumoVO resumoIten) throws ParseException {
-		if(resumoIten.getName().equals("RES01")){
-			resumoIten.setValorTemp(df.format(faturamentoBruto));
-			tempTotalPercente =  "0,00 %";
-		}else{
-			resumoIten.setValorTemp(totalLinha[QTD_CAMPOS-1]);
-			tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+		resumoIten.setValorTemp(totalLinha[QTD_CAMPOS-1]);
+		switch (resumoIten.getName()) {
+			case "RES01":{
+				resumoIten.setValorTemp(df.format(faturamentoBruto));
+				tempTotalPercente =  "100,00 %";
+				break;
+			}
+			case "RES02":{
+				tempTotalPercente =  String.format("%.2f",(100.00) - tempPercente)+" %";
+				break;
+			}
+			
+			case "RES03":{
+				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",((df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100) - tempPercente)+" %";
+				break;
+			}
+			case "RES04":{
+				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				break;
+			}
+			case "RES05":{
+				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(Double.parseDouble(tempRESTotalPercente[0].replace("%", "").replace(",", ".").trim())-Double.parseDouble(tempRESTotalPercente[1].replace("%", "").replace(",", ".").trim()) ))+" %";
+				break;
+			}
+			case "RES06":{
+				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				break;
+			}			
+			case "RES07":{
+				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(Double.parseDouble(tempRESTotalPercente[0].replace("%", "").replace(",", ".").trim())-Double.parseDouble(tempRESTotalPercente[1].replace("%", "").replace(",", ".").trim()) ))+" %";
+				break;
+			}
+			case "RES08":{
+				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				break;
+			}
+			case "RES09":{
+				tempTotalPercente =  String.format("%.2f",(Double.parseDouble(tempRESTotalPercente[0].replace("%", "").replace(",", ".").trim())-Double.parseDouble(tempRESTotalPercente[1].replace("%", "").replace(",", ".").trim()) ))+" %";
+				break;
+			}				
+			default:{
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				break;
+			}
 		}
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 	}

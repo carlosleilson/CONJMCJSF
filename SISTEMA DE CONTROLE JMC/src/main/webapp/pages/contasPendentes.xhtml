@@ -16,10 +16,6 @@
     <h:form id="item">
 	 	<p:dialog id="itemBoleto" header="Adicionar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode" width="545">
 		 	<h:panelGrid id="createPanelGridItem" columns="3" styleClass="dialog">
-			 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
-			 	<p:calendar id="dataPagamento" value="#{contasPendentesBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
-			 	<p:message for="dataPagamento" />
-			 	
 			 	<p:outputLabel value="Origem" for="origem"/>
 	          	<p:selectOneMenu id="origem" value="#{contasPendentesBean.origem}" required="true" requiredMessage="A origem é obrigatório">
 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
@@ -29,6 +25,10 @@
 	          		<p:ajax event="change" oncomplete="PF('itemBoleto').show()" update=":item:itemBoleto" />
 	          	</p:selectOneMenu>
 	          	<p:message for="origem"/>
+	          	
+			 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
+			 	<p:calendar id="dataPagamento" value="#{contasPendentesBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
+			 	<p:message for="dataPagamento" />
 			</h:panelGrid>
 			<h:panelGrid id="optionBanco" columns="3" rendered="#{contasPendentesBean.origem == 'BANCO'}">
 			 	<p:outputLabel value="Banco" for="banco"/>

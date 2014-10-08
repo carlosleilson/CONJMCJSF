@@ -174,28 +174,16 @@ public class Sangria {
     }
 
 	public static List<Sangria> findAllSangrias() {
-		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja", Sangria.class);
+		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja and o.periodo != null", Sangria.class);
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();
     }
 	
 	public static List<Sangria> findAllSangriasAtivas() {
-		Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.sangria = true and o.loja.id = :loja", Sangria.class);
+		Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.sangria = true and o.loja.id = :loja and o.periodo != null", Sangria.class);
 		query.setParameter("loja", ObejctSession.idLoja());
 		return query.getResultList();
     }
-
-	//Query do spring roo
-	/*public static List<Sangria> findAllSangrias(String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM Sangria o";
-        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
-            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
-            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
-                jpaQuery = jpaQuery + " " + sortOrder;
-            }
-        }
-        return entityManager().createQuery(jpaQuery, Sangria.class).getResultList();
-    }*/
 
 	public static Sangria findSangria(Long id) {
         if (id == null) return null;
@@ -297,8 +285,8 @@ public class Sangria {
 	
 	public static List<Sangria> encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (dataInicial == null) throw new IllegalArgumentException("O Dia Ã© obrigatorio");
-        if (dataFinal == null) throw new IllegalArgumentException("O AtÃ© Mes/ano Ã© obrigatorio");
+        if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
+        if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
         if(item!=null){

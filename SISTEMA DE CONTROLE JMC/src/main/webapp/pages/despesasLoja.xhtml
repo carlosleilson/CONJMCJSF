@@ -24,7 +24,7 @@
           	<span></span>
           
           	<p:outputLabel value="Período: " for="periodo"/>
-    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" />
+    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" required="true" requiredMessage="Campo obrigatório"/>
     		<p:message for="periodo"/>   
           
           	<p:outputLabel value="Valor" for="valor"/>

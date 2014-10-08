@@ -38,6 +38,8 @@ public class Contas {
 	
 	private String detalhamento;
 	
+	private String detalhamentoBanco;
+	
 	@Temporal(TemporalType.DATE)
 	private Date dataPagamento;
 	
@@ -131,6 +133,14 @@ public class Contas {
 
 	public void setSangria(List<Sangria> sangria) {
 		this.sangria = sangria;
+	}
+
+	public String getDetalhamentoBanco() {
+		return detalhamentoBanco;
+	}
+
+	public void setDetalhamentoBanco(String detalhamentoBanco) {
+		this.detalhamentoBanco = detalhamentoBanco;
 	}
 
 	// DAO

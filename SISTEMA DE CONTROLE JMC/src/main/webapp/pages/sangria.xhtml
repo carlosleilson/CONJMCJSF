@@ -28,7 +28,7 @@
           	<span></span>
           
             <p:outputLabel value="Período: " for="periodo"/>
-    		<p:calendar id="periodo"  value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy"/>
+    		<p:calendar id="periodo"  value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo obrigatório"/>
     		<p:message for="periodo"/>
           	<span></span>
     		

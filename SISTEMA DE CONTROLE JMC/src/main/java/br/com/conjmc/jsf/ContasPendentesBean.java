@@ -23,11 +23,11 @@ public class ContasPendentesBean {
 	@PostConstruct
 	public void init() {
 		conta = new Contas();
-		carregarContas();
 	}
 	
-	private void carregarContas() {
+	public List<Contas> carregarContas() {
 		contas = new Contas().findAllContas();
+		return contas;
 	}
 	
 	public String persist() {

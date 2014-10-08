@@ -13,8 +13,8 @@
     <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
- 	<p:dialog id="itemBoleto" header="Adicionar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode" width="545">
-	    <h:form id="item">
+    <h:form id="item">
+	 	<p:dialog id="itemBoleto" header="Adicionar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode" width="545">
 		 	<h:panelGrid id="createPanelGridItem" columns="3" styleClass="dialog">
 			 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
 			 	<p:calendar id="dataPagamento" value="#{contasPendentesBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
@@ -26,15 +26,34 @@
 	          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
 	          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
 	          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
+	          		<p:ajax event="change" oncomplete="PF('itemBoleto').show()" update=":item:itemBoleto" />
 	          	</p:selectOneMenu>
 	          	<p:message for="origem"/>
 			</h:panelGrid>
+			<h:panelGrid id="optionBanco" columns="3" rendered="#{contasPendentesBean.origem == 'BANCO'}">
+			 	<p:outputLabel value="Banco" for="banco"/>
+	          	<p:selectOneMenu id="banco" value="#{contasPendentesBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
+	          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
+	          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
+	          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
+	          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>
+	          		<f:selectItem itemLabel="Caixa" itemValue="Caixa"/>
+	          		<f:selectItem itemLabel="HSBC" itemValue="HSBC"/>
+	          		<f:selectItem itemLabel="ITAU" itemValue="ITAU"/>
+	          		<f:selectItem itemLabel="Santander" itemValue="Santander"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="banco"/>	
+	          	
+			 	<p:outputLabel value="Detalhe do Banco" for="dbanco" />
+	          	<p:inputTextarea id="dbanco" value="#{contasPendentesBean.conta.detalhamentoBanco}" required="true" requiredMessage="O valor é obrigatório"/>
+	          	<p:message for="dbanco"/>		 
+			 </h:panelGrid>
 			<p:commandButton ajax="false" value="Salvar" action="#{contasPendentesBean.persist()}" />
 			<p:commandButton id="fechar" value="Fechar" onclick="PF('itemBoleto').hide()" type="button"/> 	
-		</h:form>
- 	</p:dialog>	
+ 		</p:dialog>	
+	</h:form>
     <h:form id="dataTable">
-    	 <p:dataTable id="list" value="#{contasPendentesBean.contas}" var="contaPendente">
+    	 <p:dataTable id="list" value="#{contasPendentesBean.carregarContas()}" var="contaPendente">
 	        	<f:facet name="header">Itens do Boleto</f:facet>
 	          	<p:column headerText="Detalhamento">
 	          		<h:outputText value="#{contaPendente.detalhamento}"/>

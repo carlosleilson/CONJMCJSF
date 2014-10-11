@@ -1,4 +1,5 @@
 package br.com.conjmc.controlediario.controlesaida;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -35,9 +36,11 @@ import br.com.conjmc.jsf.util.ObejctSession;
 
 @Configurable
 @Entity
-public class Sangria {
+public class Sangria implements Serializable{
 
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      */
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodo;

@@ -9,7 +9,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
@@ -20,7 +20,6 @@ import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.message.Message;
 import org.primefaces.component.outputlabel.OutputLabel;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -36,7 +35,7 @@ import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean(name = "sangriaBean")
-@SessionScoped
+@ViewScoped
 @Configurable
 public class SangriaBean implements Serializable  {
 
@@ -670,9 +669,8 @@ public class SangriaBean implements Serializable  {
     }
 
 	/*----------- Search ------------*/
-	public String busca(){
+	public void busca(){
 		allDespesaLoja =  sangria.encontrarPorData(dataInicial, dataFinal, itemSearch);
-		return "/pages/ExclusaoDespesasLoja.xhtml";
 	}
 	
 	public Date getDataInicial() {

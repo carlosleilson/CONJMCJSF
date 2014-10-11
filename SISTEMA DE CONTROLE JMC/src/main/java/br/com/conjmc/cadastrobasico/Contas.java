@@ -157,7 +157,7 @@ public class Contas implements Serializable{
     }
 
 	public static List<Contas> findAllContas() {
-        return entityManager().createQuery("SELECT o FROM Contas o", Contas.class).getResultList();
+        return entityManager().createQuery("SELECT o FROM Contas o order by o.id desc", Contas.class).getResultList();
     }
 
 	public static Contas findContas(Long id) {

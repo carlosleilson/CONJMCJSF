@@ -174,7 +174,7 @@ public class Sangria {
     }
 
 	public static List<Sangria> findAllSangrias() {
-		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja and o.periodo != null", Sangria.class);
+		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja and o.periodo != null order by o.id desc", Sangria.class);
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();
     }

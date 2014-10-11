@@ -1,4 +1,5 @@
 package br.com.conjmc.cadastrobasico;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -25,9 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Configurable
-public class Fornecedores {
+public class Fornecedores implements Serializable {
 
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      * Nome dos Fornecedores
      */
     @NotNull

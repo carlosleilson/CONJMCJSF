@@ -1,4 +1,5 @@
 package br.com.conjmc.cadastrobasico;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +24,10 @@ import br.com.conjmc.controlediario.controlesaida.Sangria;
 
 @Entity
 @Configurable
-public class Contas {
+public class Contas implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 	

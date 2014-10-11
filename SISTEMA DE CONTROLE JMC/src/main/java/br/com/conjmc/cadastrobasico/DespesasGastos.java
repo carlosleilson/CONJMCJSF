@@ -1,4 +1,5 @@
 package br.com.conjmc.cadastrobasico;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -22,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Configurable
-public class DespesasGastos {
+public class DespesasGastos implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Long codigo; 
 	

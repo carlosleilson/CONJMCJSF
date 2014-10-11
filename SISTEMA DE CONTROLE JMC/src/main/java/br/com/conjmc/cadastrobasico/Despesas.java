@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -22,15 +23,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.AssertTrue;
 
-/**
- * @author c1276777
- *
- */
 @Entity
 @Configurable
-public class Despesas {
+public class Despesas implements Serializable {
 
-    /**
+	private static final long serialVersionUID = 1L;
+
+	/**
      */
     @NotNull
     @Size(max = 2)

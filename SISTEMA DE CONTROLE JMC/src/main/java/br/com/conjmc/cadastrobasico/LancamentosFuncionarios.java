@@ -3,7 +3,10 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -18,7 +21,7 @@ import javax.validation.constraints.AssertTrue;
 
 @Configurable
 @Entity
-public class LancamentosFuncionarios {
+public class LancamentosFuncionarios implements Serializable {
 
     /**
      */

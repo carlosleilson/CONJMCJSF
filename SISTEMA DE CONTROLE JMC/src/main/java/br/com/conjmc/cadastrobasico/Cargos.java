@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -19,9 +20,11 @@ import javax.persistence.Version;
 
 @Entity
 @Configurable
-public class Cargos {
+public class Cargos implements Serializable {
 
-    @NotNull
+	private static final long serialVersionUID = 1L;
+
+	@NotNull
     private String nome;
 
     @NotNull

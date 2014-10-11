@@ -1,4 +1,5 @@
 package br.com.conjmc.cadastrobasico;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +24,10 @@ import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
 @Configurable
-public class Faturamento {
+public class Faturamento implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private Date periodo;
 
 	private Double faturamentoBruto;

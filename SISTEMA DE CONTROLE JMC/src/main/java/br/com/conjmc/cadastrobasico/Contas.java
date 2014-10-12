@@ -10,8 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
 @Configurable
@@ -49,6 +52,9 @@ public class Contas implements Serializable{
 	private String tipoPagamento;
 	
 	private String banco;
+	
+	@ManyToOne
+	private Lojas loja;
 	
 	@Version
     @Column(name = "version")
@@ -146,6 +152,14 @@ public class Contas implements Serializable{
 		this.detalhamentoBanco = detalhamentoBanco;
 	}
 
+	public Lojas getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Lojas loja) {
+		this.loja = loja;
+	}
+
 	// DAO
 	@PersistenceContext
     transient EntityManager entityManager;
@@ -157,7 +171,9 @@ public class Contas implements Serializable{
     }
 
 	public static List<Contas> findAllContas() {
-        return entityManager().createQuery("SELECT o FROM Contas o order by o.id desc", Contas.class).getResultList();
+		Query query = entityManager().createQuery("SELECT o FROM Contas o where order o.loja.id = :loja by o.id desc", Contas.class);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
     }
 
 	public static Contas findContas(Long id) {

@@ -32,9 +32,15 @@ public class RelatorioDoMes {
 	private Double faturamentoBruto;
 	private String tempTotalPercente;
 	private Double tempPercente;
+	private Double[] TempResultRESTTotal;
 	private String[] tempRESTotalPercente;
+	private String[] tempTotal;
+	
+	
 	public RelatorioDoMes(Date dataTemp){
+		TempResultRESTTotal = new Double[3];
 		tempRESTotalPercente = new String[2];
+		tempTotal = new String[2];
 		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTemp);
@@ -86,12 +92,15 @@ public class RelatorioDoMes {
 	private void percenteTotal(ResumoVO resumoIten) throws ParseException {
 		if(!resumoIten.getClassificacoes().isEmpty()){
 			if (resumoIten.getClassificacoes().get(0).getCodigo().equals("A1")) {
+				TempResultRESTTotal[0] = df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue();
 				tempPercente = Double.parseDouble(tempTotalPercente.replace("%", "").replace(",", ".").trim());
 			}
 			if (resumoIten.getClassificacoes().get(0).getCodigo().equals("B1")) {
+				TempResultRESTTotal[1] = df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue();
 				tempPercente = Double.parseDouble(tempTotalPercente.replace("%", "").replace(",", ".").trim());
 			}
 			if (resumoIten.getName().equals("RES03")) {
+				TempResultRESTTotal[2] = df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue();
 				tempPercente = Double.parseDouble(tempTotalPercente.replace("%", "").replace(",", ".").trim());
 			}			
 		}
@@ -101,47 +110,73 @@ public class RelatorioDoMes {
 		resumoIten.setValorTemp(totalLinha[QTD_CAMPOS-1]);
 		switch (resumoIten.getName()) {
 			case "RES01":{
+				resumoIten.setTitulo("Receita Total de Vendas,incluindo-se as taxas de Entrega pagas pelos clientes");
 				resumoIten.setValorTemp(df.format(faturamentoBruto));
 				tempTotalPercente =  "100,00 %";
 				break;
 			}
 			case "RES02":{
-				tempTotalPercente =  String.format("%.2f",(100.00) - tempPercente)+" %";
+				resumoIten.setTitulo("Receita Total sobre as vendas de produtos ( Res 02 = Res 01 - Item A)");
+				String resultRESTTotal = df.format(Math.abs(faturamentoBruto-TempResultRESTTotal[0]));
+				tempTotal[1] = resultRESTTotal;
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
+				resumoIten.setValorTemp(resultRESTTotal);
 				break;
 			}
 			
 			case "RES03":{
+				resumoIten.setTitulo("Res 03 = Res 02 - Item B");
+				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[1]).doubleValue()-TempResultRESTTotal[1]));
+				tempTotal[0] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
 				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",((df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100) - tempPercente)+" %";
+				tempTotalPercente =  String.format("%.2f",((df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100))+" %";
+				resumoIten.setValorTemp(resultRESTTotal);
 				break;
 			}
 			case "RES04":{
+				resumoIten.setTitulo("CPV (Res 04) = Soma dos Grupos de Itens ' ' C até ' ' E");
+				tempTotal[1] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
 				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 				break;
 			}
 			case "RES05":{
+				resumoIten.setTitulo("Res 05 = Res 03 - Res 04");
+				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[0]).doubleValue()-df.parse(tempTotal[1]).doubleValue()));
+				resumoIten.setValorTemp(resultRESTTotal);
+				tempTotal[0] = resultRESTTotal;
 				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",(Double.parseDouble(tempRESTotalPercente[0].replace("%", "").replace(",", ".").trim())-Double.parseDouble(tempRESTotalPercente[1].replace("%", "").replace(",", ".").trim()) ))+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
 				break;
 			}
 			case "RES06":{
+				resumoIten.setTitulo("D.O (Res 06) = Soma dos Grupos de Itens ' ' F ate ' ' O");
+				tempTotal[1] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
 				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 				break;
 			}			
 			case "RES07":{
+				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[0]).doubleValue()-df.parse(tempTotal[1]).doubleValue()));
+				resumoIten.setTitulo("R.O ((Res 07) = Res 05 - Res 06)");
+				resumoIten.setValorTemp(resultRESTTotal);
+				tempTotal[0] = resultRESTTotal;
 				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",(Double.parseDouble(tempRESTotalPercente[0].replace("%", "").replace(",", ".").trim())-Double.parseDouble(tempRESTotalPercente[1].replace("%", "").replace(",", ".").trim()) ))+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
 				break;
 			}
 			case "RES08":{
+				resumoIten.setTitulo("D.N.O (Res 08) = Soma dos gruposde itens ' ' P ate ' ' R");
+				tempTotal[1] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
 				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 				break;
 			}
 			case "RES09":{
-				tempTotalPercente =  String.format("%.2f",(Double.parseDouble(tempRESTotalPercente[0].replace("%", "").replace(",", ".").trim())-Double.parseDouble(tempRESTotalPercente[1].replace("%", "").replace(",", ".").trim()) ))+" %";
+				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[0]).doubleValue()-df.parse(tempTotal[1]).doubleValue()));
+				resumoIten.setTitulo("R.L (Res 07 - Res 08)");
+				resumoIten.setValorTemp(resultRESTTotal);
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
 				break;
 			}				
 			default:{

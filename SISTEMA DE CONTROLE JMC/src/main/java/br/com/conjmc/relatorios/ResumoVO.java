@@ -5,6 +5,7 @@ import java.util.List;
 
 public class ResumoVO {
 	private String name;
+	private String titulo;
 	private String porcentagem;
 	private String valorTemp;
 	private List<ClassificacaoVO> classificacoes;
@@ -34,5 +35,11 @@ public class ResumoVO {
 	}
 	public void setValorTemp(String valorTemp) {
 		this.valorTemp = valorTemp;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 }

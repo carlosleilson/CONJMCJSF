@@ -32,18 +32,18 @@
 	      	<p:columnGroup type="header">
 	            <p:row>
 	        		<p:column width="10" headerText="#{linha.name}"/>
-	                <p:column width="200"/>
+	                <p:column width="200" headerText="#{linha.titulo}"/>
 	                <p:column width="15" headerText="#{linha.porcentagem}"/>
 	        		<p:column width="15" headerText="#{linha.valorTemp}"/>
 	            </p:row>        	
 	       	</p:columnGroup>                	
-	        	<p:column >
+	        	<p:column  style="text-align:center" >
 	                <h:outputText value="#{item.codigo}" />
 	        	</p:column>	 
 	        	<p:column>
 	                <h:outputText value="#{item.name}"/>
 	        	</p:column>
-	        	<p:column >
+	        	<p:column  style="text-align:center" >
 	        	<ui:repeat var="total" value="#{item.itens}">
 	                <h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes+1]}" >
 	                	<f:convertNumber type ="percent" pattern="###.##" />

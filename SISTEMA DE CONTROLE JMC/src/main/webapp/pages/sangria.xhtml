@@ -9,7 +9,7 @@
 	<ui:define name="title">
 		<title>Sangrias</title>
 	</ui:define>
-  <ui:define name="content">
+  <!-- <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
@@ -101,14 +101,14 @@
 	          	</p:column>
 	          
 	          <p:column headerText="Ações" styleClass="action-column" style="width:40px;">
-	           <!--  <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
+	            <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
 	              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
 	            </p:commandButton>
-	            <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" /> -->
+	            <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" />
 	            
-	           <!--  <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="sangria.xhtml" title="#{messages.label_edit}">
+	            <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="sangria.xhtml" title="#{messages.label_edit}">
 	              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
-	            </p:commandButton> -->
+	            </p:commandButton>
 	            
 	            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
 					<f:setPropertyActionListener value="#{sang}" target="#{sangriaBean.sangria}" />
@@ -124,6 +124,6 @@
 				<p:commandButton id="optionNao" value="Não" onclick="PF('duplicate').hide()" type="button"/>
 			</p:confirmDialog>
 	       </h:form>
-  </ui:define>
+  </ui:define> -->
 </ui:composition>
 </html>

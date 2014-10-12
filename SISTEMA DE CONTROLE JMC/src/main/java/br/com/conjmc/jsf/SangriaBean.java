@@ -9,6 +9,7 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
@@ -35,7 +36,7 @@ import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean(name = "sangriaBean")
-@ViewScoped
+@SessionScoped
 @Configurable
 public class SangriaBean implements Serializable  {
 
@@ -501,9 +502,6 @@ public class SangriaBean implements Serializable  {
     }
 
 	public Sangria getSangria() {
-        if (sangria == null) {
-            sangria = new Sangria();
-        }
         return sangria;
     }
 
@@ -567,7 +565,7 @@ public class SangriaBean implements Serializable  {
         return findAllSangrias();
     }
 
-	public String delete() {
+	public void delete() {
 		try {
 			sangria.remove();
 			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Sangria");
@@ -575,9 +573,9 @@ public class SangriaBean implements Serializable  {
 	        reset();
 	        init();
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item n�o pode ser deletado porque possui depend�ncias em outros m�dulos", "O item n�o pode ser deletado porque possui depend�ncias em outros m�dulos"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, e.getMessage(), e.getMessage()));
 		}
-        return findAllSangrias();
+        findAllSangrias();
     }
 
 	public void reset() {

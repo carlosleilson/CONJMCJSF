@@ -81,6 +81,7 @@ public class ContasBean {
 	            conta.merge();
 	            message = "message_successfully_updated";
 	        } else {
+	        	conta.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 	        	conta.persist();
 	        	for (int i = 0; i < sangrias.size(); i++) {
 					sangria = sangrias.get(i);

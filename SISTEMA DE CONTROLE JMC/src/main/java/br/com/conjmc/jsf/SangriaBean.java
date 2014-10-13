@@ -9,7 +9,6 @@ import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
@@ -36,7 +35,7 @@ import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean(name = "sangriaBean")
-@SessionScoped
+@ViewScoped
 @Configurable
 public class SangriaBean implements Serializable  {
 

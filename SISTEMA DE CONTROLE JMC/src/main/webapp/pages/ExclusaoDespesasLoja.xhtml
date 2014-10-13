@@ -56,40 +56,32 @@
     		<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{sangriaBean.reset}" action="ExclusaoDespesasLoja.xhtml" />
       </h:form>     
       <h:form prependId="false" id="dataForm">
-	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
+	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sang" paginator="true" rows="10">
 	        	<f:facet name="header">Excluir Despesa</f:facet>
-	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
-	          		<h:outputText value="#{sangria.item.descrisao}"/>
+	        	<p:column headerText="Item" sortBy="#{sang.id}">
+	          		<h:outputText value="#{sang.id}"/>
 	          	</p:column>
-	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
-	          		<h:outputText value="#{sangria.periodo}">
+	          	<p:column headerText="Item" sortBy="#{sang.item.descrisao}">
+	          		<h:outputText value="#{sang.item.descrisao}"/>
+	          	</p:column>
+	        	<p:column headerText="Data" sortBy="#{sang.periodo}">
+	          		<h:outputText value="#{sang.periodo}">
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
-	          		<h:outputText value="#{sangria.valor}">
+	          	<p:column headerText="Valor" sortBy="#{sang.valor}">
+	          		<h:outputText value="#{sang.valor}">
 	          			<f:convertNumber minFractionDigits="2"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<ui:remove>
-<!-- 	          	<p:column headerText="Origem" sortBy="#{sangria.origem}"> -->
-<!-- 	          		<h:outputText value="#{sangria.origem}"/> -->
-<!-- 	          	</p:column> -->
-<!-- 	          	<p:column headerText="Classificação" sortBy="#{sangria.item.classificacao.descricao}"> -->
-<!-- 	          		<h:outputText value="#{sangria.item.classificacao.descricao}"/> -->
-<!-- 	          	</p:column> -->
-<!-- 	          	<p:column headerText="Funcionario" sortBy="#{sangria.funcionario.apelido}"> -->
-<!-- 	          		<h:outputText value="#{sangria.funcionario.apelido}"/> -->
-<!-- 	          	</p:column> -->
-	          	</ui:remove>
 	          	<p:column headerText="Ações" styleClass="action-column" style="width:40px;"> 
-		            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}" rendered="#{sangria.sangria != true}">
-						<f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
+		            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}" rendered="#{empty sang.conta}">
+						<f:setPropertyActionListener value="#{sang}" target="#{exclusaoDepesaBean.sangria}" />
 					</p:commandButton>
 	          	</p:column>
 	        </p:dataTable>
 	        <p:confirmDialog id="excluir" header="Excluir Despesas" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
-				<p:commandButton id="confirm" value="#{messages.label_yes}" oncomplete="PF('confirmation').hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+				<p:commandButton id="confirm" value="#{messages.label_yes}" oncomplete="PF('confirmation').hide()" action="#{exclusaoDepesaBean.delete()}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
 				<p:commandButton id="decline" value="#{messages.label_no}" onclick="PF('confirmation').hide()" type="button"/>
 			</p:confirmDialog>        
        </h:form>
@@ -98,15 +90,6 @@
 		<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 		    <p:graphicImage name="/images/carregando.gif" />
 		</p:dialog>
-		
-    <!-- <p:dialog id="viewDialog" header="#{messages.label_view} DespesasLoja" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:outputPanel id="viewPanel">
-        <h:form id="viewForm" enctype="multipart/form-data">
-          <h:panelGrid id="viewPanelGrid" columns="2" binding="#{despesasLojaBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" />
-          <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="viewDialogWidget.hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
-    </p:dialog> -->
   </ui:define>
 </ui:composition>
 </html>

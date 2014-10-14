@@ -30,7 +30,61 @@
 				<p:outputLabel value="Detalhamento" for="detalhamento" />
 				<p:inputTextarea id="detalhamento" value="#{contasBean.conta.detalhamento}"/>
 				<p:message for="detalhamento"/>
+				
+				<p:outputLabel value="Conta paga" for="contaPaga" />
+				<p:selectBooleanCheckbox id="contaPaga" value="#{contasBean.pagarAgora}">
+					<p:ajax event="change" update=":createForm:agora"/>
+				</p:selectBooleanCheckbox>
+				<p:message for="contaPaga"/>
 			 </h:panelGrid>
+			<h:panelGrid id="agora">
+				<h:panelGrid columns="3" rendered="#{contasBean.pagarAgora == 'true'}">
+				 	<p:outputLabel value="Origem" for="origem"/>
+		          	<p:selectOneMenu id="origem" value="#{contasBean.origem}" required="true" requiredMessage="A origem é obrigatório">
+		          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+		          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
+		          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
+		          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
+		          		<p:ajax event="change" update="optionBanco" />
+		          	</p:selectOneMenu>
+		          	<p:message for="origem"/>
+		          	
+				 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
+				 	<p:calendar id="dataPagamento" value="#{contasBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
+				 	<p:message for="dataPagamento" />
+			 	</h:panelGrid>
+			</h:panelGrid>
+			<h:panelGrid id="optionBanco" >
+				<h:panelGrid columns="3" rendered="#{contasBean.origem == 'BANCO'}">
+				 	<p:outputLabel value="Banco" for="banco"/>
+		          	<p:selectOneMenu id="banco" value="#{contasBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
+		          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
+		          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
+		          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
+		          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>
+		          		<f:selectItem itemLabel="Caixa" itemValue="Caixa"/>
+		          		<f:selectItem itemLabel="HSBC" itemValue="HSBC"/>
+		          		<f:selectItem itemLabel="ITAU" itemValue="ITAU"/>
+		          		<f:selectItem itemLabel="Santander" itemValue="Santander"/>
+		          	</p:selectOneMenu>
+		          	<p:message for="banco"/>	
+		          	
+				 	<p:outputLabel value="Detalhe do Banco" for="dbanco" />
+		          	<p:inputTextarea id="dbanco" value="#{contasBean.conta.detalhamentoBanco}" required="true" requiredMessage="O valor é obrigatório"/>
+		          	<p:message for="dbanco"/>
+		          </h:panelGrid>
+	          </h:panelGrid>	 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
+			 
 			 <br/>
 			 <p:commandLink onclick="PF('itemBoleto').show()">
 			 	<span class="ui-button-icon-left ui-icon ui-c ui-icon-circle-plus" style="float:left;margin-right:3px;"></span>

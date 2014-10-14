@@ -28,7 +28,7 @@
    	<p:menuitem value="Redução Z" disabled="true" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
    	<p:menuitem value="Conta Corrente Funicionarios" url="#{pageContext.servletContext.contextPath}/pages/contaFuncionario.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
    	<p:submenu label="Despesas" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }">
-   		<p:menuitem value="Inclusão" disabled="true" url="#{pageContext.servletContext.contextPath}/pages/despesasLoja.xhtml"/>
+   		<p:menuitem value="Inclusão" rendered="#{usuariosBean.usuarioLogado.nome.loja.id == 7}" url="#{pageContext.servletContext.contextPath}/pages/despesasLoja.xhtml"/>
    		<p:menuitem value="Exclusão"  url="#{pageContext.servletContext.contextPath}/pages/ExclusaoDespesasLoja.xhtml"/>
    	</p:submenu>
    	<p:submenu label="Contas">

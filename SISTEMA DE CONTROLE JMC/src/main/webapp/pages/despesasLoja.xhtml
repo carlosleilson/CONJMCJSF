@@ -9,74 +9,76 @@
 	<ui:define name="title">
 		<title>Incluir Despesa</title>
 	</ui:define>
-  <!-- <ui:define name="content">
+  <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-    	<fieldset>
-    		<legend>Incluir Despesa</legend>   	
-          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-          	<p:outputLabel value="Código" for="codigo"/>
-    		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
-    			<p:ajax event="keyup" update=":createForm:itens :createForm:classific" listener="#{sangriaBean.search()}"/>
-    		</p:inputText>
-          	<span></span>
-          
-          	<p:outputLabel value="Período: " for="periodo"/>
-    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" required="true" requiredMessage="Campo obrigatório"/>
-    		<p:message for="periodo"/>   
-          
-          	<p:outputLabel value="Valor" for="valor"/>
-          	<p:inputText 
-          		id="valor"
-          		styleClass="money" 
-          		value="#{sangriaBean.sangria.valor}"
-          		converter="moneyConverter" 
-          		required="true" 
-          		requiredMessage="O valor é obrigatório">
-          			<f:convertNumber minFractionDigits="2" />
-          		</p:inputText>
-          	<p:message for="valor"/>
-          	
-          	<p:outputLabel value="Itens" for="itens"/>
-          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
-          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
-          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
-          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":createForm:classific"/>
-          	</p:selectOneMenu>
-       		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
-          </h:panelGrid>
-          	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}"  actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
-    	</fieldset>
-    	</h:form>
-    	<h:form styleClass="buttomLimpar">
-    		<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{sangriaBean.reset}" action="despesasLoja.xhtml" />
-      	</h:form>
-    	<h:form prependId="false" id="dataForm">
-	        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
-	        	<f:facet name="header">Incluir Despesa</f:facet>
-	          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
-	          		<h:outputText value="#{sangria.item.descrisao}"/>
-	          	</p:column>
-	        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
-	          		<h:outputText value="#{sangria.periodo}">
-	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
-	          		</h:outputText>
-	          	</p:column>
-	          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
-	          		<h:outputText value="#{sangria.valor}">
-	          			<f:convertNumber minFractionDigits="2"/>
-	          		</h:outputText>
-	          	</p:column>
-	        </p:dataTable>
-		       <p:confirmDialog id="duplicate" header="Atenção!" message="Já foi inserido um registro para o item com a mesma data e valor, tem certeza que deseja inserir o registro?" hideEffect="explode" widgetVar="duplicate" severity="alert">
-					<p:commandButton id="optionSin" value="Sim" oncomplete="PF('duplicate').hide()" action="#{sangriaBean.persist()}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
-					<p:commandButton id="optionNao" value="Não" onclick="PF('duplicate').hide()" type="button"/>
-				</p:confirmDialog>
-	       </h:form>
-  </ui:define> -->
+    <h:panelGrid rendered="#{usuariosBean.usuarioLogado.nome.loja.id == 7}">
+	    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+	    	<fieldset>
+	    		<legend>Incluir Despesa</legend>   	
+	          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+	          	<p:outputLabel value="Código" for="codigo"/>
+	    		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
+	    			<p:ajax event="keyup" update=":createForm:itens :createForm:classific" listener="#{sangriaBean.search()}"/>
+	    		</p:inputText>
+	          	<span></span>
+	          
+	          	<p:outputLabel value="Período: " for="periodo"/>
+	    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" required="true" requiredMessage="Campo obrigatório"/>
+	    		<p:message for="periodo"/>   
+	          
+	          	<p:outputLabel value="Valor" for="valor"/>
+	          	<p:inputText 
+	          		id="valor"
+	          		styleClass="money" 
+	          		value="#{sangriaBean.sangria.valor}"
+	          		converter="moneyConverter" 
+	          		required="true" 
+	          		requiredMessage="O valor é obrigatório">
+	          			<f:convertNumber minFractionDigits="2" />
+	          		</p:inputText>
+	          	<p:message for="valor"/>
+	          	
+	          	<p:outputLabel value="Itens" for="itens"/>
+	          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
+	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+	          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":createForm:classific"/>
+	          	</p:selectOneMenu>
+	       		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
+	          </h:panelGrid>
+	          	<br/>
+	          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}"  actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
+	    	</fieldset>
+	    	</h:form>
+	    	<h:form styleClass="buttomLimpar">
+	    		<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{sangriaBean.reset}" action="despesasLoja.xhtml" />
+	      	</h:form>
+	    	<h:form prependId="false" id="dataForm">
+		        <p:dataTable id="list" value="#{sangriaBean.allDespesaLoja}" var="sangria" paginator="true" rows="10">
+		        	<f:facet name="header">Incluir Despesa</f:facet>
+		          	<p:column headerText="Item" sortBy="#{sangria.item.descrisao}">
+		          		<h:outputText value="#{sangria.item.descrisao}"/>
+		          	</p:column>
+		        	<p:column headerText="Data" sortBy="#{sangria.periodo}">
+		          		<h:outputText value="#{sangria.periodo}">
+		          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+		          		</h:outputText>
+		          	</p:column>
+		          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
+		          		<h:outputText value="#{sangria.valor}">
+		          			<f:convertNumber minFractionDigits="2"/>
+		          		</h:outputText>
+		          	</p:column>
+		        </p:dataTable>
+			       <p:confirmDialog id="duplicate" header="Atenção!" message="Já foi inserido um registro para o item com a mesma data e valor, tem certeza que deseja inserir o registro?" hideEffect="explode" widgetVar="duplicate" severity="alert">
+						<p:commandButton id="optionSin" value="Sim" oncomplete="PF('duplicate').hide()" action="#{sangriaBean.persist()}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
+						<p:commandButton id="optionNao" value="Não" onclick="PF('duplicate').hide()" type="button"/>
+					</p:confirmDialog>
+		       </h:form>
+		</h:panelGrid>
+  </ui:define>
 </ui:composition>
 </html>

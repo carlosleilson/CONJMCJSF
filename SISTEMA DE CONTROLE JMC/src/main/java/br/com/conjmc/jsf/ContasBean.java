@@ -116,6 +116,7 @@ public class ContasBean {
 	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
 	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	        this.origem = null;
+	        this.pagarAgora = false;
 	        init();
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));

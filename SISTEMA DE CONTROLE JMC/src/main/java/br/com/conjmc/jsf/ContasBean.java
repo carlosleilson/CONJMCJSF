@@ -25,6 +25,7 @@ public class ContasBean {
 	private List<Sangria> sangrias;
 	private Date periodo;
 	private String origem;
+	private boolean pagarAgora;
 	
 	@PostConstruct
 	public void init() {
@@ -74,6 +75,14 @@ public class ContasBean {
 		this.origem = origem;
 	}
 
+	public boolean isPagarAgora() {
+		return pagarAgora;
+	}
+
+	public void setPagarAgora(boolean pagarAgora) {
+		this.pagarAgora = pagarAgora;
+	}
+
 	public String persist() {
 		if(sangrias.size() > 0) {
 	        String message = "";
@@ -83,12 +92,23 @@ public class ContasBean {
 	        } else {
 	        	conta.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 	        	conta.persist();
-	        	for (int i = 0; i < sangrias.size(); i++) {
-					sangria = sangrias.get(i);
-					sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-					sangria.setConta(conta);
-					sangria.persist();
-				}
+	        	if(pagarAgora == false) {
+		        	for (int i = 0; i < sangrias.size(); i++) {
+						sangria = sangrias.get(i);
+						sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+						sangria.setConta(conta);
+						sangria.persist();
+					}
+	        	} else {
+	        		for (Sangria sangria2 : sangrias) {
+	        			sangria2.setOrigem(origem);
+	        			sangria2.setPeriodo(conta.getDataPagamento());
+	        			sangria2.setSangria(true);
+	        			sangria2.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+						sangria2.setConta(conta);
+	        			sangria2.persist();
+	        		}
+	        	}
 	        	
 	            message = "message_successfully_created";
 	        }

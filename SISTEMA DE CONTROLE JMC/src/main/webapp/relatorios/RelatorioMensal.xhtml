@@ -9,7 +9,7 @@
 <ui:composition template="../templates/administrador.xhtml">
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
-      <p:growl id="growl" showDetail="false" />
+      <p:growl id="growl" showDetail="false" autoUpdate="true" />
     </h:form>
     <h:form prependId="false" id="dataForm">     
 	<p:commandButton id="anteriorButton" update=":dataForm:field" value="Anterior" action="#{relatorioMesBean.anterior}" />

@@ -95,7 +95,7 @@ public class Funcionarios implements Serializable {
     @ManyToOne
     private Sangria despesas;
     
-    @ManyToMany
+    @ManyToOne
     private DespesasGastos itens;
     
     @ManyToOne

@@ -87,9 +87,13 @@ public class DespesasGastos implements Serializable {
 	public static List<DespesasGastos> findAllDespesasGastoses() {
         return entityManager().createQuery("SELECT o FROM DespesasGastos o", DespesasGastos.class).getResultList();
     }
-	
+
 	public static List<DespesasGastos> findAllDespesasGastosAtivos() {
         return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
+    }		
+	
+	public static List<DespesasGastos> findAllItensPessoalAtivos() {
+        return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.despesaPessoal = true", DespesasGastos.class).getResultList();
     }	
 	
 	public static List<DespesasGastos> findAllClassificaco(long classificacao) {

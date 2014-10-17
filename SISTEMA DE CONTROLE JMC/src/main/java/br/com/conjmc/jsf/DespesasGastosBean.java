@@ -39,6 +39,8 @@ public class DespesasGastosBean implements Serializable {
 
 	private DespesasGastos despesasGastos;
 
+	private List<DespesasGastos> allItensPessoalAtivos;
+	
 	private List<DespesasGastos> allDespesasGastoses;
 	
 	private List<DespesasGastos> allDespesasGastosAtivos;
@@ -67,7 +69,12 @@ public class DespesasGastosBean implements Serializable {
         despesasGastos.setCodigo(DespesasGastos.getMaxId()+1);
         findAllDespesasGastoses();
         findAllDespesasGastosAtivos();
+        findAllItensPessoalAtivos();
     }
+
+	private void findAllItensPessoalAtivos() {
+		allItensPessoalAtivos = despesasGastos.findAllItensPessoalAtivos();		
+	}
 
 	private void findAllDespesasGastosAtivos() {
 		allDespesasGastosAtivos = despesasGastos.findAllDespesasGastosAtivos();		
@@ -478,5 +485,13 @@ public class DespesasGastosBean implements Serializable {
 	public String findAllDespasGastosByClassificao(Long id) {
 		allDespesasGastoses = DespesasGastos.findAllClassificaco(id);;
 		return null;
+	}
+
+	public List<DespesasGastos> getAllItensPessoalAtivos() {
+		return allItensPessoalAtivos;
+	}
+
+	public void setAllItensPessoalAtivos(List<DespesasGastos> allItensPessoalAtivos) {
+		this.allItensPessoalAtivos = allItensPessoalAtivos;
 	}		
 }

@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -22,6 +23,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
@@ -89,6 +91,12 @@ public class Funcionarios implements Serializable {
      */
     @Size(max = 120)
     private String outrasInformacoes;
+    
+    @ManyToOne
+    private Sangria despesas;
+    
+    @ManyToMany
+    private DespesasGastos itens;
     
     @ManyToOne
     private Lojas loja;
@@ -221,8 +229,6 @@ public class Funcionarios implements Serializable {
 	public void setLoja(Lojas loja) {
 		this.loja = loja;
 	}
-
-
 
 	@PersistenceContext
     transient EntityManager entityManager;
@@ -408,6 +414,14 @@ public class Funcionarios implements Serializable {
 		} else if (!version.equals(other.version))
 			return false;
 		return true;
+	}
+
+	public Sangria getDespesas() {
+		return despesas;
+	}
+
+	public void setDespesas(Sangria despesas) {
+		this.despesas = despesas;
 	}
 	
 }

@@ -3,36 +3,42 @@ package br.com.conjmc.jsf;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.springframework.beans.factory.annotation.Configurable;
+
+import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 
-@ManagedBean
+@Configurable
+@ManagedBean(name = "contaUsuarioBean")
 @RequestScoped
 public class ContaUsuarioBean {
 
 	private Date dataInicial;
 	private Date dataFinal;
 	private Funcionarios funcionario;
-	private List<Sangria> contaFuncionario;
+	private List<Funcionarios> funcionarios;
+	private List<DespesasGastos> itens;
+	private Sangria contaFuncionario;
 	
-	private double totalDesconto;
-	private double valorReceber;
-	
-	public void buscaContaFuncionario(){
-		contaFuncionario = new Sangria().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
-		desconto();
+	@PostConstruct
+    public void init() {
+		funcionarios = buscaFuncionarios();
+		
 	}
 	
-	private void desconto() {
-		for (Sangria desconto: contaFuncionario) {
-			totalDesconto += desconto.getValor();
-		}
-		valorReceber = funcionario.getSalario() - totalDesconto;
+	public List<Funcionarios> buscaFuncionarios(){
+		return new Funcionarios().findAllFuncionariosAtivos();
 	}
 
+	private void findAllDespesasGastosAtivos() {
+		itens = DespesasGastos.findAllDespesasGastosAtivos();		
+	}	
+	
 	//Generate getters and setters
 	public Date getDataInicial() {
 		return dataInicial;
@@ -50,6 +56,22 @@ public class ContaUsuarioBean {
 		this.dataFinal = dataFinal;
 	}
 
+	public List<Funcionarios> getFuncionarios() {
+		return funcionarios;
+	}
+
+	public void setFuncionarios(List<Funcionarios> funcionario) {
+		this.funcionarios = funcionario;
+	}
+
+	public Sangria getContaFuncionario() {
+		return contaFuncionario;
+	}
+
+	public void setContaFuncionario(Sangria contaFuncionario) {
+		this.contaFuncionario = contaFuncionario;
+	}
+
 	public Funcionarios getFuncionario() {
 		return funcionario;
 	}
@@ -58,28 +80,12 @@ public class ContaUsuarioBean {
 		this.funcionario = funcionario;
 	}
 
-	public List<Sangria> getContaFuncionario() {
-		return contaFuncionario;
+	public List<DespesasGastos> getItens() {
+		return itens;
 	}
 
-	public void setContaFuncionario(List<Sangria> contaFuncionario) {
-		this.contaFuncionario = contaFuncionario;
-	}
-
-	public double getTotalDesconto() {
-		return totalDesconto;
-	}
-
-	public void setTotalDesconto(double totalDesconto) {
-		this.totalDesconto = totalDesconto;
-	}
-
-	public double getValorReceber() {
-		return valorReceber;
-	}
-
-	public void setValorReceber(double valorReceber) {
-		this.valorReceber = valorReceber;
+	public void setItens(List<DespesasGastos> itens) {
+		this.itens = itens;
 	}
 	
 }

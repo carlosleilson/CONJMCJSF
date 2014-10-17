@@ -117,10 +117,14 @@
         	</p:column>
         	
           <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
-            <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
-              <f:setPropertyActionListener value="#{funcionarios}" target="#{funcionariosBean.funcionarios}" />
-            </p:commandButton>
-            <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" />
+			<ui:remove>
+<!--             <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}"> -->
+<!--               <f:setPropertyActionListener value="#{funcionarios}" target="#{funcionariosBean.funcionarios}" /> -->
+<!--             </p:commandButton> -->
+<!--             <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" /> -->
+			</ui:remove>          
+
+            <p:commandButton id="registorButton" ajax="false" icon="ui-icon-pencil" action="contaFuncionario.xhtml" title="Conta Corrente" />
             
             <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="funcionarios.xhtml" title="#{messages.label_edit}">
               <f:setPropertyActionListener value="#{funcionarios}" target="#{funcionariosBean.funcionarios}" />
@@ -137,12 +141,14 @@
 		</p:confirmDialog>
     </h:form>
     <p:dialog id="viewDialog" header="#{messages.label_view} Funcionarios" modal="true" widgetVar="viewDialogWidget" dynamic="true" resizable="true" maximizable="true" showEffect="fade" hideEffect="explode">
-      <p:outputPanel id="viewPanel">
-        <h:form id="viewForm" enctype="multipart/form-data">
-          <h:panelGrid id="viewPanelGrid" columns="2" binding="#{funcionariosBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" />
-          <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="PF('viewDialogWidget').hide()" type="button" />
-        </h:form>
-      </p:outputPanel>
+    <ui:remove>
+<!--       <p:outputPanel id="viewPanel"> -->
+<!--         <h:form id="viewForm" enctype="multipart/form-data"> -->
+<!--           <h:panelGrid id="viewPanelGrid" columns="2" binding="#{funcionariosBean.viewPanelGrid}" styleClass="dialog" columnClasses="col1,col2" /> -->
+<!--           <p:commandButton id="viewCloseButton" value="#{messages.label_close}" onclick="PF('viewDialogWidget').hide()" type="button" /> -->
+<!--         </h:form> -->
+<!--       </p:outputPanel> -->
+    </ui:remove>
     </p:dialog>
   </ui:define>
 </ui:composition>

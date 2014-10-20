@@ -21,21 +21,27 @@ public class ContaUsuarioBean {
 	private Date dataInicial;
 	private Date dataFinal;
 	private Funcionarios funcionario;
-	private List<Funcionarios> funcionarios;
+	private List<Funcionarios> todosFuncionarios;
 	private List<DespesasGastos> itens;
+	private List<Sangria> contaFuncionarios;
 	private Sangria contaFuncionario;
 	
 	@PostConstruct
     public void init() {
-		funcionarios = buscaFuncionarios();
-		
+		buscaFuncionarios();
+		findAllItensPessoalAtivos();
+		todosFuncionarios();
 	}
 	
-	public List<Funcionarios> buscaFuncionarios(){
-		return new Funcionarios().findAllFuncionariosAtivos();
+	private void todosFuncionarios() {
+		contaFuncionarios = new Sangria().encontraTodasContaFuncionario();
 	}
 
-	private void findAllDespesasGastosAtivos() {
+	public void buscaFuncionarios(){
+		contaFuncionarios = new Sangria().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
+	}
+
+	private void findAllItensPessoalAtivos() {
 		itens = DespesasGastos.findAllDespesasGastosAtivos();		
 	}	
 	
@@ -56,12 +62,12 @@ public class ContaUsuarioBean {
 		this.dataFinal = dataFinal;
 	}
 
-	public List<Funcionarios> getFuncionarios() {
-		return funcionarios;
+	public List<Funcionarios> getTodosFuncionarios() {
+		return todosFuncionarios;
 	}
 
-	public void setFuncionarios(List<Funcionarios> funcionario) {
-		this.funcionarios = funcionario;
+	public void setTodosFuncionarios(List<Funcionarios> funcionario) {
+		this.todosFuncionarios = funcionario;
 	}
 
 	public Sangria getContaFuncionario() {
@@ -86,6 +92,14 @@ public class ContaUsuarioBean {
 
 	public void setItens(List<DespesasGastos> itens) {
 		this.itens = itens;
+	}
+
+	public List<Sangria> getContaFuncionarios() {
+		return contaFuncionarios;
+	}
+
+	public void setContaFuncionarios(List<Sangria> contaFuncionarios) {
+		this.contaFuncionarios = contaFuncionarios;
 	}
 	
 }

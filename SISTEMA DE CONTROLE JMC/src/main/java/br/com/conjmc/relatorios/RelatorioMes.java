@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
@@ -20,12 +21,13 @@ import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDoMes;
 
 @ManagedBean(name = "relatorioMesBean")
+@ViewScoped
 public class RelatorioMes {
 	private List<ResumoVO> resumos;
 	private List<Sangria> allSangrias;	
 	private String dataLabel;
 	private SimpleDateFormat sdf;
-	private static int mesTemp;
+	private int mesTemp;
 	private Date dataTemp;
 	private Integer ultimoDiaDoMes;
 	

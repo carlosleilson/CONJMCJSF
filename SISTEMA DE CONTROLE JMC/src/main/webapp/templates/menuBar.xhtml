@@ -33,6 +33,7 @@
    	<p:submenu label="Contas">
    		<p:menuitem value="Cadastro de Contas" url="#{pageContext.servletContext.contextPath}/pages/contas.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
    		<p:menuitem value="Gerenciamentos de Contas" url="#{pageContext.servletContext.contextPath}/pages/contasPendentes.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
+   		<p:menuitem value="Conta Corrente Funicionarios" url="#{pageContext.servletContext.contextPath}/pages/contaFuncionario.xhtml" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }"/>
    	</p:submenu>
    	<p:submenu label="Relatorios" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }">
    		<p:menuitem value="Mensal (RDM)" url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioMensal.xhtml"/>

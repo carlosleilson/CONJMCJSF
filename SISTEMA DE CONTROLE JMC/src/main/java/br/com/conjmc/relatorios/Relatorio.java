@@ -7,17 +7,19 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 
 @ManagedBean(name = "relatorioBean")
+@ViewScoped
 public class Relatorio {
 	private List<ClassificacaoVO> classificacaoItens;
 	private List<Sangria> allSangrias;	
 	private String dataLabel;
 	private SimpleDateFormat sdf;
-	private static int mesTemp;
+	private int mesTemp;
 	private Date dataTemp;
 	private Integer ultimoDiaDoMes;
 	

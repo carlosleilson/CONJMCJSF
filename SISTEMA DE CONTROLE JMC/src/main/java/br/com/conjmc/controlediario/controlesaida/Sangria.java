@@ -288,8 +288,8 @@ public class Sangria implements Serializable{
 	
 	public static List<Sangria> encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
-        if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
+        if (dataInicial == null) throw new IllegalArgumentException("O Dia ï¿½ obrigatorio");
+        if (dataFinal == null) throw new IllegalArgumentException("O Atï¿½ Mes/ano ï¿½ obrigatorio");
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
         if(item!=null){
@@ -309,13 +309,20 @@ public class Sangria implements Serializable{
 	
 	public static List<Sangria> encontraContaFuncionario(Date dataInicial, Date dataFinal,Funcionarios funcionario) {
         EntityManager em = DespesasLoja.entityManager();
-        Query query = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.funcionario = :funcionario and o.loja.id = :loja", Sangria.class);
-        query.setParameter("dataInicial", dataInicial );
-        query.setParameter("dataFinal", dataFinal);
-        query.setParameter("funcionario", funcionario);
-        query.setParameter("loja", ObejctSession.idLoja());
+        Query query = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal or o.funcionario = :funcionario and o.loja.id = :loja and o.funcionario is not null GROUP BY o.funcionario.nome", Sangria.class);
+		query.setParameter("dataInicial", dataInicial );
+		query.setParameter("dataFinal", dataFinal);
+		query.setParameter("funcionario", funcionario);
+		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();
     }
+	
+	public static List<Sangria> encontraTodasContaFuncionario() {
+        EntityManager em = DespesasLoja.entityManager();
+        Query query = em.createQuery("SELECT o FROM Sangria AS o WHERE o.loja.id = :loja and o.funcionario is not null GROUP BY o.funcionario.nome", Sangria.class);
+      	query.setParameter("loja", ObejctSession.idLoja());
+        return query.getResultList();
+    }	
 	
 	public static List< Sangria > paginaPorMes(Date data, Long id) {
         EntityManager em = DespesasLoja.entityManager();

@@ -127,7 +127,7 @@ public class RelatorioDoMes {
 			case "RES03":{
 				resumoIten.setTitulo("Res 03 = Res 02 - Item B");
 				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[1]).doubleValue()-TempResultRESTTotal[1]));
-				tempTotal[0] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
+				tempTotal[0] = df.format(Math.abs(df.parse(resultRESTTotal).doubleValue()));
 				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
 				tempTotalPercente =  String.format("%.2f",((df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100))+" %";
 				resumoIten.setValorTemp(resultRESTTotal);

@@ -250,8 +250,10 @@ public class Funcionarios implements Serializable {
     }
 	
 	public static List<Funcionarios> findAllFuncionariosAtivos() {
-        Query query = entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true and o.loja.id = :loja", Funcionarios.class);
+       /* Query query = entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true and o.loja.id = :loja", Funcionarios.class);
         query.setParameter("loja", ObejctSession.idLoja());
+        return query.getResultList();*/
+		Query query = entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true", Funcionarios.class);
         return query.getResultList();
     }
 

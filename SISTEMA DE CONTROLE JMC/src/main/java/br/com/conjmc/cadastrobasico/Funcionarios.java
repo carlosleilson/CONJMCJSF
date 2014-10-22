@@ -93,12 +93,6 @@ public class Funcionarios implements Serializable {
     private String outrasInformacoes;
     
     @ManyToOne
-    private Sangria despesas;
-    
-    @ManyToOne
-    private DespesasGastos itens;
-    
-    @ManyToOne
     private Lojas loja;
 
 	@Id
@@ -417,13 +411,4 @@ public class Funcionarios implements Serializable {
 			return false;
 		return true;
 	}
-
-	public Sangria getDespesas() {
-		return despesas;
-	}
-
-	public void setDespesas(Sangria despesas) {
-		this.despesas = despesas;
-	}
-	
 }

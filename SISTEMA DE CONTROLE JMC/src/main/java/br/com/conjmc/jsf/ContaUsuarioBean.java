@@ -1,5 +1,6 @@
 package br.com.conjmc.jsf;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,9 +10,10 @@ import javax.faces.bean.RequestScoped;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
+import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.valueobject.FuncionarioVO;
 
 @Configurable
 @ManagedBean(name = "contaUsuarioBean")
@@ -21,10 +23,10 @@ public class ContaUsuarioBean {
 	private Date dataInicial;
 	private Date dataFinal;
 	private Funcionarios funcionario;
-	private List<Funcionarios> todosFuncionarios;
+	private List<FuncionarioVO> todosFuncionarios;
 	private List<DespesasGastos> itens;
-	private List<Sangria> contaFuncionarios;
-	private Sangria contaFuncionario;
+	private List<ContasFuncionario> contaFuncionarios;
+	private ContasFuncionario contaFuncionario;
 	
 	@PostConstruct
     public void init() {
@@ -34,11 +36,18 @@ public class ContaUsuarioBean {
 	}
 	
 	private void todosFuncionarios() {
-		contaFuncionarios = new Sangria().encontraTodasContaFuncionario();
+		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
+		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
+		for (Funcionarios funcionario : Funcionarios) {
+			FuncionarioVO umFuncionario = new FuncionarioVO();
+			umFuncionario.setFuncionario(funcionario);
+			todosFuncionariosTmp.add(umFuncionario);
+		}
+		todosFuncionarios = todosFuncionariosTmp; 
 	}
 
 	public void buscaFuncionarios(){
-		contaFuncionarios = new Sangria().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
+		contaFuncionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
 	}
 
 	private void findAllItensPessoalAtivos() {
@@ -62,19 +71,19 @@ public class ContaUsuarioBean {
 		this.dataFinal = dataFinal;
 	}
 
-	public List<Funcionarios> getTodosFuncionarios() {
+	public List<FuncionarioVO> getTodosFuncionarios() {
 		return todosFuncionarios;
 	}
 
-	public void setTodosFuncionarios(List<Funcionarios> funcionario) {
+	public void setTodosFuncionarios(List<FuncionarioVO> funcionario) {
 		this.todosFuncionarios = funcionario;
 	}
 
-	public Sangria getContaFuncionario() {
+	public ContasFuncionario getContaFuncionario() {
 		return contaFuncionario;
 	}
 
-	public void setContaFuncionario(Sangria contaFuncionario) {
+	public void setContaFuncionario(ContasFuncionario contaFuncionario) {
 		this.contaFuncionario = contaFuncionario;
 	}
 
@@ -94,11 +103,11 @@ public class ContaUsuarioBean {
 		this.itens = itens;
 	}
 
-	public List<Sangria> getContaFuncionarios() {
+	public List<ContasFuncionario> getContaFuncionarios() {
 		return contaFuncionarios;
 	}
 
-	public void setContaFuncionarios(List<Sangria> contaFuncionarios) {
+	public void setContaFuncionarios(List<ContasFuncionario> contaFuncionarios) {
 		this.contaFuncionarios = contaFuncionarios;
 	}
 	

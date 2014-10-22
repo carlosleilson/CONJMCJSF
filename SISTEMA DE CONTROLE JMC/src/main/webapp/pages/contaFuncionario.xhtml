@@ -15,7 +15,7 @@
     </h:form>
     <h:form id="procurarFuncionarioForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
 			<fieldset>
-	    		<legend>Contas Funcionários</legend>
+	    		<legend>Procurar Contas Funcionários</legend>
 		    	<h:panelGrid id="searchPanelGrid">
 		    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
 			          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
@@ -42,21 +42,25 @@
 		</fieldset>
 	  </h:form>   
     <h:form prependId="false" id="dataForm">
-        <p:dataTable id="list" value="#{contaUsuarioBean.contaFuncionarios}" var="funcionarios" paginator="true" rows="10">
+        <p:dataTable id="list" value="#{contaUsuarioBean.todosFuncionarios}" var="funcionarios" paginator="true" rows="10">
         	<f:facet name="header">Funcionários</f:facet>
-        	<p:column headerText="dia" sortBy="#{funcionarios.periodo}" >
-        		<h:outputText value="#{funcionarios.periodo}" >
-        			<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
-        		</h:outputText>
-        	</p:column>        	
-        	<p:column headerText="Nome" sortBy="#{funcionarios.funcionario.nome}" filterBy="#{funcionarios.funcionario.nome}">
+        	<p:column headerText="Apelido" sortBy="#{funcionarios.funcionario.apelido}">
+        		<h:outputText value="#{funcionarios.funcionario.apelido}"/>
+        	</p:column>
+        	<p:column headerText="Nome" sortBy="#{funcionarios.funcionario.nome}">
         		<h:outputText value="#{funcionarios.funcionario.nome}"/>
         	</p:column>
-        	<p:column headerText="Cargos" sortBy="#{funcionarios.funcionario.cargo.nome}">
-        		<h:outputText value="#{funcionarios.funcionario.cargo.nome}"/>
-        	</p:column>        	
-        	<p:column headerText="Débito do Mês" sortBy="#{funcionarios.funcionario.salario}">
-        		<h:outputText value="#{funcionarios.funcionario.salario}"/>
+        	<p:column headerText="Salario" sortBy="#{funcionarios.funcionario.salario}">
+        		<h:outputText value="#{funcionarios.funcionario.salario}">
+        			<f:convertNumber minFractionDigits="2"/>
+        		</h:outputText>
+        	</p:column>
+        	<p:column headerText="CPF" sortBy="#{funcionarios.funcionario.cpf}">
+        		<h:outputText value="#{funcionarios.funcionario.cpf}"/>
+        	</p:column>
+        	<p:column headerText="Situação" sortBy="#{funcionarios.funcionario.situacao}">
+        		<h:outputText value="Ativo" rendered="#{funcionarios.funcionario.situacao == true}"/>
+        		<h:outputText value="Inativo" rendered="#{funcionarios.funcionario.situacao == false}"/>
         	</p:column>
         	        	
             <p:column headerText="Ações" styleClass="action-column" style="width:90px;">

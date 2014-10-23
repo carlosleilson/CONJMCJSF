@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.cadastrobasico.LancamentosFuncionarios;
 import br.com.conjmc.valueobject.FuncionarioVO;
 
 @Configurable
@@ -27,12 +28,14 @@ public class ContaUsuarioBean {
 	private List<DespesasGastos> itens;
 	private List<ContasFuncionario> contaFuncionarios;
 	private ContasFuncionario contaFuncionario;
+	private Integer parcelas; 
 	
 	@PostConstruct
     public void init() {
 		buscaFuncionarios();
 		findAllItensPessoalAtivos();
 		todosFuncionarios();
+		parcelas = 1;
 	}
 	
 	private void todosFuncionarios() {
@@ -47,7 +50,14 @@ public class ContaUsuarioBean {
 	}
 
 	public void buscaFuncionarios(){
-		contaFuncionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
+		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
+		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
+		for (ContasFuncionario funcionario : Funcionarios) {
+			FuncionarioVO umFuncionario = new FuncionarioVO();
+			umFuncionario.setFuncionario(funcionario.getFuncionario());
+			todosFuncionariosTmp.add(umFuncionario);
+		}
+		todosFuncionarios = todosFuncionariosTmp; 		
 	}
 
 	private void findAllItensPessoalAtivos() {
@@ -88,6 +98,9 @@ public class ContaUsuarioBean {
 	}
 
 	public Funcionarios getFuncionario() {
+//        if (funcionario == null) {
+//        	funcionario = new Funcionarios();
+//        }
 		return funcionario;
 	}
 
@@ -109,6 +122,14 @@ public class ContaUsuarioBean {
 
 	public void setContaFuncionarios(List<ContasFuncionario> contaFuncionarios) {
 		this.contaFuncionarios = contaFuncionarios;
+	}
+
+	public Integer getParcelas() {
+		return parcelas;
+	}
+
+	public void setParcelas(Integer parcelas) {
+		this.parcelas = parcelas;
 	}
 	
 }

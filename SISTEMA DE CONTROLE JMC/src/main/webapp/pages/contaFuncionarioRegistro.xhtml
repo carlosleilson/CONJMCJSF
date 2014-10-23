@@ -15,16 +15,18 @@
           <h:panelGrid id="funcionarioGrid" columns="3">
 				
 				<p:outputLabel value="Funcionario:" for="funcionario"/>
-				<p:outputLabel id="funcionario" value="#{contaUsuarioBean.contaFuncionario.funcionario.nome}" for="funcionario"/>
+				<p:outputLabel id="funcionario" value="#{contaUsuarioBean.funcionario.nome}" for="funcionario"/>
 				<p:message for="funcionario"/>
 				
-	          	<p:outputLabel value="Natureza" for="natureza"/>
-	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório">
-	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-	          		<f:selectItem itemLabel="DÉBITO" itemValue="DÉBITO"/>
-	          		<f:selectItem itemLabel="CRÉDITO" itemValue="CRÉDITO"/>
-	          	</p:selectOneMenu>
-	          	<p:message for="natureza"/>
+				<ui:remove>
+<!-- 	          	<p:outputLabel value="Natureza" for="natureza"/> -->
+<!-- 	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório"> -->
+<!-- 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/> -->
+<!-- 	          		<f:selectItem itemLabel="DÉBITO" itemValue="DÉBITO"/> -->
+<!-- 	          		<f:selectItem itemLabel="CRÉDITO" itemValue="CRÉDITO"/> -->
+<!-- 	          	</p:selectOneMenu> -->
+<!-- 	          	<p:message for="natureza"/> -->
+				</ui:remove>
 
 	            <p:outputLabel value="Período: " for="periodo"/>
 	    		<p:calendar id="periodo"  value="#{contaUsuarioBean.contaFuncionario.periodo}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo obrigatório"/>
@@ -39,13 +41,13 @@
 	          	<p:message for="itens"/>
 
 	          	<p:outputLabel value="Valor" for="valor" />
-	          	<p:inputText styleClass="money" id="valor" value="#{sangriaBean.sangria.valor}" required="true" requiredMessage="O valor é obrigatório">
+	          	<p:inputText styleClass="money" id="valor" value="#{contaUsuarioBean.contaFuncionario.valor}" required="true" requiredMessage="O valor é obrigatório">
 	          		<f:convertNumber minFractionDigits="2" />
 	          	</p:inputText>
 	          	<p:message for="valor"/>
           		          	
          		<p:outputLabel value="Parcelas" for="parcela" />
-	          	<p:inputText id="parcela" size="3" value="#{contaUsuarioBean.contaFuncionario.valor}" required="true" requiredMessage="As parcelas são obrigatório"  />
+	          	<p:inputText id="parcela" size="3" value="#{contaUsuarioBean.parcelas}" required="true" requiredMessage="As parcelas são obrigatório"  />
 	          	<p:message for="parcela"/>
 	          	         		          	
           	</h:panelGrid>

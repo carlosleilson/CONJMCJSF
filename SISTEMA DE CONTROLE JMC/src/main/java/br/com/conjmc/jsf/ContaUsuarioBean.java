@@ -1,12 +1,16 @@
 package br.com.conjmc.jsf;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -14,16 +18,20 @@ import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.LancamentosFuncionarios;
+import br.com.conjmc.cadastrobasico.Lojas;
+import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
 
 @Configurable
 @ManagedBean(name = "contaUsuarioBean")
-@RequestScoped
-public class ContaUsuarioBean {
-
+@SessionScoped
+public class ContaUsuarioBean implements Serializable   {
+	private static final long serialVersionUID = 1L;
 	private Date dataInicial;
 	private Date dataFinal;
 	private Funcionarios funcionario;
+	private FuncionarioVO funcionarioVo;
 	private List<FuncionarioVO> todosFuncionarios;
 	private List<DespesasGastos> itens;
 	private List<ContasFuncionario> contaFuncionarios;
@@ -131,5 +139,22 @@ public class ContaUsuarioBean {
 	public void setParcelas(Integer parcelas) {
 		this.parcelas = parcelas;
 	}
+
+	public FuncionarioVO getFuncionarioVo() {
+		return funcionarioVo;
+	}
+
+	public void setFuncionarioVo(FuncionarioVO funcionarioVo) {
+		this.funcionarioVo = funcionarioVo;
+	}
 	
+	public String persist() {
+        String message = "";
+    	contaFuncionario.persist();
+        message = "message_successfully_created";
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
+        return "contaFuncionarioRegistro.xhtml";
+    }
 }

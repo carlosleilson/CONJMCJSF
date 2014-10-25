@@ -39,15 +39,15 @@ public class ContaUsuarioBean implements Serializable   {
 	
 	@PostConstruct
     public void init() {
-		contaFuncionario = new ContasFuncionario();
+		//contaFuncionario = new ContasFuncionario();
 		buscaFuncionarios();
 		findAllItensPessoalAtivos();
 		todosFuncionarios();
 		parcelas = 1;
 	}
-	
-	private List<ContasFuncionario> contasFuncionario( Funcionarios funcionario ){
-		return ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
+
+	private void contasFuncionario( Funcionarios funcionario ){
+		contaFuncionarios = ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
 	}
 	
 	private void todosFuncionarios() {
@@ -180,6 +180,7 @@ public class ContaUsuarioBean implements Serializable   {
 		contaFuncionario = new ContasFuncionario();
 		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 		contaFuncionario.setFuncionario(funcionarioVo.getFuncionario());
+		contasFuncionario(funcionarioVo.getFuncionario());
         return "/page/contaFuncionario.xhtml";
     }
 }

@@ -58,7 +58,7 @@
     	</fieldset>
 	  </h:form>   
       <h:form prependId="false" id="dataListFucionarios">
-	        <p:dataTable id="listFucionarios" value="#{contaUsuarioBean.contasFuncionario(contaUsuarioBean.contaFuncionario.funcionario)}" var="conta">	        	
+	        <p:dataTable id="listFucionarios" value="#{contaUsuarioBean.contaFuncionarios}" var="conta">	        	
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">
 		            <p:row>

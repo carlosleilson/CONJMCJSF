@@ -49,6 +49,7 @@ public class ContasFuncionario implements Serializable  {
 	/**
      */
     @NotNull
+    @ManyToOne
 	private Funcionarios funcionario;
 
     /**
@@ -115,7 +116,8 @@ public class ContasFuncionario implements Serializable  {
 	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("loja", "periodo", "funcionario", "item", "valor");
 	
 	public static final EntityManager entityManager() {
-        EntityManager em = new  ContasFuncionario().entityManager;
+        //EntityManager em = new  ContasFuncionario().entityManager;
+		 EntityManager em = new Sangria().entityManager();
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }	
@@ -132,7 +134,7 @@ public class ContasFuncionario implements Serializable  {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            Sangria attached = Sangria.findSangria(this.id);
+            ContasFuncionario attached = ContasFuncionario.findContasFuncionario(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -157,6 +159,11 @@ public class ContasFuncionario implements Serializable  {
         return merged;
     }	
 
+	public static ContasFuncionario findContasFuncionario(Long id) {
+        if (id == null) return null;
+        return entityManager().find(ContasFuncionario.class, id);
+    }
+	
 	public static List<Funcionarios> encontraTodasFuncionarios() {
         EntityManager em = entityManager();
         Query query = entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true and o.loja.id = :loja", Funcionarios.class);

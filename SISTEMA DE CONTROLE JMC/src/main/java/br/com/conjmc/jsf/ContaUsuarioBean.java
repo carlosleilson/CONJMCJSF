@@ -8,16 +8,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.cadastrobasico.LancamentosFuncionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
@@ -40,10 +39,15 @@ public class ContaUsuarioBean implements Serializable   {
 	
 	@PostConstruct
     public void init() {
+		contaFuncionario = new ContasFuncionario();
 		buscaFuncionarios();
 		findAllItensPessoalAtivos();
 		todosFuncionarios();
 		parcelas = 1;
+	}
+	
+	private List<ContasFuncionario> contasFuncionario( Funcionarios funcionario ){
+		return ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
 	}
 	
 	private void todosFuncionarios() {
@@ -150,11 +154,32 @@ public class ContaUsuarioBean implements Serializable   {
 	
 	public String persist() {
         String message = "";
-    	contaFuncionario.persist();
-        message = "message_successfully_created";
+        if (contaFuncionario.getId() != null) {
+        	contaFuncionario.merge();
+        	message = "message_successfully_created";
+        }else{
+        	contaFuncionario.persist();
+        	message = "message_successfully_created";
+        }
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         init();
-        return "contaFuncionarioRegistro.xhtml";
+        return "/page/contaFuncionarioRegistro.xhtml";
+    }
+	
+	public void reset() {
+		contaFuncionario = null;
+    }
+
+	public String handleDialogClose(CloseEvent event) {
+        reset();
+        return "/page/contaFuncionario.xhtml";
+    }
+	
+	public String contaFuncionarioRedict(FuncionarioVO funcionarioVo) {
+		contaFuncionario = new ContasFuncionario();
+		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+		contaFuncionario.setFuncionario(funcionarioVo.getFuncionario());
+        return "/page/contaFuncionario.xhtml";
     }
 }

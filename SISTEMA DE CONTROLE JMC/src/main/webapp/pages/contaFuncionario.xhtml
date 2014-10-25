@@ -65,9 +65,7 @@
         	        	
             <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
 				<p:tooltip for="registroButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
-				<p:commandButton id="registroButton" icon="ui-icon-calculator" value="Registro" oncomplete="PF('dlgRegistroContaFuncionario').show()" >
-					<f:setPropertyActionListener value="#{funcionarios.funcionario}" target="#{contaUsuarioBean.funcionario}" />
-				</p:commandButton>            
+				<p:commandButton id="registroButton" icon="ui-icon-calculator" value="Registro" oncomplete="PF('dlgRegistroContaFuncionario').show()" actionListener="#{contaUsuarioBean.contaFuncionarioRedict(funcionarios)}" />
 			</p:column>
         </p:dataTable>
     </h:form>

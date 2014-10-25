@@ -6,6 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <p:dialog header="Registro de Conta do Funcionário" widgetVar="dlgRegistroContaFuncionario" styleClass="dialog" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" >
+<p:ajax event="close" listener="#{ContaUsuarioBean.handleDialogClose}" update=":adicionarRegistroForm:funcionarioGrid" />
 	<ui:define name="title">
 		<title>Registro de Conta do Funcionário</title>
 	</ui:define>
@@ -15,7 +16,7 @@
           <h:panelGrid id="funcionarioGrid" columns="3">
 				
 				<p:outputLabel value="Funcionario:" for="funcionario"/>
-				<p:outputLabel id="funcionario" value="#{contaUsuarioBean.funcionario.nome}" for="funcionario"/>
+				<p:outputLabel id="funcionario" value="#{contaUsuarioBean.contaFuncionario.funcionario.nome}" for="funcionario"/>
 				<p:message for="funcionario"/>
 				
 				<ui:remove>
@@ -53,7 +54,49 @@
           	</h:panelGrid>
           	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contaUsuarioBean.persist()}" />
+          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="PF('dlgRegistroContaFuncionario').hide()" type="button" ajax="false"/>
     	</fieldset>
 	  </h:form>   
+      <h:form prependId="false" id="dataListFucionarios">
+	        <p:dataTable id="listFucionarios" value="#{contaUsuarioBean.contasFuncionario(contaUsuarioBean.contaFuncionario.funcionario)}" var="conta">	        	
+	        	<f:facet name="header">Conta do funcionário</f:facet>
+	        	<p:columnGroup type="header">
+		            <p:row>
+		                <p:column colspan="2" style="text-align:left" headerText="#{contaUsuarioBean.funcionario.apelido}" />
+		                <p:column headerText="R$ #{contaUsuarioBean.funcionario.salario}" />
+		            </p:row>
+		            <p:row>
+		                <p:column headerText="Item" sortBy="#{conta.item.descrisao}" />
+		                <p:column headerText="Data" sortBy="#{conta.periodo}" />
+		                <p:column headerText="Valor" sortBy="#{conta.valor}" />
+		            </p:row>
+		        </p:columnGroup>
+	          	<p:column>
+	          		<h:outputText value="#{conta.item.descrisao}"/>
+	          	</p:column>
+	        	<p:column >
+	          		<h:outputText value="#{conta.periodo}">
+	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+	          		</h:outputText>
+	          	</p:column>
+	          	<p:column>
+	          		<h:outputText value="#{conta.valor}">
+	          			<f:convertNumber minFractionDigits="2"/>
+	          		</h:outputText>
+	          	</p:column>
+	          	<ui:remove>
+<!-- 		        <p:columnGroup type="footer"> -->
+<!-- 		            <p:row> -->
+<!-- 		                <p:column colspan="2" style="text-align:left" footerText="Total de desconto" /> -->
+<!-- 		                <p:column footerText="R$ #{contaUsuarioBean.totalDesconto}" /> -->
+<!-- 		            </p:row> -->
+<!-- 		             <p:row> -->
+<!-- 		                <p:column colspan="2" style="text-align:left" footerText="Valor a recebe" /> -->
+<!-- 		                <p:column footerText="R$  #{contaUsuarioBean.valorReceber}" /> -->
+<!-- 		            </p:row> -->
+<!-- 		        </p:columnGroup>      -->
+	          	</ui:remove>
+	        </p:dataTable>
+       </h:form>	  
  </p:dialog>  
 </html>

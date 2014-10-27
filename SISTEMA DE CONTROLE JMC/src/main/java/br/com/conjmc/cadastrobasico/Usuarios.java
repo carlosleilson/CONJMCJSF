@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.jsf.util.Security;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -132,6 +134,12 @@ public class Usuarios implements Serializable {
         return entityManager().find(Usuarios.class, id);
     }
 
+	public static List<Usuarios> findUsuariosPorFuncionario(Funcionarios empregado) {
+        Query query = entityManager().createQuery("SELECT o FROM Usuarios o where o.nome = :empregado", Usuarios.class);
+        query.setParameter("empregado", empregado);
+        return query.getResultList();    
+    }
+	
 	public static List<Usuarios> findUsuariosEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Usuarios o", Usuarios.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }

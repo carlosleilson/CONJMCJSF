@@ -18,6 +18,8 @@ import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
+import br.com.conjmc.cadastrobasico.Perfil;
+import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
@@ -32,6 +34,7 @@ public class ContaUsuarioBean implements Serializable   {
 	private Funcionarios funcionario;
 	private FuncionarioVO funcionarioVo;
 	private List<FuncionarioVO> todosFuncionarios;
+	private List<FuncionarioVO> todasContasFuncionario;
 	private List<DespesasGastos> itens;
 	private List<ContasFuncionario> contaFuncionarios;
 	private ContasFuncionario contaFuncionario;
@@ -39,30 +42,53 @@ public class ContaUsuarioBean implements Serializable   {
 	
 	@PostConstruct
     public void init() {
-		//contaFuncionario = new ContasFuncionario();
-		if (contaFuncionario != null)
-			contasFuncionario(contaFuncionario.getFuncionario());
-		buscaFuncionarios();
-		findAllItensPessoalAtivos();
 		todosFuncionarios();
+		findAllItensPessoalAtivos();
 		parcelas = 1;
 	}
 
 	private void contasFuncionario( Funcionarios funcionario ){
 		contaFuncionarios = ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
 	}
+
+	public void buscaFuncionario( Funcionarios empregado ){
+		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
+		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
+		for (ContasFuncionario funcionarioTemp : Funcionarios) {
+			FuncionarioVO umFuncionario = new FuncionarioVO();
+			if(funcionario==null)
+				funcionario=funcionarioTemp.getFuncionario();
+			umFuncionario.setFuncionario(funcionarioTemp.getFuncionario());
+			umFuncionario.setItem(funcionarioTemp.getItem());
+			umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
+			umFuncionario.setSalario(funcionarioTemp.getFuncionario().getSalario());
+			umFuncionario.setValor(funcionarioTemp.getValor());
+			todosFuncionariosTmp.add(umFuncionario);
+		}
+		todasContasFuncionario = todosFuncionariosTmp; 		
+	}	
 	
 	private void todosFuncionarios() {
 		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
 		for (Funcionarios funcionario : Funcionarios) {
-			FuncionarioVO umFuncionario = new FuncionarioVO();
-			umFuncionario.setFuncionario(funcionario);
-			todosFuncionariosTmp.add(umFuncionario);
+			if(tirarAdiministradores(funcionario)){
+				FuncionarioVO umFuncionario = new FuncionarioVO();
+				umFuncionario.setFuncionario(funcionario);
+				todosFuncionariosTmp.add(umFuncionario);
+			}
 		}
 		todosFuncionarios = todosFuncionariosTmp; 
 	}
 
+	private boolean tirarAdiministradores(Funcionarios empregado){
+		for(Usuarios usuario : Usuarios.findUsuariosPorFuncionario(empregado)){
+			if(usuario.getPerfil().equals(Perfil.ADMIN))
+				return false;
+		}
+		return true;
+	}
+	
 	public void buscaFuncionarios(){
 		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
 		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
@@ -182,7 +208,15 @@ public class ContaUsuarioBean implements Serializable   {
 		contaFuncionario = new ContasFuncionario();
 		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 		contaFuncionario.setFuncionario(funcionarioVo.getFuncionario());
-		init();
+		buscaFuncionario(contaFuncionario.getFuncionario());
         return "/page/contaFuncionario.xhtml";
     }
+
+	public List<FuncionarioVO> getTodasContasFuncionario() {
+		return todasContasFuncionario;
+	}
+
+	public void setTodasContasFuncionario(List<FuncionarioVO> todasContasFuncionario) {
+		this.todasContasFuncionario = todasContasFuncionario;
+	}
 }

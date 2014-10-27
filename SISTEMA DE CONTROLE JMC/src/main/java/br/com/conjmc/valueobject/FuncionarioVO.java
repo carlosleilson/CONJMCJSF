@@ -13,10 +13,6 @@ import br.com.conjmc.cadastrobasico.Lojas;
 
 public class FuncionarioVO {
     private Long id;
-
-	/**
-     */
-	private Lojas loja;
 	
 	/**
      */
@@ -33,6 +29,10 @@ public class FuncionarioVO {
 	/**
      */
 	private Double Salario;
+
+	/**
+     */
+	private Double valor;	
 	
 	/**
      */
@@ -48,14 +48,6 @@ public class FuncionarioVO {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Lojas getLoja() {
-		return loja;
-	}
-
-	public void setLoja(Lojas loja) {
-		this.loja = loja;
 	}
 
 	public Date getPeriodo() {
@@ -104,5 +96,13 @@ public class FuncionarioVO {
 
 	public void setCrédito(Double crédito) {
 		Crédito = crédito;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 }

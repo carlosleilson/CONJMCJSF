@@ -116,8 +116,7 @@ public class ContasFuncionario implements Serializable  {
 	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("loja", "periodo", "funcionario", "item", "valor");
 	
 	public static final EntityManager entityManager() {
-        //EntityManager em = new  ContasFuncionario().entityManager;
-		 EntityManager em = new Sangria().entityManager();
+        EntityManager em = new  ContasFuncionario().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }	

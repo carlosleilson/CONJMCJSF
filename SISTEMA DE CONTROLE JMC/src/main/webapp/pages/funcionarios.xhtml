@@ -124,8 +124,6 @@
 <!--             <p:tooltip for="viewButton" value="#{messages.label_view}" showEffect="fade" hideEffect="fade" /> -->
 			</ui:remove>          
 
-            <p:commandButton id="registorButton" ajax="false" icon="ui-icon-pencil" action="contaFuncionario.xhtml" title="Conta Corrente" />
-            
             <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="funcionarios.xhtml" title="#{messages.label_edit}">
               <f:setPropertyActionListener value="#{funcionarios}" target="#{funcionariosBean.funcionarios}" />
             </p:commandButton>

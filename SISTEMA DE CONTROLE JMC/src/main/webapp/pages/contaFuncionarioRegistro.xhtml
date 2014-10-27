@@ -5,8 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-<p:dialog header="Registro de Conta do Funcionário" widgetVar="dlgRegistroContaFuncionario" styleClass="dialog" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" >
-<p:ajax event="close" listener="#{ContaUsuarioBean.handleDialogClose}" update=":adicionarRegistroForm:funcionarioGrid" />
+<p:dialog header="Registro de Conta do Funcionário" widgetVar="dlgRegistroContaFuncionario" width="865px" height="500px" styleClass="dialog" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" >
 	<ui:define name="title">
 		<title>Registro de Conta do Funcionário</title>
 	</ui:define>
@@ -19,15 +18,13 @@
 				<p:outputLabel id="funcionario" value="#{contaUsuarioBean.contaFuncionario.funcionario.nome}" for="funcionario"/>
 				<p:message for="funcionario"/>
 				
-				<ui:remove>
-<!-- 	          	<p:outputLabel value="Natureza" for="natureza"/> -->
-<!-- 	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório"> -->
-<!-- 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/> -->
-<!-- 	          		<f:selectItem itemLabel="DÉBITO" itemValue="DÉBITO"/> -->
-<!-- 	          		<f:selectItem itemLabel="CRÉDITO" itemValue="CRÉDITO"/> -->
-<!-- 	          	</p:selectOneMenu> -->
-<!-- 	          	<p:message for="natureza"/> -->
-				</ui:remove>
+	          	<p:outputLabel value="Natureza" for="natureza"/>
+	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItem itemLabel="DÉBITO" itemValue="DÉBITO"/>
+	          		<f:selectItem itemLabel="CRÉDITO" itemValue="CRÉDITO"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="natureza"/>
 
 	            <p:outputLabel value="Período: " for="periodo"/>
 	    		<p:calendar id="periodo"  value="#{contaUsuarioBean.contaFuncionario.periodo}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo obrigatório"/>
@@ -53,18 +50,20 @@
 	          	         		          	
           	</h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contaUsuarioBean.persist()}" />
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contaUsuarioBean.persist()}"/>
           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="PF('dlgRegistroContaFuncionario').hide()" type="button" ajax="false"/>
     	</fieldset>
 	  </h:form>   
       <h:form prependId="false" id="dataListFucionarios">
-	        <p:dataTable id="listFucionarios" value="#{contaUsuarioBean.contaFuncionarios}" var="conta">	        	
+	        <p:dataTable id="listFucionarios" value="#{contaUsuarioBean.todasContasFuncionario}" var="conta">	        	
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">
-		            <p:row>
-		                <p:column colspan="2" style="text-align:left" headerText="#{contaUsuarioBean.funcionario.apelido}" />
-		                <p:column headerText="R$ #{contaUsuarioBean.funcionario.salario}" />
-		            </p:row>
+	        	<ui:remove>
+<!-- 		            <p:row> -->
+<!-- 		                <p:column colspan="2" style="text-align:left" headerText="#{contaUsuarioBean.funcionario.apelido}" /> -->
+<!-- 		                <p:column headerText="R$ #{contaUsuarioBean.funcionario.salario}" /> -->
+<!-- 		            </p:row> -->
+	        	</ui:remove>
 		            <p:row>
 		                <p:column headerText="Item" sortBy="#{conta.item.descrisao}" />
 		                <p:column headerText="Data" sortBy="#{conta.periodo}" />

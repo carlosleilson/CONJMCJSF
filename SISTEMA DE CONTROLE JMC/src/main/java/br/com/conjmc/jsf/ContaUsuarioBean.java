@@ -38,6 +38,7 @@ public class ContaUsuarioBean implements Serializable   {
 	private List<DespesasGastos> itens;
 	private List<ContasFuncionario> contaFuncionarios;
 	private ContasFuncionario contaFuncionario;
+	private List<Funcionarios> allFuncionariosAtivos;
 	private Integer parcelas; 
 	
 	@PostConstruct
@@ -47,6 +48,16 @@ public class ContaUsuarioBean implements Serializable   {
 		parcelas = 1;
 	}
 
+	public void findAllFuncionariosAtivos() {
+		List<Funcionarios> funcionariosAtivosTemp = new ArrayList<Funcionarios>();
+		for(Funcionarios funcionarioTemp :Funcionarios.findAllFuncionariosAtivos()){
+			if(tirarAdiministradores(funcionarioTemp)){
+				funcionariosAtivosTemp.add(funcionarioTemp);
+			}
+		}
+		allFuncionariosAtivos = funcionariosAtivosTemp;
+    }
+	
 	private void contasFuncionario( Funcionarios funcionario ){
 		contaFuncionarios = ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
 	}
@@ -218,5 +229,13 @@ public class ContaUsuarioBean implements Serializable   {
 
 	public void setTodasContasFuncionario(List<FuncionarioVO> todasContasFuncionario) {
 		this.todasContasFuncionario = todasContasFuncionario;
+	}
+
+	public List<Funcionarios> getAllFuncionariosAtivos() {
+		return allFuncionariosAtivos;
+	}
+
+	public void setAllFuncionariosAtivos(List<Funcionarios> allFuncionariosAtivos) {
+		this.allFuncionariosAtivos = allFuncionariosAtivos;
 	}
 }

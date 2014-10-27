@@ -32,7 +32,7 @@
 			          	<p:outputLabel  value="Funcionário" for="funcionario"/>
 			          	<p:selectOneMenu id="funcionario" value="#{contaUsuarioBean.funcionario}" converter="funcionariosConverter" filter="true" >
 				    		<f:selectItem itemLabel="Selecione um funcionario" itemValue="" />
-							<f:selectItems value="#{funcionariosBean.allFuncionariosAtivos}" var="func" 
+							<f:selectItems value="#{contaUsuarioBean.allFuncionariosAtivos}" var="func" 
 							itemLabel="#{func.apelido}" itemValue="#{func}" />
 						</p:selectOneMenu>
 			          	<p:message for="funcionario"/>

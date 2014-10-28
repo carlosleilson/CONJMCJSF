@@ -45,6 +45,7 @@ public class ContaUsuarioBean implements Serializable   {
     public void init() {
 		todosFuncionarios();
 		findAllItensPessoalAtivos();
+		findAllFuncionariosAtivos();
 		parcelas = 1;
 	}
 
@@ -101,14 +102,18 @@ public class ContaUsuarioBean implements Serializable   {
 	}
 	
 	public void buscaFuncionarios(){
-		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
-		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
-		for (ContasFuncionario funcionario : Funcionarios) {
-			FuncionarioVO umFuncionario = new FuncionarioVO();
-			umFuncionario.setFuncionario(funcionario.getFuncionario());
-			todosFuncionariosTmp.add(umFuncionario);
+		if(dataInicial!=null || dataFinal!=null || funcionario!=null){
+			List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
+			List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
+			for (ContasFuncionario funcionario : Funcionarios) {
+				FuncionarioVO umFuncionario = new FuncionarioVO();
+				umFuncionario.setFuncionario(funcionario.getFuncionario());
+				todosFuncionariosTmp.add(umFuncionario);
+			}
+			todosFuncionarios = todosFuncionariosTmp; 		
+		}else{
+			todosFuncionarios();
 		}
-		todosFuncionarios = todosFuncionariosTmp; 		
 	}
 
 	private void findAllItensPessoalAtivos() {

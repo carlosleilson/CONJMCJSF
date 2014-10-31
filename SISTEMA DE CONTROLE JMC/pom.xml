@@ -4,7 +4,7 @@
     <groupId>br.com.conjmc</groupId>
     <artifactId>conjmc</artifactId>
     <packaging>war</packaging>
-    <version>0.1.0.BUILD-SNAPSHOT</version>
+    <version>2.1.0.BUILD-SNAPSHOT</version>
     <name>conjmc</name>
     <properties>
         <aspectj.version>1.7.4</aspectj.version>

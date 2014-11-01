@@ -23,6 +23,7 @@ import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
+import br.com.conjmc.valueobject.ItensFuncionario;
 
 @Configurable
 @ManagedBean(name = "contaUsuarioBean")
@@ -34,7 +35,7 @@ public class ContaUsuarioBean implements Serializable   {
 	private Funcionarios funcionario;
 	private FuncionarioVO funcionarioVo;
 	private List<FuncionarioVO> todosFuncionarios;
-	private List<FuncionarioVO> todasContasFuncionario;
+	private List<ItensFuncionario> todosItensContasFuncionario;
 	private List<DespesasGastos> itens;
 	private List<ContasFuncionario> contaFuncionarios;
 	private ContasFuncionario contaFuncionario;
@@ -43,13 +44,20 @@ public class ContaUsuarioBean implements Serializable   {
 	
 	@PostConstruct
     public void init() {
+		iniciarFuncionarioVO();
 		todosFuncionarios();
 		findAllItensPessoalAtivos();
 		findAllFuncionariosAtivos();
 		parcelas = 1;
 	}
 
-	public void findAllFuncionariosAtivos() {
+	private void iniciarFuncionarioVO() {
+		if(funcionarioVo == null){
+			funcionarioVo = new FuncionarioVO();
+		}
+	}
+
+	public String findAllFuncionariosAtivos() {
 		List<Funcionarios> funcionariosAtivosTemp = new ArrayList<Funcionarios>();
 		for(Funcionarios funcionarioTemp :Funcionarios.findAllFuncionariosAtivos()){
 			if(tirarAdiministradores(funcionarioTemp)){
@@ -57,6 +65,7 @@ public class ContaUsuarioBean implements Serializable   {
 			}
 		}
 		allFuncionariosAtivos = funcionariosAtivosTemp;
+		return null;
     }
 	
 	private void contasFuncionario( Funcionarios funcionario ){
@@ -64,34 +73,40 @@ public class ContaUsuarioBean implements Serializable   {
 	}
 
 	public void buscaFuncionario( Funcionarios empregado ){
-		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
-		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
-		for (ContasFuncionario funcionarioTemp : Funcionarios) {
-			FuncionarioVO umFuncionario = new FuncionarioVO();
-			if(funcionario==null)
-				funcionario=funcionarioTemp.getFuncionario();
-			umFuncionario.setFuncionario(funcionarioTemp.getFuncionario());
-			umFuncionario.setItem(funcionarioTemp.getItem());
-			umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
-			umFuncionario.setSalario(funcionarioTemp.getFuncionario().getSalario());
-			umFuncionario.setValor(funcionarioTemp.getValor());
-			todosFuncionariosTmp.add(umFuncionario);
-		}
-		todasContasFuncionario = todosFuncionariosTmp; 		
-	}	
+		funcionarioVo = getFuncionarioVO(empregado);
+	}
 	
 	private void todosFuncionarios() {
 		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
-		for (Funcionarios funcionario : Funcionarios) {
-			if(tirarAdiministradores(funcionario)){
-				FuncionarioVO umFuncionario = new FuncionarioVO();
-				umFuncionario.setFuncionario(funcionario);
-				todosFuncionariosTmp.add(umFuncionario);
+		for (Funcionarios  funcionarioTemp : Funcionarios) {
+			if(tirarAdiministradores(funcionarioTemp)){
+				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp));
 			}
 		}
 		todosFuncionarios = todosFuncionariosTmp; 
 	}
+	
+	private FuncionarioVO getFuncionarioVO(Funcionarios empregado) {
+		List<ItensFuncionario> todosFuncionariosTmp = new ArrayList<ItensFuncionario>();
+		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
+		Double totalDesconto = 0.0;
+		funcionarioVoTmp.setFuncionario(empregado);
+		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
+		for (ContasFuncionario funcionarioTemp : Funcionarios) {
+			ItensFuncionario umFuncionario = new ItensFuncionario();
+			umFuncionario.setItem(funcionarioTemp.getItem());
+			umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
+			umFuncionario.setValor(funcionarioTemp.getValor());
+			totalDesconto = totalDesconto + funcionarioTemp.getValor();
+			todosFuncionariosTmp.add(umFuncionario);
+		}
+		funcionarioVoTmp.setTotalDesconto(totalDesconto);
+		funcionarioVoTmp.setValorReceber(empregado.getSalario() - totalDesconto);
+		funcionarioVoTmp.setItem(todosFuncionariosTmp);
+		todosItensContasFuncionario = todosFuncionariosTmp;
+		return funcionarioVoTmp;
+	}	
 
 	private boolean tirarAdiministradores(Funcionarios empregado){
 		for(Usuarios usuario : Usuarios.findUsuariosPorFuncionario(empregado)){
@@ -211,6 +226,14 @@ public class ContaUsuarioBean implements Serializable   {
         return "/page/contaFuncionarioRegistro.xhtml";
     }
 	
+	public String delete() {
+		contaFuncionario.remove();
+        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Receber");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        reset();
+        return findAllFuncionariosAtivos();
+    }
+	
 	public void reset() {
 		contaFuncionario = null;
     }
@@ -228,19 +251,20 @@ public class ContaUsuarioBean implements Serializable   {
         return "/page/contaFuncionario.xhtml";
     }
 
-	public List<FuncionarioVO> getTodasContasFuncionario() {
-		return todasContasFuncionario;
-	}
-
-	public void setTodasContasFuncionario(List<FuncionarioVO> todasContasFuncionario) {
-		this.todasContasFuncionario = todasContasFuncionario;
-	}
-
 	public List<Funcionarios> getAllFuncionariosAtivos() {
 		return allFuncionariosAtivos;
 	}
 
 	public void setAllFuncionariosAtivos(List<Funcionarios> allFuncionariosAtivos) {
 		this.allFuncionariosAtivos = allFuncionariosAtivos;
+	}
+
+	public List<ItensFuncionario> getTodosItensContasFuncionario() {
+		return todosItensContasFuncionario;
+	}
+
+	public void setTodosItensContasFuncionario(
+			List<ItensFuncionario> todosItensContasFuncionario) {
+		this.todosItensContasFuncionario = todosItensContasFuncionario;
 	}
 }

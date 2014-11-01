@@ -1,22 +1,10 @@
 package br.com.conjmc.valueobject;
 
-import java.util.Date;
+import java.util.List;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.cadastrobasico.Lojas;
 
 public class FuncionarioVO {
-    private Long id;
-	
-	/**
-     */
-    private Date periodo;
     
 	/**
      */
@@ -24,39 +12,23 @@ public class FuncionarioVO {
 
     /**
      */
-    private DespesasGastos item;
+    private List<ItensFuncionario> item;
     
 	/**
      */
 	private Double Salario;
-
-	/**
-     */
-	private Double valor;	
 	
 	/**
      */
-	private Double despesas;
+	private Double totalDesconto;
 	
 	/**
      */
 	private Double Crédito;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getPeriodo() {
-		return periodo;
-	}
-
-	public void setPeriodo(Date periodo) {
-		this.periodo = periodo;
-	}
+	
+	/**
+     */	
+	private Double valorReceber;
 
 	public Funcionarios getFuncionario() {
 		return funcionario;
@@ -66,11 +38,11 @@ public class FuncionarioVO {
 		this.funcionario = funcionario;
 	}
 
-	public DespesasGastos getItem() {
+	public List<ItensFuncionario> getItem() {
 		return item;
 	}
 
-	public void setItem(DespesasGastos item) {
+	public void setItem(List<ItensFuncionario> item) {
 		this.item = item;
 	}
 
@@ -83,11 +55,11 @@ public class FuncionarioVO {
 	}
 
 	public Double getDespesas() {
-		return despesas;
+		return totalDesconto;
 	}
 
 	public void setDespesas(Double despesas) {
-		this.despesas = despesas;
+		this.totalDesconto = despesas;
 	}
 
 	public Double getCrédito() {
@@ -98,11 +70,19 @@ public class FuncionarioVO {
 		Crédito = crédito;
 	}
 
-	public Double getValor() {
-		return valor;
+	public Double getValorReceber() {
+		return valorReceber;
 	}
 
-	public void setValor(Double valor) {
-		this.valor = valor;
+	public void setValorReceber(Double valorReceber) {
+		this.valorReceber = valorReceber;
+	}
+
+	public Double getTotalDesconto() {
+		return totalDesconto;
+	}
+
+	public void setTotalDesconto(Double totalDesconto) {
+		this.totalDesconto = totalDesconto;
 	}
 }

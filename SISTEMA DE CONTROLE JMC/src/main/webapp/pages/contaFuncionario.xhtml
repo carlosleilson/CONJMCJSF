@@ -50,13 +50,8 @@
         	<p:column headerText="Nome" sortBy="#{funcionarios.funcionario.nome}">
         		<h:outputText value="#{funcionarios.funcionario.nome}"/>
         	</p:column>
-        	<p:column headerText="Salario" sortBy="#{funcionarios.funcionario.salario}">
-        		<h:outputText value="#{funcionarios.funcionario.salario}">
-        			<f:convertNumber minFractionDigits="2"/>
-        		</h:outputText>
-        	</p:column>
-        	<p:column headerText="CPF" sortBy="#{funcionarios.funcionario.cpf}">
-        		<h:outputText value="#{funcionarios.funcionario.cpf}"/>
+        	<p:column headerText="Debito" sortBy="#{funcionarios.funcionario.cpf}">
+        		<h:outputText value="#{funcionarios.totalDesconto}"/>
         	</p:column>
         	<p:column headerText="Situação" sortBy="#{funcionarios.funcionario.situacao}">
         		<h:outputText value="Ativo" rendered="#{funcionarios.funcionario.situacao == true}"/>

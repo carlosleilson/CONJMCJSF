@@ -58,6 +58,10 @@
 			<h:outputText value="#{usuarios.nome.nome}" />
 		</p:column>
 		
+		<p:column headerText="Loja" sortBy="#{usuarios.nome.loja.nomeLoja}">
+			<h:outputText value="#{usuarios.nome.loja.nomeLoja}" />
+		</p:column>		
+		
 		<p:column headerText="Perfil" sortBy="#{usuarios.perfil}">
 			<h:outputText value="#{usuarios.perfil.label}" />
 		</p:column>

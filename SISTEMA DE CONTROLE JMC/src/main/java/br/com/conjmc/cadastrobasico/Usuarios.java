@@ -119,7 +119,7 @@ public class Usuarios implements Serializable {
     }
 
 	public static List<Usuarios> encontarTodosUsuarios() {
-        return entityManager().createQuery("SELECT o FROM Usuarios o where o.nome.loja.id = :loja", Usuarios.class).setParameter("loja", ObejctSession.idLoja()).getResultList();
+        return entityManager().createQuery("SELECT o FROM Usuarios o where o.nome.loja.id = :loja or perfil = 'Administrado'", Usuarios.class).setParameter("loja", ObejctSession.idLoja()).getResultList();
     }
 	
 	public static List<Usuarios> findAllUsuarioses(String sortFieldName, String sortOrder) {

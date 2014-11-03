@@ -118,6 +118,10 @@ public class Usuarios implements Serializable {
         return entityManager().createQuery("SELECT o FROM Usuarios o", Usuarios.class).getResultList();
     }
 
+	public static List<Usuarios> encontarTodosUsuarios() {
+        return entityManager().createQuery("SELECT o FROM Usuarios o where o.nome.loja.id = :loja", Usuarios.class).setParameter("loja", ObejctSession.idLoja()).getResultList();
+    }
+	
 	public static List<Usuarios> findAllUsuarioses(String sortFieldName, String sortOrder) {
         String jpaQuery = "SELECT o FROM Usuarios o";
         if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {

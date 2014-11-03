@@ -110,7 +110,7 @@ public class UsuariosBean implements Serializable {
     }
 
 	public String findAllUsuarioses() {
-        allUsuarioses = Usuarios.findAllUsuarioses();
+        allUsuarioses = Usuarios.encontarTodosUsuarios();
         dataVisible = !allUsuarioses.isEmpty();
         return null;
     }

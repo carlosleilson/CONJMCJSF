@@ -64,7 +64,7 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
 	private Usuarios login(String login, String senha) {
 		usuarios = Usuarios.findAllUsuarioses();
 		for (Usuarios user : usuarios) {
-			if(login.equals(user.getNome().getApelido().trim())){
+			if(login.equalsIgnoreCase(user.getNome().getApelido().trim())){
 				if(senha.equals(user.getSenha().trim())){
 					return user;
 				} 

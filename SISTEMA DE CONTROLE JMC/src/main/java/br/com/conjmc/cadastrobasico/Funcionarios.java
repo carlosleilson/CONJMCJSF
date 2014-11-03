@@ -22,6 +22,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.ObejctSession;
+
 @Entity
 @Configurable
 public class Funcionarios implements Serializable {
@@ -236,7 +238,7 @@ public class Funcionarios implements Serializable {
     }
 
 	public static List<Funcionarios> findAllFuncionarioses() {
-        return entityManager().createQuery("SELECT o FROM Funcionarios o", Funcionarios.class).getResultList();
+        return entityManager().createQuery("SELECT o FROM Funcionarios o where o.loja.id = :loja", Funcionarios.class).setParameter("loja", ObejctSession.idLoja()).getResultList();
     }
 	
 	public static List<Funcionarios> findAllFuncionariosAtivos() {

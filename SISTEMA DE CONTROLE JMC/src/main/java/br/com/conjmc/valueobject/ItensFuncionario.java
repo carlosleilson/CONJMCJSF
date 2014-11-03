@@ -2,9 +2,14 @@ package br.com.conjmc.valueobject;
 
 import java.util.Date;
 
+import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 
 public class ItensFuncionario {
+
+	/**
+     */
+	private ContasFuncionario id;
 	
 	/**
      */
@@ -40,5 +45,13 @@ public class ItensFuncionario {
 
 	public void setPeriodo(Date periodo) {
 		this.periodo = periodo;
+	}
+
+	public ContasFuncionario getId() {
+		return id;
+	}
+
+	public void setId(ContasFuncionario id) {
+		this.id = id;
 	} 
 }

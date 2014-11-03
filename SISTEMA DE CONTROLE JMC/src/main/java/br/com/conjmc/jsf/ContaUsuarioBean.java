@@ -48,9 +48,8 @@ public class ContaUsuarioBean implements Serializable   {
 		todosFuncionarios();
 		findAllItensPessoalAtivos();
 		findAllFuncionariosAtivos();
-		parcelas = 1;
 	}
-
+	
 	private void iniciarFuncionarioVO() {
 		if(funcionarioVo == null){
 			funcionarioVo = new FuncionarioVO();
@@ -95,6 +94,7 @@ public class ContaUsuarioBean implements Serializable   {
 		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
 		for (ContasFuncionario funcionarioTemp : Funcionarios) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
+			umFuncionario.setId(funcionarioTemp);
 			umFuncionario.setItem(funcionarioTemp.getItem());
 			umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
 			umFuncionario.setValor(funcionarioTemp.getValor());
@@ -230,8 +230,8 @@ public class ContaUsuarioBean implements Serializable   {
 		contaFuncionario.remove();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Receber");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        return findAllFuncionariosAtivos();
+        init();
+        return "/page/contaFuncionario.xhtml";
     }
 	
 	public void reset() {
@@ -245,8 +245,10 @@ public class ContaUsuarioBean implements Serializable   {
 	
 	public String contaFuncionarioRedict(FuncionarioVO funcionarioVo) {
 		contaFuncionario = new ContasFuncionario();
+		contaFuncionario.setPeriodo(new Date());
 		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 		contaFuncionario.setFuncionario(funcionarioVo.getFuncionario());
+		contaFuncionario.setParcela(1);
 		buscaFuncionario(contaFuncionario.getFuncionario());
         return "/page/contaFuncionario.xhtml";
     }

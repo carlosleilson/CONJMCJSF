@@ -56,6 +56,16 @@ public class ContasFuncionario implements Serializable  {
      */
     @ManyToOne
     private DespesasGastos item;
+
+	/**
+     */
+    @NotNull    
+    private Boolean origem;
+    
+	/**
+     */
+    @NotNull    
+    private Integer parcela;    
     
 	/**
      */
@@ -110,6 +120,13 @@ public class ContasFuncionario implements Serializable  {
 		this.valor = valor;
 	}	
 
+	public Integer getParcela() {
+		return parcela;
+	}
+
+	public void setParcela(Integer parcela) {
+		this.parcela = parcela;
+	}
 	@PersistenceContext
     transient EntityManager entityManager;
 
@@ -227,5 +244,13 @@ public class ContasFuncionario implements Serializable  {
 		} else if (!valor.equals(other.valor))
 			return false;
 		return true;
-	}	
+	}
+
+	public Boolean getOrigem() {
+		return origem;
+	}
+
+	public void setOrigem(Boolean origem) {
+		this.origem = origem;
+	}
 }

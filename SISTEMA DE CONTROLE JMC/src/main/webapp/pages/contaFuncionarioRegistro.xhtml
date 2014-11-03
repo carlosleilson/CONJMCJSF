@@ -65,7 +65,7 @@
 		            <p:row>
 		                <p:column headerText="Ação" />
 		                <p:column headerText="Item" sortBy="#{conta.item.descrisao}" />
-		                <p:column headerText="Data" sortBy="#{conta.periodo}" />
+		                <p:column headerText="Data"  filterBy="#{conta.periodo}" sortBy="#{conta.periodo}" />
 		                <p:column headerText="Valor" sortBy="#{conta.valor}" />
 		            </p:row>
 		        </p:columnGroup>
@@ -79,7 +79,7 @@
 	          		<h:outputText value="#{conta.item.descrisao}"/>
 	          	</p:column>
 	        	<p:column >
-	          		<h:outputText value="#{conta.periodo}">
+	          		<h:outputText value="#{conta.periodo}"  >
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>

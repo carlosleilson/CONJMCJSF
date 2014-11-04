@@ -18,6 +18,7 @@ public class ContasPendentesBean {
 
 	private Contas conta;
 	private String origem;
+	private boolean pagarAgora;
 	private List<Contas> contas;
 	
 	@PostConstruct
@@ -55,6 +56,14 @@ public class ContasPendentesBean {
 		}
         return "contasPendentes.xhtml";
     }
+	
+	public void edit(){
+		Sangria contaEdit = (Sangria) conta.getSangria().get(1);
+		origem = contaEdit.getOrigem();
+		if(contaEdit.getPeriodo() != null){
+			this.pagarAgora = true;
+		}
+	}
 
 	//Generate getters and setters
 	public Contas getConta() {
@@ -79,6 +88,14 @@ public class ContasPendentesBean {
 
 	public void setContas(List<Contas> contas) {
 		this.contas = contas;
+	}
+
+	public boolean isPagarAgora() {
+		return pagarAgora;
+	}
+
+	public void setPagarAgora(boolean pagarAgora) {
+		this.pagarAgora = pagarAgora;
 	}
 	
 }

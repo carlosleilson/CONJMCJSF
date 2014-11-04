@@ -161,5 +161,13 @@ public class ContasBean {
 		conta.setValor(total);
 	}
 	
+	public void editarConta(){
+		if(conta.getDataPagamento() !=null) {
+			this.pagarAgora = true;
+		} 
+		sangrias = sangria.findSangriaByConta(conta.getId());
+		this.origem = sangrias.get(0) .getOrigem();
+	}
+	
 		
 }

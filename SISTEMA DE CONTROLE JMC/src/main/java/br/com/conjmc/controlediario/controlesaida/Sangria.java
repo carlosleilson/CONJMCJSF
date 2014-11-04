@@ -40,18 +40,12 @@ public class Sangria implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-     */
     @Temporal(TemporalType.TIMESTAMP)
     private Date periodo;
 
-    /**
-     */
     @NotNull
     private Double valor;
 
-    /**
-     */
     private String origem;
     
     @NotNull
@@ -59,24 +53,15 @@ public class Sangria implements Serializable{
     
     private String turno;
 
-    /**
-     */
     @ManyToOne
     private DespesasGastos item;
     
-    /**
-     * Campo do Despesas
-     */
     @ManyToOne
     private Despesas classificacao;
 
-    /**
-     */
     @ManyToOne
     private Funcionarios funcionario;
-    
-    /**
-     */
+
     @ManyToOne
     private Lojas loja;
     
@@ -84,6 +69,8 @@ public class Sangria implements Serializable{
     @JoinColumn(name="conta_id")
     private Contas conta;
 
+    
+    //Generate Getters and Setters
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
@@ -152,6 +139,69 @@ public class Sangria implements Serializable{
 		this.conta = conta;
 	}
 
+	
+	public Lojas getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Lojas loja) {
+		this.loja = loja;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sangria other = (Sangria) obj;
+		if (classificacao == null) {
+			if (other.classificacao != null)
+				return false;
+		} else if (!classificacao.equals(other.classificacao))
+			return false;
+		if (funcionario == null) {
+			if (other.funcionario != null)
+				return false;
+		} else if (!funcionario.equals(other.funcionario))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id)) {
+			return false;
+		} else if (item == null) {
+			if (other.item != null)
+				return false;
+		} else if (!item.equals(other.item))
+			return false;
+		if (origem == null) {
+			if (other.origem != null)
+				return false;
+		} else if (!origem.equals(other.origem))
+			return false;
+		if (periodo == null) {
+			if (other.periodo != null)
+				return false;
+		} else if (!periodo.equals(other.periodo))
+			return false;
+		if (valor == null) {
+			if (other.valor != null)
+				return false;
+		} else if (!valor.equals(other.valor))
+			return false;
+		if (version == null) {
+			if (other.version != null)
+				return false;
+		} else if (!version.equals(other.version))
+			return false;
+		return true;
+	}
+	
+	
+	// DAO
 	@PersistenceContext
     transient EntityManager entityManager;
 
@@ -318,69 +368,17 @@ public class Sangria implements Serializable{
         return q.getResultList();
     }
 	
-	public Lojas getLoja() {
-		return loja;
-	}
-
-	public void setLoja(Lojas loja) {
-		this.loja = loja;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Sangria other = (Sangria) obj;
-		if (classificacao == null) {
-			if (other.classificacao != null)
-				return false;
-		} else if (!classificacao.equals(other.classificacao))
-			return false;
-		if (funcionario == null) {
-			if (other.funcionario != null)
-				return false;
-		} else if (!funcionario.equals(other.funcionario))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id)) {
-			return false;
-		} else if (item == null) {
-			if (other.item != null)
-				return false;
-		} else if (!item.equals(other.item))
-			return false;
-		if (origem == null) {
-			if (other.origem != null)
-				return false;
-		} else if (!origem.equals(other.origem))
-			return false;
-		if (periodo == null) {
-			if (other.periodo != null)
-				return false;
-		} else if (!periodo.equals(other.periodo))
-			return false;
-		if (valor == null) {
-			if (other.valor != null)
-				return false;
-		} else if (!valor.equals(other.valor))
-			return false;
-		if (version == null) {
-			if (other.version != null)
-				return false;
-		} else if (!version.equals(other.version))
-			return false;
-		return true;
-	}
-	
 	public static List< Sangria > findSangriaByItens(Long id) {
         if (id == null) return null;
 		 Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.item.id = :item and o.loja.id = :loja", Sangria.class);
+		 query.setParameter("item", id);
+		 query.setParameter("loja", ObejctSession.idLoja());
+        return (List< Sangria >)query.getResultList();
+	}
+	
+	public static List< Sangria > findSangriaByConta(Long id) {
+        if (id == null) return null;
+		 Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.conta.id = :item and o.loja.id = :loja", Sangria.class);
 		 query.setParameter("item", id);
 		 query.setParameter("loja", ObejctSession.idLoja());
         return (List< Sangria >)query.getResultList();

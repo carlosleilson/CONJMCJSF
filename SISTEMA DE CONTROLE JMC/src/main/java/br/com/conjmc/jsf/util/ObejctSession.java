@@ -4,6 +4,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Usuarios;
 
 public class ObejctSession {
@@ -14,8 +15,9 @@ public class ObejctSession {
 	}
 	
 	public static Long idLoja(){
-		Usuarios usuarioLogado = (Usuarios) ObejctSession.getObjectSession("usuarioLogado");
-		return usuarioLogado.getNome().getLoja().getId();
+		//Usuarios usuarioLogado = (Usuarios) ObejctSession.getObjectSession("usuarioLogado");
+		Lojas loja = (Lojas) ObejctSession.getObjectSession("loja");
+		return loja.getId();
 	}
 }
 

@@ -29,7 +29,9 @@
 				<p:panel id="mainPanel" toggleable="false" >
 					<f:facet name="header">
 						<h:outputFormat
-							value="Bem Vindo, a loja #{usuariosBean.usuarioLogado.nome.loja.nomeLoja} prezado(a) #{usuariosBean.usuarioLogado.nome.nome}!" />
+							value="Bem Vindo, a loja #{applicationBean.lojaLogado.nomeLoja} " />
+						<h:outputFormat
+							value="prezado(a) #{applicationBean.usuarioLogado.nome.nome}!" />
 					</f:facet>
 					<ui:insert name="content" />
 				</p:panel>

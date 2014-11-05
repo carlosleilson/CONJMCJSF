@@ -18,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.jsf.util.Security;
 
@@ -31,19 +32,23 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
         String senha = Security.sha256(request.getParameter("j_password"));
         Long codigoLoja = Long.parseLong(request.getParameter("j_loja"));
         
-        if(codigoLoja == 0)
-        	throw new BadCredentialsException("Por favor, selecione uma loja.");
+        if(codigoLoja == 0){
+        	mensagem = "Por favor, selecione uma loja.";
+        	throw new BadCredentialsException(mensagem);
+        }
  
         Usuarios usuario = login(login, senha);
         
-        if(usuario == null)
-        	throw new BadCredentialsException("Erro no login");
+        if(usuario == null){
+        	mensagem = "Erro no login";
+        	throw new BadCredentialsException(mensagem);
+        }
         
         lojas(regras, codigoLoja, usuario);
         
         try {
 			request.getSession().setAttribute("usuarioLogado", usuario);
-			mensagem = "Bem vindo: " + usuario.getNome().getNome();
+			request.getSession().setAttribute("loja", Lojas.findLojas(codigoLoja));
 	        return new UsernamePasswordAuthenticationToken(usuario.getNome().getApelido(), usuario.getSenha(), regras);
  
         } catch (Exception e) {
@@ -53,12 +58,16 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
 
 	private void lojas(Collection<GrantedAuthority> regras,
 			Long codigoLoja, Usuarios usuario) {
-		if (usuario.getNome().getLoja().getId().equals(codigoLoja)) {
-            regras.add(new SimpleGrantedAuthority(usuario.getPerfil().getLabel().trim()));
-        } else {
-            mensagem = "Acesso negado a loja selecionada!";
-            throw new BadCredentialsException(mensagem);
-        }
+		if(usuario.getPerfil().getLabel().trim().equals("Administrador")){
+	            regras.add(new SimpleGrantedAuthority(usuario.getPerfil().getLabel().trim()));
+	    }else{
+			if (usuario.getNome().getLoja().getId().equals(codigoLoja)) {
+	            regras.add(new SimpleGrantedAuthority(usuario.getPerfil().getLabel().trim()));
+	        } else {
+	            mensagem = "Acesso negado a loja selecionada!";
+	            throw new BadCredentialsException(mensagem);
+	        }
+	    }
 	}
 
 	private Usuarios login(String login, String senha) {
@@ -66,10 +75,12 @@ public class AutenticacaoProvider extends UsernamePasswordAuthenticationFilter {
 		for (Usuarios user : usuarios) {
 			if(login.equalsIgnoreCase(user.getNome().getApelido().trim())){
 				if(senha.equals(user.getSenha().trim())){
+					mensagem = "Bem vindo: " + user.getNome().getNome();
 					return user;
 				} 
 			} 
 		}
+		mensagem = "Login ou Senha errados. ";
 		return null;
 	}
  

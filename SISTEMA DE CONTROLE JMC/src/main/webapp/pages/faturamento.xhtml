@@ -37,7 +37,7 @@
 	          
 	          </h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{faturamentoBean.persist()}" onclick="PF('dlgFaturamento').show();" />
+          <p:commandButton id="createSaveButton" update=":createFormFaturamento:createPanelGrid :dataFormList:listFaturamento" value="#{messages.label_save}" action="#{faturamentoBean.persist()}" onclick="PF('dlgFaturamento').show();" />
     	</fieldset>
     	</h:form>
     	<h:form prependId="false" id="dataFormList">
@@ -61,5 +61,6 @@
 <!--              </p:column> -->
         </p:dataTable>
     </h:form>
+ 	<p:ajax event="close" update=":dataForm:field" listener="#{faturamentoBean.handleDialogClose}" />    
 </p:dialog>    
 </html>

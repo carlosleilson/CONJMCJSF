@@ -29,7 +29,7 @@ public class FaturamentoBean implements Serializable  {
 	private List<Faturamento> faturamentos;
 	@PostConstruct
     public void init() {
-		faturamento = new Faturamento();
+		reset();
 		carregaFaturamentos();
     }
 	
@@ -66,13 +66,12 @@ public class FaturamentoBean implements Serializable  {
             faturamento.persist();
             message = "message_successfully_created";
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("createDialogfaturamentoWidget.hide()");
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        context.execute("cdlgFaturamento.hide()");
         
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Faturamento");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        reset();
-        carregaFaturamentos();
+        init();
         return "/relatorios/RelatorioMensal.xhtml";
     }
 	
@@ -101,6 +100,7 @@ public class FaturamentoBean implements Serializable  {
 	
 	public void reset() {
 		faturamento = new Faturamento();
+		faturamento.setPeriodo(new Date());
     }
 
 	public void handleDialogClose(CloseEvent event) {

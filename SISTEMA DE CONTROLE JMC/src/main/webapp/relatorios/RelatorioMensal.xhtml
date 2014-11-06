@@ -15,7 +15,7 @@
 	<p:commandButton id="anteriorButton" update=":dataForm:field" value="Anterior" action="#{relatorioMesBean.anterior}" />
 	<p:commandButton id="proximoButton" update=":dataForm:field" value="Próximo" action="#{relatorioMesBean.proximo}" />
 	<p:tooltip for="faturamentoButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
-	<p:commandButton id="faturamentoButton" icon="ui-icon-calculator" value="Faturamento" oncomplete="PF('dlgFaturamento').show()" actionListener="#{faturamentoBean.carregarPeriodo(relatorioMesBean.dataLabel)}" />	
+	<p:commandButton id="faturamentoButton" icon="ui-icon-calculator" value="Faturamento" oncomplete="PF('dlgFaturamento').show()" actionListener="#{faturamentoBean.carregarPeriodo(relatorioMesBean.dataLabel)}" update=":createFormFaturamento:createPanelGrid :dataFormList:listFaturamento" />	
 	<br/><br/>
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal (RDM) - #{relatorioMesBean.dataLabel}">
         <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}" >

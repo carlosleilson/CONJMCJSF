@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.Contas;
@@ -13,7 +13,7 @@ import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ContasPendentesBean {
 
 	private Contas conta;
@@ -21,9 +21,18 @@ public class ContasPendentesBean {
 	private boolean pagarAgora;
 	private List<Contas> contas;
 	
+	//Filtros
+	private Contas contaFiltro;
+	
 	@PostConstruct
 	public void init() {
 		conta = new Contas();
+		contaFiltro = new Contas();
+		carregarContas();
+	}
+	
+	public void searchConta(){
+		contas = contaFiltro.findByContas(contaFiltro);
 	}
 	
 	public List<Contas> carregarContas() {
@@ -42,18 +51,15 @@ public class ContasPendentesBean {
 			sangria2.setSangria(true);
 			sangria2.persist();
 		}
+		origem = null;
 		return "contasPendentes.xhtml";
 	}
 
 	public String delete() {
-		try {
-			conta.remove();
-			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Conta");
-	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        init();
-		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependencias em outros módulos", "O item não pode ser deletado porque possui dependencias em outros módulos"));
-		}
+		conta.remove();
+		FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Conta");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
         return "contasPendentes.xhtml";
     }
 	
@@ -96,6 +102,14 @@ public class ContasPendentesBean {
 
 	public void setPagarAgora(boolean pagarAgora) {
 		this.pagarAgora = pagarAgora;
+	}
+
+	public Contas getContaFiltro() {
+		return contaFiltro;
+	}
+
+	public void setContaFiltro(Contas contaFiltro) {
+		this.contaFiltro = contaFiltro;
 	}
 	
 }

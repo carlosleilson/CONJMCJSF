@@ -19,5 +19,9 @@ public class ObejctSession {
 		Lojas loja = (Lojas) ObejctSession.getObjectSession("loja");
 		return loja.getId();
 	}
+	
+	public static Usuarios getUsuarioLogado(){
+		return (Usuarios) ObejctSession.getObjectSession("usuarioLogado");
+	}
 }
 

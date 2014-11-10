@@ -59,15 +59,24 @@ public class DataUltil {
 		data = c.getTime();
 		return data;
 	}	
-	
-	public static Date primeiroDiaMes(Date data){
+
+	public static Date primeiroDiaMesTemp(Date data){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(data);
 		c.set(c.DAY_OF_MONTH,c.getActualMinimum(Calendar.DAY_OF_MONTH) );
 		data = c.getTime();
 		return data;
-	}	
+	}		
+	
+	public static Date primeiroDiaMes(Date data){
+		sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Calendar c = Calendar.getInstance();
+		c.setTime(data);
+		c.set(c.DAY_OF_MONTH,-1 );
+		data = c.getTime();
+		return data;
+	}
 	
 	public static Date ultimoDiaMes(Date data){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");

@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
+import javax.persistence.metamodel.Metamodel;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -87,7 +88,7 @@ public class Faturamento implements Serializable {
 	public void setLoja(Lojas loja) {
 		this.loja = loja;
 	}
-
+	
 	@PersistenceContext
     transient EntityManager entityManager;
 
@@ -116,18 +117,6 @@ public class Faturamento implements Serializable {
 		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(DataUltil.porMes(data)));		
         return query.getResultList();
     }	
-	
-	// spring roo
-	/*public static List<Faturamento> findAllFaturamentoes(String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM Faturamento o";
-        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
-            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
-            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
-                jpaQuery = jpaQuery + " " + sortOrder;
-            }
-        }
-        return entityManager().createQuery(jpaQuery, Faturamento.class).getResultList();
-    }*/
 
 	public static Faturamento findFaturamento(Long id) {
         if (id == null) return null;
@@ -138,33 +127,18 @@ public class Faturamento implements Serializable {
         if (data == null) return null;
         List results = entityManager().createQuery("SELECT o FROM Faturamento o where o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja", Faturamento.class)
         .setParameter("loja", ObejctSession.idLoja())	
-		.setParameter("dataInicial", DataUltil.primeiroDiaMes(DataUltil.porMes(data)))
+		.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(DataUltil.porMes(data)))
 		.setParameter("dataFinal", DataUltil.ultimoDiaMes(DataUltil.porMes(data)))
         .getResultList();
         if (results.isEmpty()) return null;
         return (Faturamento) results.get(0);
     }	
-	// Spring Roo
-	/*public static List<Faturamento> findFaturamentoEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Faturamento o", Faturamento.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }*/
-
-	// Spring Roo
-	/*public static List<Faturamento> findFaturamentoEntries(int firstResult, int maxResults, String sortFieldName, String sortOrder) {
-        String jpaQuery = "SELECT o FROM Faturamento o";
-        if (fieldNames4OrderClauseFilter.contains(sortFieldName)) {
-            jpaQuery = jpaQuery + " ORDER BY " + sortFieldName;
-            if ("ASC".equalsIgnoreCase(sortOrder) || "DESC".equalsIgnoreCase(sortOrder)) {
-                jpaQuery = jpaQuery + " " + sortOrder;
-            }
-        }
-        return entityManager().createQuery(jpaQuery, Faturamento.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }*/
 
 	@Transactional
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -194,6 +168,7 @@ public class Faturamento implements Serializable {
     public Faturamento merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Faturamento merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Faturamento.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

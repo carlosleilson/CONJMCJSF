@@ -10,12 +10,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.Lojas;
+import br.com.conjmc.cadastrobasico.MetaData;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 

@@ -27,7 +27,7 @@ public class RelatorioDoMes {
 	private int QTD_CAMPOS = 33; 
 	private String[] campoTemp;
 	private String[] totalLinha;
-	private static Date data;
+	private Date data;
 	private NumberFormat df;
 	private Double faturamentoBruto;
 	private String tempTotalPercente;

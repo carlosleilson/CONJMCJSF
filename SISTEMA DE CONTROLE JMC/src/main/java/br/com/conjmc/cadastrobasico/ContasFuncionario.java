@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
@@ -66,6 +65,10 @@ public class ContasFuncionario implements Serializable  {
      */
     @NotNull    
     private Integer parcela;    
+ 
+	/**
+     */
+	private String descricao;
     
 	/**
      */
@@ -130,7 +133,7 @@ public class ContasFuncionario implements Serializable  {
 	@PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("loja", "periodo", "funcionario", "item", "valor");
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("loja", "periodo", "funcionario", "item", "descricao", "valor");
 	
 	public static final EntityManager entityManager() {
         EntityManager em = new  ContasFuncionario().entityManager;
@@ -252,5 +255,13 @@ public class ContasFuncionario implements Serializable  {
 
 	public void setOrigem(Boolean origem) {
 		this.origem = origem;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 }

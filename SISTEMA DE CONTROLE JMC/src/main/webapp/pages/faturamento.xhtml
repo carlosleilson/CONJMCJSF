@@ -5,7 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-<p:dialog header="Faturamento" widgetVar="dlgFaturamento" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" height="600" width="300" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }">
+<p:dialog header="Faturamento" widgetVar="dlgFaturamento" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" height="600" width="400" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }">
     <h:outputScript library="js" name="jquery.maskMoney.js"/>       
 	<ui:define name="title">
 		<title>Faturamento</title>
@@ -19,8 +19,10 @@
 				<p:calendar 
 					id="mesDoAno"
 					value="#{faturamentoBean.faturamento.periodo}"
-					pattern="dd/MM/yyyy" 
+					pattern="MM/yyyy" 
 					required="true"
+					mask="true"
+					showOn="button"
 					requiredMessage="O valor é obrigatório"/>        	
 	          	<p:message for="mesDoAno"/>          
 	          

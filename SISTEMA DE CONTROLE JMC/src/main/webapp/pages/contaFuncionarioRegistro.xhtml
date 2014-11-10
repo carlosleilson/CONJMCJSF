@@ -29,6 +29,10 @@
 	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
 	          	</p:selectOneMenu>
 	          	<p:message for="itens"/>
+	          	
+				<p:outputLabel value="Descrisão do Item:" for="descricaoItem" />
+	          	<p:inputTextarea id="descricaoItem" value="#{contaUsuarioBean.contaFuncionario.descricao}"  />
+	          	<p:message for="descricaoItem"/>	          	
 				
 	          	<p:outputLabel value="Natureza" for="natureza"/>
 	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório">

@@ -81,7 +81,7 @@
 			 </p:commandLink>
 			 <br/>
 			 <br/>
-			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" actionListener="#{contasBean.validarConta()}" action="#{contasBean.persistCofirmation()}" />&nbsp;&nbsp;
+			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" actionListener="#{contasBean.validarConta()}" action="#{contasBean.persistCofirmation()}" />&nbsp;&#160;
 			<p:commandButton ajax="false" value="Limpar" immediate="true" action="#{contasBean.reset()}"/>
 		</fieldset>
 		<p:confirmDialog id="duplicate" header="Atenção!" message="Já foi inserido uma conta com a mesma data e valor, tem certeza que deseja inserir o registro?" hideEffect="explode" widgetVar="duplicate" severity="alert">

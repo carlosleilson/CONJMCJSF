@@ -10,8 +10,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.junit.experimental.theories.DataPoint;
-
 import br.com.conjmc.cadastrobasico.Contas;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
@@ -37,7 +35,7 @@ public class ContasBean {
 		sangrias = new ArrayList<Sangria>();
 	}
 	
-	public String persist() {
+	public void persist() {
 		if(sangrias.size() > 0) {
 	        String message = "";
 	        if (conta.getId() != null) {
@@ -74,18 +72,14 @@ public class ContasBean {
 	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	        this.origem = null;
 	        this.pagarAgora = false;
-	        init();
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
 		}
-	        return "contas.xhtml";
 	        
     }
 	 
 	public String reset(){
-		conta = new Contas();
-		sangria = null;
-		sangrias = null;
+		init(); 
 		periodo = null;
 		origem = null;
 		pagarAgora = false;
@@ -131,16 +125,21 @@ public class ContasBean {
 		}
 	}
 	
-	public void persistCofirmation() {
+	public String persistCofirmation() {
 		if(conta.getId() == null){
 			if(validation > 0 ) {
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('duplicate').show();");
 	    	} else {
-	    		persist();        		
+	    		persist();
+	    		init();
+	    		return "contas.xhtml";
 	    	}
 		} else {
 			persist();
+			init();
+			return "contasPendentes.xhtml";
 		}
+		return "contas.xhtml";
 	}
 
 	//Generate getters and setters

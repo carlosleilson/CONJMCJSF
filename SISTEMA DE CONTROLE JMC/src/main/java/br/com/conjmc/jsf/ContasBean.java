@@ -28,6 +28,7 @@ public class ContasBean {
 	private Date periodo;
 	private String origem;
 	private boolean pagarAgora;
+	private long validation;
 	
 	@PostConstruct
 	public void init() {
@@ -123,6 +124,24 @@ public class ContasBean {
 		
 		return "contas.xhtml";
 	}
+	
+	public void validarConta(){
+		if(conta.getId() == null){
+			this.validation = conta.countContasValidation(conta);			
+		}
+	}
+	
+	public void persistCofirmation() {
+		if(conta.getId() == null){
+			if(validation > 0 ) {
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('duplicate').show();");
+	    	} else {
+	    		persist();        		
+	    	}
+		} else {
+			persist();
+		}
+	}
 
 	//Generate getters and setters
 	public Contas getConta() {
@@ -171,6 +190,14 @@ public class ContasBean {
 
 	public void setPagarAgora(boolean pagarAgora) {
 		this.pagarAgora = pagarAgora;
+	}
+
+	public long getValidation() {
+		return validation;
+	}
+
+	public void setValidation(long validation) {
+		this.validation = validation;
 	}
 		
 }

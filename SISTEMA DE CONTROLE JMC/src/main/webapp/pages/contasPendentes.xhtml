@@ -107,6 +107,9 @@
 						<f:setPropertyActionListener value="#{contaPendente}"
 							target="#{contasPendentesBean.conta}" />
 					</p:commandButton>
+					<p:commandButton id="visualizeButton" icon="ui-icon-zoomin" oncomplete="PF('vizualizarItemBoleto').show()" title="#{messages.label_view}">
+						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasPendentesBean.conta}" />
+					</p:commandButton>
 					<p:commandButton ajax="false" icon="ui-icon-pencil" title="#{messages.label_edit}" action="#{contasBean.editarConta()}">
 						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasBean.conta}" />
 					</p:commandButton>
@@ -120,6 +123,16 @@
 				<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 			</p:confirmDialog>
     </h:form>
+    <p:dialog id="vizualizarContar" header="Vizualizar conta" modal="true" widgetVar="vizualizarItemBoleto" showEffect="fade" hideEffect="explode">
+	    <h:form id="itemVizualizar">
+		 	<h:panelGrid id="createPanelGridItemitemVizualizar" columns="2" styleClass="dialog">
+			 	<p:outputLabel value="Valor" for="valor" />
+	          	<h:outputText id="valor" value="#{contasPendentesBean.conta.valor}">
+	          		<f:convertNumber minFractionDigits="2" />
+	          	</h:outputText>	          	
+			 </h:panelGrid>
+		</h:form>
+ 	</p:dialog>
   </ui:define>
 </ui:composition>
 </html>

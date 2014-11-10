@@ -259,4 +259,12 @@ public class Contas implements Serializable{
 		return listaIC;
 	}
 	
+	public static long countContasValidation(Contas conta) {
+        Query query = entityManager().createQuery("SELECT COUNT(o) FROM Contas o where o.vencimento=:data and o.valor=:valor and o.loja.id = :loja", Long.class);
+        query.setParameter("data", conta.getVencimento());
+        query.setParameter("valor", conta.getValor());
+        query.setParameter("loja", ObejctSession.idLoja());
+        return (long) query.getSingleResult();
+    }
+	
 }

@@ -22,13 +22,13 @@
 		    	<p:message for="vencimento" />
 
 				<p:outputLabel value="Valor" for="valorConta" />
-				<p:inputText id="valorConta" value="#{contasBean.conta.valor}" readonly="true">
+				<p:inputText id="valorConta" styleClass="disabled" value="#{contasBean.conta.valor}" readonly="true">
 					<f:convertNumber minFractionDigits="2" />
 				</p:inputText>
 				<p:message for="valorConta"/>
 				
 				<p:outputLabel value="Detalhamento" for="detalhamento" />
-				<p:inputTextarea id="detalhamento" value="#{contasBean.conta.detalhamento}"/>
+				<p:inputTextarea id="detalhamento" value="#{contasBean.conta.detalhamento}" required="true" requiredMessage="O detalhamento é obrigatório"/>
 				<p:message for="detalhamento"/>
 				
 				<p:outputLabel value="Conta paga" for="contaPaga" />
@@ -81,7 +81,8 @@
 			 </p:commandLink>
 			 <br/>
 			 <br/>
-			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contasBean.persist()}" />
+			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contasBean.persist()}" />&nbsp;&nbsp;
+			<p:commandButton ajax="false" value="Limpar" immediate="true" action="#{contasBean.reset()}"/>
 		</fieldset>
     </h:form>
  	<p:dialog id="itemBoleto" header="Adicionar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode">

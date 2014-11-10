@@ -1,5 +1,6 @@
 package br.com.conjmc.cadastrobasico;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,11 @@ import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Configurable;
@@ -34,7 +40,6 @@ public class Contas implements Serializable{
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 	
-	@NotNull
 	@Temporal(TemporalType.DATE)
 	private Date vencimento;
 	
@@ -217,5 +222,41 @@ public class Contas implements Serializable{
         this.entityManager.flush();
         return merged;
     }
+	
+	public static List<Contas> findByContas(Contas conta){	
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<Contas> c = cb.createQuery(Contas.class);
+		Root<Contas> root = c.from(Contas.class);
+		c.select(root);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		
+		if(!conta.getVencimento().equals("")) {
+			Path<String> vencimento = root.get("vencimento");
+			predicates.add(cb.and(cb.equal(vencimento, conta.getVencimento())));
+		}
+		
+		if(!conta.getDetalhamento().equals("")) {
+			Path<String> detalhamento = root.get("detalhamento");
+			predicates.add(cb.and(cb.like(detalhamento, "%" + conta.getDetalhamento() + "%")));
+		}
+		
+		if(!conta.getDetalhamentoBanco().equals("")) {
+			Path<String> detalhamentoBanco = root.get("detalhamentoBanco");
+			predicates.add(cb.and(cb.like(detalhamentoBanco, "%" + conta.getDetalhamentoBanco() + "%")));
+		}
+		
+		if(!conta.getValor().equals("") && !conta.getValor().equals(0.0)) {
+			Path<String> valor = root.get("valor");
+			predicates.add(cb.and(cb.equal(valor, conta.getValor())));
+		}
+		
+		Path<String> loja = root.get("loja");
+		predicates.add(cb.and(cb.equal(loja, ObejctSession.idLoja())));
+			
+		c.select(root).where(predicates.toArray(new Predicate[]{}));
+		List<Contas> listaIC = entityManager().createQuery(c).getResultList();
+		return listaIC;
+	}
 	
 }

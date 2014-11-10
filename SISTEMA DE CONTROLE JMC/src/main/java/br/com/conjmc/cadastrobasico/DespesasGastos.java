@@ -21,6 +21,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.ObejctSession;
+
 @Entity
 @Configurable
 public class DespesasGastos implements Serializable {
@@ -138,6 +140,7 @@ public class DespesasGastos implements Serializable {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -167,6 +170,7 @@ public class DespesasGastos implements Serializable {
     public DespesasGastos merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         DespesasGastos merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), DespesasGastos.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

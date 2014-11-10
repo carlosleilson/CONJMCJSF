@@ -284,6 +284,7 @@ public class Funcionarios implements Serializable {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -320,6 +321,7 @@ public class Funcionarios implements Serializable {
     public Funcionarios merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Funcionarios merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Funcionarios.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

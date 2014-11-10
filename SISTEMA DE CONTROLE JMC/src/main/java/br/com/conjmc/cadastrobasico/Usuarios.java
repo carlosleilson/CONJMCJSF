@@ -163,6 +163,7 @@ public class Usuarios implements Serializable {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -192,6 +193,7 @@ public class Usuarios implements Serializable {
     public Usuarios merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Usuarios merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Usuarios.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

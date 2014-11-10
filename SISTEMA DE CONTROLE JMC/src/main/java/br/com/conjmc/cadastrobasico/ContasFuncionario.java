@@ -145,6 +145,7 @@ public class ContasFuncionario implements Serializable  {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -174,6 +175,7 @@ public class ContasFuncionario implements Serializable  {
     public ContasFuncionario merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         ContasFuncionario merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), ContasFuncionario.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }	

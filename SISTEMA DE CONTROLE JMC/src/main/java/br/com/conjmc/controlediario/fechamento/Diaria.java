@@ -2,8 +2,10 @@ package br.com.conjmc.controlediario.fechamento;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Calendar;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -15,11 +17,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.Funcionarios;
+import br.com.conjmc.cadastrobasico.MetaData;
+
 import javax.persistence.ManyToOne;
+
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
 @Configurable
@@ -440,6 +449,7 @@ public class Diaria {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -469,6 +479,7 @@ public class Diaria {
     public Diaria merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Diaria merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Diaria.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

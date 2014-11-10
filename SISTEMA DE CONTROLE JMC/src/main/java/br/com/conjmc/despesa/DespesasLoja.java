@@ -29,7 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.cadastrobasico.MetaData;
 import br.com.conjmc.jsf.util.DataUltil;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @Configurable
 @Entity
@@ -145,6 +147,7 @@ public class DespesasLoja {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional

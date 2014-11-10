@@ -24,6 +24,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.ObejctSession;
+
 @Entity
 @Configurable
 public class Fornecedores implements Serializable {
@@ -141,6 +143,7 @@ public class Fornecedores implements Serializable {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -170,6 +173,7 @@ public class Fornecedores implements Serializable {
     public Fornecedores merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Fornecedores merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Fornecedores.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

@@ -4,6 +4,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.ObejctSession;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -127,6 +129,7 @@ public class Lojas implements Serializable {
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -156,6 +159,7 @@ public class Lojas implements Serializable {
     public Lojas merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Lojas merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Lojas.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

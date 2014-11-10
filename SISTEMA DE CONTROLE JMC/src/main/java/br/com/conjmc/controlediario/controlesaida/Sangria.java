@@ -28,8 +28,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.conjmc.cadastrobasico.Contas;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
+import br.com.conjmc.cadastrobasico.MetaData;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
@@ -270,6 +272,7 @@ public class Sangria implements Serializable{
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
         this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 
 	@Transactional
@@ -299,6 +302,7 @@ public class Sangria implements Serializable{
     public Sangria merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
         Sangria merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Sangria.class.getSimpleName());
         this.entityManager.flush();
         return merged;
     }

@@ -23,9 +23,10 @@ public class ExclusaoDepesaBean {
 		this.sangria = sangria;
 	}
 	
-	public void delete() {
+	public String delete() {
 		sangria.remove();
 		FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Sangria");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        return "ExclusaoDespesasLoja.xhtml";
 	}
 }

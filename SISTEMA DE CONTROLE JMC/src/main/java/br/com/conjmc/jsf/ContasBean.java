@@ -10,6 +10,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.junit.experimental.theories.DataPoint;
+
 import br.com.conjmc.cadastrobasico.Contas;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
@@ -32,6 +34,94 @@ public class ContasBean {
 		conta = new Contas();
 		sangria = new Sangria();
 		sangrias = new ArrayList<Sangria>();
+	}
+	
+	public String persist() {
+		if(sangrias.size() > 0) {
+	        String message = "";
+	        if (conta.getId() != null) {
+	            conta.merge();
+	            List<Sangria> sangriasRemove = sangria.findSangriaByConta(conta.getId());
+            	for (Sangria sangriaRemove : sangriasRemove) { 
+            		sangriaRemove.remove();
+            	}
+	            message = "message_successfully_updated";
+	        } else {
+	        	conta.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+	        	conta.persist();        	
+	            message = "message_successfully_created";
+	        }
+	        if(pagarAgora == false) {
+	        	for (int i = 0; i < sangrias.size(); i++) {
+					sangria = sangrias.get(i);
+					sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+					sangria.setConta(conta);
+					sangria.persist();
+				}
+        	} else {
+        		for (Sangria sangria2 : sangrias) {
+        			sangria2.setOrigem(origem);
+        			sangria2.setPeriodo(conta.getDataPagamento());
+        			sangria2.setSangria(true);
+        			sangria2.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+					sangria2.setConta(conta);
+        			sangria2.persist();
+        		}
+        	}
+	        
+	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        this.origem = null;
+	        this.pagarAgora = false;
+	        init();
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
+		}
+	        return "contas.xhtml";
+	        
+    }
+	 
+	public String reset(){
+		conta = new Contas();
+		sangria = null;
+		sangrias = null;
+		periodo = null;
+		origem = null;
+		pagarAgora = false;
+		return "contas.xhtml";
+	}
+	
+	public void adicionar(){
+		sangrias.add(sangria);
+		sangria = new Sangria();
+		calcularValor();
+	}
+	
+	public void remove(){
+		sangrias.remove(sangria);
+		sangria = new Sangria();
+		calcularValor();
+	}
+	
+	private void calcularValor(){
+		double total = 0;
+		for (Sangria sang : sangrias) {
+			total += sang.getValor();
+		}
+		conta.setValor(total);
+	}
+	
+	public String editarConta(){
+		if(conta.getDataPagamento() !=null) {
+			this.pagarAgora = true;
+		} 
+		sangrias = sangria.findSangriaByConta(conta.getId());
+		this.origem = sangrias.get(0) .getOrigem();
+		for (int i = 0; i < sangrias.size(); i++) {
+			sangrias.get(i).setId(null);
+		}
+		
+		return "contas.xhtml";
 	}
 
 	//Generate getters and setters
@@ -82,92 +172,5 @@ public class ContasBean {
 	public void setPagarAgora(boolean pagarAgora) {
 		this.pagarAgora = pagarAgora;
 	}
-
-	public String persist() {
-		if(sangrias.size() > 0) {
-	        String message = "";
-	        if (conta.getId() != null) {
-	            conta.merge();
-	            message = "message_successfully_updated";
-	        } else {
-	        	conta.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-	        	conta.persist();
-	        	if(pagarAgora == false) {
-		        	for (int i = 0; i < sangrias.size(); i++) {
-						sangria = sangrias.get(i);
-						sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-						sangria.setConta(conta);
-						sangria.persist();
-					}
-	        	} else {
-	        		for (Sangria sangria2 : sangrias) {
-	        			sangria2.setOrigem(origem);
-	        			sangria2.setPeriodo(conta.getDataPagamento());
-	        			sangria2.setSangria(true);
-	        			sangria2.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-						sangria2.setConta(conta);
-	        			sangria2.persist();
-	        		}
-	        	}
-	        	
-	            message = "message_successfully_created";
-	        }
-	        
-	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
-	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        this.origem = null;
-	        this.pagarAgora = false;
-	        init();
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
-		}
-	        return "contas.xhtml";
-	        
-    }
-
-	public String delete() {
-		try {
-			conta.remove();
-			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Contas");
-	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        init();
-		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "O item não pode ser deletado porque possui dependências em outros módulos", "O item não pode ser deletado porque possui dependências em outros módulos"));
-		}
-        return "contas.xhtml";
-    }
-	 
-	public void reset(){
-		init();
-	}
-	
-	public void adicionar(){
-		sangrias.add(sangria);
-		sangria = new Sangria();
-		calcularValor();
-	}
-	
-	public void remove(){
-		sangrias.remove(sangria);
-		sangria = new Sangria();
-		calcularValor();
-	}
-	
-	private void calcularValor(){
-		double total = 0;
-		for (Sangria sang : sangrias) {
-			total += sang.getValor();
-		}
-		conta.setValor(total);
-	}
-	
-	public void editarConta(){
-		if(conta.getDataPagamento() !=null) {
-			this.pagarAgora = true;
-		} 
-		sangrias = sangria.findSangriaByConta(conta.getId());
-		this.origem = sangrias.get(0) .getOrigem();
-	}
-	
 		
 }

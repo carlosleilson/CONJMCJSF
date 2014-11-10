@@ -13,219 +13,102 @@
     <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <p:fieldset legend="Filtro">
+	<p:fieldset legend="Filtro">
 	    <h:form id="filtro">
 	    	<div class="gridFunc">	
-	          <h:panelGrid id="createPanelGrid1" columns="3" styleClass="dialog">
-	    		<p:outputLabel value="De" for="dataDe" />
-		    	<p:calendar id="dataDe" required="true" requiredMessage="O campo não pode ser nulo"/>
-		    	<p:message for="dataDe" />
-		    	
-		    	<p:outputLabel value="Até" for="dataAte" />
-		    	<p:calendar id="dataAte" required="true" requiredMessage="O campo não pode ser nulo"/>
-		    	<p:message for="dataAte" />
+	          <h:panelGrid id="createPanelGrid1" columns="2" styleClass="dialog">
+	    		<p:outputLabel value="Data Vencimento" for="dataVencimento" />
+		    	<p:calendar id="dataVencimento" value="#{contasPendentesBean.contaFiltro.vencimento}" pattern="dd/MM/yyyy"/>
 		    	
 		    	<p:outputLabel value="Detalhamento" for="detalhamentoFiltro" />
-				<p:inputText id="detalhamentoFiltro"/>
-				<p:message for="detalhamentoFiltro"/>
+				<p:inputText id="detalhamentoFiltro" value="#{contasPendentesBean.contaFiltro.detalhamento}"/>
 			</h:panelGrid>
 		</div>
      	<div class="gridFunc">
-          	<h:panelGrid id="createPanelGrid2" columns="3" styleClass="dialog">
+          	<h:panelGrid id="createPanelGrid2" columns="2" styleClass="dialog">
 		    	<p:outputLabel value="Detalhamento Banco" for="detalhamentoBanco" />
-				<p:inputText id="detalhamentoBanco"/>
-				<p:message for="detalhamentoBanco"/>	
+				<p:inputText id="detalhamentoBanco" value="#{contasPendentesBean.contaFiltro.detalhamentoBanco}"/>	
 				
 				<p:outputLabel value="Valor" for="valorFiltro" />
-				<p:inputText id="valorFiltro"/>
-				<p:message for="valorFiltro"/>
+				<p:inputText id="valorFiltro" styleClass="money" value="#{contasPendentesBean.contaFiltro.valor}"/>
 	    	 </h:panelGrid>
           </div>
           <div class="clear"><!--   --></div>
+          <br/>
+          <p:commandButton value="Pesquisar" update=":dataTable:list" action="#{contasPendentesBean.searchConta()}"/>&#160;&#160;
+          <p:commandButton value="Limpar" ajax="false" action="contasPendentes.xhtml"/>
+          <br/>
 	    </h:form>
     </p:fieldset>
-    <h:form id="item">    
+    <h:form id="item">
 	 	<p:dialog id="itemBoleto" header="Adicionar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode" width="545">
-		 	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-		    	<p:outputLabel value="Data Vencimento" for="vencimento" />
-		    	<p:calendar id="vencimento" value="#{contasEditBean.conta.vencimento}" required="true" requiredMessage="O campo não pode ser nulo"/>
-		    	<p:message for="vencimento" />
-
-				<p:outputLabel value="Valor" for="valorConta" />
-				<p:inputText id="valorConta" value="#{contasEditBean.conta.valor}" readonly="true">
-					<f:convertNumber minFractionDigits="2" />
-				</p:inputText>
-				<p:message for="valorConta"/>
-				
-				<p:outputLabel value="Detalhamento" for="detalhamento" />
-				<p:inputTextarea id="detalhamento" value="#{contasEditBean.conta.detalhamento}"/>
-				<p:message for="detalhamento"/>
-				
-				<p:outputLabel value="Conta paga" for="contaPaga" />
-				<p:selectBooleanCheckbox id="contaPaga" value="#{contasEditBean.pagarAgora}" disabled="true">
-					<p:ajax event="change" update="agora"/>
-				</p:selectBooleanCheckbox>
-				<p:message for="contaPaga"/>
-			 </h:panelGrid>
-			<h:panelGrid id="agora">
-				<h:panelGrid columns="3" rendered="#{contasBean.pagarAgora == 'true'}">
-				 	<p:outputLabel value="Origem" for="origem"/>
-		          	<p:selectOneMenu id="origem" value="#{contasEditBean.origem}" required="true" requiredMessage="A origem é obrigatório" disabled="true">
-		          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-		          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
-		          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
-		          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
-		          		<p:ajax event="change" update="optionBanco" />
-		          	</p:selectOneMenu>
-		          	<p:message for="origem"/>
-		          	
-				 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
-				 	<p:calendar id="dataPagamento" value="#{contasEditBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
-				 	<p:message for="dataPagamento" />
-			 	</h:panelGrid>
+		 	<h:panelGrid id="createPanelGridItem" columns="3" styleClass="dialog">
+			 	<p:outputLabel value="Origem" for="origem"/>
+	          	<p:selectOneMenu id="origem" value="#{contasPendentesBean.origem}" required="true" requiredMessage="A origem é obrigatório">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
+	          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
+	          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
+	          		<p:ajax event="change" oncomplete="PF('itemBoleto').show()" update=":item:itemBoleto" />
+	          	</p:selectOneMenu>
+	          	<p:message for="origem"/>
+	          	
+			 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
+			 	<p:calendar id="dataPagamento" value="#{contasPendentesBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
+			 	<p:message for="dataPagamento" />
 			</h:panelGrid>
-			<h:panelGrid id="optionBanco" >
-				<h:panelGrid columns="3" rendered="#{contasEditBean.origem == 'BANCO'}">
-				 	<p:outputLabel value="Banco" for="banco"/>
-		          	<p:selectOneMenu id="banco" value="#{contasBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
-		          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
-		          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
-		          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
-		          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>
-		          		<f:selectItem itemLabel="Caixa" itemValue="Caixa"/>
-		          		<f:selectItem itemLabel="HSBC" itemValue="HSBC"/>
-		          		<f:selectItem itemLabel="ITAU" itemValue="ITAU"/>
-		          		<f:selectItem itemLabel="Santander" itemValue="Santander"/>
-		          	</p:selectOneMenu>
-		          	<p:message for="banco"/>	
-		          	
-				 	<p:outputLabel value="Detalhe do Banco" for="dbanco" />
-		          	<p:inputTextarea id="dbanco" value="#{contasEditBean.conta.detalhamentoBanco}" required="true" requiredMessage="O valor é obrigatório"/>
-		          	<p:message for="dbanco"/>
-		          </h:panelGrid>
-	          </h:panelGrid>	 	
+			<h:panelGrid id="optionBanco" columns="3" rendered="#{contasPendentesBean.origem == 'BANCO'}">
+			 	<p:outputLabel value="Banco" for="banco"/>
+	          	<p:selectOneMenu id="banco" value="#{contasPendentesBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
+	          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
+	          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
+	          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
+	          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>
+	          		<f:selectItem itemLabel="Caixa" itemValue="Caixa"/>
+	          		<f:selectItem itemLabel="HSBC" itemValue="HSBC"/>
+	          		<f:selectItem itemLabel="ITAU" itemValue="ITAU"/>
+	          		<f:selectItem itemLabel="Santander" itemValue="Santander"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="banco"/>	
+	          	
+			 	<p:outputLabel value="Detalhe do Banco" for="dbanco" />
+	          	<p:inputTextarea id="dbanco" value="#{contasPendentesBean.conta.detalhamentoBanco}" required="true" requiredMessage="O valor é obrigatório"/>
+	          	<p:message for="dbanco"/>		 
+			 </h:panelGrid>
 			<p:commandButton ajax="false" value="Salvar" action="#{contasPendentesBean.persist()}" />
-			<p:commandButton id="fechar" value="Fechar" onclick="PF('itemBoleto').hide()" type="button"/><br/><br/>
-			<p:dataTable id="list" value="#{contasEditBean.sangrias}" var="sang">
-	        	<f:facet name="header">Itens do Boleto</f:facet>
-	          	<p:column headerText="Item">
-	          		<h:outputText value="#{sang.item.descrisao}"/>
-	          	</p:column>
-	          	<p:column headerText="Valor">
-	        		<h:outputText value="#{sang.valor}">
-	        			<f:convertNumber minFractionDigits="2"/>
-	        		</h:outputText>
-	        	</p:column>
-	          	<p:column headerText="Classificação">
-	          		<h:outputText value="#{sang.item.classificacao.descricao}"/>
-	          	</p:column>
-	        </p:dataTable> 	
- 		</p:dialog>	
-	</h:form>
-	<h:form id="visualizarItem">    
-	 	<p:dialog id="visualizarItemBoleto" header="Visualizar item ao boleto" modal="true" widgetVar="itemBoleto" showEffect="fade" hideEffect="explode" width="545">
-		 	<h:panelGrid id="createPanelGrid" columns="2" styleClass="dialog">
-		    	<p:outputLabel value="Data Vencimento" for="visualizarVencimento" />
-		    	<p:calendar id="visualizarVencimento" value="#{contasEditBean.conta.vencimento}" required="true" requiredMessage="O campo não pode ser nulo"/>
-
-				<p:outputLabel value="Valor" for="visualizarValorConta" />
-				<p:inputText id="visualizarValorConta" value="#{contasEditBean.conta.valor}" readonly="true">
-					<f:convertNumber minFractionDigits="2" />
-				</p:inputText>
-				
-				<p:outputLabel value="Detalhamento" for="visualizarDetalhamento" />
-				<p:inputTextarea id="visualizarDetalhamento" value="#{contasEditBean.conta.detalhamento}"/>
-				
-				<p:outputLabel value="Conta paga" for="visualizarContaPaga" />
-				<p:selectBooleanCheckbox id="visualizarContaPaga" value="#{contasEditBean.pagarAgora}" disabled="true">
-					<p:ajax event="change" update="visualizarAgora"/>
-				</p:selectBooleanCheckbox>
-			 </h:panelGrid>
-			<h:panelGrid id="visualizarAgora">
-				<h:panelGrid columns="3" rendered="#{contasBean.pagarAgora == 'true'}">
-				 	<p:outputLabel value="Origem" for="visualizarOrigem"/>
-		          	<p:selectOneMenu id="visualizarOrigem" value="#{contasEditBean.origem}" required="true" requiredMessage="A origem é obrigatório" disabled="true">
-		          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-		          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
-		          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
-		          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
-		          		<p:ajax event="change" update="optionBanco" />
-		          	</p:selectOneMenu>
-		          	<p:message for="origem"/>
-		          	
-				 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
-				 	<p:calendar id="dataPagamento" value="#{contasEditBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
-			 	</h:panelGrid>
-			</h:panelGrid>
-			<h:panelGrid id="optionBanco" >
-				<h:panelGrid columns="3" rendered="#{contasEditBean.origem == 'BANCO'}">
-				 	<p:outputLabel value="Banco" for="banco"/>
-		          	<p:selectOneMenu id="banco" value="#{contasBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
-		          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
-		          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
-		          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
-		          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>
-		          		<f:selectItem itemLabel="Caixa" itemValue="Caixa"/>
-		          		<f:selectItem itemLabel="HSBC" itemValue="HSBC"/>
-		          		<f:selectItem itemLabel="ITAU" itemValue="ITAU"/>
-		          		<f:selectItem itemLabel="Santander" itemValue="Santander"/>
-		          	</p:selectOneMenu>
-		          	<p:message for="banco"/>	
-		          	
-				 	<p:outputLabel value="Detalhe do Banco" for="dbanco" />
-		          	<p:inputTextarea id="dbanco" value="#{contasEditBean.conta.detalhamentoBanco}" required="true" requiredMessage="O valor é obrigatório"/>
-		          </h:panelGrid>
-	          </h:panelGrid>	 	
-			<p:commandButton id="fechar" value="Fechar" onclick="PF('itemBoleto').hide()" type="button"/><br/><br/>
-			<p:dataTable id="visualizarList" value="#{contasEditBean.sangrias}" var="sang">
-	        	<f:facet name="header">Itens do Boleto</f:facet>
-	          	<p:column headerText="Item">
-	          		<h:outputText value="#{sang.item.descrisao}"/>
-	          	</p:column>
-	          	<p:column headerText="Valor">
-	        		<h:outputText value="#{sang.valor}">
-	        			<f:convertNumber minFractionDigits="2"/>
-	        		</h:outputText>
-	        	</p:column>
-	          	<p:column headerText="Classificação">
-	          		<h:outputText value="#{sang.item.classificacao.descricao}"/>
-	          	</p:column>
-	        </p:dataTable> 	
- 		</p:dialog>	
+			<p:commandButton id="fechar" value="Fechar" onclick="PF('itemBoleto').hide()" type="button"/> 	
+ 		</p:dialog>
 	</h:form>
     <h:form id="dataTable">
-    	 <p:dataTable id="list" value="#{contasPendentesBean.carregarContas()}" var="contaPendente" paginator="true" rows="20">
+    	 <p:dataTable id="list" value="#{contasPendentesBean.contas}" var="contaPendente" paginator="true" rows="10">
 	        	<f:facet name="header">Itens do Boleto</f:facet>
- 	          	<p:column headerText="Detalhamento">
+	          	<p:column headerText="Detalhamento" sortBy="#{contaPendente.detalhamento}">
 	          		<h:outputText value="#{contaPendente.detalhamento}"/>
 	          	</p:column>
-	          	<p:column headerText="Valor">
+	          	<p:column headerText="Valor" sortBy="#{contaPendente.valor}">
 	        		<h:outputText value="#{contaPendente.valor}">
 	        			<f:convertNumber minFractionDigits="2"/>
 	        		</h:outputText>
 	        	</p:column>
-	          	<p:column headerText="Vencimento">
+	          	<p:column headerText="Vencimento" sortBy="#{contaPendente.vencimento}">
 	          		<h:outputText value="#{contaPendente.vencimento}">
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<p:column headerText="Status">
+	          	<p:column headerText="Status" sortBy="#{contaPendente.dataPagamento}">
 	          		<h:outputText value="Paga" rendered="#{not empty contaPendente.dataPagamento}" />
 	          		<h:outputText value="Pendente" rendered="#{empty contaPendente.dataPagamento}"/>
 	          	</p:column>
      			<p:column headerText="Ações">
-					<p:commandButton icon="ui-icon-note" jax="false" id="registrarPagamento"
+	          		<p:commandButton icon="ui-icon-note" jax="false" id="registrarPagamento"
 						title="Registrar Pagamento"
 						rendered="#{empty contaPendente.dataPagamento}"
 						onclick="PF('itemBoleto').show()">
 						<f:setPropertyActionListener value="#{contaPendente}"
 							target="#{contasPendentesBean.conta}" />
 					</p:commandButton>
-					<p:commandButton id="visualizerEditButton" icon="ui-icon-zoomin" title="Visualição do Boleto"  oncomplete="PF('visualizarItemBoleto').show()" update=":visualizarItem:visualizarItemBoleto" action="#{contasBean.editarConta()}">
-						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasEditBean.conta}" />
-					</p:commandButton>
-					<p:commandButton id="editButton" icon="ui-icon-pencil" title="#{messages.label_edit}" oncomplete="PF('itemBoleto').show()" update=":item:itemBoleto" action="#{contasBean.editarConta()}">
-						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasEditBean.conta}" />
+					<p:commandButton ajax="false" icon="ui-icon-pencil" title="#{messages.label_edit}" action="#{contasBean.editarConta()}">
+						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasBean.conta}" />
 					</p:commandButton>
 					 <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
 						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasPendentesBean.conta}" />

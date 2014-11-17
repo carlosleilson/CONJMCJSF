@@ -94,12 +94,18 @@ public class ContaUsuarioBean implements Serializable   {
 		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
 		for (ContasFuncionario funcionarioTemp : Funcionarios) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
-			umFuncionario.setId(funcionarioTemp);
-			umFuncionario.setItem(funcionarioTemp.getItem());
-			umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
-			umFuncionario.setValor(funcionarioTemp.getValor());
-			totalDesconto = totalDesconto + funcionarioTemp.getValor();
-			todosFuncionariosTmp.add(umFuncionario);
+			if(funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("489")) ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("490"))
+					 ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("166")) ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("168"))){
+				funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
+			}else {
+				umFuncionario.setId(funcionarioTemp);
+				umFuncionario.setItem(funcionarioTemp.getItem());
+				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
+				umFuncionario.setValor(funcionarioTemp.getValor());
+				funcionarioVoTmp.setSalario(funcionarioTemp.getFuncionario().getSalario());
+				totalDesconto = totalDesconto + funcionarioTemp.getValor();
+				todosFuncionariosTmp.add(umFuncionario);
+			}
 		}
 		funcionarioVoTmp.setTotalDesconto(totalDesconto);
 		funcionarioVoTmp.setValorReceber(empregado.getSalario() - totalDesconto);

@@ -30,7 +30,7 @@
           	<p:selectOneMenu id="classificacao" value="#{despesasGastosBean.despesasGastos.classificacao}"  converter="despesasConverter" required="true" 
           		requiredMessage="A Classificação é obrigatório " filter="true">
           		<f:selectItem itemLabel="Selecione uma Classificação" itemValue=""/>
-          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.descricao}" item="#{despesa}" />
+          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.codigo} - #{despesa.descricao}" item="#{despesa}" />
           	</p:selectOneMenu>
           	<p:message for="classificacao"/>
           	
@@ -42,9 +42,9 @@
 		        </p:selectOneRadio>
 	        <p:message for="despesaPessoal"/>
 	        
-	        <p:outputLabel value="Não é Despesa" for="naoDespesa"/>
-          	<p:selectBooleanCheckbox id="naoDespesa" value="#{despesasGastosBean.despesasGastos.naoDespesa}" required="true"/>
-          	<p:message for="naoDespesa"/>
+<!-- 	        <p:outputLabel value="Não é Despesa" for="naoDespesa"/> -->
+<!--           	<p:selectBooleanCheckbox id="naoDespesa" value="#{despesasGastosBean.despesasGastos.naoDespesa}" required="true"/> -->
+<!--           	<p:message for="naoDespesa"/> -->
           	
           	<p:outputLabel value="Ativo" for="situacao"/>
           	<p:selectBooleanCheckbox id="situacao" value="#{despesasGastosBean.despesasGastos.situacao}" required="true"/>
@@ -57,7 +57,7 @@
     	<p:commandButton ajax="false" value="#{messages.label_reset}" actionListener="#{despesasGastosBean.reset()}" action="despesasGastos.xhtml" />
     </h:form>
     <h:form prependId="false" id="dataForm">     
-        <p:dataTable id="list" value="#{despesasGastosBean.allDespesasGastoses}" var="despesa_Gastos" resizableColumns="false" paginator="true" rows="10">
+        <p:dataTable id="list" value="#{despesasGastosBean.allDespesasGastoses}" widgetVar="itens" var="despesa_Gastos" resizableColumns="false" paginator="true" rows="10">
           <f:facet name="header">Despesas/Gastos</f:facet>
           <p:column headerText="Id" styleClass="primariKey">
           	<h:outputText value="#{despesa_Gastos.id}" />
@@ -68,8 +68,11 @@
           <p:column headerText="Descrição" sortBy="#{despesa_Gastos.descrisao}" filterBy="#{despesa_Gastos.descrisao}">
           	<h:outputText value="#{despesa_Gastos.descrisao}" />
           </p:column>
-          <p:column headerText="Classificação" sortBy="#{despesa_Gastos.classificacao.descricao}">
-          	<h:outputText value="#{despesa_Gastos.classificacao.descricao}"/>          
+          <p:column headerText="Código" sortBy="#{despesa_Gastos.classificacao.codigo}" filterBy="#{despesa_Gastos.classificacao.codigo}" >
+          	<h:outputText value="#{despesa_Gastos.classificacao.codigo}"/>          
+          </p:column>          
+          <p:column headerText="Classificação" sortBy="#{despesa_Gastos.classificacao.descricao}" filterBy="#{despesa_Gastos.classificacao.descricao}" >
+          	<h:outputText value="#{despesa_Gastos.classificacao.descricao}"/>  
           </p:column>
           <p:column headerText="Despesa Pessoal" sortBy="#{despesa_Gastos.despesaPessoal}">
           	<h:outputText value="Sim" rendered="#{despesa_Gastos.despesaPessoal == true}"/> 

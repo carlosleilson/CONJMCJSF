@@ -62,10 +62,11 @@
             <p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" action="despesas.xhtml" title="#{messages.label_edit}">
               <f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" />
             </p:commandButton>
-            
-            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
-				<f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" />
-			</p:commandButton>
+            <ui:remove>
+<!--             <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}"> -->
+<!-- 				<f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" /> -->
+<!-- 			</p:commandButton> -->
+            </ui:remove>
           </p:column>
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{despesasBean.despesas.codigo}?" hideEffect="explode" widgetVar="confirmation" severity="alert">

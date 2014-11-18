@@ -15,15 +15,15 @@
           <h:panelGrid id="funcionarioGrid" columns="3">
 				
 				<p:outputLabel value="Funcionario:" for="funcionario"/>
-				<p:outputLabel id="funcionario" value="#{contaUsuarioBean.contaFuncionario.funcionario.nome}" for="funcionario"/>
+				<p:outputLabel id="funcionario" value="#{contaUsuarioRegistroBean.contaFuncionario.funcionario.nome}" for="funcionario"/>
 				<p:message for="funcionario"/>
 
 	            <p:outputLabel value="Período: " for="periodo"/>
-	    		<p:calendar id="periodo"  value="#{contaUsuarioBean.contaFuncionario.periodo}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo obrigatório"/>
+	    		<p:calendar id="periodo"  value="#{contaUsuarioRegistroBean.contaFuncionario.periodo}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo obrigatório"/>
 	    		<p:message for="periodo"/>
 	          		          	
 	          	<p:outputLabel value="Tipo de lancamento" for="itens"/>
-	          	<p:selectOneMenu id="itens" value="#{contaUsuarioBean.contaFuncionario.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
+	          	<p:selectOneMenu id="itens" value="#{contaUsuarioRegistroBean.contaFuncionario.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
 	          		<f:selectItems value="#{despesasGastosBean.allItensPessoalAtivos}" var="gasto" 
 	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
@@ -31,11 +31,11 @@
 	          	<p:message for="itens"/>
 	          	
 				<p:outputLabel value="Descrisão do Item:" for="descricaoItem" />
-	          	<p:inputTextarea id="descricaoItem" value="#{contaUsuarioBean.contaFuncionario.descricao}"  />
+	          	<p:inputTextarea id="descricaoItem" value="#{contaUsuarioRegistroBean.contaFuncionario.descricao}"  />
 	          	<p:message for="descricaoItem"/>	          	
 				
 	          	<p:outputLabel value="Natureza" for="natureza"/>
-	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório">
+	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioRegistroBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório">
 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
 	          		<f:selectItem itemLabel="DÉBITO" itemValue="true"/>
 	          		<f:selectItem itemLabel="CRÉDITO" itemValue="false"/>
@@ -43,28 +43,28 @@
 	          	<p:message for="natureza"/>	          	
 
 	          	<p:outputLabel value="Valor" for="valor" />
-	          	<p:inputText styleClass="money" id="valor" value="#{contaUsuarioBean.contaFuncionario.valor}" required="true" requiredMessage="O valor é obrigatório">
+	          	<p:inputText styleClass="money" id="valor" value="#{contaUsuarioRegistroBean.contaFuncionario.valor}" required="true" requiredMessage="O valor é obrigatório">
 	          		<f:convertNumber minFractionDigits="2" />
 	          	</p:inputText>
 	          	<p:message for="valor"/>
           		          	
          		<p:outputLabel value="Parcelas" for="parcela" />
-	          	<p:inputText id="parcela" size="3" value="#{contaUsuarioBean.contaFuncionario.parcela}" required="true" requiredMessage="As parcelas são obrigatório"  />
+	          	<p:inputText id="parcela" size="3" value="#{contaUsuarioRegistroBean.contaFuncionario.parcela}" required="true" requiredMessage="As parcelas são obrigatório"  />
 	          	<p:message for="parcela"/>
 	          	         		          	
           	</h:panelGrid>
           	<br/>
-          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contaUsuarioBean.persist()}" oncomplete="PF('dlgRegistroContaFuncionario').show()"/>
+          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{contaUsuarioRegistroBean.persist()}" oncomplete="PF('dlgRegistroContaFuncionario').show()"/>
           <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="PF('dlgRegistroContaFuncionario').hide()" type="button" ajax="false"  update=":dataForm:list" />
     	</fieldset>
 	  </h:form>   
       <h:form prependId="false" id="dataListFucionarios">
-	        <p:dataTable id="listFucionarios" value="#{contaUsuarioBean.todosItensContasFuncionario}" var="conta">	        	
+	        <p:dataTable id="listFucionarios" value="#{contaUsuarioRegistroBean.todosItensContasFuncionario}" var="conta">	        	
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">
 		            <p:row>
-		                <p:column colspan="3" style="text-align:left" headerText="Salario de #{contaUsuarioBean.funcionarioVo.funcionario.apelido}" />
-		                <p:column headerText="R$ #{contaUsuarioBean.funcionarioVo.salario}" />
+		                <p:column colspan="3" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
+		                <p:column headerText="R$ #{contaUsuarioRegistroBean.funcionarioVo.salario}" />
 		            </p:row>
 		            <p:row>
 		                <p:column headerText="Ação" />
@@ -75,7 +75,7 @@
 		        </p:columnGroup>
 		          <p:column>
 		            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('deleteDialogWidget').show()" title="#{messages.label_delete}" onclick="PF('dlgRegistroContaFuncionario').hide()">
-		              <f:setPropertyActionListener value="#{conta.id}" target="#{contaUsuarioBean.contaFuncionario}" />
+		              <f:setPropertyActionListener value="#{conta.id}" target="#{contaUsuarioRegistroBean.contaFuncionario}" />
 		            </p:commandButton>
 		            <p:tooltip for="deleteButton" value="#{messages.label_delete}" showEffect="fade" hideEffect="fade"  />		          
 		          </p:column>		        
@@ -95,11 +95,11 @@
 		        <p:columnGroup type="footer">
 		            <p:row>
 		                <p:column colspan="3" style="text-align:left" footerText="Total de desconto" />
-		                <p:column footerText="R$ #{contaUsuarioBean.funcionarioVo.totalDesconto}" />
+		                <p:column footerText="R$ #{contaUsuarioRegistroBean.funcionarioVo.totalDesconto}" />
 		            </p:row>
 		             <p:row>
 		                <p:column colspan="3" style="text-align:left" footerText="Valor a recebe" />
-		                <p:column footerText="R$  #{contaUsuarioBean.funcionarioVo.valorReceber}" />
+		                <p:column footerText="R$  #{contaUsuarioRegistroBean.funcionarioVo.valorReceber}" />
 		            </p:row>
 		        </p:columnGroup>     
 	        </p:dataTable>
@@ -108,7 +108,7 @@
     <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm"  >
       <p:outputPanel id="deletePanel">
         <h:form id="deleteForm">
-          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" ajax="false" action="#{contaUsuarioBean.delete}" update=":dataForm:list" oncomplete="PF('deleteDialogWidget').hide()"/>
+          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" ajax="false" action="#{contaUsuarioRegistroBean.delete}" update=":dataForm:list" oncomplete="PF('deleteDialogWidget').hide()"/>
           <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="PF('deleteDialogWidget').hide()" type="button" />
         </h:form>
       </p:outputPanel>

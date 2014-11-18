@@ -38,7 +38,7 @@
 			          	<p:message for="funcionario"/>
 			         </p:column>
 		         </h:panelGrid>
-				<p:commandButton id="createSaveButton" value="Buscar" update=":dataForm:list" action="#{contaUsuarioBean.buscaFuncionarios()}" />
+				<p:commandButton id="createSaveButton" ajax="false" value="Buscar" update=":dataForm:list" action="#{contaUsuarioBean.buscaFuncionarios()}" />
 		</fieldset>
 	  </h:form>   
     <h:form prependId="false" id="dataForm">
@@ -60,7 +60,7 @@
         	        	
             <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
 				<p:tooltip for="registroButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
-				<p:commandButton id="registroButton" icon="ui-icon-calculator" value="Registro" oncomplete="PF('dlgRegistroContaFuncionario').show()" actionListener="#{contaUsuarioBean.contaFuncionarioRedict(funcionarios)}" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
+				<p:commandButton id="registroButton" icon="ui-icon-calculator" value="Registro" oncomplete="PF('dlgRegistroContaFuncionario').show()" actionListener="#{contaUsuarioRegistroBean.contaFuncionarioRedict(funcionarios)}" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
 			</p:column>
         </p:dataTable>
     </h:form>

@@ -26,9 +26,9 @@ import br.com.conjmc.valueobject.FuncionarioVO;
 import br.com.conjmc.valueobject.ItensFuncionario;
 
 @Configurable
-@ManagedBean(name = "contaUsuarioBean")
+@ManagedBean(name = "contaUsuarioRegistroBean")
 @SessionScoped
-public class ContaUsuarioBean implements Serializable   {
+public class ContaUsuarioRegistroBean implements Serializable   {
 	private static final long serialVersionUID = 1L;
 	private Date dataInicial;
 	private Date dataFinal;
@@ -66,6 +66,10 @@ public class ContaUsuarioBean implements Serializable   {
 		allFuncionariosAtivos = funcionariosAtivosTemp;
 		return null;
     }
+	
+	private void contasFuncionario( Funcionarios funcionario ){
+		contaFuncionarios = ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
+	}
 
 	public void buscaFuncionario( Funcionarios empregado ){
 		funcionarioVo = getFuncionarioVO(empregado);
@@ -88,20 +92,29 @@ public class ContaUsuarioBean implements Serializable   {
 		Double totalDesconto = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
 		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
-		ItensFuncionario umFuncionario = null;
 		for (ContasFuncionario funcionarioTemp : Funcionarios) {
-				umFuncionario = new ItensFuncionario();
+			ItensFuncionario umFuncionario = new ItensFuncionario();
+			if(funcionarioTemp.getItem().getClassificacao().getCodigo().equals("I1") 
+					||funcionarioTemp.getItem().getClassificacao().getCodigo().equals("I2")
+					||funcionarioTemp.getItem().getClassificacao().getCodigo().equals("I5")){
+				if(funcionarioTemp.getValor()!= null){
+					funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
+				}else {
+					funcionarioVoTmp.setSalario(funcionarioTemp.getFuncionario().getSalario());
+				}
+			}else {
 				umFuncionario.setId(funcionarioTemp);
 				umFuncionario.setItem(funcionarioTemp.getItem());
 				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
 				umFuncionario.setValor(funcionarioTemp.getValor());
 				funcionarioVoTmp.setSalario(funcionarioTemp.getFuncionario().getSalario());
 				totalDesconto = totalDesconto + funcionarioTemp.getValor();
+				todosFuncionariosTmp.add(umFuncionario);
+			}
 		}
-		todosFuncionariosTmp.add(umFuncionario);
 		funcionarioVoTmp.setTotalDesconto(totalDesconto);
 		funcionarioVoTmp.setValorReceber(empregado.getSalario() - totalDesconto);
-		//funcionarioVoTmp.setItem(todosFuncionariosTmp);
+		funcionarioVoTmp.setItem(todosFuncionariosTmp);
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
 	}	
@@ -114,7 +127,7 @@ public class ContaUsuarioBean implements Serializable   {
 		return true;
 	}
 	
-	public String buscaFuncionarios(){
+	public void buscaFuncionarios(){
 		if(dataInicial!=null || dataFinal!=null || funcionario!=null){
 			List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
 			List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
@@ -127,7 +140,6 @@ public class ContaUsuarioBean implements Serializable   {
 		}else{
 			todosFuncionarios();
 		}
-		return "/page/contaFuncionario.xhtml";
 	}
 
 	private void findAllItensPessoalAtivos() {
@@ -210,6 +222,29 @@ public class ContaUsuarioBean implements Serializable   {
 		this.funcionarioVo = funcionarioVo;
 	}
 	
+	public String persist() {
+        String message = "";
+        if (contaFuncionario.getId() != null) {
+        	contaFuncionario.merge();
+        	message = "message_successfully_created";
+        }else{
+        	contaFuncionario.persist();
+        	message = "message_successfully_created";
+        }
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
+        return "/page/contaFuncionarioRegistro.xhtml";
+    }
+	
+	public String delete() {
+		contaFuncionario.remove();
+        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Receber");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
+        return "/page/contaFuncionarioRegistro.xhtml";
+    }
+	
 	public void reset() {
 		contaFuncionario = null;
     }
@@ -226,7 +261,7 @@ public class ContaUsuarioBean implements Serializable   {
 		contaFuncionario.setFuncionario(funcionarioVo.getFuncionario());
 		contaFuncionario.setParcela(1);
 		buscaFuncionario(contaFuncionario.getFuncionario());
-        return "/page/contaFuncionario.xhtml";
+        return "/page/contaFuncionarioRegistro.xhtml";
     }
 
 	public List<Funcionarios> getAllFuncionariosAtivos() {

@@ -23,7 +23,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -233,7 +232,7 @@ public class Contas implements Serializable{
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		
-		if(!conta.getVencimento().equals("")) {
+		if(conta.getVencimento() != null) {
 			Path<String> vencimento = root.get("vencimento");
 			predicates.add(cb.and(cb.equal(vencimento, conta.getVencimento())));
 		}

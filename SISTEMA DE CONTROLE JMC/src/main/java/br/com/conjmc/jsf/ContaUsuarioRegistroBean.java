@@ -20,6 +20,7 @@ import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
@@ -32,6 +33,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	private static final long serialVersionUID = 1L;
 	private Date dataInicial;
 	private Date dataFinal;
+	private Sangria despesa;
 	private Funcionarios funcionario;
 	private FuncionarioVO funcionarioVo;
 	private List<FuncionarioVO> todosFuncionarios;
@@ -91,23 +93,21 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
 		Double totalDesconto = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
+		funcionarioVoTmp.setSalario(empregado.getSalario());
 		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
 		for (ContasFuncionario funcionarioTemp : Funcionarios) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
-			if(funcionarioTemp.getItem().getClassificacao().getCodigo().equals("I1") 
-					||funcionarioTemp.getItem().getClassificacao().getCodigo().equals("I2")
-					||funcionarioTemp.getItem().getClassificacao().getCodigo().equals("I5")){
+			if(funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("489")) ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("490"))
+					 ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("166")) ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("168"))){
+				funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
 				if(funcionarioTemp.getValor()!= null){
 					funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
-				}else {
-					funcionarioVoTmp.setSalario(funcionarioTemp.getFuncionario().getSalario());
 				}
 			}else {
 				umFuncionario.setId(funcionarioTemp);
 				umFuncionario.setItem(funcionarioTemp.getItem());
 				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
 				umFuncionario.setValor(funcionarioTemp.getValor());
-				funcionarioVoTmp.setSalario(funcionarioTemp.getFuncionario().getSalario());
 				totalDesconto = totalDesconto + funcionarioTemp.getValor();
 				todosFuncionariosTmp.add(umFuncionario);
 			}
@@ -223,7 +223,15 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	}
 	
 	public String persist() {
-        String message = "";
+		String message = "";
+		Salario(message);
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
+        return "/page/contaFuncionarioRegistro.xhtml";
+    }
+	
+	private void Salario(String message) {
         if (contaFuncionario.getId() != null) {
         	contaFuncionario.merge();
         	message = "message_successfully_created";
@@ -231,12 +239,33 @@ public class ContaUsuarioRegistroBean implements Serializable   {
         	contaFuncionario.persist();
         	message = "message_successfully_created";
         }
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
-        return "/page/contaFuncionarioRegistro.xhtml";
-    }
-	
+        
+		if(funcionarioVo.getValorReceber()!=null){
+			despesa = salarioFuncionario();
+			despesa.setValor(funcionarioVo.getValorReceber());
+			
+			if (despesa.getId() != null) {
+				despesa.merge();
+			} else {
+				despesa.persist();
+			}
+		}        
+	}
+
+	private Sangria salarioFuncionario() {
+		Sangria despesaTmp = Sangria.encontarFuncionarioPorItens(contaFuncionario.getFuncionario(), contaFuncionario.getItem());
+		if(despesaTmp!=null && despesaTmp.getId()!=null){
+			return despesaTmp;
+		}
+		despesa = new Sangria();
+		despesa.setFuncionario(contaFuncionario.getFuncionario());
+		despesa.setClassificacao(contaFuncionario.getItem().getClassificacao());
+		despesa.setItem(contaFuncionario.getItem());
+		despesa.setPeriodo(contaFuncionario.getPeriodo());
+		despesa.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));		
+		return despesa;
+	}
+
 	public String delete() {
 		contaFuncionario.remove();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Receber");
@@ -254,11 +283,11 @@ public class ContaUsuarioRegistroBean implements Serializable   {
         return "/page/contaFuncionario.xhtml";
     }
 	
-	public String contaFuncionarioRedict(FuncionarioVO funcionarioVo) {
+	public String contaFuncionarioRedict(FuncionarioVO funcionarioVoTmp) {
 		contaFuncionario = new ContasFuncionario();
 		contaFuncionario.setPeriodo(new Date());
 		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-		contaFuncionario.setFuncionario(funcionarioVo.getFuncionario());
+		contaFuncionario.setFuncionario(funcionarioVoTmp.getFuncionario());
 		contaFuncionario.setParcela(1);
 		buscaFuncionario(contaFuncionario.getFuncionario());
         return "/page/contaFuncionarioRegistro.xhtml";
@@ -279,5 +308,13 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	public void setTodosItensContasFuncionario(
 			List<ItensFuncionario> todosItensContasFuncionario) {
 		this.todosItensContasFuncionario = todosItensContasFuncionario;
+	}
+
+	public Sangria getDespesa() {
+		return despesa;
+	}
+
+	public void setDespesa(Sangria despesa) {
+		this.despesa = despesa;
 	}
 }

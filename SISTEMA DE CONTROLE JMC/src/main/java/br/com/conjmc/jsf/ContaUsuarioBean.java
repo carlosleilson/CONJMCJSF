@@ -218,16 +218,6 @@ public class ContaUsuarioBean implements Serializable   {
         reset();
         return "/page/contaFuncionario.xhtml";
     }
-	
-	public String contaFuncionarioRedict(FuncionarioVO funcionarioVo) {
-		contaFuncionario = new ContasFuncionario();
-		contaFuncionario.setPeriodo(new Date());
-		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-		contaFuncionario.setFuncionario(funcionarioVo.getFuncionario());
-		contaFuncionario.setParcela(1);
-		buscaFuncionario(contaFuncionario.getFuncionario());
-        return "/page/contaFuncionario.xhtml";
-    }
 
 	public List<Funcionarios> getAllFuncionariosAtivos() {
 		return allFuncionariosAtivos;

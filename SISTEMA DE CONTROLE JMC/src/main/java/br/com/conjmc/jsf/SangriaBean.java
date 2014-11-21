@@ -556,7 +556,7 @@ public class SangriaBean implements Serializable  {
     	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
         sangria.persist();
         message = "message_successfully_created";
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Sangria");
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         codigo = null;
         reset();

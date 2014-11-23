@@ -52,12 +52,18 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		findAllFuncionariosAtivos();
 	}
 	
+	/**
+	 * Método que inicia todos os funcionariosVO.
+	 */		
 	private void iniciarFuncionarioVO() {
 		if(funcionarioVo == null){
 			funcionarioVo = new FuncionarioVO();
 		}
 	}
-
+	
+	/**
+	 * Método que procurar todos os funcionarios ativos.
+	 */	
 	public String findAllFuncionariosAtivos() {
 		List<Funcionarios> funcionariosAtivosTemp = new ArrayList<Funcionarios>();
 		for(Funcionarios funcionarioTemp :Funcionarios.findAllFuncionariosAtivos()){
@@ -69,14 +75,22 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		return null;
     }
 	
+	/**
+	 * Método que busca conta funcionario por funcionario.
+	 */		
 	private void contasFuncionario( Funcionarios funcionario ){
 		contaFuncionarios = ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
 	}
 
+	/**
+	 * Método que busca funcionarioVO por funcionario.
+	 */
 	public void buscaFuncionario( Funcionarios empregado ){
 		funcionarioVo = getFuncionarioVO(empregado);
 	}
-	
+	/**
+	 * Método que procurar todos os funcionarios.
+	 */		
 	private void todosFuncionarios() {
 		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
@@ -88,6 +102,11 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		todosFuncionarios = todosFuncionariosTmp; 
 	}
 	
+	/**
+	 * Método que procurar funcionario.
+	 * @param Funcionarios -- todos funcionarios. 
+	 * @return FuncionarioVO Retorna object value funcionario
+	 */	
 	private FuncionarioVO getFuncionarioVO(Funcionarios empregado) {
 		List<ItensFuncionario> todosFuncionariosTmp = new ArrayList<ItensFuncionario>();
 		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
@@ -97,8 +116,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
 		for (ContasFuncionario funcionarioTemp : Funcionarios) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
-			if(funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("489")) ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("490"))
-					 ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("166")) ||funcionarioTemp.getItem().getCodigo().equals(Long.parseLong("168"))){
+			if(validarSeESalario(funcionarioTemp.getItem())){
 				funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
 				if(funcionarioTemp.getValor()!= null){
 					funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
@@ -119,6 +137,21 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		return funcionarioVoTmp;
 	}	
 
+	/**
+	 * Método que valida se é item do salario.
+	 * @param DespesasGastos -- itens 
+	 */
+	private boolean validarSeESalario(DespesasGastos item) {
+		return (item.getCodigo().equals(Long.parseLong("489")) 
+				||item.getCodigo().equals(Long.parseLong("490"))
+				||item.getCodigo().equals(Long.parseLong("166")) 
+				||item.getCodigo().equals(Long.parseLong("168")));
+	}
+
+	/**
+	 * Método que tira administradores do sistema da combox.
+	 * @param Funcionarios -- Funicionarios da empresa
+	 */
 	private boolean tirarAdiministradores(Funcionarios empregado){
 		for(Usuarios usuario : Usuarios.findUsuariosPorFuncionario(empregado)){
 			if(usuario.getPerfil().equals(Perfil.ADMIN))
@@ -126,7 +159,10 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Método que busca funcionario por data e funcionario.
+	 */
 	public void buscaFuncionarios(){
 		if(dataInicial!=null || dataFinal!=null || funcionario!=null){
 			List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
@@ -142,10 +178,95 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		}
 	}
 
+	/**
+	 * Método que busca todos itens ativos.
+	 */
 	private void findAllItensPessoalAtivos() {
 		itens = DespesasGastos.findAllDespesasGastosAtivos();		
 	}	
+
+	/**
+	 * Método que grava no banco conta funcionario e 
+	 * salario com descontos em despesas.
+	 */		
+	void Salario(String message) {
+        if (contaFuncionario.getId() != null) {
+        	contaFuncionario.merge();
+        	message = "message_successfully_created";
+        }else{
+        	contaFuncionario.persist();
+        	message = "message_successfully_created";
+        }
+        
+		if(funcionarioVo.getValorReceber()!=null){
+			despesa = salarioFuncionario();
+			despesa.setValor(funcionarioVo.getValorReceber());
+			
+			if (despesa.getId() != null) {
+				despesa.merge();
+			} else {
+				despesa.persist();
+			}
+		}        
+	}
+
+	/**
+	 * Método que prepara dados de funcionario para o banco.
+	 * @return Sangria --Retorna despesa salarial. 
+	 */		
+	private Sangria salarioFuncionario() {
+		Sangria despesaTmp = Sangria.encontarFuncionarioPorItens(contaFuncionario.getFuncionario(), contaFuncionario.getItem());
+		if(despesaTmp!=null && despesaTmp.getId()!=null){
+			return despesaTmp;
+		}
+		despesa = new Sangria();
+		despesa.setFuncionario(contaFuncionario.getFuncionario());
+		despesa.setClassificacao(contaFuncionario.getItem().getClassificacao());
+		despesa.setItem(contaFuncionario.getItem());
+		despesa.setPeriodo(contaFuncionario.getPeriodo());
+		despesa.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));		
+		return despesa;
+	}
+
+	public String handleDialogClose(CloseEvent event) {
+        reset();
+        return "/page/contaFuncionario.xhtml";
+    }
+
+	/**
+	 * Método que redireçona o link.
+	 * @param FuncionarioVO -- Funcionario temporario.
+	 * @return String --Retorna caminho de pagina. 
+	 */		
+	public String contaFuncionarioRedict(FuncionarioVO funcionarioVoTmp) {
+		contaFuncionario = new ContasFuncionario();
+		contaFuncionario.setPeriodo(new Date());
+		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+		contaFuncionario.setFuncionario(funcionarioVoTmp.getFuncionario());
+		contaFuncionario.setParcela(1);
+		buscaFuncionario(contaFuncionario.getFuncionario());
+        return "/page/contaFuncionarioRegistro.xhtml";
+    }
 	
+	public String persist() {
+		contaFuncionario.setOrigem(true);
+		String message = "";
+		Salario(message);
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        return contaFuncionarioRedict(funcionarioVo);
+    }
+	
+	public String delete() {
+		contaFuncionario.remove();
+        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Receber");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        return contaFuncionarioRedict(funcionarioVo);
+    }
+	
+	public void reset() {
+		contaFuncionario = null;
+    }	
 	//Generate getters and setters
 	public Date getDataInicial() {
 		return dataInicial;
@@ -221,77 +342,6 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	public void setFuncionarioVo(FuncionarioVO funcionarioVo) {
 		this.funcionarioVo = funcionarioVo;
 	}
-	
-	public String persist() {
-		String message = "";
-		Salario(message);
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
-        return "/page/contaFuncionarioRegistro.xhtml";
-    }
-	
-	private void Salario(String message) {
-        if (contaFuncionario.getId() != null) {
-        	contaFuncionario.merge();
-        	message = "message_successfully_created";
-        }else{
-        	contaFuncionario.persist();
-        	message = "message_successfully_created";
-        }
-        
-		if(funcionarioVo.getValorReceber()!=null){
-			despesa = salarioFuncionario();
-			despesa.setValor(funcionarioVo.getValorReceber());
-			
-			if (despesa.getId() != null) {
-				despesa.merge();
-			} else {
-				despesa.persist();
-			}
-		}        
-	}
-
-	private Sangria salarioFuncionario() {
-		Sangria despesaTmp = Sangria.encontarFuncionarioPorItens(contaFuncionario.getFuncionario(), contaFuncionario.getItem());
-		if(despesaTmp!=null && despesaTmp.getId()!=null){
-			return despesaTmp;
-		}
-		despesa = new Sangria();
-		despesa.setFuncionario(contaFuncionario.getFuncionario());
-		despesa.setClassificacao(contaFuncionario.getItem().getClassificacao());
-		despesa.setItem(contaFuncionario.getItem());
-		despesa.setPeriodo(contaFuncionario.getPeriodo());
-		despesa.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));		
-		return despesa;
-	}
-
-	public String delete() {
-		contaFuncionario.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Receber");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
-        return "/page/contaFuncionarioRegistro.xhtml";
-    }
-	
-	public void reset() {
-		contaFuncionario = null;
-    }
-
-	public String handleDialogClose(CloseEvent event) {
-        reset();
-        return "/page/contaFuncionario.xhtml";
-    }
-	
-	public String contaFuncionarioRedict(FuncionarioVO funcionarioVoTmp) {
-		contaFuncionario = new ContasFuncionario();
-		contaFuncionario.setPeriodo(new Date());
-		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-		contaFuncionario.setFuncionario(funcionarioVoTmp.getFuncionario());
-		contaFuncionario.setParcela(1);
-		buscaFuncionario(contaFuncionario.getFuncionario());
-        return "/page/contaFuncionarioRegistro.xhtml";
-    }
 
 	public List<Funcionarios> getAllFuncionariosAtivos() {
 		return allFuncionariosAtivos;

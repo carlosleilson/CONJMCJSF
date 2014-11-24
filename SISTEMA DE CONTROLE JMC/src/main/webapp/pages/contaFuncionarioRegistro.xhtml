@@ -34,15 +34,13 @@
 	          	<p:inputTextarea id="descricaoItem" value="#{contaUsuarioRegistroBean.contaFuncionario.descricao}"  />
 	          	<p:message for="descricaoItem"/>	          	
 				
-				<ui:remove>
-<!-- 	          	<p:outputLabel value="Natureza" for="natureza"/> -->
-<!-- 	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioRegistroBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório"> -->
-<!-- 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/> -->
-<!-- 	          		<f:selectItem itemLabel="DÉBITO" itemValue="true"/> -->
-<!-- 	          		<f:selectItem itemLabel="CRÉDITO" itemValue="false"/> -->
-<!-- 	          	</p:selectOneMenu> -->
-<!-- 	          	<p:message for="natureza"/>	          	 -->
-				</ui:remove>          	
+	          	<p:outputLabel value="Natureza" for="natureza"/>
+	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioRegistroBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItem itemLabel="DÉBITO" itemValue="true"/>
+	          		<f:selectItem itemLabel="CRÉDITO" itemValue="false"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="natureza"/>	          	
 
 	          	<p:outputLabel value="Valor" for="valor" />
 	          	<p:inputText styleClass="money" id="valor" value="#{contaUsuarioRegistroBean.contaFuncionario.valor}" required="true" requiredMessage="O valor é obrigatório">

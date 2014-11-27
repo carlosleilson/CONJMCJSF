@@ -63,12 +63,13 @@
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">
 		            <p:row>
-		                <p:column colspan="3" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
+		                <p:column colspan="4" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
 		                <p:column headerText="R$ #{contaUsuarioRegistroBean.funcionarioVo.salario}" />
 		            </p:row>
 		            <p:row>
 		                <p:column headerText="Ação" />
 		                <p:column headerText="Item" sortBy="#{conta.item.descrisao}" />
+		                <p:column headerText="Natureza" sortBy="#{conta.id.origem}"/>
 		                <p:column headerText="Data"  filterBy="#{conta.periodo}" sortBy="#{conta.periodo}" />
 		                <p:column headerText="Valor" sortBy="#{conta.valor}" />
 		            </p:row>
@@ -83,6 +84,10 @@
 	          		<h:outputText value="#{conta.item.descrisao}"/>
 	          	</p:column>
 	        	<p:column >
+	        		<h:outputText value="DÉBITO" rendered="#{conta.id.origem == true}"/>
+	        		<h:outputText value="CRÉDITO" rendered="#{conta.id.origem == false}"/>
+	        	</p:column>	          	
+	        	<p:column >
 	          		<h:outputText value="#{conta.periodo}"  >
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
@@ -94,11 +99,11 @@
 	          	</p:column>
 		        <p:columnGroup type="footer">
 		            <p:row>
-		                <p:column colspan="3" style="text-align:left" footerText="Total de desconto" />
+		                <p:column colspan="4" style="text-align:left" footerText="Total de desconto" />
 		                <p:column footerText="R$ #{contaUsuarioRegistroBean.funcionarioVo.totalDesconto}" />
 		            </p:row>
 		             <p:row>
-		                <p:column colspan="3" style="text-align:left" footerText="Valor a recebe" />
+		                <p:column colspan="4" style="text-align:left" footerText="Valor a recebe" />
 		                <p:column footerText="R$  #{contaUsuarioRegistroBean.funcionarioVo.valorReceber}" />
 		            </p:row>
 		        </p:columnGroup>     

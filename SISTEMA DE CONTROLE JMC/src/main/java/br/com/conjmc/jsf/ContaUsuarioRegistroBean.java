@@ -111,10 +111,11 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		List<ItensFuncionario> todosFuncionariosTmp = new ArrayList<ItensFuncionario>();
 		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
 		Double totalDesconto = 0.0;
+		Double credito = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
 		funcionarioVoTmp.setSalario(empregado.getSalario());
-		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
-		for (ContasFuncionario funcionarioTemp : Funcionarios) {
+		List<ContasFuncionario> listContaFuncionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
+		for (ContasFuncionario funcionarioTemp : listContaFuncionarios) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
 			if(validarSeESalario(funcionarioTemp.getItem())){
 				funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
@@ -126,12 +127,16 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 				umFuncionario.setItem(funcionarioTemp.getItem());
 				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
 				umFuncionario.setValor(funcionarioTemp.getValor());
-				totalDesconto = totalDesconto + funcionarioTemp.getValor();
+				if(funcionarioTemp.getOrigem()){
+					totalDesconto = Math.abs(totalDesconto + funcionarioTemp.getValor());
+				}else{
+					credito = Math.abs(credito + funcionarioTemp.getValor());
+				}
 				todosFuncionariosTmp.add(umFuncionario);
 			}
 		}
 		funcionarioVoTmp.setTotalDesconto(totalDesconto);
-		funcionarioVoTmp.setValorReceber(empregado.getSalario() - totalDesconto);
+		funcionarioVoTmp.setValorReceber((empregado.getSalario() + credito ) - totalDesconto);
 		funcionarioVoTmp.setItem(todosFuncionariosTmp);
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
@@ -197,9 +202,17 @@ public class ContaUsuarioRegistroBean implements Serializable   {
         	contaFuncionario.persist();
         	message = "message_successfully_created";
         }
-        
+        despesaSalario();
+	}
+
+	private void despesaSalario() {
 		if(funcionarioVo.getValorReceber()!=null){
 			despesa = salarioFuncionario();
+//			if(contaFuncionario.getOrigem()){
+//				despesa.setValor(funcionarioVo.getValorReceber());
+//			}else{
+//				despesa.setValor(funcionarioVo.getValorReceber()-contaFuncionario.getValor());
+//			}
 			despesa.setValor(funcionarioVo.getValorReceber());
 			
 			if (despesa.getId() != null) {
@@ -207,7 +220,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 			} else {
 				despesa.persist();
 			}
-		}        
+		}
 	}
 
 	/**
@@ -249,7 +262,6 @@ public class ContaUsuarioRegistroBean implements Serializable   {
     }
 	
 	public String persist() {
-		contaFuncionario.setOrigem(true);
 		String message = "";
 		Salario(message);
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
@@ -258,8 +270,10 @@ public class ContaUsuarioRegistroBean implements Serializable   {
     }
 	
 	public String delete() {
+		String item = contaFuncionario.getDescricao();
 		contaFuncionario.remove();
-        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Receber");
+		despesaSalario();
+        FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", item+" do Conta Funcionairo");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         return contaFuncionarioRedict(funcionarioVo);
     }

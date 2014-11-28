@@ -2,6 +2,7 @@ package br.com.conjmc.jsf;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -60,6 +61,20 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 			funcionarioVo = new FuncionarioVO();
 		}
 	}
+	
+	/**
+	 * Método que pagina por mes
+	 */	
+	public void anterior(){
+		Calendar c = Calendar.getInstance();
+	}
+
+	/**
+	 * Método que pagina por mes
+	 */		
+	public void proximo(){
+		Calendar c = Calendar.getInstance();
+	}	
 	
 	/**
 	 * Método que procurar todos os funcionarios ativos.

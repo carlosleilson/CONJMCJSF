@@ -42,6 +42,9 @@
 		</fieldset>
 	  </h:form>   
     <h:form prependId="false" id="dataForm">
+	<p:commandButton id="anteriorButton" update=":dataForm:list" value="Anterior" action="#{contaUsuarioBean.anterior}" />
+	<p:commandButton id="proximoButton" update=":dataForm:list" value="Próximo" action="#{contaUsuarioBean.proximo}" />  
+	<br/><br/>	  
         <p:dataTable id="list" value="#{contaUsuarioBean.todosFuncionarios}" var="funcionarios" paginator="true" rows="10">
         	<f:facet name="header">Funcionários</f:facet>
         	<p:column headerText="Apelido" sortBy="#{funcionarios.funcionario.apelido}">

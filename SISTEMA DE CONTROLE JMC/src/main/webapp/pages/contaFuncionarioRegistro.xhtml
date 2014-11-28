@@ -59,6 +59,9 @@
     	</fieldset>
 	  </h:form>   
       <h:form prependId="false" id="dataListFucionarios">
+	<p:commandButton id="anteriorButton" update=":dataListFucionarios:listFucionarios" value="Anterior" action="#{contaUsuarioRegistroBean.anterior}" />
+	<p:commandButton id="proximoButton" update=":dataListFucionarios:listFucionarios" value="Próximo" action="#{contaUsuarioRegistroBean.proximo}" />  
+	<br/><br/>	      
 	        <p:dataTable id="listFucionarios" value="#{contaUsuarioRegistroBean.todosItensContasFuncionario}" var="conta">	        	
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">

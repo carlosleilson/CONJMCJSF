@@ -2,6 +2,7 @@ package br.com.conjmc.jsf;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
@@ -55,7 +57,21 @@ public class ContaUsuarioBean implements Serializable   {
 			funcionarioVo = new FuncionarioVO();
 		}
 	}
+	
+	/**
+	 * Método que pagina por mes
+	 */	
+	public void anterior(){
+		Calendar c = Calendar.getInstance();
+	}
 
+	/**
+	 * Método que pagina por mes
+	 */		
+	public void proximo(){
+		Calendar c = Calendar.getInstance();
+	}	
+	
 	public String findAllFuncionariosAtivos() {
 		List<Funcionarios> funcionariosAtivosTemp = new ArrayList<Funcionarios>();
 		for(Funcionarios funcionarioTemp :Funcionarios.findAllFuncionariosAtivos()){
@@ -87,7 +103,7 @@ public class ContaUsuarioBean implements Serializable   {
 		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
 		Double totalDesconto = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
-		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
+		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(DataUltil.primeiroDiaMes(new Date()), DataUltil.ultimoDiaMes(new Date()), empregado);
 		ItensFuncionario umFuncionario = null;
 		for (ContasFuncionario funcionarioTemp : Funcionarios) {
 				umFuncionario = new ItensFuncionario();

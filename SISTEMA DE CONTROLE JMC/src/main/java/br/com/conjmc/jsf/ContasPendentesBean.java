@@ -20,6 +20,7 @@ public class ContasPendentesBean {
 	private String origem;
 	private boolean pagarAgora;
 	private List<Contas> contas;
+	private String statusFilter;
 	
 	//Filtros
 	private Contas contaFiltro;
@@ -32,7 +33,7 @@ public class ContasPendentesBean {
 	}
 	
 	public void searchConta(){
-		contas = contaFiltro.findByContas(contaFiltro);
+		contas = contaFiltro.findByContas(contaFiltro, statusFilter);
 	}
 	
 	public List<Contas> carregarContas() {
@@ -111,5 +112,13 @@ public class ContasPendentesBean {
 	public void setContaFiltro(Contas contaFiltro) {
 		this.contaFiltro = contaFiltro;
 	}
-	
+
+	public String getStatusFilter() {
+		return statusFilter;
+	}
+
+	public void setStatusFilter(String statusFilter) {
+		this.statusFilter = statusFilter;
+	}
+
 }

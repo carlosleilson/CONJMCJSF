@@ -17,15 +17,25 @@
 	    <h:form id="filtro">
 	    	<div class="gridFunc">	
 	          <h:panelGrid id="createPanelGrid1" columns="2" styleClass="dialog">
-	    		<p:outputLabel value="Data Vencimento" for="dataVencimento" />
-		    	<p:calendar id="dataVencimento" value="#{contasPendentesBean.contaFiltro.vencimento}" pattern="dd/MM/yyyy"/>
+	    		<p:outputLabel value="De" for="dataInicial" />
+		    	<p:calendar id="dataInicial" value="#{contasPendentesBean.contaFiltro.dataPagamento}" pattern="dd/MM/yyyy" required="true"/>
 		    	
-		    	<p:outputLabel value="Detalhamento" for="detalhamentoFiltro" />
-				<p:inputText id="detalhamentoFiltro" value="#{contasPendentesBean.contaFiltro.detalhamento}"/>
+		    	<p:outputLabel value="Até" for="dataFinal" />
+		    	<p:calendar id="dataFinal" value="#{contasPendentesBean.contaFiltro.vencimento}" pattern="dd/MM/yyyy" required="true"/>
+		    	
+		    	<p:outputLabel value="Status" for="statusFilter"/>
+		    	<p:selectOneMenu id="statusFilter" value="#{contasPendentesBean.statusFilter}">
+		    		<f:selectItem itemLabel="Selicione um status" itemValue=""/>
+		    		<f:selectItem itemLabel="Pendente" itemValue="Pendente"/>
+		    		<f:selectItem itemLabel="Paga" itemValue="Paga"/>
+		    	</p:selectOneMenu>
 			</h:panelGrid>
 		</div>
      	<div class="gridFunc">
           	<h:panelGrid id="createPanelGrid2" columns="2" styleClass="dialog">
+          		<p:outputLabel value="Detalhamento" for="detalhamentoFiltro" />
+				<p:inputText id="detalhamentoFiltro" value="#{contasPendentesBean.contaFiltro.detalhamento}"/>
+				
 		    	<p:outputLabel value="Detalhamento Banco" for="detalhamentoBanco" />
 				<p:inputText id="detalhamentoBanco" value="#{contasPendentesBean.contaFiltro.detalhamentoBanco}"/>	
 				
@@ -95,7 +105,7 @@
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<p:column headerText="Status" sortBy="#{contaPendente.dataPagamento}">
+	          	<p:column headerText="Status">
 	          		<h:outputText value="Paga" rendered="#{not empty contaPendente.dataPagamento}" />
 	          		<h:outputText value="Pendente" rendered="#{empty contaPendente.dataPagamento}"/>
 	          	</p:column>

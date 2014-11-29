@@ -224,7 +224,7 @@ public class Contas implements Serializable{
         return merged;
     }
 	
-	public static List<Contas> findByContas(Contas conta){	
+	public static List<Contas> findByContas(Contas conta, String status){	
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<Contas> c = cb.createQuery(Contas.class);
 		Root<Contas> root = c.from(Contas.class);
@@ -233,8 +233,9 @@ public class Contas implements Serializable{
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		
 		if(conta.getVencimento() != null) {
-			Path<String> vencimento = root.get("vencimento");
-			predicates.add(cb.and(cb.equal(vencimento, conta.getVencimento())));
+			Path<Date> vencimento = root.get("vencimento");
+			//predicates.add(cb.and(cb.equal(vencimento, conta.getVencimento())));
+			predicates.add(cb.and(cb.between(vencimento, conta.getDataPagamento(), conta.getVencimento())));
 		}
 		
 		if(!conta.getDetalhamento().equals("")) {
@@ -245,6 +246,16 @@ public class Contas implements Serializable{
 		if(!conta.getDetalhamentoBanco().equals("")) {
 			Path<String> detalhamentoBanco = root.get("detalhamentoBanco");
 			predicates.add(cb.and(cb.like(detalhamentoBanco, "%" + conta.getDetalhamentoBanco() + "%")));
+		}
+		
+		if(!status.equals("")) {
+			if(status.equals("Paga")) {
+				Path<Date> dataPagamento = root.get("dataPagamento");
+				predicates.add(cb.and(cb.isNotNull(dataPagamento)));
+			} else {
+				Path<Date> dataPagamento = root.get("dataPagamento");
+				predicates.add(cb.and(cb.isNull(dataPagamento)));
+			}
 		}
 		
 		if(!conta.getValor().equals("") && !conta.getValor().equals(0.0)) {

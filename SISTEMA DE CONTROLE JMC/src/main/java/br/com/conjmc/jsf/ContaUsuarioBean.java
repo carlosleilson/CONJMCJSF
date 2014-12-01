@@ -46,9 +46,8 @@ public class ContaUsuarioBean implements Serializable   {
 	@PostConstruct
     public void init() {
 		iniciarFuncionarioVO();
-		todosFuncionarios();
-		findAllItensPessoalAtivos();
-		findAllFuncionariosAtivos();
+//		findAllItensPessoalAtivos();
+//		findAllFuncionariosAtivos();
 		iniciarData();
 	}
 	
@@ -58,7 +57,8 @@ public class ContaUsuarioBean implements Serializable   {
 		dataTemp =c.getTime();
     	if(mesTemp==0)
     		mesTemp=dataTemp.getMonth();
-    	setDataLabel(getSdf().format(dataTemp).toString());		
+    	setDataLabel(getSdf().format(dataTemp).toString());	
+    	todosFuncionarios(dataTemp, dataTemp);
 	}
 	
 	private void iniciarFuncionarioVO() {
@@ -107,24 +107,12 @@ public class ContaUsuarioBean implements Serializable   {
 	public void buscaFuncionario( Funcionarios empregado ){
 		funcionarioVo = getFuncionarioVO(empregado,new Date(),new Date());
 	}
-	
-	private void todosFuncionarios() {
-		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
-		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
-		for (Funcionarios  funcionarioTemp : Funcionarios) {
-			if(tirarAdiministradores(funcionarioTemp)){
-				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp,new Date(),new Date()));
-			}
-		}
-		todosFuncionarios = todosFuncionariosTmp; 
-	}
-	
 	private void todosFuncionarios(Date dataInicial, Date dataFinal) {
 		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
 		for (Funcionarios  funcionarioTemp : Funcionarios) {
 			if(tirarAdiministradores(funcionarioTemp)){
-				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp,new Date(),new Date()));
+				todosFuncionariosTmp.add(getFuncionarioVO(funcionarioTemp, dataTemp, dataTemp));
 			}
 		}
 		todosFuncionarios = todosFuncionariosTmp; 

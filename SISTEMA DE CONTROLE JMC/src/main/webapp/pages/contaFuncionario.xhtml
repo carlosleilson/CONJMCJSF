@@ -14,8 +14,8 @@
       <p:growl id="growl" showDetail="false"/>
     </h:form>
     <h:form prependId="false" id="dataForm">
-	<p:commandButton id="anteriorButton" update=":dataForm:list" value="Anterior" action="#{contaUsuarioBean.anterior}" />
-	<p:commandButton id="proximoButton" update=":dataForm:list" value="Próximo" action="#{contaUsuarioBean.proximo}" />  
+	<p:commandButton id="anteriorButton" update=":dataForm:list" ajax="false" value="Anterior" action="#{contaUsuarioBean.anterior}" />
+	<p:commandButton id="proximoButton" update=":dataForm:list" ajax="false" value="Próximo" action="#{contaUsuarioBean.proximo}" />  
 	<br/><br/>	  
     <p:fieldset id="fieldsets" legend="Contas Funcionarios - #{contaUsuarioBean.dataLabel}"  >
         <p:dataTable id="list" value="#{contaUsuarioBean.todosFuncionarios}" var="funcionarios" paginator="true" rows="10">

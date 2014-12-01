@@ -55,13 +55,14 @@
           	</h:panelGrid>
           	<br/>
           <p:commandButton id="createSaveButton" value="#{messages.label_save}" action="#{contaUsuarioRegistroBean.persist()}" oncomplete="PF('dlgRegistroContaFuncionario').show()" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
-          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="PF('dlgRegistroContaFuncionario').hide()" type="button" ajax="false"  update=":dataForm:list" />
+          <p:commandButton id="createCloseButton" value="#{messages.label_close}" onclick="PF('dlgRegistroContaFuncionario').hide()" type="button" update=":dataForm:list" />
     	</fieldset>
 	  </h:form>   
       <h:form prependId="false" id="dataListFucionarios">
-	<p:commandButton id="anteriorButton" update=":dataListFucionarios:listFucionarios" value="Anterior" action="#{contaUsuarioRegistroBean.anterior}" />
-	<p:commandButton id="proximoButton" update=":dataListFucionarios:listFucionarios" value="Próximo" action="#{contaUsuarioRegistroBean.proximo}" />  
+	<p:commandButton id="anteriorButton1" update=":dataListFucionarios:listFucionarios" value="Anterior" action="#{contaUsuarioRegistroBean.anterior}" oncomplete="PF('dlgRegistroContaFuncionario').show()" />
+	<p:commandButton id="proximoButton1" update=":dataListFucionarios:listFucionarios" value="Próximo" action="#{contaUsuarioRegistroBean.proximo}" oncomplete="PF('dlgRegistroContaFuncionario').show()" />  
 	<br/><br/>	      
+    <p:fieldset id="fieldsets2" legend="Itens da Contas Funcionarios - #{contaUsuarioBean.dataLabel}"  >	
 	        <p:dataTable id="listFucionarios" value="#{contaUsuarioRegistroBean.todosItensContasFuncionario}" var="conta">	        	
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">
@@ -111,6 +112,7 @@
 		            </p:row>
 		        </p:columnGroup>     
 	        </p:dataTable>
+		</p:fieldset>	        
        </h:form>	  
  </p:dialog>  
     <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm"  >

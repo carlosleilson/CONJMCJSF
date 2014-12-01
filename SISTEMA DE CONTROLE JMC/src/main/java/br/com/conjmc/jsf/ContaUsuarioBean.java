@@ -1,16 +1,16 @@
 package br.com.conjmc.jsf;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -18,16 +18,11 @@ import org.springframework.beans.factory.annotation.Configurable;
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
-import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
-import br.com.conjmc.jsf.util.DataUltil;
-import br.com.conjmc.jsf.util.MessageFactory;
-import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
 import br.com.conjmc.valueobject.ItensFuncionario;
 
-@Configurable
 @ManagedBean(name = "contaUsuarioBean")
 @SessionScoped
 public class ContaUsuarioBean implements Serializable   {
@@ -42,7 +37,11 @@ public class ContaUsuarioBean implements Serializable   {
 	private List<ContasFuncionario> contaFuncionarios;
 	private ContasFuncionario contaFuncionario;
 	private List<Funcionarios> allFuncionariosAtivos;
+	private String dataLabel;
+	private Date dataTemp;
+	private int mesTemp;
 	private Integer parcelas; 
+	private SimpleDateFormat sdf;
 	
 	@PostConstruct
     public void init() {
@@ -50,6 +49,16 @@ public class ContaUsuarioBean implements Serializable   {
 		todosFuncionarios();
 		findAllItensPessoalAtivos();
 		findAllFuncionariosAtivos();
+		iniciarData();
+	}
+	
+	private void iniciarData(){
+		setSdf(new SimpleDateFormat("MM/yyyy"));
+		Calendar c = Calendar.getInstance();
+		dataTemp =c.getTime();
+    	if(mesTemp==0)
+    		mesTemp=dataTemp.getMonth();
+    	setDataLabel(getSdf().format(dataTemp).toString());		
 	}
 	
 	private void iniciarFuncionarioVO() {
@@ -61,15 +70,27 @@ public class ContaUsuarioBean implements Serializable   {
 	/**
 	 * Método que pagina por mes
 	 */	
-	public void anterior(){
+	public String anterior(){
 		Calendar c = Calendar.getInstance();
+		dataTemp.setMonth(mesTemp-1);
+		dataLabel = getSdf().format(dataTemp).toString();
+		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		todosFuncionarios(dataTemp, dataTemp);
+		return "/page/contaFuncionario.xhtml";
 	}
 
 	/**
 	 * Método que pagina por mes
 	 */		
-	public void proximo(){
+	public String proximo(){
 		Calendar c = Calendar.getInstance();
+		dataTemp.setMonth(mesTemp+1);
+		dataLabel = getSdf().format(dataTemp).toString();
+		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		todosFuncionarios(dataTemp, dataTemp);
+		return "/page/contaFuncionario.xhtml";
 	}	
 	
 	public String findAllFuncionariosAtivos() {
@@ -84,7 +105,7 @@ public class ContaUsuarioBean implements Serializable   {
     }
 
 	public void buscaFuncionario( Funcionarios empregado ){
-		funcionarioVo = getFuncionarioVO(empregado);
+		funcionarioVo = getFuncionarioVO(empregado,new Date(),new Date());
 	}
 	
 	private void todosFuncionarios() {
@@ -92,27 +113,38 @@ public class ContaUsuarioBean implements Serializable   {
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
 		for (Funcionarios  funcionarioTemp : Funcionarios) {
 			if(tirarAdiministradores(funcionarioTemp)){
-				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp));
+				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp,new Date(),new Date()));
 			}
 		}
 		todosFuncionarios = todosFuncionariosTmp; 
 	}
 	
-	private FuncionarioVO getFuncionarioVO(Funcionarios empregado) {
+	private void todosFuncionarios(Date dataInicial, Date dataFinal) {
+		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
+		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
+		for (Funcionarios  funcionarioTemp : Funcionarios) {
+			if(tirarAdiministradores(funcionarioTemp)){
+				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp,new Date(),new Date()));
+			}
+		}
+		todosFuncionarios = todosFuncionariosTmp; 
+	}	
+	
+	private FuncionarioVO getFuncionarioVO(Funcionarios empregado, Date dataInicial, Date dataFinal) {
 		List<ItensFuncionario> todosFuncionariosTmp = new ArrayList<ItensFuncionario>();
 		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
 		Double totalDesconto = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
-		List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(DataUltil.primeiroDiaMes(new Date()), DataUltil.ultimoDiaMes(new Date()), empregado);
+		List<ContasFuncionario> itens = new ContasFuncionario().encontraContaFuncionarios(dataInicial, dataFinal, empregado);
 		ItensFuncionario umFuncionario = null;
-		for (ContasFuncionario funcionarioTemp : Funcionarios) {
+		for (ContasFuncionario iten : itens) {
 				umFuncionario = new ItensFuncionario();
-				umFuncionario.setId(funcionarioTemp);
-				umFuncionario.setItem(funcionarioTemp.getItem());
-				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
-				umFuncionario.setValor(funcionarioTemp.getValor());
-				funcionarioVoTmp.setSalario(funcionarioTemp.getFuncionario().getSalario());
-				totalDesconto = totalDesconto + funcionarioTemp.getValor();
+				umFuncionario.setId(iten);
+				umFuncionario.setItem(iten.getItem());
+				umFuncionario.setPeriodo(iten.getPeriodo());
+				umFuncionario.setValor(iten.getValor());
+				funcionarioVoTmp.setSalario(iten.getFuncionario().getSalario());
+				totalDesconto = totalDesconto + iten.getValor();
 		}
 		todosFuncionariosTmp.add(umFuncionario);
 		funcionarioVoTmp.setTotalDesconto(totalDesconto);
@@ -128,22 +160,6 @@ public class ContaUsuarioBean implements Serializable   {
 				return false;
 		}
 		return true;
-	}
-	
-	public String buscaFuncionarios(){
-		if(dataInicial!=null || dataFinal!=null || funcionario!=null){
-			List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
-			List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
-			for (ContasFuncionario funcionario : Funcionarios) {
-				FuncionarioVO umFuncionario = new FuncionarioVO();
-				umFuncionario.setFuncionario(funcionario.getFuncionario());
-				todosFuncionariosTmp.add(umFuncionario);
-			}
-			todosFuncionarios = todosFuncionariosTmp; 		
-		}else{
-			todosFuncionarios();
-		}
-		return "/page/contaFuncionario.xhtml";
 	}
 
 	private void findAllItensPessoalAtivos() {
@@ -250,5 +266,29 @@ public class ContaUsuarioBean implements Serializable   {
 	public void setTodosItensContasFuncionario(
 			List<ItensFuncionario> todosItensContasFuncionario) {
 		this.todosItensContasFuncionario = todosItensContasFuncionario;
+	}
+
+	public Date getDataTemp() {
+		return dataTemp;
+	}
+
+	public void setDataTemp(Date dataTemp) {
+		this.dataTemp = dataTemp;
+	}
+
+	public String getDataLabel() {
+		return dataLabel;
+	}
+
+	public void setDataLabel(String dataLabel) {
+		this.dataLabel = dataLabel;
+	}
+
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
 	}
 }

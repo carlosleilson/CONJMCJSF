@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
@@ -199,11 +200,11 @@ public class ContasFuncionario implements Serializable  {
         return query.getResultList();
     }
 	
-	public static List<ContasFuncionario> encontraContaFuncionario(Date dataInicial, Date dataFinal, Funcionarios funcionario) {
+	public static List<ContasFuncionario> encontraContaFuncionarios(Date dataInicial, Date dataFinal, Funcionarios funcionario) {
         EntityManager em = entityManager();
-        Query query = entityManager().createQuery("SELECT o FROM ContasFuncionario o WHERE o.periodo between :dataInicial and :dataFinal or o.funcionario = :funcionario and o.loja.id = :loja and o.funcionario is not null", ContasFuncionario.class);
-		query.setParameter("dataInicial", dataInicial );
-		query.setParameter("dataFinal", dataFinal);
+        Query query = entityManager().createQuery("SELECT o FROM ContasFuncionario o WHERE ( o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja ) and o.periodo between :dataInicial and :dataFinal", ContasFuncionario.class);
+		query.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(dataInicial));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(dataFinal));
 		query.setParameter("funcionario", funcionario);
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();

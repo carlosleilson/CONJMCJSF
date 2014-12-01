@@ -11,49 +11,22 @@
 	</ui:define>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
-      <p:growl id="growl" showDetail="false" />
+      <p:growl id="growl" showDetail="false"/>
     </h:form>
-    <h:form id="procurarFuncionarioForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
-			<fieldset>
-	    		<legend>Procurar Contas Funcionários</legend>
-		    	<h:panelGrid id="searchPanelGrid">
-		    	 	<h:panelGrid id="dataPanelGrid" columns="6" >
-			          	<p:outputLabel value="Mes/ano" for="mes_ano"/>
-			          	<p:calendar id="mes_ano" size="8" value="#{contaUsuarioBean.dataInicial}"
-			          		pattern="dd/MM/yyyy" />
-			          	<p:message for="mes_ano"/> 
-			          	
-			          	<p:outputLabel value="Até Mes/ano" for="Atemes_ano"/>
-			          	<p:calendar id="Atemes_ano" size="8" value="#{contaUsuarioBean.dataFinal}" 
-			          		pattern="dd/MM/yyyy" />
-			          	<p:message for="Atemes_ano"/>
-			         </h:panelGrid>
-					<p:column  colspan="3">
-			          	<p:outputLabel  value="Funcionário" for="funcionario"/>
-			          	<p:selectOneMenu id="funcionario" value="#{contaUsuarioBean.funcionario}" converter="funcionariosConverter" filter="true" >
-				    		<f:selectItem itemLabel="Selecione um funcionario" itemValue="" />
-							<f:selectItems value="#{contaUsuarioBean.allFuncionariosAtivos}" var="func" 
-							itemLabel="#{func.apelido}" itemValue="#{func}" />
-						</p:selectOneMenu>
-			          	<p:message for="funcionario"/>
-			         </p:column>
-		         </h:panelGrid>
-				<p:commandButton id="createSaveButton" ajax="false" value="Buscar" update=":dataForm:list" action="#{contaUsuarioBean.buscaFuncionarios()}" />
-		</fieldset>
-	  </h:form>   
     <h:form prependId="false" id="dataForm">
 	<p:commandButton id="anteriorButton" update=":dataForm:list" value="Anterior" action="#{contaUsuarioBean.anterior}" />
 	<p:commandButton id="proximoButton" update=":dataForm:list" value="Próximo" action="#{contaUsuarioBean.proximo}" />  
 	<br/><br/>	  
+    <p:fieldset id="fieldsets" legend="Contas Funcionarios - #{contaUsuarioBean.dataLabel}"  >
         <p:dataTable id="list" value="#{contaUsuarioBean.todosFuncionarios}" var="funcionarios" paginator="true" rows="10">
         	<f:facet name="header">Funcionários</f:facet>
-        	<p:column headerText="Apelido" sortBy="#{funcionarios.funcionario.apelido}">
+        	<p:column headerText="Apelido" filterBy="#{funcionarios.funcionario.apelido}" sorBy="#{funcionarios.funcionario.apelido}">
         		<h:outputText value="#{funcionarios.funcionario.apelido}"/>
         	</p:column>
-        	<p:column headerText="Nome" sortBy="#{funcionarios.funcionario.nome}">
+        	<p:column headerText="Nome" filterBy="#{funcionarios.funcionario.nome}" sortBy="#{funcionarios.funcionario.nome}">
         		<h:outputText value="#{funcionarios.funcionario.nome}"/>
         	</p:column>
-        	<p:column headerText="Debito" sortBy="#{funcionarios.funcionario.cpf}">
+        	<p:column headerText="Debito" sortBy="#{funcionarios.totalDesconto}">
         		<h:outputText value="#{funcionarios.totalDesconto}"/>
         	</p:column>
         	<p:column headerText="Situação" sortBy="#{funcionarios.funcionario.situacao}">
@@ -66,10 +39,11 @@
 				<p:commandButton id="registroButton" icon="ui-icon-calculator" value="Registro" oncomplete="PF('dlgRegistroContaFuncionario').show()" actionListener="#{contaUsuarioRegistroBean.contaFuncionarioRedict(funcionarios)}" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
 			</p:column>
         </p:dataTable>
+    </p:fieldset>
     </h:form>
     <ui:include src="/pages/contaFuncionarioRegistro.xhtml"/> 
 	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-	<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+	<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" >
 	    <p:graphicImage name="/images/carregando.gif" />
 	</p:dialog>
   </ui:define>

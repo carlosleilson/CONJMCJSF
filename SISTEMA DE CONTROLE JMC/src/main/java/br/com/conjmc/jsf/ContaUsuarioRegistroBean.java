@@ -1,20 +1,18 @@
 package br.com.conjmc.jsf;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.event.CloseEvent;
 import org.springframework.beans.factory.annotation.Configurable;
-
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
@@ -27,7 +25,6 @@ import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
 import br.com.conjmc.valueobject.ItensFuncionario;
 
-@Configurable
 @ManagedBean(name = "contaUsuarioRegistroBean")
 @SessionScoped
 public class ContaUsuarioRegistroBean implements Serializable   {
@@ -44,6 +41,10 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	private ContasFuncionario contaFuncionario;
 	private List<Funcionarios> allFuncionariosAtivos;
 	private Integer parcelas; 
+	private String dataLabel;
+	private Date dataTemp;
+	private int mesTemp;
+	private SimpleDateFormat sdf;	
 	
 	@PostConstruct
     public void init() {
@@ -51,7 +52,17 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		todosFuncionarios();
 		findAllItensPessoalAtivos();
 		findAllFuncionariosAtivos();
+		iniciarData();
 	}
+
+	private void iniciarData(){
+		sdf = new SimpleDateFormat("MM/yyyy");
+		Calendar c = Calendar.getInstance();
+		dataTemp =c.getTime();
+    	if(mesTemp==0)
+    		mesTemp=dataTemp.getMonth();
+    	setDataLabel(sdf.format(dataTemp).toString());		
+	}	
 	
 	/**
 	 * Método que inicia todos os funcionariosVO.
@@ -65,15 +76,27 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	/**
 	 * Método que pagina por mes
 	 */	
-	public void anterior(){
+	public String anterior(){
 		Calendar c = Calendar.getInstance();
+		dataTemp.setMonth(mesTemp-1);
+		dataLabel = sdf.format(dataTemp).toString();
+		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		todosFuncionarios(dataTemp, dataTemp);
+		return "/page/contaFuncionario.xhtml";
 	}
 
 	/**
 	 * Método que pagina por mes
 	 */		
-	public void proximo(){
+	public String proximo(){
 		Calendar c = Calendar.getInstance();
+		dataTemp.setMonth(mesTemp+1);
+		dataLabel = sdf.format(dataTemp).toString();
+		mesTemp=dataTemp.getMonth();
+		c.setTime(dataTemp);
+		todosFuncionarios(dataTemp, dataTemp);
+		return "/page/contaFuncionario.xhtml";
 	}	
 	
 	/**
@@ -94,14 +117,14 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	 * Método que busca conta funcionario por funcionario.
 	 */		
 	private void contasFuncionario( Funcionarios funcionario ){
-		contaFuncionarios = ContasFuncionario.encontraContaFuncionario(null, null, funcionario);
+		contaFuncionarios = ContasFuncionario.encontraContaFuncionarios(null, null, funcionario);
 	}
 
 	/**
 	 * Método que busca funcionarioVO por funcionario.
 	 */
 	public void buscaFuncionario( Funcionarios empregado ){
-		funcionarioVo = getFuncionarioVO(empregado);
+		funcionarioVo = getFuncionarioVO(empregado, new Date(), new Date());
 	}
 	/**
 	 * Método que procurar todos os funcionarios.
@@ -111,25 +134,36 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
 		for (Funcionarios  funcionarioTemp : Funcionarios) {
 			if(tirarAdiministradores(funcionarioTemp)){
-				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp));
+				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp, new Date(), new Date()));
 			}
 		}
 		todosFuncionarios = todosFuncionariosTmp; 
 	}
+
+	private void todosFuncionarios(Date dataInicial, Date dataFinal) {
+		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
+		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
+		for (Funcionarios  funcionarioTemp : Funcionarios) {
+			if(tirarAdiministradores(funcionarioTemp)){
+				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp,new Date(),new Date()));
+			}
+		}
+		todosFuncionarios = todosFuncionariosTmp; 
+	}	
 	
 	/**
 	 * Método que procurar funcionario.
 	 * @param Funcionarios -- todos funcionarios. 
 	 * @return FuncionarioVO Retorna object value funcionario
 	 */	
-	private FuncionarioVO getFuncionarioVO(Funcionarios empregado) {
+	private FuncionarioVO getFuncionarioVO(Funcionarios empregado, Date dataInicial, Date dataFinal) {
 		List<ItensFuncionario> todosFuncionariosTmp = new ArrayList<ItensFuncionario>();
 		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
 		Double totalDesconto = 0.0;
 		Double credito = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
 		funcionarioVoTmp.setSalario(empregado.getSalario());
-		List<ContasFuncionario> listContaFuncionarios = new ContasFuncionario().encontraContaFuncionario(null, null, empregado);
+		List<ContasFuncionario> listContaFuncionarios = new ContasFuncionario().encontraContaFuncionarios(dataInicial, dataFinal, empregado);
 		for (ContasFuncionario funcionarioTemp : listContaFuncionarios) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
 			if(validarSeESalario(funcionarioTemp.getItem())){
@@ -186,7 +220,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	public void buscaFuncionarios(){
 		if(dataInicial!=null || dataFinal!=null || funcionario!=null){
 			List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
-			List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionario(dataInicial, dataFinal, funcionario);
+			List<ContasFuncionario> Funcionarios = new ContasFuncionario().encontraContaFuncionarios(dataInicial, dataFinal, funcionario);
 			for (ContasFuncionario funcionario : Funcionarios) {
 				FuncionarioVO umFuncionario = new FuncionarioVO();
 				umFuncionario.setFuncionario(funcionario.getFuncionario());
@@ -395,5 +429,37 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 
 	public void setDespesa(Sangria despesa) {
 		this.despesa = despesa;
+	}
+
+	public String getDataLabel() {
+		return dataLabel;
+	}
+
+	public void setDataLabel(String dataLabel) {
+		this.dataLabel = dataLabel;
+	}
+
+	public Date getDataTemp() {
+		return dataTemp;
+	}
+
+	public void setDataTemp(Date dataTemp) {
+		this.dataTemp = dataTemp;
+	}
+
+	public int getMesTemp() {
+		return mesTemp;
+	}
+
+	public void setMesTemp(int mesTemp) {
+		this.mesTemp = mesTemp;
+	}
+
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
 	}
 }

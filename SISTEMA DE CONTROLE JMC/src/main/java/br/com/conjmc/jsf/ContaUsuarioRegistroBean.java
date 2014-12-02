@@ -12,7 +12,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.CloseEvent;
-import org.springframework.beans.factory.annotation.Configurable;
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
@@ -49,10 +48,10 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	@PostConstruct
     public void init() {
 		iniciarFuncionarioVO();
+		iniciarData();
 		todosFuncionarios();
 		findAllItensPessoalAtivos();
 		findAllFuncionariosAtivos();
-		iniciarData();
 	}
 
 	private void iniciarData(){
@@ -124,7 +123,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	 * Método que busca funcionarioVO por funcionario.
 	 */
 	public void buscaFuncionario( Funcionarios empregado ){
-		funcionarioVo = getFuncionarioVO(empregado, new Date(), new Date());
+		funcionarioVo = getFuncionarioVO(empregado, dataTemp, dataTemp);
 	}
 	/**
 	 * Método que procurar todos os funcionarios.
@@ -134,7 +133,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
 		for (Funcionarios  funcionarioTemp : Funcionarios) {
 			if(tirarAdiministradores(funcionarioTemp)){
-				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp, new Date(), new Date()));
+				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp, dataTemp, dataTemp));
 			}
 		}
 		todosFuncionarios = todosFuncionariosTmp; 
@@ -145,7 +144,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		List<Funcionarios> Funcionarios = new ContasFuncionario().encontraTodasFuncionarios();
 		for (Funcionarios  funcionarioTemp : Funcionarios) {
 			if(tirarAdiministradores(funcionarioTemp)){
-				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp,new Date(),new Date()));
+				todosFuncionariosTmp.add(getFuncionarioVO( funcionarioTemp,dataInicial,dataFinal));
 			}
 		}
 		todosFuncionarios = todosFuncionariosTmp; 
@@ -302,7 +301,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	 */		
 	public String contaFuncionarioRedict(FuncionarioVO funcionarioVoTmp) {
 		contaFuncionario = new ContasFuncionario();
-		contaFuncionario.setPeriodo(new Date());
+		contaFuncionario.setPeriodo(dataTemp);
 		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 		contaFuncionario.setFuncionario(funcionarioVoTmp.getFuncionario());
 		contaFuncionario.setParcela(1);

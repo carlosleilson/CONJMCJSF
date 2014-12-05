@@ -2,10 +2,12 @@ package br.com.conjmc.cadastrobasico;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -29,8 +31,13 @@ public class ItemFaturamentoDescricao {
 	@Version
 	private int versao;
 	
-	@ManyToOne
-    private Lojas loja;
+	@ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="faturamento_id")
+    private Faturamento faturamento;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="item_faturamento_id")
+	private ItemFaturamento itemFaturamento;
 
 	//Getters and Setters
 	public Long getId() {
@@ -56,58 +63,68 @@ public class ItemFaturamentoDescricao {
 	public void setVersao(int versao) {
 		this.versao = versao;
 	}
-
-	public Lojas getLoja() {
-		return loja;
+	
+	public Faturamento getFaturamento() {
+		return faturamento;
 	}
 
-	public void setLoja(Lojas loja) {
-		this.loja = loja;
+	public void setFaturamento(Faturamento faturamento) {
+		this.faturamento = faturamento;
 	}
 	
+	public ItemFaturamento getItemFaturamento() {
+		return itemFaturamento;
+	}
+
+	public void setItemFaturamento(ItemFaturamento itemFaturamento) {
+		this.itemFaturamento = itemFaturamento;
+	}
+
+
+
 	//DAO
-		@PersistenceContext
-	    transient EntityManager entityManager;
+	@PersistenceContext
+    transient EntityManager entityManager;
 
-		public static final EntityManager entityManager() {
-	        EntityManager em = new Faturamento().entityManager;
-	        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-	        return em;
-	    }
-		
-		public static List<ItemFaturamentoDescricao> findAllItemFaturmento() {
-			Query query = entityManager().createQuery("SELECT o FROM ItemFaturamentoDescricao o", ItemFaturamentoDescricao.class);
-	        return query.getResultList();
-	    }
-		
-		@Transactional
-	    public void persist() {
-	        if (this.entityManager == null) this.entityManager = entityManager();
-	        this.entityManager.persist(this);
-	        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
-	    }
+	public static final EntityManager entityManager() {
+        EntityManager em = new Faturamento().entityManager;
+        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+        return em;
+    }
+	
+	public static List<ItemFaturamentoDescricao> findAllItemFaturmento() {
+		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamentoDescricao o", ItemFaturamentoDescricao.class);
+        return query.getResultList();
+    }
+	
+	@Transactional
+    public void persist() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.persist(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
+    }
 
-		@Transactional
-	    public void remove() {
-	        if (this.entityManager == null) this.entityManager = entityManager();
-	        if (this.entityManager.contains(this)) {
-	            this.entityManager.remove(this);
-	        }
-	    }
+	@Transactional
+    public void remove() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        if (this.entityManager.contains(this)) {
+            this.entityManager.remove(this);
+        }
+    }
 
-		@Transactional
-	    public void clear() {
-	        if (this.entityManager == null) this.entityManager = entityManager();
-	        this.entityManager.clear();
-	    }
+	@Transactional
+    public void clear() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.clear();
+    }
 
-		@Transactional
-	    public ItemFaturamentoDescricao merge() {
-	        if (this.entityManager == null) this.entityManager = entityManager();
-	        ItemFaturamentoDescricao merged = this.entityManager.merge(this);
-	        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), ItemFaturamentoDescricao.class.getSimpleName());
-	        this.entityManager.flush();
-	        return merged;
-	    }
+	@Transactional
+    public ItemFaturamentoDescricao merge() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        ItemFaturamentoDescricao merged = this.entityManager.merge(this);
+        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), ItemFaturamentoDescricao.class.getSimpleName());
+        this.entityManager.flush();
+        return merged;
+    }
 	
 }

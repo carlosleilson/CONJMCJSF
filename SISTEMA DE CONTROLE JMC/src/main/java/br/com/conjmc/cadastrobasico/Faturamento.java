@@ -39,6 +39,9 @@ public class Faturamento implements Serializable {
 	@Enumerated
 	private Turno turno;
 	
+	@OneToMany
+	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;
+	
 	@ManyToOne
 	private Lojas loja;
 
@@ -88,6 +91,16 @@ public class Faturamento implements Serializable {
 		this.version = version;
 	}
 	
+	public List<ItemFaturamentoDescricao> getItemFaturamentoDescricao() {
+		return itemFaturamentoDescricao;
+	}
+
+	public void setItemFaturamentoDescricao(
+			List<ItemFaturamentoDescricao> itemFaturamentoDescricao) {
+		this.itemFaturamentoDescricao = itemFaturamentoDescricao;
+	}
+
+
 	//DAO
 	@PersistenceContext
     transient EntityManager entityManager;

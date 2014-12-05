@@ -31,11 +31,11 @@ public class ItemFaturamentoDescricao {
 	@Version
 	private int versao;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne
     @JoinColumn(name="faturamento_id")
     private Faturamento faturamento;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(targetEntity=ItemFaturamento.class)
 	@JoinColumn(name="item_faturamento_id")
 	private ItemFaturamento itemFaturamento;
 

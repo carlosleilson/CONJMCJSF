@@ -3,7 +3,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -39,7 +38,7 @@ public class Faturamento implements Serializable {
 	@Enumerated
 	private Turno turno;
 	
-	@OneToMany
+	@OneToMany(mappedBy="faturamento",targetEntity=ItemFaturamentoDescricao.class)
 	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;
 	
 	@ManyToOne

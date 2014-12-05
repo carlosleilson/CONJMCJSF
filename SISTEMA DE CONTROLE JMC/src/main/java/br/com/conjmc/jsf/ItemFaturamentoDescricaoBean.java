@@ -53,9 +53,17 @@ public class ItemFaturamentoDescricaoBean {
 		return "/itemFaturamentoDescricao.xhtml";
 	}
 	
-	public void persistFatumento(){
-		faturamento.setItemFaturamentoDescricao(itensFaturamento);
+	public String persistFatumento(){
 		faturamento.persist();
+		for (ItemFaturamentoDescricao itemFaturamentoDescricaoFor : itensFaturamento) {
+			ItemFaturamento it = itemFaturamentoDescricaoFor.getItemFaturamento();
+			it.persist();
+			itemFaturamentoDescricaoFor.setFaturamento(faturamento);
+			itemFaturamentoDescricaoFor.setItemFaturamento(it);
+			itemFaturamentoDescricaoFor.merge();
+		}
+		init();
+		return "/faturameto.xhtml";
 	}
 
 	public String delete() {

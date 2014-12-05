@@ -3,20 +3,20 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
-import javax.persistence.metamodel.Metamodel;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,41 +29,32 @@ public class Faturamento implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	private Date periodo;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
-	private Double faturamentoBruto;
+	private Date periodo;
+	
+	@Enumerated
+	private Turno turno;
 	
 	@ManyToOne
-    private Lojas loja;
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+	private Lojas loja;
 
 	@Version
-    @Column(name = "version")
-    private Integer version;
+	@Column(name = "version")
+	private Integer version;
 	
+
+	//Getters and Setters
 	public Long getId() {
-        return this.id;
-    }
+		return id;
+	}
 
 	public void setId(Long id) {
-        this.id = id;
-    }
-
-	public Integer getVersion() {
-        return this.version;
-    }
-
-	public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		this.id = id;
+	}
 
 	public Date getPeriodo() {
 		return periodo;
@@ -73,12 +64,12 @@ public class Faturamento implements Serializable {
 		this.periodo = periodo;
 	}
 
-	public Double getFaturamentoBruto() {
-		return faturamentoBruto;
+	public Turno getTurno() {
+		return turno;
 	}
 
-	public void setFaturamentoBruto(Double faturamentoBruto) {
-		this.faturamentoBruto = faturamentoBruto;
+	public void setTurno(Turno turno) {
+		this.turno = turno;
 	}
 
 	public Lojas getLoja() {
@@ -88,9 +79,22 @@ public class Faturamento implements Serializable {
 	public void setLoja(Lojas loja) {
 		this.loja = loja;
 	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 	
+	//DAO
 	@PersistenceContext
     transient EntityManager entityManager;
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("periodo", "faturamentoBruto", "loja");
 

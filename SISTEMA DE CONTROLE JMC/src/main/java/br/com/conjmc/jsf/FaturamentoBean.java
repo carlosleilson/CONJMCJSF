@@ -1,7 +1,6 @@
 package br.com.conjmc.jsf;
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,21 +9,60 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.event.CloseEvent;
-import org.springframework.beans.factory.annotation.Configurable;
-
 import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.Lojas;
-import br.com.conjmc.cadastrobasico.MetaData;
+import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
-@ManagedBean(name = "faturamentoBean")
-@Configurable
+@ManagedBean
 @SessionScoped
 public class FaturamentoBean implements Serializable  {
+	
+	private Faturamento faturamento;
+	private List<Turno> turno;
+	
+	@PostConstruct
+	public void init(){
+		faturamento = new Faturamento();
+	}
 
-	private static final long serialVersionUID = 1L;
+	public String persist() {
+        String message = "";
+        if (faturamento.getId() != null) {
+            faturamento.merge();
+            message = "message_successfully_updated";
+        } else {
+        	faturamento.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+            faturamento.persist();
+            message = "message_successfully_created";
+        }
+        
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "Faturamento");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+
+        return "/faturamento.xhtml";
+    }
+	
+	public List<Turno> getTurno() {
+		return Arrays.asList(Turno.values());
+	}
+
+	public void setTurno(List<Turno> turno) {
+		this.turno = turno;
+	}
+
+	public Faturamento getFaturamento() {
+		return faturamento;
+	}
+
+	public void setFaturamento(Faturamento faturamento) {
+		this.faturamento = faturamento;
+	}
+	
+	
+
+	/*private static final long serialVersionUID = 1L;
 	private Faturamento faturamento;
 	private List<Faturamento> faturamentos;
 	@PostConstruct
@@ -112,6 +150,6 @@ public class FaturamentoBean implements Serializable  {
 
 	public void setFaturamentos(List<Faturamento> faturamentos) {
 		this.faturamentos = faturamentos;
-	}
+	}*/
 	
 }

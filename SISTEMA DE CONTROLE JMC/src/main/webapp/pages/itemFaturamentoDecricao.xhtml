@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Incluir Despesa</title>
+	</ui:define>
+  <ui:define name="content">
+    <h:form prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+    <h:panelGrid>
+	    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+	    	<fieldset>
+	    		<legend>Item do Faturamento</legend>   	
+	          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+	          	<p:outputLabel for="descricao" value="Descrição"/>
+	          	<p:inputText id="descricao" value="#{itemFaturamentoDescricaoBean.itemFaturamentoDescricao.item}"/>
+	          	<p:message for="descricao"/>
+	          </h:panelGrid>
+          		<br/>
+	          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{itemFaturamentoDescricaoBean.persist()}" />
+	    	</fieldset>
+	    	</h:form>
+	    	<h:form styleClass="buttomLimpar">
+	    		<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{sangriaBean.reset}" action="despesasLoja.xhtml" />
+	      	</h:form>
+	    	<h:form prependId="false" id="dataForm">
+		        <p:dataTable id="list" value="#{itemFaturamentoDescricaoBean.itensFaturamento}" var="lista" paginator="true" rows="10">
+	        	   <p:column headerText="" sortBy="#{lista.item}">
+		            	<h:outputText value="#{lista.item}"/>
+		           </p:column>
+		           <p:column headerText="Ações" styleClass="action-column" style="width:90px">
+						<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="itemFaturamentoDecricao.xhtml">
+							<f:setPropertyActionListener target="#{itemFaturamentoDescricaoBean.itemFaturamentoDescricao}" value="#{lista}" />
+						</p:commandButton>
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
+							<f:setPropertyActionListener value="#{lista}" target="#{itemFaturamentoDescricaoBean.itemFaturamentoDescricao}" />
+						</p:commandButton>
+					</p:column>
+					<p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+						<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{itemFaturamentoDescricaoBean.delete()}" ajax="false" onclick="confirmation.hide()" />
+						<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
+					</p:confirmDialog>
+		        </p:dataTable>		        	
+		       </h:form>
+		</h:panelGrid>
+  </ui:define>
+</ui:composition>
+</html>

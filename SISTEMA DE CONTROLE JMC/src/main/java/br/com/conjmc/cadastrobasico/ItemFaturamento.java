@@ -2,15 +2,12 @@ package br.com.conjmc.cadastrobasico;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -37,7 +34,7 @@ public class ItemFaturamento {
 	
 	private int numeroComanda;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="itemFaturamento")
 	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;
 	
 	@Version

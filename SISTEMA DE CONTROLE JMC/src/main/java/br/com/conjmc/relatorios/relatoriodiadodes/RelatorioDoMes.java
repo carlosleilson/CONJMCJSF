@@ -333,7 +333,7 @@ public class RelatorioDoMes {
 		Double valor = null;
 		List<Faturamento> faturamento = Faturamento.faturamentoesPorDate(data);
 		for (Faturamento faturamento2 : faturamento) {
-			valor = faturamento2.getFaturamentoBruto();
+			//valor = faturamento2.getFaturamentoBruto();
 		}
 		if( valor == null )
 			valor = 1.0;

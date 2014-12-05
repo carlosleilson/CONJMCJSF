@@ -2,6 +2,7 @@ package br.com.conjmc.cadastrobasico;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
@@ -35,16 +37,12 @@ public class ItemFaturamento {
 	
 	private int numeroComanda;
 	
-	@ManyToOne
-    private Lojas loja;
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;
 	
 	@Version
     @Column(name = "version")
     private Integer version;
-	
-	@ManyToOne
-    @JoinColumn(name="faturamento_id")
-    private Faturamento faturamento;
 	
 	//Getters and Setters	
 	public long getId() {
@@ -87,14 +85,6 @@ public class ItemFaturamento {
 		this.numeroComanda = numeroComanda;
 	}
 
-	public Lojas getLoja() {
-		return loja;
-	}
-
-	public void setLoja(Lojas loja) {
-		this.loja = loja;
-	}
-
 	public Integer getVersion() {
 		return version;
 	}
@@ -103,12 +93,13 @@ public class ItemFaturamento {
 		this.version = version;
 	}
 
-	public Faturamento getFaturamento() {
-		return faturamento;
+	public List<ItemFaturamentoDescricao> getItemFaturamentoDescricao() {
+		return itemFaturamentoDescricao;
 	}
 
-	public void setFaturamento(Faturamento faturamento) {
-		this.faturamento = faturamento;
+	public void setItemFaturamentoDescricao(
+			List<ItemFaturamentoDescricao> itemFaturamentoDescricao) {
+		this.itemFaturamentoDescricao = itemFaturamentoDescricao;
 	}
 
 	//DAO

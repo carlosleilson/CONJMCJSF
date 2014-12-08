@@ -40,7 +40,9 @@
 				<p:inputText id="detalhamentoBanco" value="#{contasPendentesBean.contaFiltro.detalhamentoBanco}"/>	
 				
 				<p:outputLabel value="Valor" for="valorFiltro" />
-				<p:inputText id="valorFiltro" styleClass="money" value="#{contasPendentesBean.contaFiltro.valor}"/>
+				<p:inputText id="valorFiltro" styleClass="money" value="#{contasPendentesBean.contaFiltro.valor}">
+					<f:convertNumber minFractionDigits="2"/>
+				</p:inputText>
 	    	 </h:panelGrid>
           </div>
           <div class="clear"><!--   --></div>

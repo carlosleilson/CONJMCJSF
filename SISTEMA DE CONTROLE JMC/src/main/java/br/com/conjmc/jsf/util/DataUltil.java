@@ -24,6 +24,10 @@ public class DataUltil {
 		DataUltil.data = data;
 	}
 
+	/**
+	 * Método que return a data atual como string.
+	 * @return Retorna data com string. 
+	 */		
 	public static String dataAtual(){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
@@ -41,6 +45,10 @@ public class DataUltil {
 		return c.getTime();
 	}
 	
+	/**
+	 * Método que retorna a data com mes anterior.
+	 * @return Retorna data alterado. 
+	 */		
 	public static String mesAnterior(){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
@@ -51,6 +59,10 @@ public class DataUltil {
 		return sdf.format( data).toString();
 	}
 	
+	/**
+	 * Método que retorna a data com mes anterior.
+	 * @return Retorna data alterado. 
+	 */			
 	public static Date mesAnterior(Date data){
 		Calendar c = Calendar.getInstance();
 		c.setTime(data);
@@ -60,6 +72,10 @@ public class DataUltil {
 		return data;
 	}	
 
+	/**
+	 * Método que retorna a data com primeiro dia do mes.
+	 * @return Retorna data alterado. 
+	 */			
 	public static Date primeiroDiaMesTemp(Date data){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
@@ -69,6 +85,10 @@ public class DataUltil {
 		return data;
 	}		
 	
+	/**
+	 * Método que retorna a data com primeiro dia do mes.
+	 * @return Retorna data alterado. 
+	 */		
 	public static Date primeiroDiaMes(Date data){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
@@ -78,6 +98,10 @@ public class DataUltil {
 		return data;
 	}
 	
+	/**
+	 * Método que retorna a data com ultimo dia do mes.
+	 * @return Retorna data alterado. 
+	 */	
 	public static Date ultimoDiaMes(Date data){
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
@@ -86,4 +110,13 @@ public class DataUltil {
 		data = c.getTime();
 		return data;
 	}		
+	
+	/**
+	 * Método que alterar com um valor do mes corrente.
+	 * @return Retorna data do mes alterado. 
+	 */	
+	public static Date alterarMes(Date dataTmp, int numeroDoMes){
+		dataTmp.setMonth(dataTmp.getMonth()+numeroDoMes);
+		return dataTmp;
+	}
 }

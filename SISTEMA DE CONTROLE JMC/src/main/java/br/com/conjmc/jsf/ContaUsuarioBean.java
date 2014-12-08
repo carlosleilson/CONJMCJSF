@@ -20,6 +20,7 @@ import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.valueobject.FuncionarioVO;
 import br.com.conjmc.valueobject.ItensFuncionario;
 
@@ -38,6 +39,7 @@ public class ContaUsuarioBean implements Serializable   {
 	private ContasFuncionario contaFuncionario;
 	private List<Funcionarios> allFuncionariosAtivos;
 	private String dataLabel;
+	private String dataDespesa;
 	private Date dataTemp;
 	private int mesTemp;
 	private Integer parcelas; 
@@ -74,6 +76,7 @@ public class ContaUsuarioBean implements Serializable   {
 		Calendar c = Calendar.getInstance();
 		dataTemp.setMonth(mesTemp-1);
 		dataLabel = getSdf().format(dataTemp).toString();
+		dataDespesa = getSdf().format(dataTemp).toString();
 		mesTemp=dataTemp.getMonth();
 		c.setTime(dataTemp);
 		todosFuncionarios(dataTemp, dataTemp);
@@ -87,6 +90,9 @@ public class ContaUsuarioBean implements Serializable   {
 		Calendar c = Calendar.getInstance();
 		dataTemp.setMonth(mesTemp+1);
 		dataLabel = getSdf().format(dataTemp).toString();
+		Date dataTmp = dataTemp;
+		dataTmp.setMonth(dataTemp.getMonth()+1);
+		dataDespesa = getSdf().format(dataTmp).toString();
 		mesTemp=dataTemp.getMonth();
 		c.setTime(dataTemp);
 		todosFuncionarios(dataTemp, dataTemp);
@@ -278,5 +284,13 @@ public class ContaUsuarioBean implements Serializable   {
 
 	public void setSdf(SimpleDateFormat sdf) {
 		this.sdf = sdf;
+	}
+
+	public String getDataDespesa() {
+		return dataDespesa;
+	}
+
+	public void setDataDespesa(String dataDespesa) {
+		this.dataDespesa = dataDespesa;
 	}
 }

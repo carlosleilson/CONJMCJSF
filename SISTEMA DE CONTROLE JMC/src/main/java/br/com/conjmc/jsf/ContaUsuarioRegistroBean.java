@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.event.CloseEvent;
+
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
@@ -19,6 +22,7 @@ import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 import br.com.conjmc.valueobject.FuncionarioVO;
@@ -71,32 +75,6 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 			funcionarioVo = new FuncionarioVO();
 		}
 	}
-	
-	/**
-	 * Método que pagina por mes
-	 */	
-	public String anterior(){
-		Calendar c = Calendar.getInstance();
-		dataTemp.setMonth(mesTemp-1);
-		dataLabel = sdf.format(dataTemp).toString();
-		mesTemp=dataTemp.getMonth();
-		c.setTime(dataTemp);
-		todosFuncionarios(dataTemp, dataTemp);
-		return "/page/contaFuncionario.xhtml";
-	}
-
-	/**
-	 * Método que pagina por mes
-	 */		
-	public String proximo(){
-		Calendar c = Calendar.getInstance();
-		dataTemp.setMonth(mesTemp+1);
-		dataLabel = sdf.format(dataTemp).toString();
-		mesTemp=dataTemp.getMonth();
-		c.setTime(dataTemp);
-		todosFuncionarios(dataTemp, dataTemp);
-		return "/page/contaFuncionario.xhtml";
-	}	
 	
 	/**
 	 * Método que procurar todos os funcionarios ativos.
@@ -242,15 +220,45 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	 * Método que grava no banco conta funcionario e 
 	 * salario com descontos em despesas.
 	 */		
-	void Salario(String message) {
-        if (contaFuncionario.getId() != null) {
-        	contaFuncionario.merge();
-        	message = "message_successfully_created";
-        }else{
-        	contaFuncionario.persist();
-        	message = "message_successfully_created";
-        }
-        despesaSalario();
+	void salario(String message) {
+		Double valorTmp = Math.abs(contaFuncionario.getValor()/contaFuncionario.getParcela());
+		for(int i = 0; i > contaFuncionario.getParcela();i++){
+			parcelas(valorTmp, i);
+	        if (contaFuncionario.getId() != null) {
+	        	contaFuncionario.merge();
+	        }else{
+	        	contaFuncionario.persist();
+	        }
+	        despesaSalario("message_successfully_created",i);
+		}
+	}
+
+	private void parcelas(Double valorTmp, int i) {
+		Date dataTmp = contaFuncionario.getPeriodo();
+		dataTmp.setMonth(dataTemp.getMonth()+i);
+		contaFuncionario.setPeriodo(dataTmp);
+		contaFuncionario.setValor(valorTmp);
+	}
+
+	private void despesaSalario(String message, int i) {
+		Date dataTmp = despesa.getPeriodo();
+		dataTmp.setMonth(dataTemp.getMonth()+i);
+		despesa.setPeriodo(dataTmp);
+		if(funcionarioVo.getValorReceber()!=null){
+			despesa = salarioFuncionario();
+//			if(contaFuncionario.getOrigem()){
+//				despesa.setValor(funcionarioVo.getValorReceber());
+//			}else{
+//				despesa.setValor(funcionarioVo.getValorReceber()-contaFuncionario.getValor());
+//			}
+			despesa.setValor(funcionarioVo.getValorReceber());
+			
+			if (despesa.getId() != null) {
+				despesa.merge();
+			} else {
+				despesa.persist();
+			}
+		}
 	}
 
 	private void despesaSalario() {
@@ -284,7 +292,10 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		despesa.setFuncionario(contaFuncionario.getFuncionario());
 		despesa.setClassificacao(contaFuncionario.getItem().getClassificacao());
 		despesa.setItem(contaFuncionario.getItem());
-		despesa.setPeriodo(contaFuncionario.getPeriodo());
+		//Colocar o salario para o mes seguinte.
+		Date dataTmp = contaFuncionario.getPeriodo();
+		dataTmp.setMonth(dataTmp.getMonth()+1);
+		despesa.setPeriodo(dataTmp);
 		despesa.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));		
 		return despesa;
 	}
@@ -311,7 +322,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	
 	public String persist() {
 		String message = "";
-		Salario(message);
+		salario(message);
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         return contaFuncionarioRedict(funcionarioVo);

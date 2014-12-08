@@ -1,8 +1,8 @@
 package br.com.conjmc.cadastrobasico;
 
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
@@ -126,5 +126,29 @@ public class ItemFaturamentoDescricao {
         this.entityManager.flush();
         return merged;
     }
+	
+	public long quantidadeTotal(Date dataInicial, Date datafinal, String turno) {
+		String sql = "SELECT SUM(o.itemFaturamento.quantidade) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal";
+		Query query = entityManager().createQuery(sql, Long.class);
+		query.setParameter("dataInicial", dataInicial);
+		query.setParameter("dataFinal", datafinal);
+       	return (long) query.getSingleResult();
+	}
+	
+	public long numeroComandasTotal(Date dataInicial, Date datafinal, String turno) {
+		String sql = "SELECT SUM(o.itemFaturamento.numeroComanda) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal";
+		Query query = entityManager().createQuery(sql, Long.class);
+		query.setParameter("dataInicial", dataInicial);
+		query.setParameter("dataFinal", datafinal);
+       	return (long) query.getSingleResult();
+	}
+	
+	public Double valorTotal(Date dataInicial, Date datafinal, String turno) {
+		String sql = "SELECT SUM(o.itemFaturamento.valor) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal";
+		Query query = entityManager().createQuery(sql, Double.class);
+		query.setParameter("dataInicial", dataInicial);
+		query.setParameter("dataFinal", datafinal);
+       	return (double) query.getSingleResult();
+	}
 	
 }

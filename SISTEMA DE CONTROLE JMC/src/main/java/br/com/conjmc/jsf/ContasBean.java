@@ -75,6 +75,7 @@ public class ContasBean {
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
 		}
+		init();
 	        
     }
 	 
@@ -131,12 +132,10 @@ public class ContasBean {
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("PF('duplicate').show();");
 	    	} else {
 	    		persist();
-	    		init();
 	    		return "contas.xhtml";
 	    	}
 		} else {
 			persist();
-			init();
 			return "contasPendentes.xhtml";
 		}
 		return "contas.xhtml";

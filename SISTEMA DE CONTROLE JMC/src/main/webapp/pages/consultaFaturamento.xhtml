@@ -15,23 +15,34 @@
 				<p:fieldset legend="Consulta">
 					<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
 						<p:outputLabel value="De" for="dataInicial"/>
-						<p:calendar id="dataInicial" required="true"/>
+						<p:calendar id="dataInicial" value="#{consultaFaturamentoBean.dataInicial}" required="true"/>
 						<p:message for="dataInicial"/>
 						
 						<p:outputLabel value="Até" for="dataFinal"/>
-						<p:calendar id="dataFinal"/>
+						<p:calendar id="dataFinal" value="#{consultaFaturamentoBean.dataFinal}" required="true"/>
 						<p:message for="dataFinal"/>
 	
-						<p:outputLabel value="De" for="periodo"/>
-						<p:selectOneMenu id="periodo"  required="true">
+						<p:outputLabel value="Período" for="periodo"/>
+						<p:selectOneMenu id="periodo">
 			          		<f:selectItem itemLabel="Selecione um periodo" itemValue=""/>
 			          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
 			          	</p:selectOneMenu>
 			          	<p:message for="periodo"/>
 			    	</h:panelGrid>
+			    	<p:commandButton value="Pesquisar" ajax="false" action="#{consultaFaturamentoBean.carregarTotal()}" />
 				</p:fieldset>
-				<p:outputPanel>
+				
+				<p:outputPanel id="total">
+					Total da Quantidade: 
+					<h:outputText value="#{consultaFaturamentoBean.quantidade}"/>
 					
+					Total do Numero de Comandas: 
+					<h:outputText value="#{consultaFaturamentoBean.numeroComandas}"/>
+					
+					Total da Valor Total:
+					R$<h:outputText value="#{consultaFaturamentoBean.total}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
 				</p:outputPanel>
 			</h:form>
 		</ui:define>

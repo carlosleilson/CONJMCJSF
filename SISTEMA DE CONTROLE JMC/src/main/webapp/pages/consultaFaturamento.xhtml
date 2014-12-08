@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">  
+    
+	<ui:composition template="../templates/administrador.xhtml"> 
+		<ui:define name="title">
+			<title>Consulta Faturamento</title>
+		</ui:define>
+		<ui:define name="content">
+			<h:form>
+				<p:fieldset legend="Consulta">
+					<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+						<p:outputLabel value="De" for="dataInicial"/>
+						<p:calendar id="dataInicial" required="true"/>
+						<p:message for="dataInicial"/>
+						
+						<p:outputLabel value="Até" for="dataFinal"/>
+						<p:calendar id="dataFinal"/>
+						<p:message for="dataFinal"/>
+	
+						<p:outputLabel value="De" for="periodo"/>
+						<p:selectOneMenu id="periodo"  required="true">
+			          		<f:selectItem itemLabel="Selecione um periodo" itemValue=""/>
+			          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
+			          	</p:selectOneMenu>
+			          	<p:message for="periodo"/>
+			    	</h:panelGrid>
+				</p:fieldset>
+				<p:outputPanel>
+					
+				</p:outputPanel>
+			</h:form>
+		</ui:define>
+	</ui:composition>    
+</html>

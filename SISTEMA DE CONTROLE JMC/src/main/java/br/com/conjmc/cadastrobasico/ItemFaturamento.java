@@ -26,8 +26,6 @@ public class ItemFaturamento {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private String descricao;
-	
 	private int quantidade;
 	
 	private Double valor;
@@ -48,14 +46,6 @@ public class ItemFaturamento {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public int getQuantidade() {
@@ -144,4 +134,5 @@ public class ItemFaturamento {
         this.entityManager.flush();
         return merged;
     }
+	
 }

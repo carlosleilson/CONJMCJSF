@@ -7,71 +7,48 @@
       xmlns:p="http://primefaces.org/ui">  
     
 	<ui:composition template="../templates/administrador.xhtml"> 
-	<ui:define name="title">
-		<title>Faturamento</title>
-	</ui:define>
-	<ui:define name="content">
-	    <h:form id="createFormFaturamento" acceptcharset="ISO-8859-1" enctype="multipart/form-data">  	
-          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-          
-          	<p:outputLabel value="Data do Faturamento" for="mesDoAno"/>
-			<p:calendar 
-				id="mesDoAno"
-				value="#{itemFaturamentoDescricaoBean.faturamento.periodo}"
-				pattern="dd/MM/yyyy" 
-				required="true"
-				mask="true"
-				requiredMessage="O valor é obrigatório"/>        	
-          	<p:message for="mesDoAno"/>    
-          
-          	<p:outputLabel value="Periodo" for="periodo"/>
-          	<p:selectOneMenu id="periodo" value="#{itemFaturamentoDescricaoBean.faturamento.turno}" required="true" requiredMessage="O periodo é obrigatório">
-          		<f:selectItem itemLabel="Selecione um periodo" itemValue=""/>
-          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
-          	</p:selectOneMenu>
-          	<p:message for="periodo"/>		          	
-          
-          </h:panelGrid>
-          	<ui:repeat value="#{itemFaturamentoDescricaoBean.itensFaturamento}" var="item">
-         		<br/>
-          		<h:outputText value="#{item.item}" /><br/>
-          		<h:panelGrid id="createPanelGrid" columns="6">
-	          		<h:outputText value="Nº de Comandas" />
-	          		<p:inputText value="#{item.itemFaturamento.numeroComanda}" required="true"/>
-	          		
-	          		<h:outputText value="Quantidade" />
-	          		<p:inputText value="#{item.itemFaturamento.quantidade}" required="true"/>
-	          		
-	          		<h:outputText value="Valor" />
-	          		<p:inputText styleClass="money" value="#{item.itemFaturamento.valor}" required="true"/>
-	          	</h:panelGrid>
-          	</ui:repeat>
-         	<br/>
-         <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{itemFaturamentoDescricaoBean.persistFatumento()}" />
-	    	</h:form>
-	    	<ui:remove>
-		    	<h:form prependId="false" id="dataFormList">
-		        <p:dataTable id="listFaturamento" value="#{faturamentoBean.faturamentos}" var="fatura" paginator="true" rows="13">
-		            <f:facet name="header">Classificação de Despesas</f:facet>
-		            
-		            <p:column headerText="Data" sortBy="#{fatura.periodo}">
-		            	<h:outputText value="#{fatura.periodo}">
-		            		<f:convertDateTime pattern="MM/yyyy"/>
-		            	</h:outputText>
-		            </p:column>
-		            <p:column headerText="Faturamento Bruto" sortBy="#{fatura.faturamentoBruto}">
-		            	<h:outputText value="#{fatura.faturamentoBruto}">
-		            		<f:convertNumber minFractionDigits="2"/>
-		            	</h:outputText>
-		            </p:column>
-		<!--              <p:column headerText="Ações" styleClass="action-column" style="width:90px;"> -->
-		<!-- 	            <p:commandButton id="editButton" ajax="false" icon="ui-icon-pencil" action="faturamento.xhtml" title="#{messages.label_edit}" onclick="PF('dlgFaturamento').show();" > -->
-		<!-- 	              <f:setPropertyActionListener value="#{fatura}" target="#{faturamentoBean.faturamento}" /> -->
-		<!-- 	            </p:commandButton>              -->
-		<!--              </p:column> -->
-		        </p:dataTable>
-		    	</h:form>
-		    </ui:remove>
+		<ui:define name="title">
+			<title>Faturamento</title>
+		</ui:define>
+		<ui:define name="content">
+		    <h:form id="createFormFaturamento" acceptcharset="ISO-8859-1" enctype="multipart/form-data">  	
+	          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+	          
+	          	<p:outputLabel value="Data do Faturamento" for="mesDoAno"/>
+				<p:calendar 
+					id="mesDoAno"
+					value="#{itemFaturamentoDescricaoBean.faturamento.periodo}"
+					pattern="dd/MM/yyyy" 
+					required="true"
+					mask="true"
+					requiredMessage="O valor é obrigatório"/>        	
+	          	<p:message for="mesDoAno"/>    
+	          
+	          	<p:outputLabel value="Periodo" for="periodo"/>
+	          	<p:selectOneMenu id="periodo" value="#{itemFaturamentoDescricaoBean.faturamento.turno}" required="true" requiredMessage="O periodo é obrigatório">
+	          		<f:selectItem itemLabel="Selecione um periodo" itemValue=""/>
+	          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="periodo"/>		          	
+	          
+	          </h:panelGrid>
+	          	<ui:repeat value="#{itemFaturamentoDescricaoBean.itensFaturamento}" var="item">
+	         		<br/>
+	          		<h3><h:outputText value="#{item.item}" /></h3>
+	          		<h:panelGrid id="createPanelGrid" columns="6">
+		          		<p:outputLabel value="Nº de Comandas" for="itemNumeroComanda"/>
+		          		<p:inputText id="itemNumeroComanda" value="#{item.itemFaturamento.numeroComanda}" required="true"/>
+		          		
+		          		<p:outputLabel value="&#160;&#160;&#160;Quantidade" for="ItemQuantidade" />
+		          		<p:inputText id="ItemQuantidade" value="#{item.itemFaturamento.quantidade}" required="true"/>
+		          		
+		          		<p:outputLabel value="&#160;&#160;&#160;Valor" for="itemValor" />
+		          		<p:inputText id="itemValor" styleClass="money" value="#{item.itemFaturamento.valor}" required="true"/>
+		          	</h:panelGrid>
+	          	</ui:repeat>
+	         	<br/>
+	        	<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{itemFaturamentoDescricaoBean.persistFatumento()}" />
+	   		</h:form>
 		</ui:define>
 	</ui:composition>    
 </html>

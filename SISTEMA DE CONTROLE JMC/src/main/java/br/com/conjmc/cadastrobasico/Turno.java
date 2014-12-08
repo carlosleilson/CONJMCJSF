@@ -2,7 +2,7 @@ package br.com.conjmc.cadastrobasico;
 
 public enum Turno {
 
-	PRIMEIRO("Primeirto"),
+	PRIMEIRO("Primeiro"),
 	SEGUNDO("Segundo");
 	
 	private String label;

@@ -14,8 +14,6 @@
     <h:form prependId="false" id="dataForm">     
 	<p:commandButton id="anteriorButton" update=":dataForm:field" value="Anterior" action="#{relatorioMesBean.anterior}" />
 	<p:commandButton id="proximoButton" update=":dataForm:field" value="Próximo" action="#{relatorioMesBean.proximo}" />
-	<p:tooltip for="faturamentoButton" value="#{messages.label_edit}" showEffect="fade" hideEffect="fade" />
-	<p:commandButton id="faturamentoButton" icon="ui-icon-calculator" value="Faturamento" oncomplete="PF('dlgFaturamento').show()" actionListener="#{faturamentoBean.carregarPeriodo(relatorioMesBean.dataLabel)}" update=":createFormFaturamento:createPanelGrid :dataFormList:listFaturamento" />	
 	<br/><br/>
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal (RDM) - #{relatorioMesBean.dataLabel}">
         <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}" >
@@ -62,7 +60,6 @@
         </p:dataTable>
     </p:fieldset>
     </h:form>
-    <ui:include src="/pages/faturamento.xhtml"/>       
     <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 	<p:dialog id="loading" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
 	    <p:graphicImage name="/images/carregando.gif" />

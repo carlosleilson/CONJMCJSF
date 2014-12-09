@@ -116,7 +116,10 @@ public class DataUltil {
 	 * @return Retorna data do mes alterado. 
 	 */	
 	public static Date alterarMes(Date dataTmp, int numeroDoMes){
-		dataTmp.setMonth(dataTmp.getMonth()+numeroDoMes);
+		Calendar c = Calendar.getInstance();
+		c.setTime(dataTmp);
+		c.set(c.MONTH,dataTmp.getMonth()+numeroDoMes);
+		dataTmp = c.getTime();
 		return dataTmp;
 	}
 }

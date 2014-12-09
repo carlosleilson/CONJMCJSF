@@ -235,16 +235,12 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	}
 
 	private void parcelas(Double valorTmp, int i) {
-		Date dataTmp = contaFuncionario.getPeriodo();
-		dataTmp.setMonth(dataTemp.getMonth()+i);
-		contaFuncionario.setPeriodo(dataTmp);
+		contaFuncionario.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),1));
 		contaFuncionario.setValor(valorTmp);
 	}
 
 	private void despesaSalario(String message, int i) {
-		Date dataTmp = despesa.getPeriodo();
-		dataTmp.setMonth(dataTemp.getMonth()+i);
-		despesa.setPeriodo(dataTmp);
+		despesa.setPeriodo(DataUltil.alterarMes(despesa.getPeriodo(),1));
 		if(funcionarioVo.getValorReceber()!=null){
 			despesa = salarioFuncionario();
 //			if(contaFuncionario.getOrigem()){
@@ -294,9 +290,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		despesa.setClassificacao(contaFuncionario.getItem().getClassificacao());
 		despesa.setItem(contaFuncionario.getItem());
 		//Colocar o salario para o mes seguinte.
-		Date dataTmp = contaFuncionario.getPeriodo();
-		dataTmp.setMonth(dataTmp.getMonth()+1);
-		despesa.setPeriodo(dataTmp);
+		despesa.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),1));
 		despesa.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));		
 		return despesa;
 	}

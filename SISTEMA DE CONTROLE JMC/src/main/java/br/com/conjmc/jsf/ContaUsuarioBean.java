@@ -47,8 +47,6 @@ public class ContaUsuarioBean implements Serializable   {
 	@PostConstruct
     public void init() {
 		iniciarFuncionarioVO();
-//		findAllItensPessoalAtivos();
-//		findAllFuncionariosAtivos();
 		iniciarData();
 	}
 	
@@ -138,7 +136,6 @@ public class ContaUsuarioBean implements Serializable   {
 		todosFuncionariosTmp.add(umFuncionario);
 		funcionarioVoTmp.setTotalDesconto(totalDesconto);
 		funcionarioVoTmp.setValorReceber(empregado.getSalario() - totalDesconto);
-		//funcionarioVoTmp.setItem(todosFuncionariosTmp);
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
 	}	

@@ -202,7 +202,7 @@ public class ContasFuncionario implements Serializable  {
 	
 	public static List<ContasFuncionario> encontraContaFuncionarios(Date dataInicial, Date dataFinal, Funcionarios funcionario) {
         EntityManager em = entityManager();
-        Query query = entityManager().createQuery("SELECT o FROM ContasFuncionario o WHERE ( o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja ) and o.periodo between :dataInicial and :dataFinal", ContasFuncionario.class);
+        Query query = entityManager().createQuery("SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal", ContasFuncionario.class);
 		query.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(dataInicial));
 		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(dataFinal));
 		query.setParameter("funcionario", funcionario);

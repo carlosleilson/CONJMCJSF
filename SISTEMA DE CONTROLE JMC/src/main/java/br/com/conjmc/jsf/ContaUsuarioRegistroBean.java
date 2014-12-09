@@ -45,6 +45,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	private List<Funcionarios> allFuncionariosAtivos;
 	private Integer parcelas; 
 	private String dataLabel;
+	private String dataMesRecebe;
 	private Date dataTemp;
 	private int mesTemp;
 	private SimpleDateFormat sdf;	
@@ -310,13 +311,15 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	 * @param FuncionarioVO -- Funcionario temporario.
 	 * @return String --Retorna caminho de pagina. 
 	 */		
-	public String contaFuncionarioRedict(FuncionarioVO funcionarioVoTmp) {
+	public String contaFuncionarioRedict(FuncionarioVO funcionarioVoTmp,Date dtTmp) {
 		contaFuncionario = new ContasFuncionario();
 		contaFuncionario.setPeriodo(dataTemp);
 		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 		contaFuncionario.setFuncionario(funcionarioVoTmp.getFuncionario());
 		contaFuncionario.setParcela(1);
 		buscaFuncionario(contaFuncionario.getFuncionario());
+		dataTemp = dtTmp;
+		dataMesRecebe = getSdf().format(DataUltil.alterarMes(dtTmp,1)).toString();
         return "/page/contaFuncionarioRegistro.xhtml";
     }
 	
@@ -325,7 +328,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		salario(message);
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Conta Funcionario");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        return contaFuncionarioRedict(funcionarioVo);
+        return contaFuncionarioRedict(funcionarioVo, dataTemp);
     }
 	
 	public String delete() {
@@ -334,7 +337,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		despesaSalario();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", item+" do Conta Funcionairo");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        return contaFuncionarioRedict(funcionarioVo);
+        return contaFuncionarioRedict(funcionarioVo, dataTemp);
     }
 	
 	public void reset() {
@@ -471,5 +474,13 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 
 	public void setSdf(SimpleDateFormat sdf) {
 		this.sdf = sdf;
+	}
+
+	public String getDataMesRecebe() {
+		return dataMesRecebe;
+	}
+
+	public void setDataMesRecebe(String dataMesRecebe) {
+		this.dataMesRecebe = dataMesRecebe;
 	}
 }

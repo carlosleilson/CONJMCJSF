@@ -26,6 +26,7 @@ public class ItemFaturamentoDescricaoBean {
 		faturamento = new Faturamento();
 		itemFaturamentoDescricao = new ItemFaturamentoDescricao();
 		carregarItens();
+		itemFaturamentoDescricao.setAtivo(true);
 	}
 
 	private void carregarItens() {
@@ -50,7 +51,7 @@ public class ItemFaturamentoDescricaoBean {
 				"Faturamento");
 		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 		init();
-		return "/itemFaturamentoDescricao.xhtml";
+		return "itemFaturamentoDecricao.xhtml";
 	}
 	
 	public String persistFatumento(){

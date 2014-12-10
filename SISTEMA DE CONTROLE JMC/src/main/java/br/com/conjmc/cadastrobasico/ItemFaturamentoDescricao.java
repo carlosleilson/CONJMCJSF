@@ -31,6 +31,8 @@ public class ItemFaturamentoDescricao {
 	@Version
 	private int versao;
 	
+	private boolean ativo;
+	
 	@ManyToOne
     @JoinColumn(name="faturamento_id")
     private Faturamento faturamento;
@@ -80,7 +82,13 @@ public class ItemFaturamentoDescricao {
 		this.itemFaturamento = itemFaturamento;
 	}
 
+	public boolean isAtivo() {
+		return ativo;
+	}
 
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
 
 	//DAO
 	@PersistenceContext

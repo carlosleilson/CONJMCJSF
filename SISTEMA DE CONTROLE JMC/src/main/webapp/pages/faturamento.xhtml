@@ -32,7 +32,7 @@
 	          	<p:message for="periodo"/>		          	
 	          
 	          </h:panelGrid>
-	          	<ui:repeat value="#{itemFaturamentoDescricaoBean.itensFaturamento}" var="item">
+	          	<ui:repeat value="#{itemFaturamentoDescricaoBean.itensFaturamentoAtivos}" var="item">
 	         		<br/>
 	          		<h3><h:outputText value="#{item.item}" /></h3>
 	          		<h:panelGrid id="createPanelGrid" columns="6">

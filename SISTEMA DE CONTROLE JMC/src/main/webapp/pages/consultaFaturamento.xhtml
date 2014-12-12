@@ -36,14 +36,14 @@
 					Total da Quantidade: 
 					<h:outputText value="#{consultaFaturamentoBean.quantidade}"/>
 					
-					Total do Numero de Comandas: 
-					<h:outputText value="#{consultaFaturamentoBean.numeroComandas}"/>
-					
 					Total da Valor Total:
 					R$<h:outputText value="#{consultaFaturamentoBean.total}">
 						<f:convertNumber minFractionDigits="2"/>
 					</h:outputText>
 				</p:outputPanel>
+				<p:dataTable value="#{itemFaturamentoDescricaoBean.itensFaturamento}">
+					
+				</p:dataTable>
 			</h:form>
 		</ui:define>
 	</ui:composition>    

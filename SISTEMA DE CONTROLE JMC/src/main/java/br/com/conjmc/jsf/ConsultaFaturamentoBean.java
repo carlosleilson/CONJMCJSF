@@ -1,11 +1,13 @@
 package br.com.conjmc.jsf;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamentoDescricao;
 
@@ -17,8 +19,8 @@ public class ConsultaFaturamentoBean {
 	private Date dataFinal;
 	private ItemFaturamento itemFaturamento;
 	private long quantidade;
-	private long numeroComandas;
 	private Double total;
+	private List<Faturamento> faturamentos;
 	
 	@PostConstruct
 	public void init() {
@@ -28,7 +30,6 @@ public class ConsultaFaturamentoBean {
 	public String carregarTotal() {
 		total = new ItemFaturamentoDescricao().valorTotal(dataInicial, dataFinal, null);
 		quantidade = new ItemFaturamentoDescricao().quantidadeTotal(dataInicial, dataFinal, null);
-		numeroComandas = new ItemFaturamentoDescricao().numeroComandasTotal(dataInicial, dataFinal, null);
 		return "consultaFaturamento.xhtml";
 	}
 
@@ -65,20 +66,20 @@ public class ConsultaFaturamentoBean {
 		this.quantidade = quantidade;
 	}
 
-	public long getNumeroComandas() {
-		return numeroComandas;
-	}
-
-	public void setNumeroComandas(Integer numeroComandas) {
-		this.numeroComandas = numeroComandas;
-	}
-
 	public Double getTotal() {
 		return total;
 	}
 
 	public void setTotal(Double total) {
 		this.total = total;
+	}
+
+	public List<Faturamento> getFaturamentos() {
+		return faturamentos;
+	}
+
+	public void setFaturamentos(List<Faturamento> faturamentos) {
+		this.faturamentos = faturamentos;
 	}
 
 }

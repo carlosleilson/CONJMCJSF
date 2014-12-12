@@ -12,6 +12,7 @@ import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamentoDescricao;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean
 @SessionScoped
@@ -20,6 +21,7 @@ public class ItemFaturamentoDescricaoBean {
 	private Faturamento faturamento;
 	private ItemFaturamentoDescricao itemFaturamentoDescricao;
 	private List<ItemFaturamentoDescricao> itensFaturamento;
+	private List<ItemFaturamentoDescricao> itensFaturamentoAtivos;
 
 	@PostConstruct
 	public void init() {
@@ -32,7 +34,8 @@ public class ItemFaturamentoDescricaoBean {
 	private void carregarItens() {
 		new ItemFaturamentoDescricao();
 		itensFaturamento = ItemFaturamentoDescricao.findAllItemFaturmento();
-		for (ItemFaturamentoDescricao itemFaturamentoDescricaoFor : itensFaturamento) {
+		itensFaturamentoAtivos = ItemFaturamentoDescricao.findAllItemFaturmentoAtivo();
+		for (ItemFaturamentoDescricao itemFaturamentoDescricaoFor : itensFaturamentoAtivos) {
 			itemFaturamentoDescricaoFor.setItemFaturamento(new ItemFaturamento());
 		}
 	}
@@ -55,8 +58,9 @@ public class ItemFaturamentoDescricaoBean {
 	}
 	
 	public String persistFatumento(){
+		faturamento.setLoja(ObejctSession.loja());
 		faturamento.persist();
-		for (ItemFaturamentoDescricao itemFaturamentoDescricaoFor : itensFaturamento) {
+		for (ItemFaturamentoDescricao itemFaturamentoDescricaoFor : itensFaturamentoAtivos) {
 			ItemFaturamento it = itemFaturamentoDescricaoFor.getItemFaturamento();
 			it.persist();
 			itemFaturamentoDescricaoFor.setFaturamento(faturamento);
@@ -101,6 +105,15 @@ public class ItemFaturamentoDescricaoBean {
 	public void setItensFaturamento(
 			List<ItemFaturamentoDescricao> itensFaturamento) {
 		this.itensFaturamento = itensFaturamento;
+	}
+
+	public List<ItemFaturamentoDescricao> getItensFaturamentoAtivos() {
+		return itensFaturamentoAtivos;
+	}
+
+	public void setItensFaturamentoAtivos(
+			List<ItemFaturamentoDescricao> itensFaturamentoAtivos) {
+		this.itensFaturamentoAtivos = itensFaturamentoAtivos;
 	}
 
 }

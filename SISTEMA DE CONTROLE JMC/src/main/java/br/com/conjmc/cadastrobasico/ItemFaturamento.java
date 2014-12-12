@@ -30,8 +30,6 @@ public class ItemFaturamento {
 	
 	private Double valor;
 	
-	private int numeroComanda;
-	
 	@OneToMany(mappedBy="itemFaturamento")
 	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;
 	
@@ -62,14 +60,6 @@ public class ItemFaturamento {
 
 	public void setValor(Double valor) {
 		this.valor = valor;
-	}
-
-	public int getNumeroComanda() {
-		return numeroComanda;
-	}
-
-	public void setNumeroComanda(int numeroComanda) {
-		this.numeroComanda = numeroComanda;
 	}
 
 	public Integer getVersion() {

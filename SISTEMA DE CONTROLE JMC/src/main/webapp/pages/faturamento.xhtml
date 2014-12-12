@@ -36,10 +36,7 @@
 	         		<br/>
 	          		<h3><h:outputText value="#{item.item}" /></h3>
 	          		<h:panelGrid id="createPanelGrid" columns="6">
-		          		<p:outputLabel value="Nº de Comandas" for="itemNumeroComanda"/>
-		          		<p:inputText id="itemNumeroComanda" value="#{item.itemFaturamento.numeroComanda}" required="true"/>
-		          		
-		          		<p:outputLabel value="&#160;&#160;&#160;Quantidade" for="ItemQuantidade" />
+		          		<p:outputLabel value="Quantidade" for="ItemQuantidade" />
 		          		<p:inputText id="ItemQuantidade" value="#{item.itemFaturamento.quantidade}" required="true"/>
 		          		
 		          		<p:outputLabel value="&#160;&#160;&#160;Valor" for="itemValor" />

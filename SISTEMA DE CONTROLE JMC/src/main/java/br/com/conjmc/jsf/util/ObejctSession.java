@@ -20,6 +20,11 @@ public class ObejctSession {
 		return loja.getId();
 	}
 	
+	public static Lojas loja(){
+		Lojas loja = (Lojas) ObejctSession.getObjectSession("loja");
+		return loja;
+	}
+	
 	public static Usuarios getUsuarioLogado(){
 		return (Usuarios) ObejctSession.getObjectSession("usuarioLogado");
 	}

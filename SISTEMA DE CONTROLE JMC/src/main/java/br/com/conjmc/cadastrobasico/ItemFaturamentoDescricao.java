@@ -105,6 +105,11 @@ public class ItemFaturamentoDescricao {
         return query.getResultList();
     }
 	
+	public static List<ItemFaturamentoDescricao> findAllItemFaturmentoAtivo() {
+		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamentoDescricao o where o.ativo=true", ItemFaturamentoDescricao.class);
+        return query.getResultList();
+    }
+	
 	@Transactional
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
@@ -136,26 +141,20 @@ public class ItemFaturamentoDescricao {
     }
 	
 	public long quantidadeTotal(Date dataInicial, Date datafinal, String turno) {
-		String sql = "SELECT SUM(o.itemFaturamento.quantidade) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal";
+		String sql = "SELECT SUM(o.itemFaturamento.quantidade) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal and o.faturamento.loja=:loja";
 		Query query = entityManager().createQuery(sql, Long.class);
 		query.setParameter("dataInicial", dataInicial);
 		query.setParameter("dataFinal", datafinal);
-       	return (long) query.getSingleResult();
-	}
-	
-	public long numeroComandasTotal(Date dataInicial, Date datafinal, String turno) {
-		String sql = "SELECT SUM(o.itemFaturamento.numeroComanda) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal";
-		Query query = entityManager().createQuery(sql, Long.class);
-		query.setParameter("dataInicial", dataInicial);
-		query.setParameter("dataFinal", datafinal);
+		query.setParameter("loja", ObejctSession.loja());
        	return (long) query.getSingleResult();
 	}
 	
 	public Double valorTotal(Date dataInicial, Date datafinal, String turno) {
-		String sql = "SELECT SUM(o.itemFaturamento.valor) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal";
+		String sql = "SELECT SUM(o.itemFaturamento.valor) FROM ItemFaturamentoDescricao o where o.faturamento.periodo between :dataInicial and :dataFinal and o.faturamento.loja=:loja";
 		Query query = entityManager().createQuery(sql, Double.class);
 		query.setParameter("dataInicial", dataInicial);
 		query.setParameter("dataFinal", datafinal);
+		query.setParameter("loja", ObejctSession.loja());
        	return (double) query.getSingleResult();
 	}
 	

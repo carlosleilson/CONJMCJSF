@@ -35,6 +35,8 @@ public class RelatorioDoMes {
 	private Double[] TempResultRESTTotal;
 	private String[] tempRESTotalPercente;
 	private String[] tempTotal;
+	private List <DespesasGastos> todosItens;
+	private List <Sangria> todosDadosDespesasPorData;	
 	
 	
 	public RelatorioDoMes(Date dataTemp){
@@ -49,6 +51,8 @@ public class RelatorioDoMes {
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
 		faturamentoBruto = extracted();
+		todosItens =  findAllDespasGastos();
+		todosDadosDespesasPorData = findAllSangriaByItens();		
 		
 	}
 
@@ -230,6 +234,16 @@ public class RelatorioDoMes {
     }
 	
 	/**
+	 * Método para encontrar dados de todos os itens .
+	 * 
+	 * @param Long id
+	 *            -- Id da classificação.
+	 */	
+	public List<DespesasGastos> findAllDespasGastos() {
+		return DespesasGastos.findAllDespesasGastosAtivos();
+	}
+	
+	/**
 	 * Método para encontrar dados dos itens por id da classificação.
 	 * 
 	 * @param Long id
@@ -250,6 +264,17 @@ public class RelatorioDoMes {
 		return allSangrias;
 	}
 
+	/**
+	 * Método para encontrar valores do sangria por data
+	 * 
+	 * @param Long id
+	 *            -- Id dos itens.
+	 */
+	public List<Sangria> findAllSangriaByItens() {
+		allSangrias =  Sangria.paginaPorMes(data);
+		return allSangrias;
+	}	
+	
 	public List<ResumoVO> getResumosItens() {
 		return resumosItens;
 	}
@@ -268,8 +293,10 @@ public class RelatorioDoMes {
 		classificacaoIten.setName(classificacao.getCodigo() + " - "	+ classificacao.getDescricao());
 		classificacaoIten.setResumo(classificacao.getIdResumo());
 		List<ItensVO> listItens = new ArrayList<ItensVO>();
-		for (DespesasGastos item : findAllDespasGastosByClassificao(classificacao.getId())) {
-			listItens.add(criarDadosDeItem(item));
+		for (DespesasGastos item : todosItens) {
+			if(item.getClassificacao().getId().equals(classificacao.getId())){
+				listItens.add(criarDadosDeItem(item));
+			}
 		}		
 		listItens.add(criarTotalLinha());
 		campoTemp = inicializaArray(new String[QTD_CAMPOS]);
@@ -309,10 +336,12 @@ public class RelatorioDoMes {
 	private String[] preencharCampos(String[] campos, Long itenId) throws ParseException {
 		List<Sangria> dadosItens = findAllSangriaByItens(itenId);
 		for(int i = 1; i<campos.length; i++){
-			for (Sangria dado : dadosItens) {
-				if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear()  ){
-					campos[i] = df.format(dado.getValor());
-					campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
+			for (Sangria dado : todosDadosDespesasPorData) {
+				if(dado.getItem().getId().equals(itenId)){
+					if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear()  ){
+						campos[i] = df.format(dado.getValor());
+						campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
+					}
 				}
 			}		
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());

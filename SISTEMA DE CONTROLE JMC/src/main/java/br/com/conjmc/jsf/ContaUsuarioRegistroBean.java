@@ -15,11 +15,13 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.event.CloseEvent;
 
+import br.com.conjmc.cadastrobasico.Cargos;
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Perfil;
+import br.com.conjmc.cadastrobasico.Setor;
 import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.DataUltil;
@@ -223,76 +225,64 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	 */		
 	void salario(String message) {
 		Double valorTmp = Math.abs(contaFuncionario.getValor()/contaFuncionario.getParcela());
-		for(int i = 0; i > contaFuncionario.getParcela();i++){
+		for(int i = 1; i <= contaFuncionario.getParcela();i++){
 			parcelas(valorTmp, i);
+			contaFuncionario.setDespesa(despesaSalario("message_successfully_created",i));
 	        if (contaFuncionario.getId() != null) {
 	        	contaFuncionario.merge();
 	        }else{
 	        	contaFuncionario.persist();
 	        }
-	        despesaSalario("message_successfully_created",i);
 		}
 	}
 
 	private void parcelas(Double valorTmp, int i) {
-		contaFuncionario.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),1));
+		//contaFuncionario.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),1));
 		contaFuncionario.setValor(valorTmp);
 	}
 
-	private void despesaSalario(String message, int i) {
-		despesa.setPeriodo(DataUltil.alterarMes(despesa.getPeriodo(),1));
-		if(funcionarioVo.getValorReceber()!=null){
-			despesa = salarioFuncionario();
-//			if(contaFuncionario.getOrigem()){
-//				despesa.setValor(funcionarioVo.getValorReceber());
-//			}else{
-//				despesa.setValor(funcionarioVo.getValorReceber()-contaFuncionario.getValor());
-//			}
-			despesa.setValor(funcionarioVo.getValorReceber());
-			
-			if (despesa.getId() != null) {
-				despesa.merge();
-			} else {
-				despesa.persist();
-			}
+	private Sangria despesaSalario(String message, int i) {
+		despesa = contaFuncionario.getDespesa();
+		if(despesa==null){
+			despesa = new Sangria();
 		}
-	}
-
-	private void despesaSalario() {
-		if(funcionarioVo.getValorReceber()!=null){
-			despesa = salarioFuncionario();
-//			if(contaFuncionario.getOrigem()){
-//				despesa.setValor(funcionarioVo.getValorReceber());
-//			}else{
-//				despesa.setValor(funcionarioVo.getValorReceber()-contaFuncionario.getValor());
-//			}
-			despesa.setValor(funcionarioVo.getValorReceber());
-			
-			if (despesa.getId() != null) {
-				despesa.merge();
-			} else {
-				despesa.persist();
-			}
-		}
-	}
-
-	/**
-	 * Método que prepara dados de funcionario para o banco.
-	 * @return Sangria --Retorna despesa salarial. 
-	 */		
-	private Sangria salarioFuncionario() {
-		Sangria despesaTmp = Sangria.encontarFuncionarioPorItens(contaFuncionario.getFuncionario(), contaFuncionario.getItem());
-		if(despesaTmp!=null && despesaTmp.getId()!=null){
-			return despesaTmp;
-		}
-		despesa = new Sangria();
 		despesa.setFuncionario(contaFuncionario.getFuncionario());
-		despesa.setClassificacao(contaFuncionario.getItem().getClassificacao());
 		despesa.setItem(contaFuncionario.getItem());
-		//Colocar o salario para o mes seguinte.
-		despesa.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),1));
-		despesa.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));		
+		salarioPorPerfil(despesa,contaFuncionario);
+		despesa.setSangria(true);
+		despesa.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),i));
+		despesa.setLoja(ObejctSession.loja());
+		if(funcionarioVo.getValorReceber()!=null){
+			despesa.setValor(funcionarioVo.getValorReceber());
+			if (despesa.getId() != null) {
+				despesa.merge();
+			} else {
+				despesa.persist();
+			}
+		}
 		return despesa;
+	}
+
+	private void salarioPorPerfil(Sangria despesa2,	ContasFuncionario contaFuncionarioTmp) {
+		if(contaFuncionarioTmp.getFuncionario().getCargo().getSetor().equals(Setor.COZINHA)){
+			despesa2.setItem(DespesasGastos.findDespesasGastos(Long.parseLong("166")));	
+			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(Long.parseLong("166")).getClassificacao());
+		}
+		
+		if(contaFuncionarioTmp.getFuncionario().getCargo().getSetor().equals(Setor.ATENDIMENTO)){
+			despesa2.setItem(DespesasGastos.findDespesasGastos(Long.parseLong("168")));	
+			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(Long.parseLong("168")).getClassificacao());
+		}
+		
+		if(contaFuncionarioTmp.getFuncionario().getCargo().getSetor().equals(Setor.CENTRALDECORTE)){
+			despesa2.setItem(DespesasGastos.findDespesasGastos(Long.parseLong("489")));	
+			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(Long.parseLong("489")).getClassificacao());
+		}
+		
+		if(contaFuncionarioTmp.getFuncionario().getCargo().getSetor().equals(Setor.CALLCENTER)){
+			despesa2.setItem(DespesasGastos.findDespesasGastos(Long.parseLong("490")));	
+			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(Long.parseLong("490")).getClassificacao());
+		}		
 	}
 
 	public String handleDialogClose(CloseEvent event) {
@@ -307,12 +297,12 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	 */		
 	public String contaFuncionarioRedict(FuncionarioVO funcionarioVoTmp,Date dtTmp) {
 		contaFuncionario = new ContasFuncionario();
+		dataTemp = dtTmp;
 		contaFuncionario.setPeriodo(dataTemp);
 		contaFuncionario.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
 		contaFuncionario.setFuncionario(funcionarioVoTmp.getFuncionario());
 		contaFuncionario.setParcela(1);
 		buscaFuncionario(contaFuncionario.getFuncionario());
-		dataTemp = dtTmp;
 		dataMesRecebe = getSdf().format(DataUltil.alterarMes(dtTmp,1)).toString();
         return "/page/contaFuncionarioRegistro.xhtml";
     }
@@ -327,8 +317,8 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	
 	public String delete() {
 		String item = contaFuncionario.getDescricao();
+		despesaSalario("message_successfully_deleted",1);
 		contaFuncionario.remove();
-		despesaSalario();
         FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", item+" do Conta Funcionairo");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         return contaFuncionarioRedict(funcionarioVo, dataTemp);

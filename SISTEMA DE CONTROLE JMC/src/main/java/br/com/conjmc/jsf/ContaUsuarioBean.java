@@ -123,23 +123,41 @@ public class ContaUsuarioBean implements Serializable   {
 		Double totalDesconto = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
 		List<ContasFuncionario> itens = new ContasFuncionario().encontraContaFuncionarios(dataInicial, dataFinal, empregado);
-		ItensFuncionario umFuncionario = null;
 		for (ContasFuncionario iten : itens) {
-				umFuncionario = new ItensFuncionario();
+			ItensFuncionario umFuncionario = new ItensFuncionario();
+			if(validarSeESalario(iten.getItem())){
+				funcionarioVoTmp.setSalario(iten.getValor());
+				if(iten.getValor()!= null){
+					funcionarioVoTmp.setSalario(iten.getValor());
+				}
+			}else {
 				umFuncionario.setId(iten);
 				umFuncionario.setItem(iten.getItem());
 				umFuncionario.setPeriodo(iten.getPeriodo());
 				umFuncionario.setValor(iten.getValor());
-				funcionarioVoTmp.setSalario(iten.getFuncionario().getSalario());
-				totalDesconto = totalDesconto + iten.getValor();
+				if(iten.getOrigem()){
+					totalDesconto = Math.abs(totalDesconto + iten.getValor());
+				}
+				todosFuncionariosTmp.add(umFuncionario);
+			}
 		}
-		todosFuncionariosTmp.add(umFuncionario);
 		funcionarioVoTmp.setTotalDesconto(totalDesconto);
 		funcionarioVoTmp.setValorReceber(empregado.getSalario() - totalDesconto);
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
 	}	
 
+	/**
+	 * Método que valida se é item do salario.
+	 * @param DespesasGastos -- itens 
+	 */
+	private boolean validarSeESalario(DespesasGastos item) {
+		return (item.getCodigo().equals(Long.parseLong("489")) 
+				||item.getCodigo().equals(Long.parseLong("490"))
+				||item.getCodigo().equals(Long.parseLong("166")) 
+				||item.getCodigo().equals(Long.parseLong("168")));
+	}	
+	
 	private boolean tirarAdiministradores(Funcionarios empregado){
 		for(Usuarios usuario : Usuarios.findUsuariosPorFuncionario(empregado)){
 			if(usuario.getPerfil().equals(Perfil.ADMIN))

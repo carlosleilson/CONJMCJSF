@@ -26,6 +26,8 @@ public class RelatorioDiaDoMes {
 	private static Double[] totalLinha;
 	private static Date data;
 	private NumberFormat df; 
+	private List <DespesasGastos> todosItens;
+	private List <Sangria> todosDadosDespesasPorData;
 	
 	public RelatorioDiaDoMes(Date dataTemp){
 		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -34,6 +36,8 @@ public class RelatorioDiaDoMes {
 		data = c.getTime();
 		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+2;
 		totalLinha = inicializaArray(new Double[QTD_CAMPOS]);
+		todosItens =  findAllDespasGastos();
+		todosDadosDespesasPorData = findAllSangriaByItens();
 	}
 
 	private Double[] inicializaArray(Double[] campos){
@@ -87,8 +91,10 @@ public class RelatorioDiaDoMes {
 		classificacaoIten.setName(classificacao.getCodigo() + " - "	+ classificacao.getDescricao());
 		classificacaoIten.setResumo(classificacao.getIdResumo());
 		List<ItensVO> listItens = new ArrayList<ItensVO>();
-		for (DespesasGastos item : findAllDespasGastosByClassificao(classificacao.getId())) {
-			listItens.add(criarDadosDeItem(item));
+		for (DespesasGastos item : todosItens) {
+			if(item.getClassificacao().getId().equals(classificacao.getId())){
+				listItens.add(criarDadosDeItem(item));
+			}
 		}		
 		listItens.add(criarTotalLinha());
 		campoTemp = inicializaArray(new Double[QTD_CAMPOS]);
@@ -119,10 +125,12 @@ public class RelatorioDiaDoMes {
 	 */
 	private Double[] preencharCampos(Double[] campos, Long itenId) throws ParseException {
 		for(int i = 1; i<campos.length; i++){
-			for (Sangria dado : findAllSangriaByItens(itenId)) {
-				if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear() ){
-					campos[i] = campos[i] + dado.getValor();
-					campos[campos.length-1] = campos[campos.length-1] + dado.getValor();
+			for (Sangria dado : todosDadosDespesasPorData) {
+				if(dado.getItem().getId().equals(itenId)){
+					if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear() ){
+						campos[i] = campos[i] + dado.getValor();
+						campos[campos.length-1] = campos[campos.length-1] + dado.getValor();
+					}
 				}
 			}			
 			totalLinha[i] = totalLinha[i] + campos[i];
@@ -184,6 +192,16 @@ public class RelatorioDiaDoMes {
 	}
 	
 	/**
+	 * Método para encontrar dados de todos os itens .
+	 * 
+	 * @param Long id
+	 *            -- Id da classificação.
+	 */	
+	public List<DespesasGastos> findAllDespasGastos() {
+		return DespesasGastos.findAllDespesasGastosAtivos();
+	}
+	
+	/**
 	 * Método para encontrar valores do sangria por id dos itenzs
 	 * 
 	 * @param Long id
@@ -193,7 +211,18 @@ public class RelatorioDiaDoMes {
 		allSangrias =  Sangria.paginaPorMes(data, id);
 		return allSangrias;
 	}
-
+	
+	/**
+	 * Método para encontrar valores do sangria por data
+	 * 
+	 * @param Long id
+	 *            -- Id dos itens.
+	 */
+	public List<Sangria> findAllSangriaByItens() {
+		allSangrias =  Sangria.paginaPorMes(data);
+		return allSangrias;
+	}
+	
 	public List<ClassificacaoVO> getClassificacaoItens() {
 		return classificacaoItens;
 	}

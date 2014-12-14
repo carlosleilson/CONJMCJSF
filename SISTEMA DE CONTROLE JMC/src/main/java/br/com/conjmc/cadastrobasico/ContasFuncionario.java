@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
 
@@ -70,7 +71,12 @@ public class ContasFuncionario implements Serializable  {
 	/**
      */
 	private String descricao;
-    
+
+	/**
+     */
+	@ManyToOne
+	private Sangria despesa;
+	
 	/**
      */
     @NotNull
@@ -266,5 +272,13 @@ public class ContasFuncionario implements Serializable  {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Sangria getDespesa() {
+		return despesa;
+	}
+
+	public void setDespesa(Sangria despesa) {
+		this.despesa = despesa;
 	}
 }

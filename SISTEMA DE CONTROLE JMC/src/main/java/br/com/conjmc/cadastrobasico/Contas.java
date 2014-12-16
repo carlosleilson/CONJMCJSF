@@ -177,6 +177,7 @@ public class Contas implements Serializable{
 	public static List<Contas> findAllContas() {
 		Query query = entityManager().createQuery("SELECT o FROM Contas o where o.loja.id = :loja order by o.vencimento desc", Contas.class);
 		query.setParameter("loja", ObejctSession.idLoja());
+		query.setMaxResults(50);
 		return query.getResultList();
     }
 

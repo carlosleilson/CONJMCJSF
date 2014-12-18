@@ -32,23 +32,23 @@ public class ItemFaturamentoDescricaoBean {
 	public void init() {
 		itemFaturamentoDescricao = new ItemFaturamentoDescricao();
 		itemFaturamentoDescricao.setAtivo(true);
-		itemFaturamentoNovo = new ArrayList<ItemFaturamento>();
+		//itemFaturamentoNovo = new ArrayList<ItemFaturamento>();
 		carregarItens();
 	}
 
 	private void carregarItens() {
+		Lojas loja = ObejctSession.loja();
 		new ItemFaturamentoDescricao();
 		itensFaturamento = ItemFaturamentoDescricao.findAllItemFaturmento();
 		itensFaturamentoAtivos = ItemFaturamentoDescricao.findAllItemFaturmentoAtivo();
 		List<ItemFaturamento> item = new ArrayList<ItemFaturamento>();
 		for (ItemFaturamentoDescricao itemFaturamentoDescricaoFor : itensFaturamentoAtivos) {
 			ItemFaturamento itemFaturamentoFor = new ItemFaturamento();
+			itemFaturamentoFor.setLoja(loja);
 			itemFaturamentoFor.setFaturamentoDescricao(itemFaturamentoDescricaoFor);
 			item.add(itemFaturamentoFor);  
-			/*itemFaturamentoDescricaoFor.setItemFaturamento(new ItemFaturamento());*/
 		}
 		setItemFaturamentoNovo(item);
-		
 	}
 
 	public String persist() {
@@ -69,19 +69,16 @@ public class ItemFaturamentoDescricaoBean {
 	}
 	
 	public String persistFatumento(){
-		Lojas loja = ObejctSession.loja();
-		for (ItemFaturamentoDescricao itemFaturamentoDescricaoFor : itensFaturamentoAtivos) {
-			/*ItemFaturamento it = itemFaturamentoDescricaoFor.getItemFaturamento();
-			it.setLoja(ObejctSession.loja());
-			it.setPeriodo(data);
-			it.setTurno(turno);
-			it.persist();
-
-
-			itemFaturamentoDescricaoFor.setItemFaturamento(it);
-			itemFaturamentoDescricaoFor.merge();*/
+		for (ItemFaturamento item : itemFaturamentoNovo) {
+			item.setPeriodo(data);
+			item.setTurno(turno);
+			item.persist();
 		}
 		init();
+		data = null;
+		turno = null;
+		FacesMessage facesMessage = MessageFactory.getMessage("Faturamento adicionado com sucesso!");
+		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 		return "/faturameto.xhtml";
 	}
 

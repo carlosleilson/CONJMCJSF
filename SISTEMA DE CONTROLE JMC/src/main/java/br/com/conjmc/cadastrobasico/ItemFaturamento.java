@@ -1,14 +1,17 @@
 package br.com.conjmc.cadastrobasico;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
@@ -24,33 +27,42 @@ public class ItemFaturamento {
 
 	@Id 
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
-	private int quantidade;
+	private Integer quantidade;
 	
 	private Double valor;
 	
-	@OneToMany(mappedBy="itemFaturamento")
-	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;
+	private Date periodo;
+	
+	@Enumerated
+	private Turno turno;
+	
+	@ManyToOne
+	@JoinColumn(name="faturamento_descricao_id")
+	private ItemFaturamentoDescricao faturamentoDescricao;
 	
 	@Version
     @Column(name = "version")
     private Integer version;
 	
-	//Getters and Setters	
-	public long getId() {
+	@ManyToOne
+	private Lojas loja;
+	
+	//Getters and Setters		
+	public Long getId() {
 		return id;
 	}
-
-	public void setId(long id) {
+	
+	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public int getQuantidade() {
+	
+	public Integer getQuantidade() {
 		return quantidade;
 	}
-
-	public void setQuantidade(int quantidade) {
+	
+	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
 
@@ -61,6 +73,23 @@ public class ItemFaturamento {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
+	
+	public Date getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(Date periodo) {
+		this.periodo = periodo;
+	}
+	
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
+	}
+
 
 	public Integer getVersion() {
 		return version;
@@ -70,26 +99,34 @@ public class ItemFaturamento {
 		this.version = version;
 	}
 
-	public List<ItemFaturamentoDescricao> getItemFaturamentoDescricao() {
-		return itemFaturamentoDescricao;
+	public ItemFaturamentoDescricao getFaturamentoDescricao() {
+		return faturamentoDescricao;
 	}
 
-	public void setItemFaturamentoDescricao(
-			List<ItemFaturamentoDescricao> itemFaturamentoDescricao) {
-		this.itemFaturamentoDescricao = itemFaturamentoDescricao;
+	public void setFaturamentoDescricao(
+			ItemFaturamentoDescricao faturamentoDescricao) {
+		this.faturamentoDescricao = faturamentoDescricao;
 	}
+
+	public Lojas getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Lojas loja) {
+		this.loja = loja;
+	} 
 
 	//DAO
 	@PersistenceContext
     transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new Faturamento().entityManager;
+        EntityManager em = new ItemFaturamento().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
 	
-	public static List<Faturamento> findAllItemFaturmento() {
+	public static List<ItemFaturamento> findAllItemFaturmento() {
 		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamento o where o.loja.id = :loja", ItemFaturamento.class);
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();

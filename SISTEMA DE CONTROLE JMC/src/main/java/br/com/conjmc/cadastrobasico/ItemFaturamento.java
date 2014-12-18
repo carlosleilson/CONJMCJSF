@@ -187,7 +187,13 @@ public class ItemFaturamento {
 		query.setParameter("dataInicial", dataInicial);
 		query.setParameter("dataFinal", datafinal);
 		query.setParameter("loja", ObejctSession.loja());
-       	return (long) query.getSingleResult();
+		long valor;
+		try {
+			valor = (long) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
 	}
 	
 	public Double valorTotal(Date dataInicial, Date datafinal, Turno turno) {
@@ -201,7 +207,20 @@ public class ItemFaturamento {
 		query.setParameter("dataInicial", dataInicial);
 		query.setParameter("dataFinal", datafinal);
 		query.setParameter("loja", ObejctSession.loja());
-       	return (double) query.getSingleResult();
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
 	}
 	
+	public long validarFaturamento(Date data, Turno turno) {
+		String sql="SELECT count(o.quantidade) FROM ItemFaturamento o where o.periodo=:data and o.loja=:loja and turno="+turno.ordinal();
+		Query query = entityManager().createQuery(sql, Long.class);
+		query.setParameter("data", data);
+		query.setParameter("loja", ObejctSession.loja());
+       	return (long) query.getSingleResult();
+	}
 }

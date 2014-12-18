@@ -4,11 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.cadastrobasico.Turno;
+import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean
 @SessionScoped
@@ -32,6 +35,15 @@ public class ConsultaFaturamentoBean {
 		quantidade = new ItemFaturamento().quantidadeTotal(dataInicial, dataFinal, turno);
 		faturamentos = new ItemFaturamento().findAllItemFaturmento(dataInicial, dataFinal, turno);
 		return "consultaFaturamento.xhtml";
+	}
+	
+	public void salvar(){
+		if(itemFaturamento.getId() != null) {
+			itemFaturamento.merge();
+			carregarTotal();
+			FacesMessage facesMessage = MessageFactory.getMessage("Faturamento alterado com sucesso!");
+			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+		}
 	}
 
 	//Getters and Setters

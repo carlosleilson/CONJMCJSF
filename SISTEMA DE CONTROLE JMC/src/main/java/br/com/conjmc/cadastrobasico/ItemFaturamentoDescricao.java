@@ -7,8 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Version;
@@ -33,13 +32,8 @@ public class ItemFaturamentoDescricao {
 	
 	private boolean ativo;
 	
-	@ManyToOne
-    @JoinColumn(name="faturamento_id")
-    private Faturamento faturamento;
-	
-	@ManyToOne(targetEntity=ItemFaturamento.class)
-	@JoinColumn(name="item_faturamento_id")
-	private ItemFaturamento itemFaturamento;
+	@OneToMany
+	private List<ItemFaturamento> itemFaturamento;
 
 	//Getters and Setters
 	public Long getId() {
@@ -65,20 +59,12 @@ public class ItemFaturamentoDescricao {
 	public void setVersao(int versao) {
 		this.versao = versao;
 	}
-	
-	public Faturamento getFaturamento() {
-		return faturamento;
-	}
 
-	public void setFaturamento(Faturamento faturamento) {
-		this.faturamento = faturamento;
-	}
-	
-	public ItemFaturamento getItemFaturamento() {
+	public List<ItemFaturamento> getItemFaturamento() {
 		return itemFaturamento;
 	}
 
-	public void setItemFaturamento(ItemFaturamento itemFaturamento) {
+	public void setItemFaturamento(List<ItemFaturamento> itemFaturamento) {
 		this.itemFaturamento = itemFaturamento;
 	}
 

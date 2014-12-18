@@ -23,7 +23,7 @@
 						<p:message for="dataFinal"/>
 	
 						<p:outputLabel value="Período" for="periodo"/>
-						<p:selectOneMenu id="periodo">
+						<p:selectOneMenu id="periodo" value="#{consultaFaturamentoBean.turno}">
 			          		<f:selectItem itemLabel="Selecione um periodo" itemValue=""/>
 			          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
 			          	</p:selectOneMenu>
@@ -41,8 +41,27 @@
 						<f:convertNumber minFractionDigits="2"/>
 					</h:outputText>
 				</p:outputPanel>
-				<p:dataTable value="#{itemFaturamentoDescricaoBean.itensFaturamento}">
-					
+				<p:dataTable value="#{consultaFaturamentoBean.faturamentos}" var="ifaturamento">
+					<f:facet name="header">Itens do Boleto</f:facet>
+					<p:column headerText="Data" sortBy="#{ifaturamento.periodo}">
+		          		<h:outputText value="#{ifaturamento.periodo}">
+		          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+		          		</h:outputText>
+		          	</p:column>
+		          	<p:column headerText="Descrição" sortBy="#{ifaturamento.faturamentoDescricao.item}">
+		          		<h:outputText value="#{ifaturamento.faturamentoDescricao.item}"/>
+		          	</p:column>
+		          	<p:column headerText="Turno" sortBy="#{ifaturamento.turno}">
+		        		<h:outputText value="#{ifaturamento.turno}"/>
+		        	</p:column>
+		        	<p:column headerText="Quantidade" sortBy="#{ifaturamento.quantidade}">
+		        		<h:outputText value="#{ifaturamento.quantidade}"/>
+		        	</p:column>
+		        	<p:column headerText="Valor" sortBy="#{ifaturamento.valor}">
+		        		<h:outputText value="#{ifaturamento.valor}">
+		        			<f:convertNumber minFractionDigits="2"/>
+		        		</h:outputText>
+		        	</p:column>
 				</p:dataTable>
 			</h:form>
 		</ui:define>

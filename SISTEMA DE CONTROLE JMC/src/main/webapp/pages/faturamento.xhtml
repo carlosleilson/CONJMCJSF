@@ -11,7 +11,8 @@
 			<title>Faturamento</title>
 		</ui:define>
 		<ui:define name="content">
-		    <h:form id="createFormFaturamento" acceptcharset="ISO-8859-1" enctype="multipart/form-data">  	
+		    <h:form id="createFormFaturamento" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+		    	<p:growl id="growl" showDetail="false" />  	
 	          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
 	          
 	          	<p:outputLabel value="Data do Faturamento" for="mesDoAno"/>

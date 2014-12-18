@@ -35,11 +35,11 @@ public class Faturamento implements Serializable {
 
 	private Date periodo;
 	
-	@Enumerated
-	private Turno turno;
+	/*@Enumerated
+	private Turno turno;*/
 	
-	@OneToMany(mappedBy="faturamento",targetEntity=ItemFaturamentoDescricao.class)
-	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;
+	/*@OneToMany(mappedBy="faturamento",targetEntity=ItemFaturamentoDescricao.class)
+	private List<ItemFaturamentoDescricao> itemFaturamentoDescricao;*/
 	
 	@ManyToOne
 	private Lojas loja;
@@ -66,13 +66,13 @@ public class Faturamento implements Serializable {
 		this.periodo = periodo;
 	}
 
-	public Turno getTurno() {
+	/*public Turno getTurno() {
 		return turno;
 	}
 
 	public void setTurno(Turno turno) {
 		this.turno = turno;
-	}
+	}*/
 
 	public Lojas getLoja() {
 		return loja;
@@ -90,14 +90,14 @@ public class Faturamento implements Serializable {
 		this.version = version;
 	}
 	
-	public List<ItemFaturamentoDescricao> getItemFaturamentoDescricao() {
+	/*public List<ItemFaturamentoDescricao> getItemFaturamentoDescricao() {
 		return itemFaturamentoDescricao;
 	}
 
 	public void setItemFaturamentoDescricao(
 			List<ItemFaturamentoDescricao> itemFaturamentoDescricao) {
 		this.itemFaturamentoDescricao = itemFaturamentoDescricao;
-	}
+	}*/
 
 
 	//DAO

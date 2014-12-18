@@ -17,7 +17,7 @@
 	          	<p:outputLabel value="Data do Faturamento" for="mesDoAno"/>
 				<p:calendar 
 					id="mesDoAno"
-					value="#{itemFaturamentoDescricaoBean.faturamento.periodo}"
+					value="#{itemFaturamentoDescricaoBean.data}"
 					pattern="dd/MM/yyyy" 
 					required="true"
 					mask="true"
@@ -25,22 +25,22 @@
 	          	<p:message for="mesDoAno"/>    
 	          
 	          	<p:outputLabel value="Periodo" for="periodo"/>
-	          	<p:selectOneMenu id="periodo" value="#{itemFaturamentoDescricaoBean.faturamento.turno}" required="true" requiredMessage="O periodo é obrigatório">
+	          	<p:selectOneMenu id="periodo" value="#{itemFaturamentoDescricaoBean.turno}" required="true" requiredMessage="O periodo é obrigatório">
 	          		<f:selectItem itemLabel="Selecione um periodo" itemValue=""/>
 	          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
 	          	</p:selectOneMenu>
 	          	<p:message for="periodo"/>		          	
 	          
 	          </h:panelGrid>
-	          	<ui:repeat value="#{itemFaturamentoDescricaoBean.itensFaturamentoAtivos}" var="item">
+	          	<ui:repeat value="#{itemFaturamentoDescricaoBean.itemFaturamentoNovo}" var="item">
 	         		<br/>
-	          		<h3><h:outputText value="#{item.item}" /></h3>
-	          		<h:panelGrid id="createPanelGrid" columns="6">
+	          		<h3><h:outputText value="#{item.faturamentoDescricao.item}" /></h3>
+	          		<h:panelGrid id="createPanelGrid" columns="4">
 		          		<p:outputLabel value="Quantidade" for="ItemQuantidade" />
-		          		<p:inputText id="ItemQuantidade" value="#{item.itemFaturamento.quantidade}" required="true"/>
+		          		<p:inputText id="ItemQuantidade" value="#{item.quantidade}" required="true"/>
 		          		
 		          		<p:outputLabel value="&#160;&#160;&#160;Valor" for="itemValor" />
-		          		<p:inputText id="itemValor" styleClass="money" value="#{item.itemFaturamento.valor}" required="true"/>
+		          		<p:inputText id="itemValor" styleClass="money" value="#{item.valor}" required="true"/>
 		          	</h:panelGrid>
 	          	</ui:repeat>
 	         	<br/>

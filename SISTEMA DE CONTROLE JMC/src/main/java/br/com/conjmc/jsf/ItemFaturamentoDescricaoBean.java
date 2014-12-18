@@ -69,16 +69,21 @@ public class ItemFaturamentoDescricaoBean {
 	}
 	
 	public String persistFatumento(){
-		for (ItemFaturamento item : itemFaturamentoNovo) {
-			item.setPeriodo(data);
-			item.setTurno(turno);
-			item.persist();
+		ItemFaturamento ifaturamento = new ItemFaturamento();
+		if(ifaturamento.validarFaturamento(data, turno) < 1){
+			for (ItemFaturamento item : itemFaturamentoNovo) {
+				item.setPeriodo(data);
+				item.setTurno(turno);
+				item.persist();
+			}
+			init();
+			data = null;
+			turno = null;
+			FacesMessage facesMessage = MessageFactory.getMessage("Faturamento adicionado com sucesso!");
+			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O faturamento não pode ser incluindo porque já existe faturamento com a mesma data e período", "O faturamento não pode ser incluindo porque já existe faturamento com a mesma data e período"));
 		}
-		init();
-		data = null;
-		turno = null;
-		FacesMessage facesMessage = MessageFactory.getMessage("Faturamento adicionado com sucesso!");
-		FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 		return "/faturameto.xhtml";
 	}
 

@@ -7,9 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
-import br.com.conjmc.cadastrobasico.ItemFaturamentoDescricao;
+import br.com.conjmc.cadastrobasico.Turno;
 
 @ManagedBean
 @SessionScoped
@@ -17,10 +16,11 @@ public class ConsultaFaturamentoBean {
 
 	private Date dataInicial;
 	private Date dataFinal;
+	private Turno turno;
 	private ItemFaturamento itemFaturamento;
 	private long quantidade;
 	private Double total;
-	private List<Faturamento> faturamentos;
+	private List<ItemFaturamento> faturamentos;
 	
 	@PostConstruct
 	public void init() {
@@ -28,8 +28,9 @@ public class ConsultaFaturamentoBean {
 	}
 	
 	public String carregarTotal() {
-		total = new ItemFaturamentoDescricao().valorTotal(dataInicial, dataFinal, null);
-		quantidade = new ItemFaturamentoDescricao().quantidadeTotal(dataInicial, dataFinal, null);
+		total = new ItemFaturamento().valorTotal(dataInicial, dataFinal, turno);
+		quantidade = new ItemFaturamento().quantidadeTotal(dataInicial, dataFinal, turno);
+		faturamentos = new ItemFaturamento().findAllItemFaturmento(dataInicial, dataFinal, turno);
 		return "consultaFaturamento.xhtml";
 	}
 
@@ -74,12 +75,21 @@ public class ConsultaFaturamentoBean {
 		this.total = total;
 	}
 
-	public List<Faturamento> getFaturamentos() {
+	public List<ItemFaturamento> getFaturamentos() {
 		return faturamentos;
 	}
 
-	public void setFaturamentos(List<Faturamento> faturamentos) {
+	public void setFaturamentos(List<ItemFaturamento> faturamentos) {
 		this.faturamentos = faturamentos;
 	}
+
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
+	}
+	
 
 }

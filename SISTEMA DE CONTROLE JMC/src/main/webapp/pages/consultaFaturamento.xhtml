@@ -11,7 +11,8 @@
 			<title>Consulta Faturamento</title>
 		</ui:define>
 		<ui:define name="content">
-			<h:form>
+			<h:form id="form">
+				<p:growl id="growl" showDetail="false" />
 				<p:fieldset legend="Consulta">
 					<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
 						<p:outputLabel value="De" for="dataInicial"/>
@@ -41,8 +42,8 @@
 						<f:convertNumber minFractionDigits="2"/>
 					</h:outputText>
 				</p:outputPanel>
-				<p:dataTable value="#{consultaFaturamentoBean.faturamentos}" var="ifaturamento">
-					<f:facet name="header">Itens do Boleto</f:facet>
+				<p:dataTable id="table" value="#{consultaFaturamentoBean.faturamentos}" var="ifaturamento">
+					<f:facet name="header">Consultar Faturamento</f:facet>
 					<p:column headerText="Data" sortBy="#{ifaturamento.periodo}">
 		          		<h:outputText value="#{ifaturamento.periodo}">
 		          			<f:convertDateTime pattern="dd/MM/yyyy"/>
@@ -62,8 +63,35 @@
 		        			<f:convertNumber minFractionDigits="2"/>
 		        		</h:outputText>
 		        	</p:column>
+		        	<p:column>
+			        	<p:commandButton update=":editForm" icon="ui-icon-pencil" title="#{messages.label_edit}" onclick="PF('editFaturamento').show();">
+							<f:setPropertyActionListener value="#{ifaturamento}" target="#{consultaFaturamentoBean.itemFaturamento}" />
+						</p:commandButton>
+					</p:column>
 				</p:dataTable>
 			</h:form>
+			<p:dialog id="EditDialog" header="Editar Faturamento" modal="true" widgetVar="editFaturamento" dynamic="true" showEffect="fade" hideEffect="explode">
+				<p:outputPanel id="editPanel">
+					<h:form id="editForm" enctype="multipart/form-data">
+						<h3>
+							<h:outputText value="#{consultaFaturamentoBean.itemFaturamento.periodo}">
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText> - 
+							<h:outputText value="#{consultaFaturamentoBean.itemFaturamento.faturamentoDescricao.item}"/>
+						</h3>
+						<h:panelGrid id="editPanelGrid" columns="2">
+							<p:outputLabel value="Quantidade" for="itemQuantidade"/>
+							<p:inputText id="itemQuantidade" value="#{consultaFaturamentoBean.itemFaturamento.quantidade}" required="true"/>
+							
+							<p:outputLabel value="Valor" for="itemValor"/>
+							<p:inputText styleClass="money" id="itemValor" value="#{consultaFaturamentoBean.itemFaturamento.valor}" required="true">
+								<f:convertNumber minFractionDigits="2"/>
+							</p:inputText>
+						</h:panelGrid>
+						<p:commandButton value="Salvar" update=":form:total :form:table :form:growl" oncomplete="PF('editFaturamento').hide()" action="#{consultaFaturamentoBean.salvar()}" />
+					</h:form>
+				</p:outputPanel>
+			</p:dialog>
 		</ui:define>
 	</ui:composition>    
 </html>

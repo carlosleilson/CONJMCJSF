@@ -17,24 +17,24 @@
 	<br/><br/>
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal (RDM) - #{relatorioMesBean.dataLabel}">
         <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}" >
-       	<p:columnGroup type="header">
-            <p:row>
-            	<p:column width="10"/>
-                <p:column width="200"/>
-                <p:column width="15" headerText="% fat bruto"/>
-                <p:column width="15" headerText="Valor R$" />
-            </p:row>        	
-       	</p:columnGroup>        
-       	<f:facet name="header" width="1800" >Relatorio de Despenho Mensal</f:facet>
-        	<p:subTable var="item" value="#{linha.classificacoes}"  >
-	      	<p:columnGroup type="header">
+	       	<p:columnGroup type="header">
 	            <p:row>
-	        		<p:column width="10" headerText="#{linha.name}"/>
-	                <p:column width="200" headerText="#{linha.titulo}"/>
-	                <p:column width="15" headerText="#{linha.porcentagem}"/>
-	        		<p:column width="15" headerText="#{linha.valorTemp}"/>
+	            	<p:column width="10"/>
+	                <p:column width="200"/>
+	                <p:column width="15" headerText="% fat bruto"/>
+	                <p:column width="15" headerText="Valor R$" />
 	            </p:row>        	
-	       	</p:columnGroup>                	
+	       	</p:columnGroup>        
+       		<f:facet name="header" width="1800" >Relatorio de Despenho Mensal</f:facet>
+        	<p:subTable var="item" value="#{linha.classificacoes}"  >
+		      	<p:columnGroup type="header">
+		            <p:row>
+		        		<p:column width="10" headerText="#{linha.name}"/>
+		                <p:column width="200" headerText="#{linha.titulo}"/>
+		                <p:column width="15" headerText="#{linha.porcentagem}"/>
+		        		<p:column width="15" headerText="#{linha.valorTemp}"/>
+		            </p:row>        	
+		       	</p:columnGroup>                	
 	        	<p:column  style="text-align:center" >
 	                <h:outputText value="#{item.codigo}" />
 	        	</p:column>	 
@@ -48,13 +48,19 @@
 	                </h:outputText>
 	            </ui:repeat>    
 	        	</p:column>
-		        	<p:column style="text-align:center">
-	        	<ui:repeat var="total" value="#{item.itens}">
+	        	<p:column style="text-align:center">
+		        	<ui:repeat var="total" value="#{item.itens}" rendered="#{item.codigo != 'A1' and item.codigo != 'A2'}">
 		        		<h:outputText value="#{total.campos[relatorioMesBean.ultimoDiaDoMes+2]}">
 			        			<f:convertNumber currencyCode="BRL" minIntegerDigits="2" />
 		        		</h:outputText>
-	        	</ui:repeat>
-		        	</p:column> 
+		        	</ui:repeat>
+		        	<h:outputText value="#{relatorioMesBean.taxaEntrega}" rendered="#{item.codigo == 'A1'}">
+	        			<f:convertNumber minIntegerDigits="2" />
+	        		</h:outputText>
+	        		<h:outputText value="#{relatorioMesBean.servicoMesa}" rendered="#{item.codigo == 'A2'}">
+	        			<f:convertNumber minIntegerDigits="2" />
+	        		</h:outputText>
+	        	</p:column> 
         	</p:subTable>	
         	<f:facet name="footer" width="1800">Relatorio de Despenho Mensal</f:facet>          	        	       	       	
         </p:dataTable>

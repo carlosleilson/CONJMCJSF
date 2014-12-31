@@ -6,18 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
-
-import br.com.conjmc.cadastrobasico.Faturamento;
-import br.com.conjmc.cadastrobasico.Lojas;
+import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
-import br.com.conjmc.jsf.util.MessageFactory;
-import br.com.conjmc.jsf.util.ObejctSession;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDoMes;
 
 @ManagedBean(name = "relatorioMesBean")
@@ -30,11 +24,19 @@ public class RelatorioMes {
 	private int mesTemp;
 	private Date dataTemp;
 	private Integer ultimoDiaDoMes;
+	private double taxaEntrega;
+	private double servicoMesa;
 	
 	@PostConstruct
     public void init() {
 		sdf = new SimpleDateFormat("MM/yyyy");
 		relatorio();
+		itemFaturamento();
+	}
+	
+	private void itemFaturamento() {
+		this.taxaEntrega =  new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(dataTemp)), DataUltil.ultimoDiaMes(DataUltil.porMes(dataTemp)), 7);
+		this.servicoMesa = new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(dataTemp)), DataUltil.ultimoDiaMes(DataUltil.porMes(dataTemp)), 6);
 	}
 	
 	public String relatorio(){
@@ -56,6 +58,7 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+		itemFaturamento();
 	}
 	
 	public void proximo(){
@@ -65,7 +68,8 @@ public class RelatorioMes {
 		this.resumos = new RelatorioDoMes(getDataTemp()).criarRelatorio();	
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
-		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);	
+		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+		itemFaturamento();
 	}
 	
 	public List<Sangria> getAllSangrias() {
@@ -106,4 +110,21 @@ public class RelatorioMes {
 	public void setDataTemp(Date dataTemp) {
 		this.dataTemp = dataTemp;
 	}
+
+	public double getTaxaEntrega() {
+		return taxaEntrega;
+	}
+
+	public void setTaxaEntrega(double taxaEntrega) {
+		this.taxaEntrega = taxaEntrega;
+	}
+
+	public double getServicoMesa() {
+		return servicoMesa;
+	}
+
+	public void setServicoMesa(double servicoMesa) {
+		this.servicoMesa = servicoMesa;
+	}
+	
 }

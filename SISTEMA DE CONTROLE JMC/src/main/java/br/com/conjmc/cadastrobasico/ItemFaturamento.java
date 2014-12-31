@@ -19,6 +19,7 @@ import javax.persistence.Version;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
@@ -131,6 +132,14 @@ public class ItemFaturamento {
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();
     }
+	
+	public static List<ItemFaturamento> findAllItemFaturmentoByDate(Date data) {
+		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamento o where o.loja.id = :loja", ItemFaturamento.class);
+		query.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
+		query.setParameter("dataFinal",  DataUltil.ultimoDiaMes(data));
+		query.setParameter("loja", ObejctSession.idLoja());
+        return query.getResultList();
+    }	
 	
 	public static List<ItemFaturamento> findAllItemFaturmento(Date dataInicial, Date datafinal, Turno turno) {
 		String sql=null;

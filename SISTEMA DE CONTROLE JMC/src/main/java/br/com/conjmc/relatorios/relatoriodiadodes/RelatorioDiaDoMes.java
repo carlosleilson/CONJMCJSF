@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.relatorios.ClassificacaoVO;
 import br.com.conjmc.relatorios.ItensVO;
@@ -21,6 +22,7 @@ import br.com.conjmc.relatorios.ItensVO;
 public class RelatorioDiaDoMes {
 	private List<ClassificacaoVO> classificacaoItens;
 	private List<Sangria> allSangrias;
+	private List<ItemFaturamento> todosItemFaturamentos;	
 	private int QTD_CAMPOS = 33; 
 	private Double[] campoTemp;
 	private static Double[] totalLinha;
@@ -126,7 +128,21 @@ public class RelatorioDiaDoMes {
 	private Double[] preencharCampos(Double[] campos, Long itenId) throws ParseException {
 		for(int i = 1; i<campos.length; i++){
 			for (Sangria dado : todosDadosDespesasPorData) {
-				if(dado.getItem().getId().equals(itenId)){
+				if(dado.getItem().getId().equals(1)){
+					for(ItemFaturamento dadosF :todosItemFaturamentos){
+						if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(7)){
+							campos[i] = dadosF.getValor();
+							campos[campos.length-1] = campos[campos.length-1] + dadosF.getValor();
+						}
+					}
+				}else if(dado.getItem().getId().equals(2)){
+					for(ItemFaturamento dadosF :todosItemFaturamentos){
+						if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(6)){
+							campos[i] =dadosF.getValor();
+							campos[campos.length-1] = campos[campos.length-1] + dadosF.getValor();
+						}
+					}
+				}else if(dado.getItem().getId().equals(itenId)){
 					if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear() ){
 						campos[i] = campos[i] + dado.getValor();
 						campos[campos.length-1] = campos[campos.length-1] + dado.getValor();
@@ -222,6 +238,18 @@ public class RelatorioDiaDoMes {
 		allSangrias =  Sangria.paginaPorMes(data);
 		return allSangrias;
 	}
+
+
+	/**
+	 * Método para encontrar valores dos itens de faturamentos
+	 * 
+	 * @param Long id
+	 *            -- Id dos itens.
+	 */
+	public List<ItemFaturamento> findAllItemFaturmentos() {
+		setTodosItemFaturamentos(ItemFaturamento.findAllItemFaturmentoByDate(data));
+		return getTodosItemFaturamentos();
+	}		
 	
 	public List<ClassificacaoVO> getClassificacaoItens() {
 		return classificacaoItens;
@@ -229,5 +257,13 @@ public class RelatorioDiaDoMes {
 
 	public void setClassificacaoItens(List<ClassificacaoVO> classificacaoItens) {
 		this.classificacaoItens = classificacaoItens;
+	}
+
+	public List<ItemFaturamento> getTodosItemFaturamentos() {
+		return todosItemFaturamentos;
+	}
+
+	public void setTodosItemFaturamentos(List<ItemFaturamento> todosItemFaturamentos) {
+		this.todosItemFaturamentos = todosItemFaturamentos;
 	}
 }

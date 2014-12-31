@@ -25,6 +25,7 @@ import br.com.conjmc.relatorios.ResumoVO;
 public class RelatorioDoMes {
 	private List<ResumoVO> resumosItens;
 	private List<Sangria> allSangrias;
+	private List<ItemFaturamento> todosItemFaturamentos;
 	private int QTD_CAMPOS = 33; 
 	private String[] campoTemp;
 	private String[] totalLinha;
@@ -276,6 +277,17 @@ public class RelatorioDoMes {
 		allSangrias =  Sangria.paginaPorMes(data);
 		return allSangrias;
 	}	
+
+	/**
+	 * Método para encontrar valores dos itens de faturamentos
+	 * 
+	 * @param Long id
+	 *            -- Id dos itens.
+	 */
+	public List<ItemFaturamento> findAllItemFaturmentos() {
+		todosItemFaturamentos = ItemFaturamento.findAllItemFaturmentoByDate(data);
+		return todosItemFaturamentos;
+	}	
 	
 	public List<ResumoVO> getResumosItens() {
 		return resumosItens;
@@ -336,10 +348,23 @@ public class RelatorioDoMes {
 	 * @param itenId -- itens do sangria.
 	 */
 	private String[] preencharCampos(String[] campos, Long itenId) throws ParseException {
-		List<Sangria> dadosItens = findAllSangriaByItens(itenId);
 		for(int i = 1; i<campos.length; i++){
 			for (Sangria dado : todosDadosDespesasPorData) {
-				if(dado.getItem().getId().equals(itenId)){
+				if(dado.getItem().getId().equals(1)){
+					for(ItemFaturamento dadosF :todosItemFaturamentos){
+						if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(7)){
+							campos[i] = df.format(dadosF.getValor());
+							campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dadosF.getValor());
+						}
+					}
+				}else if(dado.getItem().getId().equals(2)){
+					for(ItemFaturamento dadosF :todosItemFaturamentos){
+						if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(6)){
+							campos[i] = df.format(dadosF.getValor());
+							campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dadosF.getValor());
+						}
+					}
+				}else if(dado.getItem().getId().equals(itenId)){
 					if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear()  ){
 						campos[i] = df.format(dado.getValor());
 						campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
@@ -386,5 +411,13 @@ public class RelatorioDoMes {
 		if(campoTemp[QTD_CAMPOS-2].contains("R$ 0,00")){
 			campoTemp[QTD_CAMPOS-2] = "0,00 %";
 		}
+	}
+
+	public List<ItemFaturamento> getTodosItemFaturamentos() {
+		return todosItemFaturamentos;
+	}
+
+	public void setTodosItemFaturamentos(List<ItemFaturamento> todosItemFaturamentos) {
+		this.todosItemFaturamentos = todosItemFaturamentos;
 	}	
 }

@@ -24,19 +24,11 @@ public class RelatorioMes {
 	private int mesTemp;
 	private Date dataTemp;
 	private Integer ultimoDiaDoMes;
-	private double taxaEntrega;
-	private double servicoMesa;
 	
 	@PostConstruct
     public void init() {
 		sdf = new SimpleDateFormat("MM/yyyy");
 		relatorio();
-		itemFaturamento();
-	}
-	
-	private void itemFaturamento() {
-		this.taxaEntrega =  new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(dataTemp)), DataUltil.ultimoDiaMes(DataUltil.porMes(dataTemp)), 7);
-		this.servicoMesa = new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(dataTemp)), DataUltil.ultimoDiaMes(DataUltil.porMes(dataTemp)), 6);
 	}
 	
 	public String relatorio(){
@@ -58,7 +50,6 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-		itemFaturamento();
 	}
 	
 	public void proximo(){
@@ -69,7 +60,6 @@ public class RelatorioMes {
 		mesTemp=getDataTemp().getMonth();
 		c.setTime(getDataTemp());
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-		itemFaturamento();
 	}
 	
 	public List<Sangria> getAllSangrias() {
@@ -110,21 +100,4 @@ public class RelatorioMes {
 	public void setDataTemp(Date dataTemp) {
 		this.dataTemp = dataTemp;
 	}
-
-	public double getTaxaEntrega() {
-		return taxaEntrega;
-	}
-
-	public void setTaxaEntrega(double taxaEntrega) {
-		this.taxaEntrega = taxaEntrega;
-	}
-
-	public double getServicoMesa() {
-		return servicoMesa;
-	}
-
-	public void setServicoMesa(double servicoMesa) {
-		this.servicoMesa = servicoMesa;
-	}
-	
 }

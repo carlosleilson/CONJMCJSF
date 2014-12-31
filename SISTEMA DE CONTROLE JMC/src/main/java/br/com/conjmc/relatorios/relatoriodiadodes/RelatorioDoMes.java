@@ -11,8 +11,10 @@ import java.util.Locale;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Faturamento;
+import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.cadastrobasico.Resumos;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.relatorios.ClassificacaoVO;
 import br.com.conjmc.relatorios.ItensVO;
 import br.com.conjmc.relatorios.ResumoVO;
@@ -360,12 +362,13 @@ public class RelatorioDoMes {
 
 	private Double extracted() {
 		Double valor = null;
-		List<Faturamento> faturamento = Faturamento.faturamentoesPorDate(data);
+		/*List<Faturamento> faturamento = Faturamento.faturamentoesPorDate(data);
 		for (Faturamento faturamento2 : faturamento) {
 			//valor = faturamento2.getFaturamentoBruto();
 		}
 		if( valor == null )
-			valor = 1.0;
+			valor = 1.0;*/
+		valor = new ItemFaturamento().valorTotal(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), null);
 		return valor;
 	}	
 	

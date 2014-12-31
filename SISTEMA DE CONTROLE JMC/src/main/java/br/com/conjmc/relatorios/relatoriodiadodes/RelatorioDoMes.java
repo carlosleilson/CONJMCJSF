@@ -10,7 +10,6 @@ import java.util.Locale;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
-import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.cadastrobasico.Resumos;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
@@ -123,7 +122,8 @@ public class RelatorioDoMes {
 			}
 			case "RES02":{
 				resumoIten.setTitulo("Receita Total sobre as vendas de produtos ( Res 02 = Res 01 - Item A)");
-				String resultRESTTotal = df.format(Math.abs(faturamentoBruto-TempResultRESTTotal[0]));
+				double totalItem = new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), 6) + new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), 7);
+				String resultRESTTotal = df.format(Math.abs(faturamentoBruto-totalItem));
 				tempTotal[1] = resultRESTTotal;
 				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
 				resumoIten.setValorTemp(resultRESTTotal);

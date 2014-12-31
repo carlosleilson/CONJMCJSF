@@ -216,6 +216,20 @@ public class ItemFaturamento {
        	return valor;
 	}
 	
+	public Double faturamentoByDateAndId(Date dataInicial, Date datafinal, int id) {
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja and o.faturamentoDescricao.id="+id, Double.class);
+		query.setParameter("dataInicial", dataInicial);
+		query.setParameter("dataFinal", datafinal);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
 	public long validarFaturamento(Date data, Turno turno) {
 		String sql="SELECT count(o.quantidade) FROM ItemFaturamento o where o.periodo=:data and o.loja=:loja and turno="+turno.ordinal();
 		Query query = entityManager().createQuery(sql, Long.class);

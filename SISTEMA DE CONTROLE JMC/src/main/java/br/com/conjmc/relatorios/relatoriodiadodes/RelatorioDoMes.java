@@ -52,7 +52,8 @@ public class RelatorioDoMes {
 		this.QTD_CAMPOS = c.getActualMaximum(Calendar.DAY_OF_MONTH)+3;
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 		totalLinha[0] = "TOTAL GERAL";
-		faturamentoBruto = extracted();
+		//todosItemFaturamentos = findAllItemFaturmentos();
+		faturamentoBruto = valorFaturamentoTotal();
 		todosItens =  findAllDespasGastos();
 		todosDadosDespesasPorData = findAllSangriaByItens();		
 		
@@ -349,28 +350,32 @@ public class RelatorioDoMes {
 	 */
 	private String[] preencharCampos(String[] campos, Long itenId) throws ParseException {
 		for(int i = 1; i<campos.length; i++){
-			for (Sangria dado : todosDadosDespesasPorData) {
-				if(dado.getItem().getId().equals(1)){
-					for(ItemFaturamento dadosF :todosItemFaturamentos){
-						if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(7)){
-							campos[i] = df.format(dadosF.getValor());
-							campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dadosF.getValor());
+			if(itenId.equals(Long.parseLong("1"))){
+				for(ItemFaturamento dadosF :todosItemFaturamentos){
+					if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(Long.parseLong("7"))){
+						campos[i] = df.format(dadosF.getValor());
+						campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dadosF.getValor());
+					}
+				}				
+			}
+			if(itenId.equals(Long.parseLong("2"))){
+				for(ItemFaturamento dadosF :todosItemFaturamentos){
+					if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(Long.parseLong("6"))){
+						campos[i] = df.format(dadosF.getValor());
+						campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dadosF.getValor());
+					}					
+				}				
+			}
+			if(!itenId.equals(Long.parseLong("1"))||!itenId.equals(Long.parseLong("2"))){
+				for (Sangria dado : todosDadosDespesasPorData) {
+					if(dado.getItem().getId().equals(itenId)&&!dado.getItem().getId().equals(Long.parseLong("1"))&&!dado.getItem().getId().equals(Long.parseLong("2"))){
+						if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear()  ){
+							campos[i] = df.format(dado.getValor());
+							campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
 						}
 					}
-				}else if(dado.getItem().getId().equals(2)){
-					for(ItemFaturamento dadosF :todosItemFaturamentos){
-						if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(6)){
-							campos[i] = df.format(dadosF.getValor());
-							campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dadosF.getValor());
-						}
-					}
-				}else if(dado.getItem().getId().equals(itenId)){
-					if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear()  ){
-						campos[i] = df.format(dado.getValor());
-						campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
-					}
-				}
-			}		
+				}		
+			}
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
 			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
 			porcentagem(i,df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue());
@@ -385,16 +390,14 @@ public class RelatorioDoMes {
 		}
 	}
 
-	private Double extracted() {
-		Double valor = null;
-		/*List<Faturamento> faturamento = Faturamento.faturamentoesPorDate(data);
-		for (Faturamento faturamento2 : faturamento) {
-			//valor = faturamento2.getFaturamentoBruto();
+	private Double valorFaturamentoTotal() {
+		Double valorTemp = 0.0;
+		for (ItemFaturamento  faturamentoTotal : findAllItemFaturmentos()) {
+			valorTemp = valorTemp + faturamentoTotal.getValor();
 		}
-		if( valor == null )
-			valor = 1.0;*/
-		valor = new ItemFaturamento().valorTotal(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), null);
-		return valor;
+		if( valorTemp == null || valorTemp == 0.0)
+			valorTemp = 1.0;
+		return valorTemp;
 	}	
 	
 	/**

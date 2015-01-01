@@ -9,9 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
-import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDoMes;
 
 @ManagedBean(name = "relatorioMesBean")

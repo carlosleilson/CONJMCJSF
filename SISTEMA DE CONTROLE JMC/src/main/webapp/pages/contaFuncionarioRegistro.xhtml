@@ -65,7 +65,7 @@
 	        	<p:columnGroup type="header">
 		            <p:row>
 		                <p:column colspan="4" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
-		                <p:column headerText="R$ #{contaUsuarioRegistroBean.funcionarioVo.salario}" />
+		                <p:column headerText="#{contaUsuarioRegistroBean.funcionarioVo.salario}" />
 		            </p:row>
 		            <p:row>
 		                <p:column headerText="Ação" />
@@ -74,7 +74,7 @@
 		                <p:column headerText="Data" sortBy="#{conta.periodo}" />
 		                <p:column headerText="Valor" sortBy="#{conta.valor}" />
 		            </p:row>
-		        </p:columnGroup>
+		        </p:columnGroup >
 		          <p:column>
 		            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('deleteDialogWidget').show()" title="#{messages.label_delete}" onclick="PF('dlgRegistroContaFuncionario').hide()">
 		              <f:setPropertyActionListener value="#{conta.id}" target="#{contaUsuarioRegistroBean.contaFuncionario}" />
@@ -82,30 +82,28 @@
 		            <p:tooltip for="deleteButton" value="#{messages.label_delete}" showEffect="fade" hideEffect="fade"  />		          
 		          </p:column>		        
 	          	<p:column>
-	          		<h:outputText value="#{conta.item.descrisao}"/>
+	          		<h:outputText value="#{conta.item.descrisao}"  title="#{conta.id.descricao}" />
 	          	</p:column>
 	        	<p:column >
-	        		<h:outputText value="DÉBITO" rendered="#{conta.id.origem == true}"/>
-	        		<h:outputText value="CRÉDITO" rendered="#{conta.id.origem == false}"/>
+	        		<h:outputText value="DÉBITO" rendered="#{conta.id.origem == true}" title="#{conta.id.descricao}"/>
+	        		<h:outputText value="CRÉDITO" rendered="#{conta.id.origem == false}" title="#{conta.id.descricao}"/>
 	        	</p:column>	          	
 	        	<p:column >
-	          		<h:outputText value="#{conta.periodo}"  >
+	          		<h:outputText value="#{conta.periodo}" style="text-align:center" title="#{conta.id.descricao}">
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
-	          	<p:column>
-	          		<h:outputText value="#{conta.valor}">
-	          			<f:convertNumber minFractionDigits="2"/>
-	          		</h:outputText>
+	          	<p:column style="text-align:center" >
+	          		<h:outputText value="#{conta.valor}" title="#{conta.id.descricao}"/>
 	          	</p:column>
 		        <p:columnGroup type="footer">
 		            <p:row>
 		                <p:column colspan="4" style="text-align:left" footerText="Total de desconto" />
-		                <p:column footerText="R$ #{contaUsuarioRegistroBean.funcionarioVo.totalDesconto}" />
+		                <p:column footerText="#{contaUsuarioRegistroBean.funcionarioVo.totalDesconto}" />
 		            </p:row>
 		             <p:row>
 		                <p:column colspan="4" style="text-align:left" footerText="Valor a recebe em #{contaUsuarioRegistroBean.dataMesRecebe}" />
-		                <p:column footerText="R$  #{contaUsuarioRegistroBean.funcionarioVo.valorReceber}" />
+		                <p:column footerText="#{contaUsuarioRegistroBean.funcionarioVo.valorReceber}" />
 		            </p:row>
 		        </p:columnGroup>     
 	        </p:dataTable>

@@ -21,7 +21,7 @@ public class ItensFuncionario {
     
 	/**
      */
-	private Double valor;
+	private String valor;
 
 	public DespesasGastos getItem() {
 		return item;
@@ -31,11 +31,11 @@ public class ItensFuncionario {
 		this.item = item;
 	}
 
-	public Double getValor() {
+	public String getValor() {
 		return valor;
 	}
 
-	public void setValor(Double valor) {
+	public void setValor(String valor) {
 		this.valor = valor;
 	}
 

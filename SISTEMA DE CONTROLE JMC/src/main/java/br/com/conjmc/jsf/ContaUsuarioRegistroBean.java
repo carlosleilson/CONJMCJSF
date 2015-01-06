@@ -1,21 +1,20 @@
 package br.com.conjmc.jsf;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.event.CloseEvent;
-
-import br.com.conjmc.cadastrobasico.Cargos;
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
@@ -36,6 +35,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	private static final long serialVersionUID = 1L;
 	private Date dataInicial;
 	private Date dataFinal;
+	private NumberFormat df;
 	private Sangria despesa;
 	private Funcionarios funcionario;
 	private FuncionarioVO funcionarioVo;
@@ -54,6 +54,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	
 	@PostConstruct
     public void init() {
+		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		iniciarFuncionarioVO();
 		iniciarData();
 		todosFuncionarios();
@@ -142,20 +143,20 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		Double totalDesconto = 0.0;
 		Double credito = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
-		funcionarioVoTmp.setSalario(empregado.getSalario());
+		funcionarioVoTmp.setSalario(df.format(empregado.getSalario()));
 		List<ContasFuncionario> listContaFuncionarios = new ContasFuncionario().encontraContaFuncionarios(dataInicial, dataFinal, empregado);
 		for (ContasFuncionario funcionarioTemp : listContaFuncionarios) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
 			if(validarSeESalario(funcionarioTemp.getItem())){
-				funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
+				funcionarioVoTmp.setSalario(df.format(funcionarioTemp.getValor()));
 				if(funcionarioTemp.getValor()!= null){
-					funcionarioVoTmp.setSalario(funcionarioTemp.getValor());
+					funcionarioVoTmp.setSalario(df.format(funcionarioTemp.getValor()));
 				}
 			}else {
 				umFuncionario.setId(funcionarioTemp);
 				umFuncionario.setItem(funcionarioTemp.getItem());
 				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
-				umFuncionario.setValor(funcionarioTemp.getValor());
+				umFuncionario.setValor(df.format(funcionarioTemp.getValor()));
 				if(funcionarioTemp.getOrigem()){
 					totalDesconto = Math.abs(totalDesconto + funcionarioTemp.getValor());
 				}else{
@@ -164,8 +165,8 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 				todosFuncionariosTmp.add(umFuncionario);
 			}
 		}
-		funcionarioVoTmp.setTotalDesconto(totalDesconto);
-		funcionarioVoTmp.setValorReceber((empregado.getSalario() + credito ) - totalDesconto);
+		funcionarioVoTmp.setTotalDesconto(df.format(totalDesconto));
+		funcionarioVoTmp.setValorReceber(df.format((empregado.getSalario() + credito ) - totalDesconto));
 		funcionarioVoTmp.setItem(todosFuncionariosTmp);
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
@@ -253,7 +254,11 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 		despesa.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),i));
 		despesa.setLoja(ObejctSession.loja());
 		if(funcionarioVo.getValorReceber()!=null){
-			despesa.setValor(funcionarioVo.getValorReceber());
+			try {
+				despesa.setValor(df.parse(funcionarioVo.getValorReceber()).doubleValue());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			if (despesa.getId() != null) {
 				despesa.merge();
 			} else {
@@ -361,9 +366,6 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	}
 
 	public Funcionarios getFuncionario() {
-//        if (funcionario == null) {
-//        	funcionario = new Funcionarios();
-//        }
 		return funcionario;
 	}
 

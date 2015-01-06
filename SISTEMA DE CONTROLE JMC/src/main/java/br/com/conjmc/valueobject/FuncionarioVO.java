@@ -16,19 +16,19 @@ public class FuncionarioVO {
     
 	/**
      */
-	private Double Salario;
+	private String Salario;
 	
 	/**
      */
-	private Double totalDesconto;
+	private String totalDesconto;
 	
 	/**
      */
-	private Double Crédito;
+	private String Crédito;
 	
 	/**
      */	
-	private Double valorReceber;
+	private String valorReceber;
 
 	public Funcionarios getFuncionario() {
 		return funcionario;
@@ -46,43 +46,43 @@ public class FuncionarioVO {
 		this.item = item;
 	}
 
-	public Double getSalario() {
+	public String getSalario() {
 		return Salario;
 	}
 
-	public void setSalario(Double salario) {
+	public void setSalario(String salario) {
 		Salario = salario;
 	}
 
-	public Double getDespesas() {
+	public String getDespesas() {
 		return totalDesconto;
 	}
 
-	public void setDespesas(Double despesas) {
+	public void setDespesas(String despesas) {
 		this.totalDesconto = despesas;
 	}
 
-	public Double getCrédito() {
+	public String getCrédito() {
 		return Crédito;
 	}
 
-	public void setCrédito(Double crédito) {
+	public void setCrédito(String crédito) {
 		Crédito = crédito;
 	}
 
-	public Double getValorReceber() {
+	public String getValorReceber() {
 		return valorReceber;
 	}
 
-	public void setValorReceber(Double valorReceber) {
+	public void setValorReceber(String valorReceber) {
 		this.valorReceber = valorReceber;
 	}
 
-	public Double getTotalDesconto() {
+	public String getTotalDesconto() {
 		return totalDesconto;
 	}
 
-	public void setTotalDesconto(Double totalDesconto) {
+	public void setTotalDesconto(String totalDesconto) {
 		this.totalDesconto = totalDesconto;
 	}
 }

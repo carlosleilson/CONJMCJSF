@@ -1,11 +1,13 @@
 package br.com.conjmc.jsf;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -43,9 +45,11 @@ public class ContaUsuarioBean implements Serializable   {
 	private int mesTemp;
 	private Integer parcelas; 
 	private SimpleDateFormat sdf;
+	private NumberFormat df;
 	
 	@PostConstruct
     public void init() {
+		df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		iniciarFuncionarioVO();
 		iniciarData();
 	}
@@ -126,23 +130,23 @@ public class ContaUsuarioBean implements Serializable   {
 		for (ContasFuncionario iten : itens) {
 			ItensFuncionario umFuncionario = new ItensFuncionario();
 			if(validarSeESalario(iten.getItem())){
-				funcionarioVoTmp.setSalario(iten.getValor());
+				funcionarioVoTmp.setSalario(df.format(iten.getValor()));
 				if(iten.getValor()!= null){
-					funcionarioVoTmp.setSalario(iten.getValor());
+					funcionarioVoTmp.setSalario(df.format(iten.getValor()));
 				}
 			}else {
 				umFuncionario.setId(iten);
 				umFuncionario.setItem(iten.getItem());
 				umFuncionario.setPeriodo(iten.getPeriodo());
-				umFuncionario.setValor(iten.getValor());
+				umFuncionario.setValor(df.format(iten.getValor()));
 				if(iten.getOrigem()){
 					totalDesconto = Math.abs(totalDesconto + iten.getValor());
 				}
 				todosFuncionariosTmp.add(umFuncionario);
 			}
 		}
-		funcionarioVoTmp.setTotalDesconto(totalDesconto);
-		funcionarioVoTmp.setValorReceber(empregado.getSalario() - totalDesconto);
+		funcionarioVoTmp.setTotalDesconto(df.format(totalDesconto));
+		funcionarioVoTmp.setValorReceber(df.format(empregado.getSalario() - totalDesconto));
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
 	}	

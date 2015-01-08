@@ -101,6 +101,7 @@ function blurEvent(e) {
 
 if (input.val()==setSymbol(getDefaultMask())) {
 if(!settings.allowZero) input.val('');
+if(settings.allowZero) input.val(0);
 } else {
 input.val(input.val().replace(settings.symbol,''));
 }

@@ -10,6 +10,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
+import br.com.conjmc.cadastrobasico.ItemFaturamentoDescricao;
 import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.jsf.util.MessageFactory;
 
@@ -24,6 +25,7 @@ public class ConsultaFaturamentoBean {
 	private long quantidade;
 	private Double total;
 	private List<ItemFaturamento> faturamentos;
+	private String item;
 	
 	@PostConstruct
 	public void init() {
@@ -31,9 +33,9 @@ public class ConsultaFaturamentoBean {
 	}
 	
 	public String carregarTotal() {
-		total = new ItemFaturamento().valorTotal(dataInicial, dataFinal, turno);
-		quantidade = new ItemFaturamento().quantidadeTotal(dataInicial, dataFinal, turno);
-		faturamentos = new ItemFaturamento().findAllItemFaturmento(dataInicial, dataFinal, turno);
+		total = new ItemFaturamento().valorTotal(dataInicial, dataFinal, turno, item);
+		quantidade = new ItemFaturamento().quantidadeTotal(dataInicial, dataFinal, turno, item);
+		faturamentos = new ItemFaturamento().findAllItemFaturmento(dataInicial, dataFinal, turno, item);
 		return "consultaFaturamento.xhtml";
 	}
 	
@@ -102,6 +104,13 @@ public class ConsultaFaturamentoBean {
 	public void setTurno(Turno turno) {
 		this.turno = turno;
 	}
-	
+
+	public String getItem() {
+		return item;
+	}
+
+	public void setItem(String item) {
+		this.item = item;
+	}
 
 }

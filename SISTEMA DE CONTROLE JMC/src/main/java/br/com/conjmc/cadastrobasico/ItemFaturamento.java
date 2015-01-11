@@ -141,20 +141,6 @@ public class ItemFaturamento {
         return query.getResultList();
     }	
 	
-	public static List<ItemFaturamento> findAllItemFaturmento(Date dataInicial, Date datafinal, Turno turno) {
-		String sql=null;
-		if(turno == null) {			
-			sql="SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja= :loja";
-		} else {
-			sql="SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja= :loja and turno="+turno.ordinal();
-		}
-		Query query = entityManager().createQuery(sql, ItemFaturamento.class);
-		query.setParameter("dataInicial", dataInicial);
-		query.setParameter("dataFinal", datafinal);
-		query.setParameter("loja", ObejctSession.loja());
-        return query.getResultList();
-    }
-	
 	@Transactional
     public void persist() {
         if (this.entityManager == null) this.entityManager = entityManager();
@@ -185,12 +171,28 @@ public class ItemFaturamento {
         return merged;
     }
 	
-	public long quantidadeTotal(Date dataInicial, Date datafinal, Turno turno) {
-		String sql=null;
-		if(turno == null) {			
-			sql="SELECT SUM(o.quantidade) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja";
-		} else {
-			sql="SELECT SUM(o.quantidade) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja and turno="+turno.ordinal();
+	public static List<ItemFaturamento> findAllItemFaturmento(Date dataInicial, Date datafinal, Turno turno, String item) {
+		String sql="SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja= :loja";
+		if(turno != null) {			
+			sql+=" and turno="+turno.ordinal();
+		}
+		if (item != ""){
+			sql+=" and o.faturamentoDescricao.id="+item;
+		}
+		Query query = entityManager().createQuery(sql, ItemFaturamento.class);
+		query.setParameter("dataInicial", dataInicial);
+		query.setParameter("dataFinal", datafinal);
+		query.setParameter("loja", ObejctSession.loja());
+        return query.getResultList();
+    }
+	
+	public long quantidadeTotal(Date dataInicial, Date datafinal, Turno turno, String item) {
+		String sql="SELECT SUM(o.quantidade) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja";
+		if(turno != null) {			
+			sql+=" and turno="+turno.ordinal();
+		}
+		if (item != ""){
+			sql+=" and o.faturamentoDescricao.id="+item;
 		}
 		Query query = entityManager().createQuery(sql, Long.class);
 		query.setParameter("dataInicial", dataInicial);
@@ -205,12 +207,13 @@ public class ItemFaturamento {
        	return valor;
 	}
 	
-	public Double valorTotal(Date dataInicial, Date datafinal, Turno turno) {
-		String sql=null;
-		if(turno == null) {			
-			sql="SELECT SUM(o.valor) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja";
-		} else {
-			sql="SELECT SUM(o.valor) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja and turno="+turno.ordinal();
+	public Double valorTotal(Date dataInicial, Date datafinal, Turno turno, String item) {
+		String sql="SELECT SUM(o.valor) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja";
+		if(turno != null) {			
+			sql+=" and turno="+turno.ordinal();
+		}
+		if (item != "") {
+			sql+=" and o.faturamentoDescricao.id="+item;
 		}
 		Query query = entityManager().createQuery(sql, Double.class);
 		query.setParameter("dataInicial", dataInicial);

@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.Contas;
@@ -13,7 +13,7 @@ import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ContasPendentesBean {
 
 	private Contas conta;
@@ -71,6 +71,11 @@ public class ContasPendentesBean {
 			this.pagarAgora = true;
 		}
 	}
+	
+	public List<Sangria> carregarItens() {
+		List<Sangria> sangrias = new Sangria().findSangriaByConta(conta.getId());
+		return sangrias;
+	}
 
 	//Generate getters and setters
 	public Contas getConta() {
@@ -120,5 +125,5 @@ public class ContasPendentesBean {
 	public void setStatusFilter(String statusFilter) {
 		this.statusFilter = statusFilter;
 	}
-
+	
 }

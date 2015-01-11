@@ -119,7 +119,7 @@
 						<f:setPropertyActionListener value="#{contaPendente}"
 							target="#{contasPendentesBean.conta}" />
 					</p:commandButton>
-					<p:commandButton id="visualizeButton" icon="ui-icon-zoomin" update=":itemVizualizar:createPanelGridItemitemVizualizar" oncomplete="PF('vizualizarItemBoleto').show()" title="#{messages.label_view}">
+					<p:commandButton id="visualizeButton" icon="ui-icon-zoomin" update=":itemVizualizar" oncomplete="PF('vizualizarItemBoleto').show()" title="#{messages.label_view}">
 						<f:setPropertyActionListener value="#{contaPendente}" target="#{contasPendentesBean.conta}" />
 					</p:commandButton>
 					<p:commandButton ajax="false" icon="ui-icon-pencil" title="#{messages.label_edit}" action="#{contasBean.editarConta()}">
@@ -135,7 +135,7 @@
 				<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 			</p:confirmDialog>
     </h:form>
-    <p:dialog id="vizualizarContar" header="Vizualizar conta" modal="true" widgetVar="vizualizarItemBoleto" showEffect="fade" hideEffect="explode">
+    <p:dialog id="vizualizarContar" header="Vizualizar conta" modal="true" widgetVar="vizualizarItemBoleto" showEffect="fade" hideEffect="explode" width="900">
 	    <h:form id="itemVizualizar">
 		 	<h:panelGrid id="createPanelGridItemitemVizualizar" columns="2" styleClass="dialog">
 	          	<p:outputLabel value="Data de Vencimento: " for="vencimentoData" />
@@ -162,6 +162,20 @@
 	          	<p:outputLabel value="Banco: " for="vzBanco" />
 	          	<h:outputText id="vzBanco" value="#{contasPendentesBean.conta.banco}" />
 			 </h:panelGrid>
+			 <p:dataTable id="list" value="#{contasPendentesBean.carregarItens()}" var="sang" >
+	        	<f:facet name="header">Itens do Boleto</f:facet>
+	          	<p:column headerText="Item">
+	          		<h:outputText value="#{sang.item.descrisao}"/>
+	          	</p:column>
+	          	<p:column headerText="Classificação">
+	          		<h:outputText value="#{sang.item.classificacao.descricao}"/>
+	          	</p:column>
+	          	<p:column headerText="Valor">
+	        		<h:outputText value="#{sang.valor}">
+	        			<f:convertNumber minFractionDigits="2"/>
+	        		</h:outputText>
+	        	</p:column>
+	        </p:dataTable>
 		</h:form>
  	</p:dialog>
   </ui:define>

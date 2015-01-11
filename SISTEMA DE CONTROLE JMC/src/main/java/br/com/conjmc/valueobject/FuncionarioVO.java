@@ -24,7 +24,7 @@ public class FuncionarioVO {
 	
 	/**
      */
-	private String Crédito;
+	private String credito;
 	
 	/**
      */	
@@ -62,12 +62,13 @@ public class FuncionarioVO {
 		this.totalDesconto = despesas;
 	}
 
-	public String getCrédito() {
-		return Crédito;
+	
+	public String getCredito() {
+		return credito;
 	}
 
-	public void setCrédito(String crédito) {
-		Crédito = crédito;
+	public void setCredito(String credito) {
+		this.credito = credito;
 	}
 
 	public String getValorReceber() {

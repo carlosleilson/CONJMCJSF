@@ -1,6 +1,5 @@
 package br.com.conjmc.cadastrobasico;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -86,6 +85,10 @@ public class ItemFaturamentoDescricao {
         return em;
     }
 	
+	public static ItemFaturamentoDescricao findItemFaturamentoDescricao(Long id) {
+        if (id == null) return null;
+        return entityManager().find(ItemFaturamentoDescricao.class, id);
+    }
 	public static List<ItemFaturamentoDescricao> findAllItemFaturmento() {
 		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamentoDescricao o", ItemFaturamentoDescricao.class);
         return query.getResultList();

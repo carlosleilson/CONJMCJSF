@@ -29,6 +29,14 @@
 			          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
 			          	</p:selectOneMenu>
 			          	<p:message for="periodo"/>
+			          	
+			          	<p:outputLabel value="Itens" for="itens"/>
+			          	<p:selectOneMenu id="itens" value="#{consultaFaturamentoBean.item}" >
+			          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+			          		<f:selectItems value="#{itemFaturamentoDescricaoBean.itensFaturamentoAtivos}" var="faturamentoAtivo" 
+			          			itemLabel="#{faturamentoAtivo.item}" itemValue="#{faturamentoAtivo.id}" />
+			          	</p:selectOneMenu>
+			          	<p:message for="itens"/>
 			    	</h:panelGrid>
 			    	<p:commandButton value="Pesquisar" ajax="false" action="#{consultaFaturamentoBean.carregarTotal()}" />
 				</p:fieldset>

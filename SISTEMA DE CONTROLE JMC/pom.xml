@@ -328,6 +328,11 @@
 		<artifactId>spring-security-ldap</artifactId>
 		<version>${spring-security.version}</version>
 	</dependency>
+	<dependency>
+		<groupId>jasperreports</groupId>
+		<artifactId>jasperreports</artifactId>
+		<version>3.5.3</version>
+	</dependency>
     </dependencies>
     <build>
         <plugins>

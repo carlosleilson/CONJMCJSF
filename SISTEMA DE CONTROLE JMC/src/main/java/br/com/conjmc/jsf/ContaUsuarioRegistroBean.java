@@ -41,6 +41,7 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 	private FuncionarioVO funcionarioVo;
 	private List<FuncionarioVO> todosFuncionarios;
 	private List<ItensFuncionario> todosItensContasFuncionario;
+	private List<ItensFuncionario> selectedItensContasFuncionario;
 	private List<DespesasGastos> itens;
 	private List<ContasFuncionario> contaFuncionarios;
 	private ContasFuncionario contaFuncionario;
@@ -468,5 +469,14 @@ public class ContaUsuarioRegistroBean implements Serializable   {
 
 	public void setDataMesRecebe(String dataMesRecebe) {
 		this.dataMesRecebe = dataMesRecebe;
+	}
+
+	public List<ItensFuncionario> getSelectedItensContasFuncionario() {
+		return selectedItensContasFuncionario;
+	}
+
+	public void setSelectedItensContasFuncionario(
+			List<ItensFuncionario> selectedItensContasFuncionario) {
+		this.selectedItensContasFuncionario = selectedItensContasFuncionario;
 	}
 }

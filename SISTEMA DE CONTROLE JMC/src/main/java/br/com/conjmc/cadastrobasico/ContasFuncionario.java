@@ -76,6 +76,16 @@ public class ContasFuncionario implements Serializable  {
      */
 	@ManyToOne
 	private Sangria despesa;
+
+	/**
+     */
+	@NotNull
+	private boolean quitado;
+	
+	/**
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataQuitado; 
 	
 	/**
      */
@@ -209,7 +219,7 @@ public class ContasFuncionario implements Serializable  {
 	public static List<ContasFuncionario> encontraContaFuncionarios(Date dataInicial, Date dataFinal, Funcionarios funcionario) {
         EntityManager em = entityManager();
         Query query = entityManager().createQuery("SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal", ContasFuncionario.class);
-		query.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(dataInicial));
+		query.setParameter("dataInicial", DataUltil.primeiroDiaMes(dataInicial));
 		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(dataFinal));
 		query.setParameter("funcionario", funcionario);
 		query.setParameter("loja", ObejctSession.idLoja());
@@ -280,5 +290,21 @@ public class ContasFuncionario implements Serializable  {
 
 	public void setDespesa(Sangria despesa) {
 		this.despesa = despesa;
+	}
+
+	public boolean isQuitado() {
+		return quitado;
+	}
+
+	public void setQuitado(boolean quitado) {
+		this.quitado = quitado;
+	}
+
+	public Date getDataQuitado() {
+		return dataQuitado;
+	}
+
+	public void setDataQuitado(Date dataQuitado) {
+		this.dataQuitado = dataQuitado;
 	}
 }

@@ -12,7 +12,7 @@ public class FuncionarioVO {
 
     /**
      */
-    private List<ItensFuncionario> item;
+    private List<ItensFuncionarioVO> item;
     
 	/**
      */
@@ -38,11 +38,11 @@ public class FuncionarioVO {
 		this.funcionario = funcionario;
 	}
 
-	public List<ItensFuncionario> getItem() {
+	public List<ItensFuncionarioVO> getItem() {
 		return item;
 	}
 
-	public void setItem(List<ItensFuncionario> item) {
+	public void setItem(List<ItensFuncionarioVO> item) {
 		this.item = item;
 	}
 

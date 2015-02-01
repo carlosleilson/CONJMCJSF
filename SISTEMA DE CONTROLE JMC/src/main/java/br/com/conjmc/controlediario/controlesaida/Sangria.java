@@ -258,6 +258,16 @@ public class Sangria implements Serializable{
 		return new Sangria();
 	}
 	
+	public static Sangria encontarFuncionarioPorItemData(Funcionarios funcionario, DespesasGastos item, Date dataTmp){
+		 return entityManager().createQuery("SELECT o FROM Sangria o where o.periodo between :dataInicial and :dataFinal and o.funcionario.id=:funcionarioId and o.item.id=:itemId and o.loja.id=:loja", Sangria.class)
+		.setParameter("funcionarioId", funcionario.getId())
+		.setParameter("itemId", item.getId())
+        .setParameter("dataInicial", DataUltil.primeiroDiaMes(dataTmp))
+        .setParameter("dataFinal", DataUltil.ultimoDiaMes(dataTmp))		
+		.setParameter("loja", ObejctSession.idLoja())
+		.getSingleResult() ;
+	}	
+	
 	public static List<Sangria> findSangriaConta(Contas conta) {
 		Query query = entityManager().createQuery("SELECT o FROM Sangria o where o.conta = :conta", Sangria.class);
 		query.setParameter("conta", conta);

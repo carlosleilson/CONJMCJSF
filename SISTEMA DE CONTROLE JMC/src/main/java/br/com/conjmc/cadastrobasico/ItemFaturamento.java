@@ -135,7 +135,7 @@ public class ItemFaturamento {
 	
 	public static List<ItemFaturamento> findAllItemFaturmentoByDate(Date data) {
 		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja", ItemFaturamento.class);
-		query.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
+		query.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(data));
 		query.setParameter("dataFinal",  DataUltil.ultimoDiaMes(data));
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();

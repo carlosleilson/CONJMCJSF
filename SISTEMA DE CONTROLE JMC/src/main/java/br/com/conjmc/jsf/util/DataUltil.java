@@ -118,7 +118,7 @@ public class DataUltil {
 	public static Date alterarMes(Date dataTmp, int numeroDoMes){
 		Calendar c = Calendar.getInstance();
 		c.setTime(dataTmp);
-		c.set(c.MONTH,dataTmp.getMonth()+numeroDoMes);
+		c.add(c.MONTH,dataTmp.getMonth()+numeroDoMes);
 		dataTmp = c.getTime();
 		return dataTmp;
 	}

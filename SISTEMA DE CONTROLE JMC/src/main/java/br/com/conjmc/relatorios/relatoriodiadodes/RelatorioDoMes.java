@@ -127,7 +127,7 @@ public class RelatorioDoMes {
 				double totalItem = new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), 6) + new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), 7);
 				String resultRESTTotal = df.format(Math.abs(faturamentoBruto-totalItem));
 				tempTotal[1] = resultRESTTotal;
-				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				resumoIten.setValorTemp(resultRESTTotal);
 				break;
 			}
@@ -136,16 +136,16 @@ public class RelatorioDoMes {
 				resumoIten.setTitulo("Res 03 = Res 02 - Item B");
 				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[1]).doubleValue()-TempResultRESTTotal[1]));
 				tempTotal[0] = df.format(Math.abs(df.parse(resultRESTTotal).doubleValue()));
-				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",((df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100))+" %";
+				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",((df.parse(resultRESTTotal).doubleValue() / tratarFaturamento(faturamentoBruto))*100))+" %";
 				resumoIten.setValorTemp(resultRESTTotal);
 				break;
 			}
 			case "RES04":{
 				resumoIten.setTitulo("CPV (Res 04) = Soma dos Grupos de Itens ' ' C até ' ' E");
 				tempTotal[1] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
-				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				break;
 			}
 			case "RES05":{
@@ -153,15 +153,15 @@ public class RelatorioDoMes {
 				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[0]).doubleValue()-df.parse(tempTotal[1]).doubleValue()));
 				resumoIten.setValorTemp(resultRESTTotal);
 				tempTotal[0] = resultRESTTotal;
-				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
+				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				break;
 			}
 			case "RES06":{
 				resumoIten.setTitulo("D.O (Res 06) = Soma dos Grupos de Itens ' ' F ate ' ' O");
 				tempTotal[1] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
-				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				break;
 			}			
 			case "RES07":{
@@ -169,32 +169,33 @@ public class RelatorioDoMes {
 				resumoIten.setTitulo("R.O ((Res 07) = Res 05 - Res 06)");
 				resumoIten.setValorTemp(resultRESTTotal);
 				tempTotal[0] = resultRESTTotal;
-				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
+				tempRESTotalPercente[0] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				break;
 			}
 			case "RES08":{
 				resumoIten.setTitulo("D.N.O (Res 08) = Soma dos gruposde itens ' ' P ate ' ' R");
 				tempTotal[1] = df.format(Math.abs(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue()));
-				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
-				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempRESTotalPercente[1] = String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				break;
 			}
 			case "RES09":{
 				String resultRESTTotal = df.format(Math.abs(df.parse(tempTotal[0]).doubleValue()-df.parse(tempTotal[1]).doubleValue()));
 				resumoIten.setTitulo("R.L (Res 07 - Res 08)");
 				resumoIten.setValorTemp(resultRESTTotal);
-				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				break;
 			}				
 			default:{
-				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / faturamentoBruto )*100)+" %";
+				tempTotalPercente =  String.format("%.2f",(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 				break;
 			}
 		}
 		totalLinha = inicializaArray(new String[QTD_CAMPOS]);
 	}
 	
+
 	/**
 	 * Método que carrega do dados do itens.
 	 * @param classificacaoIten -- Objeto da lista classificação
@@ -386,7 +387,7 @@ public class RelatorioDoMes {
 	private void porcentagem(int dia, Double valor) {
 		//calcular a porcentagem.
 		if(dia == QTD_CAMPOS-1){
-			campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( valor / faturamentoBruto )*100)+" %";
+			campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( valor / tratarFaturamento(faturamentoBruto) )*100)+" %";
 		}
 	}
 
@@ -395,8 +396,8 @@ public class RelatorioDoMes {
 		for (ItemFaturamento  faturamentoTotal : findAllItemFaturmentos()) {
 			valorTemp = valorTemp + faturamentoTotal.getValor();
 		}
-		if( valorTemp == null || valorTemp == 0.0)
-			valorTemp = 1.0;
+//		if( valorTemp == null || valorTemp == 0.0)
+//			valorTemp = 1.0;
 		return valorTemp;
 	}	
 	
@@ -423,4 +424,14 @@ public class RelatorioDoMes {
 	public void setTodosItemFaturamentos(List<ItemFaturamento> todosItemFaturamentos) {
 		this.todosItemFaturamentos = todosItemFaturamentos;
 	}	
+	
+	/**
+	 * Método que trata todos os valores double.
+	 * @param Double faturamentoBrutoTmp
+	 * @return double 
+	 */		
+	private double tratarFaturamento(Double faturamentoBrutoTmp) {
+		return (faturamentoBrutoTmp==0.0?1.0:faturamentoBrutoTmp);
+	}	
+			
 }

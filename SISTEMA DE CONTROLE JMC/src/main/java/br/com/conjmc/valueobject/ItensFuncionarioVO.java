@@ -5,7 +5,7 @@ import java.util.Date;
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 
-public class ItensFuncionario {
+public class ItensFuncionarioVO {
 
 	/**
      */
@@ -18,6 +18,10 @@ public class ItensFuncionario {
     /**
      */
     private DespesasGastos item;
+    
+	/**
+     */
+	private String vencidasColor;
     
 	/**
      */
@@ -53,5 +57,13 @@ public class ItensFuncionario {
 
 	public void setId(ContasFuncionario id) {
 		this.id = id;
+	}
+
+	public String getVencidasColor() {
+		return vencidasColor;
+	}
+
+	public void setVencidasColor(String vencidasColor) {
+		this.vencidasColor = vencidasColor;
 	} 
 }

@@ -8,26 +8,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-
 import org.primefaces.event.CloseEvent;
-import org.springframework.beans.factory.annotation.Configurable;
-
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Perfil;
 import br.com.conjmc.cadastrobasico.Usuarios;
-import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.valueobject.FuncionarioVO;
-import br.com.conjmc.valueobject.ItensFuncionario;
+import br.com.conjmc.valueobject.ItensFuncionarioVO;
 
 @ManagedBean(name = "contaUsuarioBean")
-@SessionScoped
+@ViewScoped
 public class ContaUsuarioBean implements Serializable   {
 	private static final long serialVersionUID = 1L;
 	private Date dataInicial;
@@ -35,7 +29,7 @@ public class ContaUsuarioBean implements Serializable   {
 	private Funcionarios funcionario;
 	private FuncionarioVO funcionarioVo;
 	private List<FuncionarioVO> todosFuncionarios;
-	private List<ItensFuncionario> todosItensContasFuncionario;
+	private List<ItensFuncionarioVO> todosItensContasFuncionario;
 	private List<DespesasGastos> itens;
 	private List<ContasFuncionario> contaFuncionarios;
 	private ContasFuncionario contaFuncionario;
@@ -54,7 +48,7 @@ public class ContaUsuarioBean implements Serializable   {
 		iniciarData();
 	}
 	
-	private void iniciarData(){
+	public void iniciarData(){
 		setSdf(new SimpleDateFormat("MM/yyyy"));
 		Calendar c = Calendar.getInstance();
 		dataTemp =c.getTime();
@@ -122,13 +116,13 @@ public class ContaUsuarioBean implements Serializable   {
 	}	
 	
 	private FuncionarioVO getFuncionarioVO(Funcionarios empregado, Date dataInicial, Date dataFinal) {
-		List<ItensFuncionario> todosFuncionariosTmp = new ArrayList<ItensFuncionario>();
+		List<ItensFuncionarioVO> todosFuncionariosTmp = new ArrayList<ItensFuncionarioVO>();
 		FuncionarioVO funcionarioVoTmp = new FuncionarioVO();
 		Double totalDesconto = 0.0;
 		funcionarioVoTmp.setFuncionario(empregado);
 		List<ContasFuncionario> itens = new ContasFuncionario().encontraContaFuncionarios(dataInicial, dataFinal, empregado);
 		for (ContasFuncionario iten : itens) {
-			ItensFuncionario umFuncionario = new ItensFuncionario();
+			ItensFuncionarioVO umFuncionario = new ItensFuncionarioVO();
 			if(validarSeESalario(iten.getItem())){
 				funcionarioVoTmp.setSalario(df.format(iten.getValor()));
 				if(iten.getValor()!= null){
@@ -267,12 +261,12 @@ public class ContaUsuarioBean implements Serializable   {
 		this.allFuncionariosAtivos = allFuncionariosAtivos;
 	}
 
-	public List<ItensFuncionario> getTodosItensContasFuncionario() {
+	public List<ItensFuncionarioVO> getTodosItensContasFuncionario() {
 		return todosItensContasFuncionario;
 	}
 
 	public void setTodosItensContasFuncionario(
-			List<ItensFuncionario> todosItensContasFuncionario) {
+			List<ItensFuncionarioVO> todosItensContasFuncionario) {
 		this.todosItensContasFuncionario = todosItensContasFuncionario;
 	}
 

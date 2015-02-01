@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-<p:dialog header="Registro de Conta do Funcionário" widgetVar="dlgRegistroContaFuncionario" width="865px" height="500px" styleClass="dialog" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" >
+<p:dialog header="Registro de Conta do Funcionário" widgetVar="dlgRegistroContaFuncionario" width="865px" height="600px" styleClass="dialog" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" >
+<p:ajax event="close" update=":dataForm:list" listener="#{contaUsuarioBean.iniciarData}"/>
 	<ui:define name="title">
 		<title>Registro de Conta do Funcionário</title>
 	</ui:define>
@@ -59,33 +60,38 @@
     	</fieldset>
 	  </h:form>   
       <h:form prependId="false" id="dataListFucionarios">
-    <p:fieldset id="fieldsets2" legend="Itens da Contas Funcionarios - #{contaUsuarioBean.dataLabel}"  >
-     <p:commandButton id="pagamento" process="listFucionarios" update=":multiDetail" icon="ui-icon-search" value="View" oncomplete="PF('multiDialogWidget').show()" onclick="PF('dlgRegistroContaFuncionario').hide()" />	
-	        <p:dataTable id="listFucionarios" value="#{contaUsuarioRegistroBean.todosItensContasFuncionario}" var="conta"  selection="#{contaUsuarioRegistroBean.selectedItensContasFuncionario}" rowKey="conta.id">	        	
+    <p:fieldset id="fieldsets2" legend="Itens da Contas Funcionarios - #{contaUsuarioRegistroBean.dataLabelR}"  >
+   	<p:commandButton id="anteriorRButton" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios" value="Anterior" action="#{contaUsuarioRegistroBean.anterior}" oncomplete="PF('dlgRegistroContaFuncionario').show()" />
+	<p:commandButton id="proximoRButton" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios" value="Próximo" action="#{contaUsuarioRegistroBean.proximo}" oncomplete="PF('dlgRegistroContaFuncionario').show()" />  
+    <p:commandButton id="pagamento" process="listFucionarios" icon="ui-icon-plus" update=":multiDetail" value="pago" oncomplete="PF('multiDialogWidget').show()"  />
+    <br/><br/>	 	 
+	        <p:dataTable id="listFucionarios" value="#{contaUsuarioRegistroBean.todosItensContasFuncionario}" var="conta"  selection="#{contaUsuarioRegistroBean.selectedItensContasFuncionario}" rowKey="#{conta}" disabledSelection="#{conta.id.quitado}" >	        	
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">
 		            <p:row>
-		                <p:column colspan="5" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
+		                <p:column colspan="6" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
 		                <p:column headerText="#{contaUsuarioRegistroBean.funcionarioVo.salario}" />
 		            </p:row>
 		            <p:row>
-		            	<p:column />
+		            	<p:column selectionMode="multiple" style="width:16px;text-align:center"  />
 		                <p:column headerText="Ação" />
 		                <p:column headerText="Item" sortBy="#{conta.item.descrisao}" />
 		                <p:column headerText="Natureza" sortBy="#{conta.id.origem}"/>
 		                <p:column headerText="Data" sortBy="#{conta.periodo}" />
+		                <p:column headerText="Data de pagamento" sortBy="#{conta.id.dataQuitado}" />
 		                <p:column headerText="Valor" sortBy="#{conta.valor}" />
 		            </p:row>
 		        </p:columnGroup >
-		          <p:column selectionMode="multiple" style="width:16px;text-align:center" />
+		          <p:column selectionMode="multiple" style="width:16px;text-align:center"  >
+		          </p:column>
 		          <p:column>
-		            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('deleteDialogWidget').show()" title="#{messages.label_delete}" onclick="PF('dlgRegistroContaFuncionario').hide()">
+		            <p:commandButton id="deleteButton" icon="ui-icon-trash" oncomplete="PF('deleteDialogWidget').show()" title="#{messages.label_delete}" onclick="PF('dlgRegistroContaFuncionario').hide()" disabled="#{conta.id.quitado}">
 		              <f:setPropertyActionListener value="#{conta.id}" target="#{contaUsuarioRegistroBean.contaFuncionario}" />
 		            </p:commandButton>
 		            <p:tooltip for="deleteButton" value="#{messages.label_delete}" showEffect="fade" hideEffect="fade"  />		          
 		          </p:column>		        
 	          	<p:column>
-	          		<h:outputText value="#{conta.item.descrisao}"  title="#{conta.id.descricao}" />
+	          		<h:outputText value="#{conta.item.descrisao} #{conta.vencidasColor}"  title="#{conta.id.descricao}" />
 	          	</p:column>
 	        	<p:column >
 	        		<h:outputText value="DÉBITO" rendered="#{conta.id.origem == true}" title="#{conta.id.descricao}"/>
@@ -96,38 +102,48 @@
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
+	        	<p:column >
+	          		<h:outputText value="#{conta.id.dataQuitado}" style="text-align:center" title="#{conta.id.descricao}">
+	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+	          		</h:outputText>
+	          	</p:column>	          	
 	          	<p:column style="text-align:center" >
 	          		<h:outputText value="#{conta.valor}" title="#{conta.id.descricao}"/>
 	          	</p:column>
 		        <p:columnGroup type="footer">
 		            <p:row>
-		                <p:column colspan="5" style="text-align:left" footerText="Total de desconto" />
+		                <p:column colspan="6" style="text-align:left" footerText="Total de desconto" />
 		                <p:column footerText="#{contaUsuarioRegistroBean.funcionarioVo.totalDesconto}" />
 		            </p:row>
 		             <p:row>
-		                <p:column colspan="5" style="text-align:left" footerText="Valor a recebe em #{contaUsuarioRegistroBean.dataMesRecebe}" />
+		                <p:column colspan="6" style="text-align:left" footerText="Valor a recebe em #{contaUsuarioRegistroBean.dataMesRecebe}" />
 		                <p:column footerText="#{contaUsuarioRegistroBean.funcionarioVo.valorReceber}" />
 		            </p:row>
 		        </p:columnGroup>     
 	        </p:dataTable>
-		</p:fieldset>	        
+		</p:fieldset>
        </h:form>	  
  </p:dialog>  
-    <p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm"  >
-      <p:outputPanel id="deletePanel">
-        <h:form id="deleteForm">
-          <p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{contaUsuarioRegistroBean.delete}" onclick="PF('deleteDialogWidget').hide()" oncomplete="PF('dlgRegistroContaFuncionario').show()"  update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
-          <p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="PF('deleteDialogWidget').hide()" type="button" oncomplete="PF('dlgRegistroContaFuncionario').show()"  update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
-        </h:form>
-      </p:outputPanel>
-    </p:confirmDialog> 
-    
-  <p:dialog id="multiDialog" header="Contas funcionario selecionado" widgetVar="multiDialogWidget" showEffect="fade" hideEffect="explode" resizable="false">
-        <p:outputPanel id="multiDetail" style="text-align:center;">
-            <ui:repeat value="#{contaUsuarioRegistroBean.selectedItensContasFuncionario}" var="contas">
-                <h:outputText value="#{contas.id.id} - #{contas.item.descrisao} - #{contas.valor}" style="display:block"/>
-            </ui:repeat>
-        </p:outputPanel>
-    </p:dialog>  
-        
+	<p:confirmDialog id="multiDialog" header="Itens do Contas funcionario" message="Deseja realmente efetuar o pagamento desse(s) registro(s)?" widgetVar="multiDialogWidget" showEffect="fade" hideEffect="explode" resizable="false">
+		<p:outputPanel id="multiDetail" style="text-align:center;">
+	    <p:dataList value="#{contaUsuarioRegistroBean.selectedItensContasFuncionario}" var="conta" type="ordered">
+	        <f:facet name="header">
+	            Contas
+	        </f:facet>
+	        #{conta.item.descrisao} - #{conta.valor}
+	    </p:dataList>		
+		<h:form id="multiForm">
+			<p:commandButton id="multiYesButton" value="#{messages.label_yes}" action="#{contaUsuarioRegistroBean.pagamento()}"  onclick="PF('multiDialog').hide()" oncomplete="PF('dlgRegistroContaFuncionario').show()"  update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
+			<p:commandButton id="multiNoButton" value="#{messages.label_no}" onclick="PF('multiDialog').hide()" type="button" oncomplete="PF('dlgRegistroContaFuncionario').show()"  update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
+		</h:form>
+		</p:outputPanel>
+	</p:confirmDialog> 			        
+	<p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget" message="#{messages.label_delete_record}" showEffect="fade" hideEffect="explode" header="#{messages.label_confirm_deletion}" severity="alarm"  >
+		<p:outputPanel id="deletePanel">
+			<h:form id="deleteForm">
+				<p:commandButton id="deleteYesButton" value="#{messages.label_yes}" action="#{contaUsuarioRegistroBean.delete}" onclick="PF('deleteDialogWidget').hide()" oncomplete="PF('dlgRegistroContaFuncionario').show()"  update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
+				<p:commandButton id="deleteNoButton" value="#{messages.label_no}" onclick="PF('deleteDialogWidget').hide()" type="button" oncomplete="PF('dlgRegistroContaFuncionario').show()"  update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
+			</h:form>
+		</p:outputPanel>
+	</p:confirmDialog> 
 </html>

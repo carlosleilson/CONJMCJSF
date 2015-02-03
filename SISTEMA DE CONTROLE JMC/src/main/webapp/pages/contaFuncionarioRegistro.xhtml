@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <p:dialog header="Registro de Conta do Funcionário" widgetVar="dlgRegistroContaFuncionario" width="865px" height="600px" styleClass="dialog" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" >
-<p:ajax event="close" update=":dataForm:list" listener="#{contaUsuarioBean.iniciarData}"/>
+<p:ajax event="close" update=":dataForm:list" listener="#{contaUsuarioRegistroBean.iniciarData}"/>
 	<ui:define name="title">
 		<title>Registro de Conta do Funcionário</title>
 	</ui:define>

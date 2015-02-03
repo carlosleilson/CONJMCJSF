@@ -124,7 +124,7 @@ public class RelatorioDoMes {
 			}
 			case "RES02":{
 				resumoIten.setTitulo("Receita Total sobre as vendas de produtos ( Res 02 = Res 01 - Item A)");
-				double totalItem = new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), 6) + new ItemFaturamento().faturamentoByDateAndId(DataUltil.primeiroDiaMes(DataUltil.porMes(data)), DataUltil.ultimoDiaMes(DataUltil.porMes(data)), 7);
+				double totalItem = new ItemFaturamento().faturamentoByDateAndId(data,data, "6") + new ItemFaturamento().faturamentoByDateAndId(data, data, "7");
 				String resultRESTTotal = df.format(Math.abs(faturamentoBruto-totalItem));
 				tempTotal[1] = resultRESTTotal;
 				tempTotalPercente =  String.format("%.2f",(df.parse(resultRESTTotal).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
@@ -282,12 +282,13 @@ public class RelatorioDoMes {
 
 	/**
 	 * Método para encontrar valores dos itens de faturamentos
+	 * @param dataTmp 
 	 * 
 	 * @param Long id
 	 *            -- Id dos itens.
 	 */
-	public List<ItemFaturamento> findAllItemFaturmentos() {
-		todosItemFaturamentos = ItemFaturamento.findAllItemFaturmentoByDate(data);
+	public List<ItemFaturamento> findAllItemFaturmentos(Date dataTmp) {
+		todosItemFaturamentos = ItemFaturamento.findAllItemFaturmentoByDate(dataTmp);
 		return todosItemFaturamentos;
 	}	
 	
@@ -393,7 +394,7 @@ public class RelatorioDoMes {
 
 	private Double valorFaturamentoTotal() {
 		Double valorTemp = 0.0;
-		for (ItemFaturamento  faturamentoTotal : findAllItemFaturmentos()) {
+		for (ItemFaturamento  faturamentoTotal : findAllItemFaturmentos(data)) {
 			valorTemp = valorTemp + faturamentoTotal.getValor();
 		}
 //		if( valorTemp == null || valorTemp == 0.0)

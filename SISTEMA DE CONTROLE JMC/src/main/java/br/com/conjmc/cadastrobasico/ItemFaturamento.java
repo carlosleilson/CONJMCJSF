@@ -134,9 +134,11 @@ public class ItemFaturamento {
     }
 	
 	public static List<ItemFaturamento> findAllItemFaturmentoByDate(Date data) {
-		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja", ItemFaturamento.class);
+		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja and ( o.faturamentoDescricao.id=:valor1 or o.faturamentoDescricao.id=:valor2 )", ItemFaturamento.class);
 		query.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(data));
-		query.setParameter("dataFinal",  DataUltil.ultimoDiaMes(data));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));
+		query.setParameter("valor1", Long.valueOf("6"));
+		query.setParameter("valor2", Long.valueOf("7"));
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();
     }	
@@ -228,10 +230,11 @@ public class ItemFaturamento {
        	return valor;
 	}
 	
-	public Double faturamentoByDateAndId(Date dataInicial, Date datafinal, int id) {
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja and o.faturamentoDescricao.id="+id, Double.class);
-		query.setParameter("dataInicial", dataInicial);
-		query.setParameter("dataFinal", datafinal);
+	public Double faturamentoByDateAndId(Date dataInicial, Date datafinal, String id) {
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja=:loja and o.faturamentoDescricao.id=:ids", Double.class);
+		query.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(dataInicial));
+		query.setParameter("dataFinal",  DataUltil.ultimoDiaMes(datafinal));
+		query.setParameter("ids", Long.valueOf(id));
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;
 		try {

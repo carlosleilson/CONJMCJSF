@@ -80,7 +80,10 @@ public class DataUltil {
 		sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Calendar c = Calendar.getInstance();
 		c.setTime(data);
-		c.set(c.DAY_OF_MONTH,c.getActualMinimum(Calendar.DAY_OF_MONTH) );
+		c.set(c.DAY_OF_MONTH,c.getActualMinimum(Calendar.DAY_OF_MONTH));
+		c.set(Calendar.HOUR_OF_DAY, 0); 
+		c.set(Calendar.MINUTE, 0);  
+		c.set(Calendar.SECOND, 0);
 		data = c.getTime();
 		return data;
 	}		
@@ -107,6 +110,9 @@ public class DataUltil {
 		Calendar c = Calendar.getInstance();
 		c.setTime(data);
 		c.set(c.DAY_OF_MONTH,c.getActualMaximum(Calendar.DAY_OF_MONTH) );
+		c.set(Calendar.HOUR_OF_DAY, 23); 
+		c.set(Calendar.MINUTE, 59);  
+		c.set(Calendar.SECOND, 59);
 		data = c.getTime();
 		return data;
 	}		

@@ -134,11 +134,9 @@ public class ItemFaturamento {
     }
 	
 	public static List<ItemFaturamento> findAllItemFaturmentoByDate(Date data) {
-		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja and ( o.faturamentoDescricao.id=:valor1 or o.faturamentoDescricao.id=:valor2 )", ItemFaturamento.class);
+		Query query = entityManager().createQuery("SELECT o FROM ItemFaturamento o where o.periodo between :dataInicial and :dataFinal and o.loja.id = :loja", ItemFaturamento.class);
 		query.setParameter("dataInicial", DataUltil.primeiroDiaMesTemp(data));
 		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));
-		query.setParameter("valor1", Long.valueOf("6"));
-		query.setParameter("valor2", Long.valueOf("7"));
 		query.setParameter("loja", ObejctSession.idLoja());
         return query.getResultList();
     }	

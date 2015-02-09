@@ -26,48 +26,48 @@ import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
 @Configurable
-public class ContasFuncionario implements Serializable  {
+public class ContasFuncionario implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
      */
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
 	/**
      */
 	@NotNull
 	@ManyToOne
 	private Lojas loja;
-	
+
 	/**
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date periodo;
-    
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date periodo;
+
 	/**
      */
-    @NotNull
-    @ManyToOne
+	@NotNull
+	@ManyToOne
 	private Funcionarios funcionario;
 
-    /**
+	/**
      */
-    @ManyToOne
-    private DespesasGastos item;
+	@ManyToOne
+	private DespesasGastos item;
 
 	/**
      */
-    @NotNull    
-    private Boolean origem;
-    
+	@NotNull
+	private Boolean origem;
+
 	/**
      */
-    @NotNull    
-    private Integer parcela;    
- 
+	@NotNull
+	private Integer parcela;
+
 	/**
      */
 	private String descricao;
@@ -81,15 +81,15 @@ public class ContasFuncionario implements Serializable  {
      */
 	@NotNull
 	private boolean quitado;
-	
+
 	/**
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataQuitado; 
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dataQuitado;
+
 	/**
      */
-    @NotNull
+	@NotNull
 	private Double valor;
 
 	public Long getId() {
@@ -138,7 +138,7 @@ public class ContasFuncionario implements Serializable  {
 
 	public void setValor(Double valor) {
 		this.valor = valor;
-	}	
+	}
 
 	public Integer getParcela() {
 		return parcela;
@@ -147,84 +147,110 @@ public class ContasFuncionario implements Serializable  {
 	public void setParcela(Integer parcela) {
 		this.parcela = parcela;
 	}
+
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("loja", "periodo", "funcionario", "item", "descricao", "valor");
-	
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays
+			.asList("loja", "periodo", "funcionario", "item", "descricao",
+					"valor");
+
 	public static final EntityManager entityManager() {
-        EntityManager em = new  ContasFuncionario().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }	
-	
-	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
-    }
+		EntityManager em = new ContasFuncionario().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            ContasFuncionario attached = ContasFuncionario.findContasFuncionario(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+		MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this
+				.getClass().getSimpleName());
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			ContasFuncionario attached = ContasFuncionario
+					.findContasFuncionario(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public ContasFuncionario merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        ContasFuncionario merged = this.entityManager.merge(this);
-        MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), ContasFuncionario.class.getSimpleName());
-        this.entityManager.flush();
-        return merged;
-    }	
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public ContasFuncionario merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		ContasFuncionario merged = this.entityManager.merge(this);
+		MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(),
+				merged.getId(), ContasFuncionario.class.getSimpleName());
+		this.entityManager.flush();
+		return merged;
+	}
 
 	public static ContasFuncionario findContasFuncionario(Long id) {
-        if (id == null) return null;
-        return entityManager().find(ContasFuncionario.class, id);
-    }
-	
+		if (id == null)
+			return null;
+		return entityManager().find(ContasFuncionario.class, id);
+	}
+
 	public static List<Funcionarios> encontraTodasFuncionarios() {
-        EntityManager em = entityManager();
-        Query query = entityManager().createQuery("SELECT o FROM Funcionarios o where o.situacao = true and o.loja.id = :loja", Funcionarios.class);
-      	query.setParameter("loja", ObejctSession.idLoja());
-        return query.getResultList();
-    }	
-	
+		EntityManager em = entityManager();
+		Query query = entityManager()
+				.createQuery(
+						"SELECT o FROM Funcionarios o where o.situacao = true and o.loja.id = :loja",
+						Funcionarios.class);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
+	}
+
 	public static List<ContasFuncionario> encontraTodasContaFuncionario() {
-        EntityManager em = entityManager();
-        Query query = em.createQuery("SELECT o FROM ContasFuncionario o WHERE o.loja.id = :loja and o.funcionario is not null", ContasFuncionario.class);
-      	query.setParameter("loja", ObejctSession.idLoja());
-        return query.getResultList();
-    }
-	
-	public static List<ContasFuncionario> encontraContaFuncionarios(Date dataInicial, Date dataFinal, Funcionarios funcionario) {
-        EntityManager em = entityManager();
-        Query query = entityManager().createQuery("SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal", ContasFuncionario.class);
-		query.setParameter("dataInicial", DataUltil.primeiroDiaMes(dataInicial));
+		EntityManager em = entityManager();
+		Query query = em
+				.createQuery(
+						"SELECT o FROM ContasFuncionario o WHERE o.loja.id = :loja and o.funcionario is not null",
+						ContasFuncionario.class);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
+	}
+
+	public static List<ContasFuncionario> encontraContaFuncionarios(
+			Date dataInicial, Date dataFinal, Funcionarios funcionario) {
+		EntityManager em = entityManager();
+		Query query = entityManager()
+				.createQuery(
+						"SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal",
+						ContasFuncionario.class);
+		query.setParameter("dataInicial",
+				DataUltil.primeiroDiaMesTemp(dataInicial));
 		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(dataFinal));
 		query.setParameter("funcionario", funcionario);
 		query.setParameter("loja", ObejctSession.idLoja());
-        return query.getResultList();
-    }	
+		return query.getResultList();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -234,6 +260,22 @@ public class ContasFuncionario implements Serializable  {
 		result = prime * result + ((periodo == null) ? 0 : periodo.hashCode());
 		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
 		return result;
+	}
+
+	public List<ContasFuncionario> encontraContaFuncionariosDevedor(
+			Date dataInicialTmp, Funcionarios empregado) {
+		EntityManager em = entityManager();
+		Query query = entityManager()
+				.createQuery(
+						"SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal",
+						ContasFuncionario.class);
+		query.setParameter("dataInicial",
+				DataUltil.primeiroDiaMesAnterior(dataInicialTmp));
+		query.setParameter("dataFinal",
+				DataUltil.ultimoDiaMesAnterior(dataInicialTmp));
+		query.setParameter("funcionario", empregado);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
 	}
 
 	@Override

@@ -24,6 +24,10 @@ public class FuncionarioVO {
 	
 	/**
      */
+	private String saldoDevedor;
+	
+	/**
+     */
 	private String credito;
 	
 	/**
@@ -85,5 +89,13 @@ public class FuncionarioVO {
 
 	public void setTotalDesconto(String totalDesconto) {
 		this.totalDesconto = totalDesconto;
+	}
+
+	public String getSaldoDevedor() {
+		return saldoDevedor;
+	}
+
+	public void setSaldoDevedor(String saldoDevedor) {
+		this.saldoDevedor = saldoDevedor;
 	}
 }

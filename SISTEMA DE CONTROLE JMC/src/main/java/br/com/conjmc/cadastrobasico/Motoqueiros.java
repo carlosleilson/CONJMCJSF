@@ -67,6 +67,29 @@ public class Motoqueiros implements Serializable {
 		this.situacao = situacao;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Motoqueiros other = (Motoqueiros) obj;
+		if (apelido == null) {
+			if (other.apelido != null)
+				return false;
+		} else if (!apelido.equals(other.apelido))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	// DAO
 	@PersistenceContext
     transient EntityManager entityManager;
 

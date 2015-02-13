@@ -26,12 +26,21 @@ public class Cargos implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
 	@NotNull
     private String nome;
 
     @NotNull
     @Enumerated
     private Setor setor;
+    
+	@Version
+    @Column(name = "version")
+    private Integer version;
 
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -141,15 +150,6 @@ public class Cargos implements Serializable {
         this.entityManager.flush();
         return merged;
     }
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-
-	@Version
-    @Column(name = "version")
-    private Integer version;
 
 	public Long getId() {
         return this.id;

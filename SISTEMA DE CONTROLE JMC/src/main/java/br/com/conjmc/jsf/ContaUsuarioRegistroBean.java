@@ -208,8 +208,7 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		Double totalDesconto = 0.0;
 		Double credito = 0.0;
 		Double saldoDevedor = 0.0;
-		saldoDevedor = saldoDevedorMesAnterior(
-				dataInicial, empregado);
+		saldoDevedor = saldoDevedorMesAnterior(dataInicial, empregado);
 		funcionarioVoTmp.setFuncionario(empregado);
 		funcionarioVoTmp.setSalario(df.format(empregado.getSalario()));
 		List<ContasFuncionario> listContaFuncionarios = new ContasFuncionario()
@@ -233,7 +232,7 @@ public class ContaUsuarioRegistroBean implements Serializable {
 						funcionarioTemp.getOrigem()));
 				if (funcionarioTemp.getOrigem()) {
 					totalDesconto = Math.abs(totalDesconto
-							+ saldoDevedor + funcionarioTemp.getValor());
+							+ funcionarioTemp.getValor());
 				} else {
 					credito = Math.abs(credito + funcionarioTemp.getValor());
 				}
@@ -244,16 +243,17 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		funcionarioVoTmp.setSaldoDevedor(df.format(saldoDevedor));
 		funcionarioVoTmp
 				.setValorReceber(df.format((empregado.getSalario() + credito)
-						- totalDesconto));
+						- Math.abs(totalDesconto + saldoDevedor)));
 		funcionarioVoTmp.setItem(todosFuncionariosTmp);
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
 	}
 
-	private Double saldoDevedorMesAnterior(Date dataInicialTmp, Funcionarios empregado) {
+	private Double saldoDevedorMesAnterior(Date dataInicialTmp,
+			Funcionarios empregado) {
 		Double saldoDevedor = 0.0;
 		List<ContasFuncionario> listContaFuncionarios2 = new ContasFuncionario()
-				.encontraContaFuncionariosDevedor(dataInicialTmp,empregado);
+				.encontraContaFuncionariosDevedor(dataInicialTmp, empregado);
 		for (ContasFuncionario funcionarioTemp : listContaFuncionarios2) {
 			if (funcionarioTemp.getOrigem() && !funcionarioTemp.isQuitado()) {
 				saldoDevedor = Math.abs(saldoDevedor
@@ -397,7 +397,8 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		despesaTmp.setFuncionario(contaFuncionarioTmp.getFuncionario());
 		despesaTmp.setSangria(true);
 		// Alterar para 5 dia util.
-		despesaTmp.setPeriodo(DataUltil.quintoDiaUtil(contaFuncionarioTmp.getPeriodo()));
+		despesaTmp.setPeriodo(DataUltil.quintoDiaUtil(contaFuncionarioTmp
+				.getPeriodo()));
 		despesaTmp.setLoja(ObejctSession.loja());
 		if (funcionarioVo.getValorReceber() != null) {
 			try {

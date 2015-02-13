@@ -6,26 +6,32 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
+@Configurable
 public class Motoqueiros implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id @GeneratedValue
-	@Size(max = 10,message="Não pode ter mais do que 10 caracteres")
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	@Size(max = 10,message="Não pode ter mais do que 10 caracteres")
+	
 	private String apelido;
 	private String nome;
 	private boolean situacao;
+	
 	@Version
 	private int version;
 	

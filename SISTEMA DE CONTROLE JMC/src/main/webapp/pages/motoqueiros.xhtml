@@ -33,7 +33,7 @@
     	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{cargosBean.reset}" action="cargos.xhtml" />
     </h:form>
     <h:form prependId="false" id="dataForm">
-			<p:dataTable id="list" var="list" value="#{motoqueirosBean.motoqueiro}" paginator="true" rows="10">
+			<p:dataTable id="list" var="list" value="#{motoqueirosBean.motoqueiros}" paginator="true" rows="10">
 				<f:facet name="header">Motoqueiros</f:facet>
 				<p:column headerText="Aplelido" sortBy="#{list.apelido}">
 					<h:outputText value="#{list.apelido}" />
@@ -42,7 +42,7 @@
 					<h:outputText value="#{list.nome}" />
 				</p:column>
 				<p:column headerText="Ações" styleClass="action-column" style="width:90px">
-					<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="cargos.xhtml">
+					<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="motoqueiros.xhtml">
 						<f:setPropertyActionListener target="#{motoqueirosBean.motoqueiro}" value="#{list}" />
 					</p:commandButton>
 					<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">

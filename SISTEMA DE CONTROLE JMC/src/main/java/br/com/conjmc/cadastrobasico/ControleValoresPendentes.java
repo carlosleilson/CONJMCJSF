@@ -30,8 +30,13 @@ public class ControleValoresPendentes {
 	
 	private Double valor;
 	
+	private boolean ativo;
+	
 	@Enumerated
 	private TipoPagamento tipoPagamento;
+	
+	@Enumerated
+	private Status status;
 	
 	@ManyToMany
 	private Motoqueiros motoqueiro;
@@ -69,12 +74,28 @@ public class ControleValoresPendentes {
 		this.valor = valor;
 	}
 
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
 	public TipoPagamento getTipoPagamento() {
 		return tipoPagamento;
 	}
 
 	public void setTipoPagamento(TipoPagamento tipoPagamento) {
 		this.tipoPagamento = tipoPagamento;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public Motoqueiros getMotoqueiro() {
@@ -102,7 +123,7 @@ public class ControleValoresPendentes {
     }
 
 	public static List<ControleValoresPendentes> findAllControleValoresPendenteses() {
-        return entityManager().createQuery("SELECT o FROM ControleValoresPendentes o", ControleValoresPendentes.class).getResultList();
+        return entityManager().createQuery("SELECT o FROM ControleValoresPendentes o where o.ativo=true", ControleValoresPendentes.class).getResultList();
     }
 
 	public static List<ControleValoresPendentes> findAllControleValoresPendenteses(String sortFieldName, String sortOrder) {

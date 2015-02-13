@@ -1,105 +1,70 @@
 package br.com.conjmc.cadastrobasico;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.transaction.annotation.Transactional;
-
-import br.com.conjmc.jsf.util.ObejctSession;
 
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.validation.constraints.AssertTrue;
 
-@Configurable
+import org.springframework.transaction.annotation.Transactional;
+
+import br.com.conjmc.jsf.util.ObejctSession;
+
 @Entity
-public class Motoqueiros implements Serializable{
+public class Motoqueiros implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	/**
-     */
-    @NotNull
-    @Size(max = 10)
-    private String apelido;
-
-    /**
-     */
-    private String nome;
-
-    /**
-     */
-    @NotNull
-    @AssertTrue
-    private Boolean situacao;
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
-
+	
+	@Id @GeneratedValue
+	@Size(max = 10,message="Não pode ter mais do que 10 caracteres")
+	private Long id;
+	private String apelido;
+	private String nome;
+	private boolean situacao;
 	@Version
-    @Column(name = "version")
-    private Integer version;
-
+	private int version;
+	
+	//Getters and Setters
 	public Long getId() {
-        return this.id;
-    }
-
+		return id;
+	}
 	public void setId(Long id) {
-        this.id = id;
-    }
-
-	public Integer getVersion() {
-        return this.version;
-    }
-
-	public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
-
+		this.id = id;
+	}
 	public String getApelido() {
-        return this.apelido;
-    }
-
+		return apelido;
+	}
+	public int getVersion() {
+		return version;
+	}
+	public void setVersion(int version) {
+		this.version = version;
+	}
 	public void setApelido(String apelido) {
-        this.apelido = apelido;
-    }
-
+		this.apelido = apelido;
+	}
 	public String getNome() {
-        return this.nome;
-    }
-
+		return nome;
+	}
 	public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-	public Boolean getSituacao() {
-        return this.situacao;
-    }
-
-	public void setSituacao(Boolean situacao) {
-        this.situacao = situacao;
-    }
-
+		this.nome = nome;
+	}
+	public boolean isSituacao() {
+		return situacao;
+	}
+	public void setSituacao(boolean situacao) {
+		this.situacao = situacao;
+	}
+	
 	@PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("apelido", "nome", "situacao");
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("apelido", "nome");
 
 	public static final EntityManager entityManager() {
         EntityManager em = new Motoqueiros().entityManager;
@@ -112,7 +77,7 @@ public class Motoqueiros implements Serializable{
     }
 
 	public static List<Motoqueiros> findAllMotoqueiroses() {
-        return entityManager().createQuery("SELECT o FROM Motoqueiros o", Motoqueiros.class).getResultList();
+        return entityManager().createQuery("SELECT o FROM Motoqueiros o where o.situacao=true", Motoqueiros.class).getResultList();
     }
 
 	public static List<Motoqueiros> findAllMotoqueiroses(String sortFieldName, String sortOrder) {
@@ -131,7 +96,7 @@ public class Motoqueiros implements Serializable{
         return entityManager().find(Motoqueiros.class, id);
     }
 
-	public static List<Motoqueiros> findMotoqueirosEntries(int firstResult, int maxResults) {
+	public static List<Motoqueiros> findMotoqueiroEntries(int firstResult, int maxResults) {
         return entityManager().createQuery("SELECT o FROM Motoqueiros o", Motoqueiros.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
@@ -183,5 +148,6 @@ public class Motoqueiros implements Serializable{
         MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), merged.getId(), Motoqueiros.class.getSimpleName());
         this.entityManager.flush();
         return merged;
-    }
+	}
+
 }

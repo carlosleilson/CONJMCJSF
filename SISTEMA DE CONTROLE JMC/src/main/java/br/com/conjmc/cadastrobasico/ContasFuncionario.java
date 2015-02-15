@@ -267,12 +267,24 @@ public class ContasFuncionario implements Serializable {
 		EntityManager em = entityManager();
 		Query query = entityManager()
 				.createQuery(
+						"SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.origem = true and o.quitado = false and o.funcionario = :funcionario and o.loja.id = :loja",
+						ContasFuncionario.class);
+		query.setParameter("funcionario", empregado);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
+	}
+
+	public List<ContasFuncionario> encontrarSalarioFuncionario(
+			Date dataInicialTmp, Funcionarios empregado) {
+		EntityManager em = entityManager();
+		Query query = entityManager()
+				.createQuery(
 						"SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal",
 						ContasFuncionario.class);
-		query.setParameter("dataInicial",
-				DataUltil.primeiroDiaMesAnterior(dataInicialTmp));
-		query.setParameter("dataFinal",
-				DataUltil.ultimoDiaMesAnterior(dataInicialTmp));
+		query.setParameter("dataInicial", DataUltil
+				.primeiroDiaMesTemp(DataUltil.alterarMes(dataInicialTmp, -1)));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(DataUltil
+				.alterarMes(dataInicialTmp, -1)));
 		query.setParameter("funcionario", empregado);
 		query.setParameter("loja", ObejctSession.idLoja());
 		return query.getResultList();

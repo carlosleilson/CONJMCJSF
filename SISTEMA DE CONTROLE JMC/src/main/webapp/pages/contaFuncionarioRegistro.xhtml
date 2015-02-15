@@ -69,13 +69,14 @@
 	        	<f:facet name="header">Conta do funcionário</f:facet>
 	        	<p:columnGroup type="header">
 		            <p:row>
-		                <p:column colspan="6" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
+		                <p:column colspan="7" style="text-align:left" headerText="Salario de #{contaUsuarioRegistroBean.funcionarioVo.funcionario.apelido}" />
 		                <p:column headerText="#{contaUsuarioRegistroBean.funcionarioVo.salario}" />
 		            </p:row>
 		            <p:row>
 		            	<p:column selectionMode="multiple" style="width:16px;text-align:center"  />
 		                <p:column headerText="Ação" />
 		                <p:column headerText="Item" sortBy="#{conta.item.descrisao}" />
+		                <p:column headerText="Descrisão" sortBy="#{conta.id.descricao}" />
 		                <p:column headerText="Natureza" sortBy="#{conta.id.origem}"/>
 		                <p:column headerText="Data" sortBy="#{conta.periodo}" />
 		                <p:column headerText="Data de pagamento" sortBy="#{conta.id.dataQuitado}" />
@@ -93,6 +94,9 @@
 	          	<p:column>
 	          		<h:outputText value="#{conta.item.descrisao} #{conta.vencidasColor}"  title="#{conta.id.descricao}" />
 	          	</p:column>
+	          	<p:column>
+	          		<h:outputText value="#{conta.id.descricao}"  title="#{conta.id.descricao}" />
+	          	</p:column>	          	
 	        	<p:column >
 	        		<h:outputText value="DÉBITO" rendered="#{conta.id.origem == true}" title="#{conta.id.descricao}"/>
 	        		<h:outputText value="CRÉDITO" rendered="#{conta.id.origem == false}" title="#{conta.id.descricao}"/>
@@ -112,15 +116,15 @@
 	          	</p:column>
 		        <p:columnGroup type="footer">
 		            <p:row>
-		                <p:column colspan="6" style="text-align:left" footerText="Total de desconto" />
+		                <p:column colspan="7" style="text-align:left" footerText="Total de desconto" />
 		                <p:column footerText="#{contaUsuarioRegistroBean.funcionarioVo.totalDesconto}" />
 		            </p:row>
 		            <p:row>
-		                <p:column colspan="6" style="text-align:left" footerText="Saldo devedor" />
+		                <p:column colspan="7" style="text-align:left" footerText="Saldo devedor" />
 		                <p:column footerText="#{contaUsuarioRegistroBean.funcionarioVo.saldoDevedor}" />
 		            </p:row>		            
 		             <p:row>
-		                <p:column colspan="6" style="text-align:left" footerText="Valor a recebe em #{contaUsuarioRegistroBean.dataMesRecebe}" />
+		                <p:column colspan="7" style="text-align:left" footerText="Valor a recebe em #{contaUsuarioRegistroBean.dataMesRecebe}" />
 		                <p:column footerText="#{contaUsuarioRegistroBean.funcionarioVo.valorReceber}" />
 		            </p:row>
 		        </p:columnGroup>     

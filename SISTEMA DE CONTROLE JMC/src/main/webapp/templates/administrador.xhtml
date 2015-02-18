@@ -26,6 +26,26 @@
   		</div>
   		
   		<div class="content">
+  				<p:panel id="AlertPanel" toggleable="false" rendered="#{!ApplicationBean.ativarModuloAlertar}" >
+	  					<f:facet name="header">
+							<h:outputFormat
+								value="Alertas, " />
+							<h:outputFormat
+								value="prezado(a) #{applicationBean.usuarioLogado.nome.nome}!" />								
+						</f:facet>
+						<p>
+							<h:outputText id="alertaText" value="#{messages.label_alert_sem}" />
+						</p>
+						<p>
+							<h:outputText id="receberText" value="#{messages.label_alert_receber}" />
+						</p>
+						<p>
+							<h:outputText id="cobrarText" value="#{messages.label_alert_cobrar}" />
+						</p>
+						<p>
+							<h:outputText id="contasText" value="#{messages.label_alert_contas}" />
+						</p>		
+	  				</p:panel>  		
 				<p:panel id="mainPanel" toggleable="false" >
 					<f:facet name="header">
 						<h:outputFormat

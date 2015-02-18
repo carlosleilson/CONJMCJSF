@@ -5,8 +5,17 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="../templates/administrador.xhtml">
+<script type="text/javascript">
+function showStatus() {
+PF('statusDialog').show();
+}
+function hideStatus() {
+PF('statusDialog').hide();
+}
+</script>
   <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" autoUpdate="true" />
@@ -14,7 +23,19 @@
     <h:form prependId="false" id="dataForm">     
 	<p:commandButton id="anteriorButton" update=":dataForm:field" value="Anterior" action="#{relatorioMesBean.anterior}" />
 	<p:commandButton id="proximoButton" update=":dataForm:field" value="Próximo" action="#{relatorioMesBean.proximo}" />
-	<br/><br/>
+	<p:commandButton id="downloadLink" value="Download" ajax="false"
+		onclick="PrimeFaces.monitorDownload(start, stop);"
+		icon="ui-icon-disk">
+		<p:fileDownload value="#{relatorioMesBean.gerarRelatorio()}" />
+	</p:commandButton>
+
+	<ui:remove>
+<!-- 		<p:commandButton value="Export as PDF" ajax="false" > -->
+<!-- 			<p:dataExporter type="pdf" target="list" fileName="drm" pageOnly="true" /> -->
+<!-- 		</p:commandButton>	 -->
+	</ui:remove>
+	
+		<br/><br/>
 	<p:fieldset id="field" legend="Relatorio de Desempenho Mensal (RDM) - #{relatorioMesBean.dataLabel}">
         <p:dataTable id="list" var="linha" value="#{relatorioMesBean.resumos}" >
 	       	<p:columnGroup type="header">

@@ -25,11 +25,9 @@
 		    	<p:inputMask id="cnpj" value="#{lojasBean.loja.cnpj}" mask="99.999.999/9999-99" required="true" requiredMessage="O nome não pode ser nulo" />
 		    	<p:message for="cnpj" />
 			 </h:panelGrid>
-			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{lojasBean.persist()}" />
+			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{lojasBean.persist()}" />&#160;&#160;
+			<p:commandButton id="createCloseButton" immediate="true" ajax="false" value="#{messages.label_reset}" actionListener="#{lojasBean.reset()}" action="cargos.xhtml" />
 		</fieldset>
-    </h:form>
-    <h:form styleClass="buttomLimpar">
-    	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{lojasBean.reset()}" action="cargos.xhtml" />
     </h:form>
     <h:form prependId="false" id="dataForm">
 			<p:dataTable id="list" var="list" value="#{lojasBean.lojas}" paginator="true" rows="10">

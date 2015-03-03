@@ -1,5 +1,7 @@
 package br.com.conjmc.cadastrobasico;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,9 +10,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,13 +24,13 @@ import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
 @Configurable
-public class ControleValoresPendentes {
+public class ControleValoresPendentes implements Serializable {
 
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private int numeroPedido;
+	private Integer numeroPedido;
 	
 	private String telefone;
 	
@@ -38,8 +44,18 @@ public class ControleValoresPendentes {
 	@Enumerated
 	private Status status;
 	
-	@ManyToMany
+	@ManyToOne
 	private Motoqueiros motoqueiro;
+	
+	@Enumerated
+	private Turno turno;
+	
+	@Temporal(TemporalType.DATE)
+	private Date data;
+	
+	@NotEmpty
+	@ManyToOne
+	private Lojas loja;
 
 	//Getter and Setters
 	public Long getId() {
@@ -50,11 +66,11 @@ public class ControleValoresPendentes {
 		this.id = id;
 	}
 
-	public int getNumeroPedido() {
+	public Integer getNumeroPedido() {
 		return numeroPedido;
 	}
 
-	public void setNumeroPedido(int numeroPedido) {
+	public void setNumeroPedido(Integer numeroPedido) {
 		this.numeroPedido = numeroPedido;
 	}
 
@@ -106,11 +122,35 @@ public class ControleValoresPendentes {
 		this.motoqueiro = motoqueiro;
 	}
 	
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+
+	public Lojas getLoja() {
+		return loja;
+	}
+
+	public void setLoja(Lojas loja) {
+		this.loja = loja;
+	}
+
 	// DAO
 	@PersistenceContext
     transient EntityManager entityManager;
 
-	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("nome", "setor");
+	public static final List<String> fieldNames4OrderClauseFilter = java.util.Arrays.asList("nome", "controleValoresPendentes");
 
 	public static final EntityManager entityManager() {
         EntityManager em = new ControleValoresPendentes().entityManager;
@@ -121,6 +161,15 @@ public class ControleValoresPendentes {
 	public static long countControleValoresPendenteses() {
         return entityManager().createQuery("SELECT COUNT(o) FROM ControleValoresPendentes o", Long.class).getSingleResult();
     }
+	
+	public long validarValoresPendentes(Date data, Turno turno, int pedido) {
+		String sql="SELECT count(o.id) FROM ControleValoresPendentes o where o.data=:data and numeroPedido=:pedido and o.loja=:loja and turno="+turno.ordinal();
+		Query query = entityManager().createQuery(sql, Long.class);
+		query.setParameter("data", data);
+		query.setParameter("loja", ObejctSession.loja());
+		query.setParameter("pedido", pedido);
+       	return (long) query.getSingleResult();
+	}
 
 	public static List<ControleValoresPendentes> findAllControleValoresPendenteses() {
         return entityManager().createQuery("SELECT o FROM ControleValoresPendentes o where o.ativo=true", ControleValoresPendentes.class).getResultList();
@@ -197,5 +246,3 @@ public class ControleValoresPendentes {
     }
 	
 }
-
-

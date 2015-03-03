@@ -31,10 +31,6 @@
 					<f:selectItems value="#{despesasBean.allResumos}" var="idResumo" itemLabel="#{idResumo.label}" />
 				</p:selectOneMenu>
 				<p:message for="resumo"/>				
-				
-				<p:outputLabel value="Ativo" for="situacao"/>
-	          	<p:selectBooleanCheckbox id="situacao" value="#{despesasBean.despesas.situacao}" required="true"/>
-	          	<p:message for="situacao"/>
 			</h:panelGrid>
 		    <p:commandButton id="createSaveButton" value="#{messages.label_save}" ajax="false" action="#{despesasBean.persist}" />
        	</fieldset>
@@ -43,7 +39,7 @@
      	<p:commandButton id="createCloseButton" value="#{messages.label_reset}" ajax="false" actionListener="#{despesasBean.reset()}" action="despesas.xhtml" />
      </h:form>
     <h:form prependId="false" id="dataForm">
-        <p:dataTable id="list" value="#{despesasBean.allDespesases}" var="despesas" paginator="true" rows="10">
+        <p:dataTable id="list" value="#{despesasBean.allDespesasAtivas}" var="despesas" paginator="true" rows="10">
             <f:facet name="header">Classificação de Despesas</f:facet>
             <p:column headerText="Codigo" sortBy="#{despesas.codigo}">
             	<h:outputText value="#{despesas.codigo}"/>
@@ -54,19 +50,13 @@
             <p:column headerText="IdResumo" sortBy="#{despesas.idResumo}">
             	<h:outputText value="#{despesas.idResumo}"/>
             </p:column>
-            <p:column headerText="Situação" sortBy="#{despesas.situacao}">
-            	<h:outputText value="Ativo" rendered="#{despesas.situacao == true}"/>
-            	<h:outputText value="Inativo" rendered="#{despesas.situacao == false}"/>
-            </p:column>
           <p:column headerText="Ações" styleClass="action-column" style="width:90px">   
             <p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" action="despesas.xhtml" title="#{messages.label_edit}">
               <f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" />
             </p:commandButton>
-            <ui:remove>
-<!--             <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}"> -->
-<!-- 				<f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" /> -->
-<!-- 			</p:commandButton> -->
-            </ui:remove>
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
+				<f:setPropertyActionListener value="#{despesas}" target="#{despesasBean.despesas}" />
+			</p:commandButton>
           </p:column>
         </p:dataTable>
         <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir #{despesasBean.despesas.codigo}?" hideEffect="explode" widgetVar="confirmation" severity="alert">

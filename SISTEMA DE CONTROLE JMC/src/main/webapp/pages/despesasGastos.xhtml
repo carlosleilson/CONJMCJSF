@@ -46,9 +46,6 @@
           	<p:selectBooleanCheckbox id="naoDespesa" value="#{despesasGastosBean.despesasGastos.naoDespesa}" required="true"/>
           	<p:message for="naoDespesa"/>
           	
-          	<p:outputLabel value="Ativo" for="situacao"/>
-          	<p:selectBooleanCheckbox id="situacao" value="#{despesasGastosBean.despesasGastos.situacao}" required="true"/>
-          	<p:message for="situacao"/>
           </h:panelGrid>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{despesasGastosBean.persist}" />
 	    </fieldset> 
@@ -57,7 +54,7 @@
     	<p:commandButton ajax="false" value="#{messages.label_reset}" actionListener="#{despesasGastosBean.reset()}" action="despesasGastos.xhtml" />
     </h:form>
     <h:form prependId="false" id="dataForm">     
-        <p:dataTable id="list" value="#{despesasGastosBean.allDespesasGastoses}" widgetVar="itens" var="despesa_Gastos" resizableColumns="false" paginator="true" rows="10">
+        <p:dataTable id="list" value="#{despesasGastosBean.allDespesasGastosAtivos}" widgetVar="itens" var="despesa_Gastos" resizableColumns="false" paginator="true" rows="10">
           <f:facet name="header">Despesas/Gastos</f:facet>
           <p:column headerText="Id" styleClass="primariKey">
           	<h:outputText value="#{despesa_Gastos.id}" />
@@ -77,10 +74,6 @@
           <p:column headerText="Despesa Pessoal" sortBy="#{despesa_Gastos.despesaPessoal}">
           	<h:outputText value="Sim" rendered="#{despesa_Gastos.despesaPessoal == true}"/> 
           	<h:outputText value="Não" rendered="#{despesa_Gastos.despesaPessoal == false}"/>          
-          </p:column>
-          <p:column headerText="Situação" sortBy="#{despesa_Gastos.situacao}">
-          	<h:outputText value="Ativo" rendered="#{despesa_Gastos.situacao == true}"/>
-          	<h:outputText value="Inativo" rendered="#{despesa_Gastos.situacao == false}"/>          
           </p:column>
           <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
 				<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="despesasGastos.xhtml">

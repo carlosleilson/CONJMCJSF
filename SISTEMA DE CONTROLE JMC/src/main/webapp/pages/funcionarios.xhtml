@@ -44,10 +44,6 @@
 	          		</p:inputText>	
 	          	<p:message for="funcionarioSalario"/>
 	          	
-	          	<p:outputLabel value="Ativo" for="funcionarioSituacao"/>
-	          	<p:selectBooleanCheckbox id="funcionarioSituacao" value="#{funcionariosBean.funcionarios.situacao}" rendered="true" />
-	          	<p:message for="funcionarioSituacao"/>
-	          	
 	          	<p:outputLabel value="CPF" for="funcionarioCPF"/>
 	          	<p:inputMask id="funcionarioCPF" value="#{funcionariosBean.funcionarios.cpf}" mask="999.999.999-99"/>
 	          	<p:message for="funcionarioCPF"/>
@@ -95,7 +91,7 @@
      	<p:commandButton id="createCloseButton" ajax="false" value="#{messages.label_reset}" actionListener="#{funcionariosBean.reset}" action="funcionarios.xhtml" />
      </h:form>
     <h:form prependId="false" id="dataForm">
-        <p:dataTable id="list" value="#{funcionariosBean.allFuncionarioses}" var="funcionarios" paginator="true" rows="10">
+        <p:dataTable id="list" value="#{funcionariosBean.allFuncionariosAtivos}" var="funcionarios" paginator="true" rows="10">
         	<f:facet name="header">Funcionários</f:facet>
         	<p:column headerText="Apelido" sortBy="#{funcionarios.apelido}">
         		<h:outputText value="#{funcionarios.apelido}"/>
@@ -111,11 +107,6 @@
         	<p:column headerText="CPF" sortBy="#{funcionarios.cpf}">
         		<h:outputText value="#{funcionarios.cpf}"/>
         	</p:column>
-        	<p:column headerText="Situação" sortBy="#{funcionarios.situacao}">
-        		<h:outputText value="Ativo" rendered="#{funcionarios.situacao == true}"/>
-        		<h:outputText value="Inativo" rendered="#{funcionarios.situacao == false}"/>
-        	</p:column>
-        	
           <p:column headerText="Ações" styleClass="action-column" style="width:90px;">
 			<ui:remove>
 <!--             <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}"> -->

@@ -1,21 +1,35 @@
 package br.com.conjmc.jsf;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
+import br.com.conjmc.cadastrobasico.Status;
+import br.com.conjmc.cadastrobasico.TipoPagamento;
+import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.jsf.util.ObejctSession;
+import br.com.conjmc.valueobject.ReceitaVO;
 
+@ManagedBean
+@SessionScoped
 public class ControleValoresPendentesBean implements Serializable {
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private ControleValoresPendentes controle;
 	private List<ControleValoresPendentes> controles;
+	private List<TipoPagamento> tipoPagamento;
+	private List<Status> status;
+	private List<Turno> turno;
 	
 	@PostConstruct
     public void init() {
@@ -31,13 +45,26 @@ private static final long serialVersionUID = 1L;
 	public String persist() {
         String message = "";
         if (controle.getId() != null) {
-        	controle.merge();
-            message = "message_successfully_updated";
+        	ReceitaVO receita = new ReceitaVO();
+        	if(controle.getStatus().getLabel() =="Baixado" || controle.getStatus().getLabel() =="Baixado DIF") {
+        		receita.somarReceita(controle);
+        		controle.merge();
+        	} else {
+        		receita.somarReceita(controle);
+        		controle.merge();
+        	}
+        	message = "message_successfully_created";
         } else {
-        	controle.persist();
-            message = "message_successfully_created";
+        	controle.setLoja(ObejctSession.loja());
+        	controle.setStatus(Status.PENDENTE);
+    		controle.setData(new Date());
+        	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
+        		controle.persist();
+        		message = "message_successfully_created";        		
+        	} else {
+        		message = "Não foi poissivel cadastrar o item porque ele já esta cadastrado";
+        	}
         }
-        
         FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         init();
@@ -52,6 +79,11 @@ private static final long serialVersionUID = 1L;
 	    init();
         return "controleValores.xhtml";
     }
+	
+	public void reset() {
+		init();
+		/*return "controleValores.xhtml";*/
+	}
 
 	public ControleValoresPendentes getControle() {
 		return controle;
@@ -67,6 +99,30 @@ private static final long serialVersionUID = 1L;
 
 	public void setControles(List<ControleValoresPendentes> controles) {
 		this.controles = controles;
+	}
+
+	public List<TipoPagamento> getTipoPagamento() {
+		return Arrays.asList(TipoPagamento.values());
+	}
+
+	public void setTipoPagamento(List<TipoPagamento> tipoPagamento) {
+		this.tipoPagamento = tipoPagamento;
+	}
+
+	public List<Status> getStatus() {
+		return Arrays.asList(Status.values());
+	}
+
+	public void setStatus(List<Status> status) {
+		this.status = status;
+	}
+
+	public List<Turno> getTurno() {
+		return Arrays.asList(Turno.values());
+	}
+
+	public void setTurno(List<Turno> turno) {
+		this.turno = turno;
 	}
 	
 }

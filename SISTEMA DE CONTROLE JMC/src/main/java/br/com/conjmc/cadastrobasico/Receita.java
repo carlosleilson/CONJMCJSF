@@ -37,12 +37,16 @@ public class Receita {
 	@Enumerated
 	private TipoPagamento tipoPagamento;
 	
+	@ManyToOne
 	private ControleValoresPendentes controleValores;
 	
+	@ManyToOne
 	private ContasFuncionario contaFuncionarios;
 
+	@ManyToOne
 	private DespesasGastos depesas;
 	
+	@ManyToOne
 	private Contas conta;
 
 	//Generate Getters and Setters

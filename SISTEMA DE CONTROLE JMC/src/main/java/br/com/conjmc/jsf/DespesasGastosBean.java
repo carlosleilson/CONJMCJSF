@@ -41,8 +41,6 @@ public class DespesasGastosBean implements Serializable {
 
 	private List<DespesasGastos> allItensPessoalAtivos;
 	
-	private List<DespesasGastos> allDespesasGastoses;
-	
 	private List<DespesasGastos> allDespesasGastosAtivos;
 	
 	private List<DespesasGastos> allDespesasGastosClassificacao;
@@ -67,7 +65,6 @@ public class DespesasGastosBean implements Serializable {
         despesasGastos.setDespesaPessoal(false);
         despesasGastos.setSituacao(true);
         despesasGastos.setCodigo(DespesasGastos.getMaxId()+1);
-        findAllDespesasGastoses();
         findAllDespesasGastosAtivos();
         findAllItensPessoalAtivos();
     }
@@ -87,14 +84,6 @@ public class DespesasGastosBean implements Serializable {
 	public List<String> getColumns() {
         return columns;
     }
-
-	public List<DespesasGastos> getAllDespesasGastoses() {
-        return allDespesasGastoses;
-    }
-
-	public void setAllDespesasGastoses(List<DespesasGastos> allDespesasGastoses) {
-        this.allDespesasGastoses = allDespesasGastoses;
-    }
 	
 	public List<DespesasGastos> getAllDespesasGastosAtivos() {
 		return allDespesasGastosAtivos;
@@ -104,12 +93,6 @@ public class DespesasGastosBean implements Serializable {
 			List<DespesasGastos> allDespesasGastosAtivos) {
 		this.allDespesasGastosAtivos = allDespesasGastosAtivos;
 	}
-
-	public String findAllDespesasGastoses() {
-        allDespesasGastoses = DespesasGastos.findAllDespesasGastoses();
-        dataVisible = !allDespesasGastoses.isEmpty();
-        return null;
-    }
 	
 	public String findAllDespasGastosForClassificao() {
 		allDespesasGastosClassificacao = DespesasGastos.findAllClassificaco(despesasGastos.getId());
@@ -432,7 +415,7 @@ public class DespesasGastosBean implements Serializable {
 
 	public String displayList() {
         createDialogVisible = false;
-        findAllDespesasGastoses();
+        findAllDespesasGastosAtivos();
         return "despesasGastos";
     }
 
@@ -463,7 +446,8 @@ public class DespesasGastosBean implements Serializable {
 
 	public String delete() {
 		try {
-			despesasGastos.remove();
+			despesasGastos.setSituacao(false);
+			despesasGastos.merge();
 			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
 	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	        init();
@@ -483,7 +467,7 @@ public class DespesasGastosBean implements Serializable {
     }
 
 	public String findAllDespasGastosByClassificao(Long id) {
-		allDespesasGastoses = DespesasGastos.findAllClassificaco(id);;
+		allDespesasGastosAtivos = DespesasGastos.findAllClassificaco(id);;
 		return null;
 	}
 

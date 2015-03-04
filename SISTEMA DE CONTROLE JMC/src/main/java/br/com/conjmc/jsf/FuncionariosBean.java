@@ -24,8 +24,6 @@ public class FuncionariosBean implements Serializable {
 	private String name = "Funcionarioses";
 
 	private Funcionarios funcionarios;
-
-	private List<Funcionarios> allFuncionarioses;
 	
 	private List<Funcionarios> allFuncionariosAtivos;
 
@@ -45,7 +43,6 @@ public class FuncionariosBean implements Serializable {
         columns.add("identidade");
         funcionarios = new Funcionarios();
         funcionarios.setSituacao(true);
-        findAllFuncionarioses();
         findAllFuncionariosAtivos();
     }
 
@@ -56,15 +53,7 @@ public class FuncionariosBean implements Serializable {
 	public List<String> getColumns() {
         return columns;
     }
-
-	public List<Funcionarios> getAllFuncionarioses() {
-        return allFuncionarioses;
-    }
-
-	public void setAllFuncionarioses(List<Funcionarios> allFuncionarioses) {
-        this.allFuncionarioses = allFuncionarioses;
-    }
-
+	
 	public List<Funcionarios> getAllFuncionariosAtivos() {
 		return allFuncionariosAtivos;
 	}
@@ -72,12 +61,6 @@ public class FuncionariosBean implements Serializable {
 	public void setAllFuncionariosAtivos(List<Funcionarios> allFuncionariosAtivos) {
 		this.allFuncionariosAtivos = allFuncionariosAtivos;
 	}
-
-	public String findAllFuncionarioses() {
-        allFuncionarioses = Funcionarios.findAllFuncionarioses();
-        dataVisible = !allFuncionarioses.isEmpty();
-        return null;
-    }
 	
 	public void findAllFuncionariosAtivos() {
         allFuncionariosAtivos = Funcionarios.findAllFuncionariosAtivos();
@@ -127,7 +110,7 @@ public class FuncionariosBean implements Serializable {
 
 	public String displayList() {
         createDialogVisible = false;
-        findAllFuncionarioses();
+        findAllFuncionariosAtivos();
         return "funcionarios";
     }
 
@@ -140,7 +123,7 @@ public class FuncionariosBean implements Serializable {
 	public String persist() {
 		boolean existe = true;
 		String message = "";
-		for (Funcionarios func : allFuncionarioses) {
+		for (Funcionarios func : allFuncionariosAtivos) {
 			if (func.getApelido().equals(funcionarios.getApelido())) {
 				existe = false;
 				message = "já existe funcionário com apelido cadastrado";
@@ -152,7 +135,7 @@ public class FuncionariosBean implements Serializable {
 		
 		if (funcionarios.getId() != null) {
 			boolean merge = true;
-			for (Funcionarios func : allFuncionarioses) {
+			for (Funcionarios func : allFuncionariosAtivos) {
 				if ((func.getApelido().equals(funcionarios.getApelido()) && (func.getId() != funcionarios.getId()))) {
 					merge = false;
 					message = "já existe funcionário com apelido cadastrado";
@@ -172,7 +155,7 @@ public class FuncionariosBean implements Serializable {
 				init();
 			} else {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, message, " "));
-				findAllFuncionarioses();
+				findAllFuncionariosAtivos();
 			}
 		} else {
 			if (existe) {
@@ -193,7 +176,8 @@ public class FuncionariosBean implements Serializable {
 
 	public String delete() {
 		try {
-			funcionarios.remove();
+			funcionarios.setSituacao(false);
+			funcionarios.merge();
 			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
 	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	        init();

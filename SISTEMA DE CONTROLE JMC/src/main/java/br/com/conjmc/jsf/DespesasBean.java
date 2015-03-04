@@ -42,7 +42,6 @@ public class DespesasBean implements Serializable {
 
 	private Despesas despesas;
 
-	private List<Despesas> allDespesases;
 	private List<DespesasGastos> allDespesasGastoses;
 	private List<Sangria> allSangrias;
 	
@@ -73,7 +72,6 @@ public class DespesasBean implements Serializable {
         despesas = new Despesas();
         despesas.setSituacao(true);
         findAllDespesasGastoses();
-        findAllDespesases();
         findAllDespesasAtivas();
     }
 
@@ -87,20 +85,6 @@ public class DespesasBean implements Serializable {
 
 	public List<String> getColumns() {
         return columns;
-    }
-
-	public List<Despesas> getAllDespesases() {
-        return allDespesases;
-    }
-
-	public void setAllDespesases(List<Despesas> allDespesases) {
-        this.allDespesases = allDespesases;
-    }
-
-	public String findAllDespesases() {
-        allDespesases = Despesas.findAllDespesases();
-        dataVisible = !allDespesases.isEmpty();
-        return null;
     }
 
 	public boolean isDataVisible() {
@@ -410,7 +394,7 @@ public class DespesasBean implements Serializable {
 
 	public String displayList() {
         createDialogVisible = false;
-        findAllDespesases();
+        findAllDespesasAtivas();
         return "despesas";
     }
 
@@ -441,7 +425,8 @@ public class DespesasBean implements Serializable {
 
 	public String delete() {
 		try {
-			despesas.remove();
+			despesas.setSituacao(false);
+			despesas.merge();
 			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "DespesasGastos");
 	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	        init();

@@ -7,7 +7,7 @@ import javax.faces.convert.FacesConverter;
 import org.springframework.beans.factory.annotation.Configurable;
 
 @Configurable
-@FacesConverter("fotoqueirosConverter")
+@FacesConverter("motoqueirosConverter")
 public class MotoqueirosConverter implements Converter{
 
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {

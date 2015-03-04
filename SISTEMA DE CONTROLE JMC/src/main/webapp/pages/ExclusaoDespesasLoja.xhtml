@@ -42,7 +42,7 @@
 	          	<p:outputLabel  value="Item da Despesa  " for="clas"/>
 	          	<p:selectOneMenu id="clas" value="#{sangriaBean.itemSearch}" converter="despesasGastosConverter" filter="true">
 		    		<f:selectItem itemLabel="Selecione um opção" itemValue="" />
-					<f:selectItems value="#{despesasGastosBean.allDespesasGastoses}" var="classic" 
+					<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="classic" 
 					itemLabel="#{classic.descrisao}" itemValue="#{classic}" />
 				</p:selectOneMenu>
 	          	<p:message for="clas"/>

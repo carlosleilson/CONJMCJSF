@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -53,7 +54,7 @@ public class ControleValoresPendentes implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date data;
 	
-	@NotEmpty
+	@NotNull
 	@ManyToOne
 	private Lojas loja;
 

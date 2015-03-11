@@ -33,6 +33,7 @@ public class RelatorioDoMes {
 	private NumberFormat df;
 	private Double faturamentoBruto;
 	private String tempTotalPercente;
+	private String taxaDeEntrega;
 	private Double tempPercente;
 	private Double[] TempResultRESTTotal;
 	private String[] tempRESTotalPercente;
@@ -351,12 +352,14 @@ public class RelatorioDoMes {
 	 * @param itenId -- itens do sangria.
 	 */
 	private String[] preencharCampos(String[] campos, Long itenId) throws ParseException {
+		Boolean itemI3 = false;
 		for(int i = 1; i<campos.length; i++){
 			if(itenId.equals(Long.parseLong("1"))){
 				for(ItemFaturamento dadosF :todosItemFaturamentos){
 					if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(Long.parseLong("7"))){
 						campos[i] = df.format(dadosF.getValor());
 						campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dadosF.getValor());
+						taxaDeEntrega = campos[QTD_CAMPOS-1];
 					}
 				}				
 			}
@@ -368,12 +371,16 @@ public class RelatorioDoMes {
 					}					
 				}				
 			}
+			
 			if(!itenId.equals(Long.parseLong("1"))||!itenId.equals(Long.parseLong("2"))){
 				for (Sangria dado : todosDadosDespesasPorData) {
 					if(dado.getItem().getId().equals(itenId)&&!dado.getItem().getId().equals(Long.parseLong("1"))&&!dado.getItem().getId().equals(Long.parseLong("2"))){
 						if( dado.getValor()!=null && dado.getPeriodo().getDate() == i && dado.getPeriodo().getMonth() == data.getMonth() && dado.getPeriodo().getYear() == data.getYear()  ){
 							campos[i] = df.format(dado.getValor());
 							campos[QTD_CAMPOS-1] =df.format(df.parse(campos[QTD_CAMPOS-1]).doubleValue() + dado.getValor());
+							if(dado.getItem().getClassificacao().getId().equals(Long.parseLong("22"))){
+								itemI3 = true;
+							}
 						}
 					}
 				}		
@@ -381,6 +388,9 @@ public class RelatorioDoMes {
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
 			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
 			porcentagem(i,df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue());
+		}
+		if(itemI3){
+			campoTemp[QTD_CAMPOS-1] = df.format(df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue() - df.parse(taxaDeEntrega).doubleValue());
 		}
 		return campos;
 	}

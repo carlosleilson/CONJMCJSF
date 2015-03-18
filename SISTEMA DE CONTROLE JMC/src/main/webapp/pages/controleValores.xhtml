@@ -13,57 +13,46 @@
     <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    <h:form id="filter" accept="ISO-8859-1" enctype="multipart/form-data">
+    	<br/>
+    	<p:commandButton value="Inserir Pedido" onclick="PF('cadControle').show()"/><br/><br/>
     	<fieldset>
-    		<legend>Controle de Valores Pendentes</legend>
-		    <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-		    	<p:outputLabel value="Nº pedido" for="pedido" />
-		    	<p:inputText id="pedido" value="#{controleValoresPendentesBean.controle.numeroPedido}" required="true" requiredMessage="O Nº do pedido não pode ser nulo" />
-		    	<p:message for="pedido" />
-
-				<p:outputLabel value="Telefone" for="telefone" />
-		    	<p:inputMask id="telefone" value="#{controleValoresPendentesBean.controle.telefone}" mask="9999-9999" required="true" requiredMessage="O Telefone não pode ser nulo" />
-		    	<p:message for="telefone" />
+    		<legend>Filtros</legend>
+    		<h:panelGrid columns="2">
+    			<p:outputLabel value="Data" for="dataFilter" />
+    			<p:calendar id="dataFilter" value="#{controleValoresPendentesBean.controleFilter.data}" pattern="dd/MM/yyyy"/>
+    		
+				<p:outputLabel value="Nº pedido" for="pedidoFilter" />
+		    	<p:inputText id="pedidoFilter" value="#{controleValoresPendentesBean.controleFilter.numeroPedido}" />
 		    	
-		    	<p:outputLabel value="Valor" for="valor" />
-		    	<p:inputText id="valor" styleClass="money" value="#{controleValoresPendentesBean.controle.valor}" required="true" requiredMessage="O Telefone não pode ser nulo">
-		    		<f:convertNumber minFractionDigits="2"/>
-		    	</p:inputText>
-		    	<p:message for="valor" />
-				
-				<p:outputLabel value="Motoqueiro" for="motoqueiro" />
-		    	<p:selectOneMenu id="motoqueiro" value="#{controleValoresPendentesBean.controle.motoqueiro}" converter="motoqueirosConverter" required="true" requiredMessage="O motoqueiro não pode ser nulo">
-		    		<f:selectItem itemLabel="Selecione um motoqueiro" itemValue="" />
-		    		<f:selectItems value="#{motoqueirosBean.motoqueiros}" var="motoq" itemLabel="#{motoq.apelido}" itemValue="#{motoq}"/>
-		    	</p:selectOneMenu>
-		    	<p:message for="motoqueiro" />
-				
-				<p:outputLabel value="Pagamento" for="pagamento" />
-				<p:selectOneMenu id="pagamento" value="#{controleValoresPendentesBean.controle.tipoPagamento}" required="true"  requiredMessage="O tipo do pagamento não pode ser nulo" >
-					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
-					<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
-				</p:selectOneMenu>
-				<p:message for="pagamento"/>
-				
-				<p:outputLabel value="Turno" for="turno" />
-				<p:selectOneMenu id="turno" value="#{controleValoresPendentesBean.controle.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
+		    	<p:outputLabel value="Turno" for="turnoFilter" />
+		    	<p:selectOneMenu id="turnoFilter" value="#{controleValoresPendentesBean.controleFilter.turno}" >
 					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
-				<p:message for="turno"/>				
-
-				<!-- <p:outputLabel value="Status" for="status" />
-				<p:selectOneMenu id="status" value="#{controleValoresPendentesBean.controle.status}" required="true"  requiredMessage="O status não pode ser nulo" >
+		    	
+		    	<p:outputLabel value="Motoqueiro" for="motoqueiroFilter" />
+		    	<p:selectOneMenu id="motoqueiroFilter" value="#{controleValoresPendentesBean.controleFilter.motoqueiro}" converter="motoqueirosConverter">
+		    		<f:selectItem itemLabel="Selecione um motoqueiro" itemValue="" />
+		    		<f:selectItems value="#{motoqueirosBean.motoqueiros}" var="motoq" itemLabel="#{motoq.apelido}" itemValue="#{motoq}"/>
+		    	</p:selectOneMenu>
+		    	
+				<p:outputLabel value="Pagamento" for="pagamentoFilter" />
+		    	<p:selectOneMenu id="pagamentoFilter" value="#{controleValoresPendentesBean.controleFilter.tipoPagamento}">
+					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
+					<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
+				</p:selectOneMenu>
+		    	
+		    	<p:outputLabel value="Status" for="statusFilter" />
+		    	<p:selectOneMenu id="statusFilter" value="#{controleValoresPendentesBean.controleFilter.status}">
 					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.status}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
-				<p:message for="status"/> -->
-			 </h:panelGrid>
-			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{controleValoresPendentesBean.persist()}" />&#160;&#160;
-			<p:commandButton id="createCloseButton" ajax="true" immediate="true" update=":createForm:createPanelGrid" value="#{messages.label_reset}" actionListener="#{controleValoresPendentesBean.reset()}" />
-		</fieldset>
+    		</h:panelGrid>
+    		<p:commandButton id="createFilterButton" update=":dataForm:list" value="Filtrar" action="#{controleValoresPendentesBean.filtrar()}" />
+    	</fieldset>
     </h:form>
-    <!-- <ui:remove> -->
+    
     <h:form prependId="false" id="dataForm">
 		<p:dataTable id="list" var="list" value="#{controleValoresPendentesBean.controles}" paginator="true" rows="10">
 			<f:facet name="header">Controle de Valores</f:facet>
@@ -104,9 +93,53 @@
 			<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 		</p:confirmDialog>					
 	</h:form>
-	<!-- </ui:remove> -->
+	
+	<p:dialog id="cadControle" header="Controle de Valores" modal="true" widgetVar="cadControle" showEffect="fade" hideEffect="explode">
+		<h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+	    	<fieldset>
+	    		<legend>Controle de Valores Pendentes</legend>
+			    <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+			    	<p:outputLabel value="Nº pedido" for="pedido" />
+			    	<p:inputText id="pedido" value="#{controleValoresPendentesBean.controle.numeroPedido}" required="true" requiredMessage="O Nº do pedido não pode ser nulo" />
+			    	<p:message for="pedido" />
+	
+					<p:outputLabel value="Telefone" for="telefone" />
+			    	<p:inputMask id="telefone" value="#{controleValoresPendentesBean.controle.telefone}" mask="9999-9999" required="true" requiredMessage="O Telefone não pode ser nulo" />
+			    	<p:message for="telefone" />
+			    	
+			    	<p:outputLabel value="Valor" for="valor" />
+			    	<p:inputText id="valor" styleClass="money" value="#{controleValoresPendentesBean.controle.valor}" required="true" requiredMessage="O Telefone não pode ser nulo">
+			    		<f:convertNumber minFractionDigits="2"/>
+			    	</p:inputText>
+			    	<p:message for="valor" />
+					
+					<p:outputLabel value="Motoqueiro" for="motoqueiro" />
+			    	<p:selectOneMenu id="motoqueiro" value="#{controleValoresPendentesBean.controle.motoqueiro}" converter="motoqueirosConverter" required="true" requiredMessage="O motoqueiro não pode ser nulo">
+			    		<f:selectItem itemLabel="Selecione um motoqueiro" itemValue="" />
+			    		<f:selectItems value="#{motoqueirosBean.motoqueiros}" var="motoq" itemLabel="#{motoq.apelido}" itemValue="#{motoq}"/>
+			    	</p:selectOneMenu>
+			    	<p:message for="motoqueiro" />
+					
+					<p:outputLabel value="Pagamento" for="pagamento" />
+					<p:selectOneMenu id="pagamento" value="#{controleValoresPendentesBean.controle.tipoPagamento}" required="true"  requiredMessage="O tipo do pagamento não pode ser nulo" >
+						<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
+						<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
+					</p:selectOneMenu>
+					<p:message for="pagamento"/>
+					
+					<p:outputLabel value="Turno" for="turno" />
+					<p:selectOneMenu id="turno" value="#{controleValoresPendentesBean.controle.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
+						<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
+						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
+					</p:selectOneMenu>
+					<p:message for="turno"/>				
+				 </h:panelGrid>
+				<p:commandButton id="createSaveButton" ajax="true" update=":createForm:createPanelGrid :dataForm:list :growlForm:growl" value="#{messages.label_save}" action="#{controleValoresPendentesBean.persist()}"/>&#160;&#160;
+			</fieldset>
+	    </h:form>
+	</p:dialog>
 		
-	 <p:dialog id="baixa" header="Adicionar item ao boleto" modal="true" widgetVar="baixa" showEffect="fade" hideEffect="explode">
+	 <p:dialog id="baixa" header="Controle de Valores" modal="true" widgetVar="baixa" showEffect="fade" hideEffect="explode">
 	    <h:form id="item">
 		 	<h:panelGrid id="createPanelGridItem" columns="3" styleClass="dialog">
 				<p:outputLabel value="Valor" for="valor" />

@@ -26,6 +26,7 @@ public class ControleValoresPendentesBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private ControleValoresPendentes controle;
+	private ControleValoresPendentes controleFilter;
 	private List<ControleValoresPendentes> controles;
 	private List<TipoPagamento> tipoPagamento;
 	private List<Status> status;
@@ -34,6 +35,7 @@ public class ControleValoresPendentesBean implements Serializable {
 	@PostConstruct
     public void init() {
 		controle= new ControleValoresPendentes();
+		controleFilter = new ControleValoresPendentes();
 		controle.setAtivo(true);
 		carregarControles();
     }
@@ -50,7 +52,7 @@ public class ControleValoresPendentesBean implements Serializable {
         		receita.somarReceita(controle);
         		controle.merge();
         	} else {
-        		receita.somarReceita(controle);
+        		receita.subtrairReceitar(controle);
         		controle.merge();
         	}
         	message = "message_successfully_created";
@@ -80,9 +82,13 @@ public class ControleValoresPendentesBean implements Serializable {
         return "controleValores.xhtml";
     }
 	
-	public void reset() {
+	public void filtrar() {
+		controles = controle.findByControleValores(controleFilter);
+	}
+	
+	public String reset() {
 		init();
-		/*return "controleValores.xhtml";*/
+		return "controleValores.xhtml";
 	}
 
 	public ControleValoresPendentes getControle() {
@@ -99,6 +105,14 @@ public class ControleValoresPendentesBean implements Serializable {
 
 	public void setControles(List<ControleValoresPendentes> controles) {
 		this.controles = controles;
+	}
+
+	public ControleValoresPendentes getControleFilter() {
+		return controleFilter;
+	}
+
+	public void setControleFilter(ControleValoresPendentes controleFilter) {
+		this.controleFilter = controleFilter;
 	}
 
 	public List<TipoPagamento> getTipoPagamento() {

@@ -31,6 +31,7 @@ public class ReceitaVO {
 		receita.setValor(DoubleInversionValue.inverter(controle.getValor()));
 		receita.setTipoPagamento(controle.getTipoPagamento());
 		receita.setControleValores(controle);
+		receita.persist();
 	}
 
 	public Receita getReceita() {

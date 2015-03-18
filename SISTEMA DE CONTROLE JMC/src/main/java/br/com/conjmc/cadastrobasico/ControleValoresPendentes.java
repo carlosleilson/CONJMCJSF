@@ -1,6 +1,7 @@
 package br.com.conjmc.cadastrobasico;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,9 +16,13 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -173,7 +178,9 @@ public class ControleValoresPendentes implements Serializable {
 	}
 
 	public static List<ControleValoresPendentes> findAllControleValoresPendenteses() {
-        return entityManager().createQuery("SELECT o FROM ControleValoresPendentes o where o.ativo=true", ControleValoresPendentes.class).getResultList();
+		Query query = entityManager().createQuery("SELECT o FROM ControleValoresPendentes o where o.ativo=true and o.data=:data order by o.id desc", ControleValoresPendentes.class);
+		query.setParameter("data", new Date());
+		return query.getResultList();
     }
 
 	public static List<ControleValoresPendentes> findAllControleValoresPendenteses(String sortFieldName, String sortOrder) {
@@ -245,5 +252,54 @@ public class ControleValoresPendentes implements Serializable {
         this.entityManager.flush();
         return merged;
     }
+	
+	public static List<ControleValoresPendentes> findByControleValores(ControleValoresPendentes controlePendentes){	
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<ControleValoresPendentes> c = cb.createQuery(ControleValoresPendentes.class);
+		Root<ControleValoresPendentes> root = c.from(ControleValoresPendentes.class);
+		c.select(root);
+		
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		
+		if(controlePendentes.data != null) {
+			Path<Date> data = root.get("data");
+			predicates.add(cb.and(cb.equal(data, controlePendentes.data)));
+		}
+		
+		if(controlePendentes.numeroPedido != 0) {
+			Path<Integer> numeroPedido = root.get("numeroPedido");
+			predicates.add(cb.and(cb.equal(numeroPedido, controlePendentes.numeroPedido)));
+		}
+		
+		if(controlePendentes.turno != null) { 
+			Path<String> turno = root.get("turno");
+			predicates.add(cb.and(cb.equal(turno, controlePendentes.turno)));
+		}
+		
+		if(controlePendentes.motoqueiro != null) {
+			Path<String> motoqueiro = root.get("motoqueiro");
+			predicates.add(cb.and(cb.equal(motoqueiro, controlePendentes.motoqueiro)));
+		}
+		
+		if(controlePendentes.tipoPagamento != null) {
+			Path<String> tipoPagamento = root.get("tipoPagamento");
+			predicates.add(cb.and(cb.equal(tipoPagamento, controlePendentes.tipoPagamento)));
+		}
+		
+		if(controlePendentes.status != null) {
+			Path<String> status = root.get("status");
+			predicates.add(cb.and(cb.equal(status, controlePendentes.status)));
+		}
+		
+		Path<String> ativo = root.get("ativo");
+		predicates.add(cb.and(cb.equal(ativo, true)));
+				
+		Path<String> loja = root.get("loja");
+		predicates.add(cb.and(cb.equal(loja, ObejctSession.idLoja())));
+			
+		c.select(root).where(predicates.toArray(new Predicate[]{}));
+		List<ControleValoresPendentes> listaControles = entityManager().createQuery(c).getResultList();
+		return listaControles;
+	}
 	
 }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Fechamento</title>
+	</ui:define>
+ <ui:define name="content">
+    <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Fechamento Diário</legend>
+    		<h:outputText value="Período: " />
+    		<h:outputText value="#{fechamentoBean.fechamento.turno.label}" /> - 
+    		<h:outputText value="#{fechamentoBean.fechamento.data}">
+    			<f:convertDateTime pattern="dd/MM/yyyy"/>
+    		</h:outputText> 
+    		<br/>
+    		<h:outputText value="Caixa Responsavel: " />
+    		<h:outputText value="#{fechamentoBean.fechamento.usuarios.nome.apelido}" />
+    		<br/>
+    		<br/>
+		    <h:panelGrid id="createPanelGrid" columns="3">
+		    	<p:outputLabel value="Caixa Inicial" for="caixaInicial" />
+		    	<p:inputText id="caixaInicial" styleClass="money" disabled="true" value="#{fechamentoBean.fechamento.caixaInicial}">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="caixaInicial" />
+
+				<p:outputLabel value="Trocado" for="trocado" />
+		    	<p:inputText id="trocado" value="#{fechamentoBean.fechamento.trocado}" disabled="true" styleClass="money">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="trocado" />
+		    	
+		    	<p:outputLabel value="Sangria Caixa" for="sangriaCaixa" />
+		    	<p:inputText id="sangriaCaixa" value="#{fechamentoBean.fechamento.sangriaCaixa}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="sangriaCaixa" />
+		    	
+		    	<p:outputLabel value="Sangria (Gastos)" for="sangriaGastos" />
+		    	<p:inputText id="sangriaGastos" disabled="true" value="#{fechamentoBean.fechamento.sangriaGastos}" styleClass="money">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="sangriaGastos" />
+		    	
+		    	<p:outputLabel value="Dinheiro" for="dinheiro" />
+		    	<p:inputText id="dinheiro" value="#{fechamentoBean.fechamento.dinheiro}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="dinheiro" />
+		    	
+		    	<p:outputLabel value="Débito" for="debito" />
+		    	<p:inputText id="debito" value="#{fechamentoBean.fechamento.debito}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="debito" />
+		    	
+		    	<p:outputLabel value="Crédito" for="credito" />
+		    	<p:inputText id="credito" value="#{fechamentoBean.fechamento.credito}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="credito" />
+		    	
+		    	<p:outputLabel value="Ticket" for="ticket" />
+		    	<p:inputText id="ticket" value="#{fechamentoBean.fechamento.ticket}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="ticket" />
+		    	
+		    	<p:outputLabel value="Cheque" for="cheque" />
+		    	<p:inputText id="cheque" value="#{fechamentoBean.fechamento.cheque}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="cheque" />
+		    	
+		    	<p:outputLabel value="Contas a Receber" for="contasReceber" />
+		    	<p:inputText id="contasReceber" value="#{fechamentoBean.fechamento.receber}" styleClass="money" disabled="true">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="contasReceber" />
+		    	
+		    	<p:outputLabel value="Contas Cobrar" for="contasCobrar" />
+		    	<p:inputText id="contasCobrar" value="#{fechamentoBean.fechamento.cobrar}" disabled="true" styleClass="money">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="contasCobrar" />
+		    	
+		    	<p:outputLabel value="Justificativa" for="justificativa" />
+		    	<p:inputTextarea id="justificativa" value="#{fechamentoBean.fechamento.justificativa}" />
+		    	<p:message for="justificativa" />
+			 </h:panelGrid>
+			 <p:commandButton value="Delivery" onclick="PF('controleValores').show()">
+			 	<f:setPropertyActionListener value="#{fechamentoBean.fechamento}" target="#{entregasBean.fechamento}" />
+			 </p:commandButton>
+			 <p:commandButton ajax="false" value="Salvar" action="#{fechamentoBean.persist()}"/>
+		</fieldset>
+    </h:form>
+    
+   <ui:include src="/pages/controleValoresCaixa.xhtml"/> 
+    
+  </ui:define>
+</ui:composition>
+</html>

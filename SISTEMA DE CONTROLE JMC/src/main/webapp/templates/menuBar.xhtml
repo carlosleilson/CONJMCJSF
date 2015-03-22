@@ -41,8 +41,8 @@
 		</p:submenu>
 		<p:submenu label="Controle Diário">
 			<p:menuitem value="Fechamento"
-				url="#{pageContext.servletContext.contextPath}/pages/diaria.xhtml"
-				disabled="true"
+				ajax="false"
+				action="#{fechamentoBean.abrirCaixa()}"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
 			<p:menuitem value="Sangria" disabled="true"
 				url="#{pageContext.servletContext.contextPath}/pages/sangria.xhtml"

@@ -23,7 +23,16 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 public class relatorioImpl {
 
-	public void gerarRelatorio(List<?> lista, String nomeArquivo) throws MalformedURLException {
+	/**
+	 * Método que criar o relatorio.
+	 * 
+	 * @param List
+	 *            <?> lista -- lista com os dados
+	 * @param String
+	 *            nomeArquivo -- nome do arquivo .jrxml, nunca jasper.
+	 */
+	public void gerarRelatorio(List<?> lista, String nomeArquivo)
+			throws MalformedURLException {
 		try {
 			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
@@ -33,6 +42,17 @@ public class relatorioImpl {
 		}
 	}
 
+	/**
+	 * Método que criar o relatorio.
+	 * 
+	 * @param List
+	 *            <?> lista -- lista com os dados
+	 * @param String
+	 *            relatorio -- nome do arquivo .jrxml, nunca jasper.
+	 * @param Map
+	 *            <String, Object> parametros -- paramentros para criar o
+	 *            relatorio.
+	 */
 	private void imprimir(List<?> lista, String relatorio,
 			Map<String, Object> parametros) {
 		OutputStream os = null;
@@ -45,11 +65,11 @@ public class relatorioImpl {
 			String reportUrlReal = contextS.getRealPath("jasperreport"
 					+ File.separator + relatorio);
 
-			JasperReport pathjrxml = JasperCompileManager.compileReport(reportUrlReal);
+			JasperReport pathjrxml = JasperCompileManager
+					.compileReport(reportUrlReal);
 
-			JasperPrint jasperPrint = JasperFillManager.fillReport(
-					pathjrxml, parametros, new JRBeanCollectionDataSource(
-							lista));
+			JasperPrint jasperPrint = JasperFillManager.fillReport(pathjrxml,
+					parametros, new JRBeanCollectionDataSource(lista));
 			byte[] pdf = JasperExportManager.exportReportToPdf(jasperPrint);
 
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -76,5 +96,5 @@ public class relatorioImpl {
 				e.printStackTrace();
 			}
 		}
-	}	
+	}
 }

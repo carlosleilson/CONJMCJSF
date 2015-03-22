@@ -1,6 +1,8 @@
 package br.com.conjmc.relatorios;
 
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,11 +12,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.jsf.util.relatorioImpl;
 import br.com.conjmc.relatorios.relatoriodiadodes.RelatorioDiaDoMes;
 
 @ManagedBean(name = "relatorioBean")
 @ViewScoped
-public class Relatorio {
+public class Relatorio extends relatorioImpl{
 	private List<ClassificacaoVO> classificacaoItens;
 	private List<Sangria> allSangrias;	
 	private String dataLabel;
@@ -60,12 +63,18 @@ public class Relatorio {
 		ultimoDiaDoMes = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 	}
 	
+	public void gerarRelatorio() throws MalformedURLException {
+		this.gerarRelatorio(this.classificacaoItens, "despesas.jrxml");
+	}
+	
 	public List<ClassificacaoVO> getClassificacaoItens() {
 		return classificacaoItens;
 	}
+	
 	public void setClassificacaoItens(List<ClassificacaoVO> classificacaoItens) {
 		this.classificacaoItens = classificacaoItens;
 	}
+	
 	public List<Sangria> getAllSangrias() {
 		return allSangrias;
 	}

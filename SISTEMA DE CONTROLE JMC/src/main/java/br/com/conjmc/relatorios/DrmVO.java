@@ -5,6 +5,8 @@ public class DrmVO {
 	private String titulo;
 	private String porcentagem;
 	private String valorTemp;
+	private String dataLabel;
+	private String loja;
 	public String getName() {
 		return name;
 	}
@@ -28,5 +30,17 @@ public class DrmVO {
 	}
 	public void setValorTemp(String valorTemp) {
 		this.valorTemp = valorTemp;
+	}
+	public String getDataLabel() {
+		return dataLabel;
+	}
+	public void setDataLabel(String dataLabel) {
+		this.dataLabel = dataLabel;
+	}
+	public String getLoja() {
+		return loja;
+	}
+	public void setLoja(String loja) {
+		this.loja = loja;
 	}
 }

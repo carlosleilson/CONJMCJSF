@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Fechamento</title>
+	</ui:define>
+ <ui:define name="content">
+    <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Fechamento Diário</legend>
+		    <h:panelGrid id="createPanelGrid" columns="3">
+		    	<p:outputLabel value="Caixa Inicial" for="caixaInicial" />
+		    	<p:inputText id="caixaInicial" styleClass="money" value="#{fechamentoBean.fechamento.caixaInicial}" required="true" requiredMessage="O nome não pode ser nulo" />
+		    	<p:message for="caixaInicial" />
+
+				<p:outputLabel value="Trocado" for="trocado" />
+		    	<p:inputText id="trocado" value="#{fechamentoBean.fechamento.trocado}" disabled="true" styleClass="money" />
+		    	<p:message for="trocado" />
+		    	
+		    	<p:outputLabel value="Turno" for="turno" />
+				<p:selectOneMenu id="turno" value="#{fechamentoBean.fechamento.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
+					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
+					<f:selectItems value="#{entregasBean.turno}" var="setor" itemLabel="#{setor.label}" />
+				</p:selectOneMenu>
+				<p:message for="turno"/>
+			 </h:panelGrid>
+			 <p:commandButton ajax="false" value="Abrir Caixa" action="#{fechamentoBean.persist()}"/>
+		</fieldset>
+    </h:form>
+  </ui:define>
+</ui:composition>
+</html>

@@ -17,38 +17,46 @@
 	    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
 	    	<fieldset>
 	    		<legend>Incluir Despesa</legend>   	
-	          <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
-	          	<p:outputLabel value="Código" for="codigo"/>
-	    		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
-	    			<p:ajax event="keyup" update=":createForm:itens :createForm:classific" listener="#{sangriaBean.search()}"/>
-	    		</p:inputText>
-	          	<span></span>
-	          
-	          	<p:outputLabel value="Período: " for="periodo"/>
-	    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" required="true" requiredMessage="Campo obrigatório"/>
-	    		<p:message for="periodo"/>   
-	          
-	          	<p:outputLabel value="Valor" for="valor"/>
-	          	<p:inputText 
-	          		id="valor"
-	          		styleClass="money" 
-	          		value="#{sangriaBean.sangria.valor}"
-	          		converter="moneyConverter" 
-	          		required="true" 
-	          		requiredMessage="O valor é obrigatório">
-	          			<f:convertNumber minFractionDigits="2" />
-	          		</p:inputText>
-	          	<p:message for="valor"/>
-	          	
-	          	<p:outputLabel value="Itens" for="itens"/>
-	          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
-	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-	          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
-	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
-	          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":createForm:classific"/>
-	          	</p:selectOneMenu>
-	       		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
-	          </h:panelGrid>
+	          	<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+		          	<p:outputLabel value="Código" for="codigo"/>
+		    		<p:inputText id="codigo"  value="#{sangriaBean.codigo}">
+		    			<p:ajax event="keyup" update=":createForm:itens :createForm:classific" listener="#{sangriaBean.search()}"/>
+		    		</p:inputText>
+		          	<span></span>
+		          
+		          	<p:outputLabel value="Período: " for="periodo"/>
+		    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" required="true" requiredMessage="Campo obrigatório"/>
+		    		<p:message for="periodo"/>   
+		          
+		          	<p:outputLabel value="Valor" for="valor"/>
+		          	<p:inputText 
+		          		id="valor"
+		          		styleClass="money" 
+		          		value="#{sangriaBean.sangria.valor}"
+		          		converter="moneyConverter" 
+		          		required="true" 
+		          		requiredMessage="O valor é obrigatório">
+		          			<f:convertNumber minFractionDigits="2" />
+		          		</p:inputText>
+		          	<p:message for="valor"/>
+		          	
+		          	<p:outputLabel value="Itens" for="itens"/>
+		          	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
+		          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+		          		<f:selectItems value="#{despesasGastosBean.allDespesasGastosAtivos}" var="gasto" 
+		          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
+		          			<p:ajax listener="#{sangriaBean.carregaClassificacao}" event="change" update=":createForm:classific"/>
+		          	</p:selectOneMenu>
+		       		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
+		       		
+		       		<p:outputLabel value="Origem" for="origem"/>
+		          	<p:selectOneMenu id="origem" value="#{sangriaBean.sangria.origem}" required="true" requiredMessage="A origem é obrigatório">
+		          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+		          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
+		          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
+		          	</p:selectOneMenu>
+		          	<p:message for="origem"/>
+	         	</h:panelGrid>
 	          	<br/>
 	          <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}"  actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
 	    	</fieldset>

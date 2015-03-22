@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
+import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
@@ -554,6 +555,14 @@ public class SangriaBean implements Serializable  {
     		sangria.setSangria(false);
     	}
     	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+    	if (sangria.getOrigem().equals("SANGRIA CAIXA")) {
+    		Fechamento recuperaCaixa = Fechamento.caixaAberto();
+    		if(recuperaCaixa.getSangriaGastos() == null){
+    			recuperaCaixa.setSangriaGastos(0.00);
+    		}
+    		recuperaCaixa.setSangriaGastos(recuperaCaixa.getSangriaGastos() + sangria.getValor());
+    		recuperaCaixa.merge();
+    	}
         sangria.persist();
         message = "message_successfully_created";
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");

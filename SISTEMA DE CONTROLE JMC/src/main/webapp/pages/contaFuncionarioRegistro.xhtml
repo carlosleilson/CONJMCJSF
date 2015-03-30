@@ -13,15 +13,17 @@
     <h:form id="adicionarRegistroForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
     	<fieldset>
     	<legend>Registro de Conta do Funcionário</legend>
-          <h:panelGrid id="funcionarioGrid" columns="3">
+          <h:panelGrid id="funcionarioGrid" columns="4">
 				
 				<p:outputLabel value="Funcionario:" for="funcionario"/>
 				<p:outputLabel id="funcionario" value="#{contaUsuarioRegistroBean.contaFuncionario.funcionario.nome}" for="funcionario"/>
 				<p:message for="funcionario"/>
+				<p:outputLabel value="" />
 
 	            <p:outputLabel value="Período: " for="periodo"/>
 	    		<p:calendar id="periodo"  value="#{contaUsuarioRegistroBean.contaFuncionario.periodo}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo obrigatório"/>
 	    		<p:message for="periodo"/>
+	    		<p:outputLabel value="" />
 	          		          	
 	          	<p:outputLabel value="Tipo de lancamento" for="itens"/>
 	          	<p:selectOneMenu id="itens" value="#{contaUsuarioRegistroBean.contaFuncionario.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
@@ -30,10 +32,14 @@
 	          			itemLabel="#{gasto.descrisao}" itemValue="#{gasto}" />
 	          	</p:selectOneMenu>
 	          	<p:message for="itens"/>
+	          	<p:commandLink id="itensFuncionario" update=":createFormItensFuncionarios" onclick="PF('dlgItensFuncionarios').show()"  type="button">
+        			<h:outputText value="Adicionar itens" />
+    			</p:commandLink>
 	          	
 				<p:outputLabel value="Descrisão do Item:" for="descricaoItem" />
 	          	<p:inputTextarea id="descricaoItem" value="#{contaUsuarioRegistroBean.contaFuncionario.descricao}"  />
-	          	<p:message for="descricaoItem"/>	          	
+	          	<p:message for="descricaoItem"/>
+	          	<p:outputLabel value="" />	          	
 				
 	          	<p:outputLabel value="Natureza" for="natureza"/>
 	          	<p:selectOneMenu id="natureza" value="#{contaUsuarioRegistroBean.contaFuncionario.origem}" required="true" requiredMessage="A Natureza da conta é obrigatório">
@@ -41,17 +47,20 @@
 	          		<f:selectItem itemLabel="DÉBITO" itemValue="true"/>
 	          		<f:selectItem itemLabel="CRÉDITO" itemValue="false"/>
 	          	</p:selectOneMenu>
-	          	<p:message for="natureza"/>	          	
+	          	<p:message for="natureza"/>
+	          	<p:outputLabel value="" />	          	
 
 	          	<p:outputLabel value="Valor" for="valor" />
 	          	<p:inputText styleClass="money" id="valor" value="#{contaUsuarioRegistroBean.contaFuncionario.valor}" required="true" requiredMessage="O valor é obrigatório">
 	          		<f:convertNumber minFractionDigits="2" />
 	          	</p:inputText>
 	          	<p:message for="valor"/>
+	          	<p:outputLabel value="" />
           		          	
          		<p:outputLabel value="Parcelas" for="parcela" />
 	          	<p:inputText id="parcela" size="3" value="#{contaUsuarioRegistroBean.contaFuncionario.parcela}" required="true" requiredMessage="As parcelas são obrigatório"  />
 	          	<p:message for="parcela"/>
+	          	<p:outputLabel value="" />
 	          	         		          	
           	</h:panelGrid>
           	<br/>
@@ -132,6 +141,60 @@
 		</p:fieldset>
        </h:form>	  
  </p:dialog>  
+ 
+ <p:dialog header="Adicionar itens de funcionario" widgetVar="dlgItensFuncionarios" styleClass="dialog" modal="true" dynamic="true" showEffect="fade" hideEffect="explode" >
+ <h:form id="createFormItensFuncionarios" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Itens dos funcionarios</legend>
+    		<p:inputText value="#{despesasGastosBean.despesasGastos.id}" styleClass="primariKey"/>
+          <h:panelGrid id="createPanelGridNew" columns="3" styleClass="dialog">
+         	<p:outputLabel value="Código" for="codigo"/>
+          	<p:inputText id="codigo" value="#{despesasGastosBean.despesasGastos.codigo}" disabled="true" />
+          	<p:message for="codigo"/>
+          
+          	<p:outputLabel value="Descrição" for="descricao"/>
+          	<p:inputText id="descricao" value="#{despesasGastosBean.despesasGastos.descrisao}" required="true" requiredMessage="A descrição é obrigatório" />
+          	<p:message for="descricao"/>
+          	
+          	<p:outputLabel value="Classificação" for="classificacao"/>
+          	<p:selectOneMenu id="classificacao" value="#{despesasGastosBean.despesasGastos.classificacao}"  converter="despesasConverter" required="true" 
+          		requiredMessage="A Classificação é obrigatório " filter="true">
+          		<f:selectItem itemLabel="Selecione uma Classificação" itemValue=""/>
+          		<f:selectItems value="#{despesasBean.allDespesasAtivas}" var="despesa" itemLabel="#{despesa.codigo} - #{despesa.descricao}" item="#{despesa}" />
+          	</p:selectOneMenu>
+          	<p:message for="classificacao"/>
+          	
+          	<p:outputLabel for="despesaPessoal" value="Despesa Pessoal" />
+		        <p:selectOneRadio id="despesaPessoal" value="#{despesasGastosBean.despesasGastos.despesaPessoal}" required="true" 
+		        	requiredMessage="A despesa pessoal descrição é obrigatório">
+		            <f:selectItem itemLabel="Sim" itemValue="true"/>
+		            <f:selectItem itemLabel="Não" itemValue="false"/>
+		        </p:selectOneRadio>
+	        <p:message for="despesaPessoal"/>
+
+          	<p:outputLabel for="salario" value="Esse tipo é salario" />
+		        <p:selectOneRadio id="salario" value="#{despesasGastosBean.despesasGastos.despesaPessoal}" required="true" 
+		        	requiredMessage="A Salerio é obrigatório">
+		            <f:selectItem itemLabel="Sim" itemValue="true" />
+		            <f:selectItem itemLabel="Não" itemValue="false"/>
+		        </p:selectOneRadio>
+	        <p:message for="salario"/>	 	        
+	        
+          	<p:outputLabel for="natureza" value="Contem Natureza(Crédio e Debito)" />
+		        <p:selectOneRadio id="natureza" value="#{despesasGastosBean.despesasGastos.despesaPessoal}" required="true" 
+		        	requiredMessage="A natureza é obrigatório">
+		            <f:selectItem itemLabel="Sim" itemValue="true"/>
+		            <f:selectItem itemLabel="Não" itemValue="false"/>
+		        </p:selectOneRadio>
+	        <p:message for="natureza"/>	        
+          	
+          </h:panelGrid>
+          <p:commandButton id="createSaveButton1" ajax="true" value="#{messages.label_save}" action="#{despesasGastosBean.persist}" onclick="PF('dlgItensFuncionarios').hide()" oncomplete="PF('dlgRegistroContaFuncionario').show()" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios"/>
+          <p:commandButton id="createCloseButton1" ajax="true" value="#{messages.label_close}" onclick="PF('dlgItensFuncionarios').hide()" type="button" update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios" />
+	    </fieldset>  
+ </h:form>	    
+ </p:dialog>
+ 
 	<p:confirmDialog id="multiDialog" header="Itens do Contas funcionario" message="Deseja realmente efetuar o pagamento desse(s) registro(s)?" widgetVar="multiDialogWidget" showEffect="fade" hideEffect="explode" resizable="false">
 		<p:outputPanel id="multiDetail" style="text-align:center;">
 	    <p:dataList value="#{contaUsuarioRegistroBean.selectedItensContasFuncionario}" var="conta" type="ordered">

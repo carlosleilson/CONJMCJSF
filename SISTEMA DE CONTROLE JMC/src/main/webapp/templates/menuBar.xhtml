@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -42,7 +41,7 @@
 		<p:submenu label="Controle Diário">
 			<p:menuitem value="Fechamento"
 				ajax="false"
-				action="#{fechamentoBean.abrirCaixa()}"
+				url="#{pageContext.servletContext.contextPath}/pages/fechamento.xhtml"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
 			<p:menuitem value="Sangria" disabled="true"
 				url="#{pageContext.servletContext.contextPath}/pages/sangria.xhtml"

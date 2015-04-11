@@ -4,8 +4,8 @@ public enum Status {
 
     PENDENTE ("Pendente"),
     RECEBER ("A Receber"),
-    BAIXADO ("Baixado"),
-    BAIXADO_DIF ("Baixado DIF");
+    BAIXADO ("Baixado");
+    /* BAIXADO_DIF ("Baixado DIF"); */
     
     private String label;
     

@@ -7,8 +7,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.Enumerated;
 
 import br.com.conjmc.cadastrobasico.Contas;
+import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 
@@ -24,6 +26,9 @@ public class ContasPendentesBean {
 	
 	//Filtros
 	private Contas contaFiltro;
+	
+	@Enumerated
+	private Turno turno;
 	
 	@PostConstruct
 	public void init() {
@@ -48,6 +53,8 @@ public class ContasPendentesBean {
 		
 		for (Sangria sangria2 : sangria) {
 			sangria2.setOrigem(origem);
+			if(origem.equals("SANGRIA CAIXA"))
+				sangria2.setTurno(turno);
 			sangria2.setPeriodo(conta.getDataPagamento());
 			sangria2.setSangria(true);
 			sangria2.persist();
@@ -124,6 +131,14 @@ public class ContasPendentesBean {
 
 	public void setStatusFilter(String statusFilter) {
 		this.statusFilter = statusFilter;
+	}
+
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
 	}
 	
 }

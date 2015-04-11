@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,10 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.conjmc.cadastrobasico.Contas;
 import br.com.conjmc.cadastrobasico.Despesas;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
-import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.MetaData;
+import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
@@ -42,7 +43,7 @@ public class Sangria implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private Date periodo;
 
     @NotNull
@@ -53,7 +54,7 @@ public class Sangria implements Serializable{
     @NotNull
     private boolean sangria;
     
-    private String turno;
+    /*private String turno;*/
 
     @ManyToOne
     private DespesasGastos item;
@@ -70,6 +71,18 @@ public class Sangria implements Serializable{
     @ManyToOne
     @JoinColumn(name="conta_id")
     private Contas conta;
+    
+    // Pagamento
+	@Enumerated
+	private Turno turno;	
+    
+    private String detalhamento;
+	
+	private String detalhamentoBanco;
+	
+	private String tipoPagamento;
+	
+	private String banco;
 
     
     //Generate Getters and Setters
@@ -125,13 +138,13 @@ public class Sangria implements Serializable{
 		this.sangria = sangria;
 	}
 
-	public String getTurno() {
+	/*public String getTurno() {
 		return turno;
 	}
 
 	public void setTurno(String turno) {
 		this.turno = turno;
-	}
+	}*/
 
 	public Contas getConta() {
 		return conta;
@@ -148,6 +161,46 @@ public class Sangria implements Serializable{
 
 	public void setLoja(Lojas loja) {
 		this.loja = loja;
+	}
+
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
+	}
+
+	public String getDetalhamento() {
+		return detalhamento;
+	}
+
+	public void setDetalhamento(String detalhamento) {
+		this.detalhamento = detalhamento;
+	}
+
+	public String getDetalhamentoBanco() {
+		return detalhamentoBanco;
+	}
+
+	public void setDetalhamentoBanco(String detalhamentoBanco) {
+		this.detalhamentoBanco = detalhamentoBanco;
+	}
+
+	public String getTipoPagamento() {
+		return tipoPagamento;
+	}
+
+	public void setTipoPagamento(String tipoPagamento) {
+		this.tipoPagamento = tipoPagamento;
+	}
+
+	public String getBanco() {
+		return banco;
+	}
+
+	public void setBanco(String banco) {
+		this.banco = banco;
 	}
 
 	@Override
@@ -420,4 +473,20 @@ public class Sangria implements Serializable{
 		 query.setParameter("loja", ObejctSession.idLoja());
         return (List< Sangria >)query.getResultList();
 	}
+	
+	//Soma para o faturamento
+	public Double TotalDespesa(Date data,Turno turno, String origem){
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria o WHERE periodo=:data and origem=:origem and loja=:loja and turno="+turno.ordinal(), Double.class);
+		query.setParameter("data", data);
+		query.setParameter("origem", origem);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
 }

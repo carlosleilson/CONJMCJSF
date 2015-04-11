@@ -3,7 +3,6 @@ package br.com.conjmc.cadastrobasico;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.bean.SessionScoped;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Enumerated;
@@ -21,24 +20,22 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
-@SessionScoped
 public class Fechamento {
 	
 	@Id @GeneratedValue
 	private Long id;
-	private Double caixaInicial;
-	private Double trocado;
-	private Double sangriaCaixa;
-	private Double sangriaGastos;
-	private Double dinheiro;
-	private Double debito;
-	private Double credito;
-	private Double ticket;
-	private Double cheque;
+	private double caixaInicial;
+	private double trocado;
+	private double sangriaCaixa;
+	private double sangriaGastos;
+	private double dinheiro;
+	private double debito;
+	private double credito;
+	private double ticket;
+	private double cheque;
 	private String justificativa;
-	private boolean fechado;
-	private Double receber;
-	private Double cobrar;
+	private double receber;
+	private double cobrar;
 	
 	@Temporal(TemporalType.DATE)
 	private Date data;
@@ -63,75 +60,75 @@ public class Fechamento {
 		this.id = id;
 	}
 	
-	public Double getCaixaInicial() {
+	public double getCaixaInicial() {
 		return caixaInicial;
 	}
 	
-	public void setCaixaInicial(Double caixaInicial) {
+	public void setCaixaInicial(double caixaInicial) {
 		this.caixaInicial = caixaInicial;
 	}
 	
-	public Double getTrocado() {
+	public double getTrocado() {
 		return trocado;
 	}
 	
-	public void setTrocado(Double trocado) {
+	public void setTrocado(double trocado) {
 		this.trocado = trocado;
 	}
 	
-	public Double getSangriaCaixa() {
+	public double getSangriaCaixa() {
 		return sangriaCaixa;
 	}
 	
-	public void setSangriaCaixa(Double sangriaCaixa) {
+	public void setSangriaCaixa(double sangriaCaixa) {
 		this.sangriaCaixa = sangriaCaixa;
 	}
 	
-	public Double getSangriaGastos() {
+	public double getSangriaGastos() {
 		return sangriaGastos;
 	}
 	
-	public void setSangriaGastos(Double sangriaGastos) {
+	public void setSangriaGastos(double sangriaGastos) {
 		this.sangriaGastos = sangriaGastos;
 	}
 	
-	public Double getDinheiro() {
+	public double getDinheiro() {
 		return dinheiro;
 	}
 	
-	public void setDinheiro(Double dinheiro) {
+	public void setDinheiro(double dinheiro) {
 		this.dinheiro = dinheiro;
 	}
 	
-	public Double getDebito() {
+	public double getDebito() {
 		return debito;
 	}
 	
-	public void setDebito(Double debito) {
+	public void setDebito(double debito) {
 		this.debito = debito;
 	}
 	
-	public Double getCredito() {
+	public double getCredito() {
 		return credito;
 	}
 	
-	public void setCredito(Double credito) {
+	public void setCredito(double credito) {
 		this.credito = credito;
 	}
 	
-	public Double getTicket() {
+	public double getTicket() {
 		return ticket;
 	}
 	
-	public void setTicket(Double ticket) {
+	public void setTicket(double ticket) {
 		this.ticket = ticket;
 	}
 	
-	public Double getCheque() {
+	public double getCheque() {
 		return cheque;
 	}
 	
-	public void setCheque(Double cheque) {
+	public void setCheque(double cheque) {
 		this.cheque = cheque;
 	}
 	
@@ -151,19 +148,19 @@ public class Fechamento {
 		this.loja = loja;
 	}
 
-	public Double getReceber() {
+	public double getReceber() {
 		return receber;
 	}
 
-	public void setReceber(Double receber) {
+	public void setReceber(double receber) {
 		this.receber = receber;
 	}
 
-	public Double getCobrar() {
+	public double getCobrar() {
 		return cobrar;
 	}
 
-	public void setCobrar(Double cobrar) {
+	public void setCobrar(double cobrar) {
 		this.cobrar = cobrar;
 	}
 
@@ -173,14 +170,6 @@ public class Fechamento {
 
 	public void setUsuarios(Usuarios usuarios) {
 		this.usuarios = usuarios;
-	}
-
-	public boolean isFechado() {
-		return fechado;
-	}
-
-	public void setFechado(boolean fechado) {
-		this.fechado = fechado;
 	}
 
 	public Turno getTurno() {
@@ -228,17 +217,13 @@ public class Fechamento {
     }
 	
 	@Transactional
-	public static long qtdCaixaAberto() {
-		Query query = entityManager().createQuery("SELECT count(o.id) FROM Fechamento o where o.fechado=false and o.loja=:loja", Long.class);
+	public long validarfechamento(Date data, Turno turno) {
+		String sql="SELECT count(o.id) FROM Fechamento o where o.data=:data and o.loja=:loja and turno="+turno.ordinal();
+		Query query = entityManager().createQuery(sql, Long.class);
+		query.setParameter("data", data);
 		query.setParameter("loja", ObejctSession.loja());
-		return (long) query.getSingleResult();
+       	return (long) query.getSingleResult();
 	}
 	
-	@Transactional
-	public static Fechamento caixaAberto() {
-		Query query = entityManager().createQuery("SELECT o FROM Fechamento o where o.fechado=false and o.loja=:loja", Fechamento.class);
-		query.setParameter("loja", ObejctSession.loja());
-		return (Fechamento) query.getSingleResult();
-	}
 	
 }

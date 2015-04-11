@@ -17,7 +17,6 @@ import br.com.conjmc.cadastrobasico.TipoPagamento;
 import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
-import br.com.conjmc.valueobject.ReceitaVO;
 
 @ManagedBean
 @SessionScoped
@@ -47,28 +46,23 @@ public class ControleValoresPendentesBean implements Serializable {
 	public String persist() {
         String message = "";
         if (controle.getId() != null) {
-        	ReceitaVO receita = new ReceitaVO();
-        	if(controle.getStatus().getLabel() =="Baixado" || controle.getStatus().getLabel() =="Baixado DIF") {
-        		receita.somarReceita(controle);
-        		controle.merge();
-        	} else {
-        		receita.subtrairReceitar(controle);
-        		controle.merge();
-        	}
+        	controle.merge();
         	message = "message_successfully_created";
+        	FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
+            FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         } else {
         	controle.setLoja(ObejctSession.loja());
-        	controle.setStatus(Status.PENDENTE);
-    		controle.setData(new Date());
+        	controle.setData(new Date());
         	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
         		controle.persist();
-        		message = "message_successfully_created";        		
+        		message = "message_successfully_created";
+        		FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
+                FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         	} else {
-        		message = "Não foi poissivel cadastrar o item porque ele já esta cadastrado";
+        		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não foi poissivel cadastrar o item porque ele já esta cadastrado", "Não foi poissivel cadastrar o item porque ele já esta cadastrado"));
+        		message = "";
         	}
         }
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         init();
         return "controleValores.xhtml";
     }

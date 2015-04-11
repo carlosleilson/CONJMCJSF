@@ -41,6 +41,16 @@ $(document).ready(function(){
 	});
 });
 
+$(document).ready(function(){
+	$(".moneyNotSymbol").maskMoney({
+		showSymbol:false,
+		symbol:"R$",
+		decimal:",",
+		thousands:".",
+		allowZero:false
+	});
+});
+
 (function($) {
 $.fn.maskMoney = function(settings) {
 settings = $.extend({

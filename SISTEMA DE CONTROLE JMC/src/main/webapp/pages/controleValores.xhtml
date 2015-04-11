@@ -132,7 +132,14 @@
 						<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
 						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
 					</p:selectOneMenu>
-					<p:message for="turno"/>				
+					<p:message for="turno"/>	
+					
+					<p:outputLabel value="Status" for="status" />
+					<p:selectOneMenu id="status" value="#{controleValoresPendentesBean.controle.status}" required="true"  requiredMessage="O turno não pode ser nulo" >
+						<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
+						<f:selectItems value="#{controleValoresPendentesBean.status}" var="status" itemLabel="#{status.label}" />
+					</p:selectOneMenu>
+					<p:message for="status"/>			
 				 </h:panelGrid>
 				<p:commandButton id="createSaveButton" ajax="true" update=":createForm:createPanelGrid :dataForm:list :growlForm:growl" value="#{messages.label_save}" action="#{controleValoresPendentesBean.persist()}"/>&#160;&#160;
 			</fieldset>

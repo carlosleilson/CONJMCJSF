@@ -253,6 +253,19 @@ public class ControleValoresPendentes implements Serializable {
         return merged;
     }
 	
+	public Double TotalContasPendentes(Date data,Turno turno, int tipoPagamento){
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ControleValoresPendentes o WHERE data=:data and tipoPagamento="+tipoPagamento+"and loja=:loja and turno="+turno.ordinal(), Double.class);
+		query.setParameter("data", data);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
 	public static List<ControleValoresPendentes> findByControleValores(ControleValoresPendentes controlePendentes){	
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<ControleValoresPendentes> c = cb.createQuery(ControleValoresPendentes.class);

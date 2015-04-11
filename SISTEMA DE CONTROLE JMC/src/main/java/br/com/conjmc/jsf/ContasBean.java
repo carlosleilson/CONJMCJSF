@@ -9,9 +9,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.Enumerated;
 
 import br.com.conjmc.cadastrobasico.Contas;
 import br.com.conjmc.cadastrobasico.Lojas;
+import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
@@ -27,6 +29,9 @@ public class ContasBean {
 	private String origem;
 	private boolean pagarAgora;
 	private long validation;
+	
+	@Enumerated
+	private Turno turno;	
 	
 	@PostConstruct
 	public void init() {
@@ -60,6 +65,8 @@ public class ContasBean {
         	} else {
         		for (Sangria sangria2 : sangrias) {
         			sangria2.setOrigem(origem);
+        			if(origem.equals("SANGRIA CAIXA"))
+        				sangria2.setTurno(turno);
         			sangria2.setPeriodo(conta.getDataPagamento());
         			sangria2.setSangria(true);
         			sangria2.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
@@ -196,6 +203,14 @@ public class ContasBean {
 
 	public void setValidation(long validation) {
 		this.validation = validation;
+	}
+
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
 	}
 		
 }

@@ -555,14 +555,14 @@ public class SangriaBean implements Serializable  {
     		sangria.setSangria(false);
     	}
     	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-    	if (sangria.getOrigem().equals("SANGRIA CAIXA")) {
+    	/*if (sangria.getOrigem().equals("SANGRIA CAIXA")) {
     		Fechamento recuperaCaixa = Fechamento.caixaAberto();
     		if(recuperaCaixa.getSangriaGastos() == null){
     			recuperaCaixa.setSangriaGastos(0.00);
     		}
     		recuperaCaixa.setSangriaGastos(recuperaCaixa.getSangriaGastos() + sangria.getValor());
     		recuperaCaixa.merge();
-    	}
+    	}*/
         sangria.persist();
         message = "message_successfully_created";
         FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");

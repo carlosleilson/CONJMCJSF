@@ -18,7 +18,9 @@
     		<legend>Fechamento Diário</legend>
 		    <h:panelGrid id="createPanelGrid" columns="3">
 		    	<p:outputLabel value="Data" for="dataFechamento"/>
-		    	<p:calendar value="#{fechamentoBean.fechamento.data}"  id="dataFechamento" required="true" requiredMessage="A data não pode ser nula"/>
+		    	<p:calendar value="#{fechamentoBean.fechamento.data}"  id="dataFechamento" required="true" requiredMessage="A data não pode ser nula">
+		    		<p:ajax event="dateSelect"/>
+		    	</p:calendar>
 		    	<p:message for="dataFechamento"/>
 		    	
 		    	<p:outputLabel value="Turno" for="turno" />

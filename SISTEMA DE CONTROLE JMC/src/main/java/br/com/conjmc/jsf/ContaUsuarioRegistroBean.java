@@ -54,6 +54,7 @@ public class ContaUsuarioRegistroBean implements Serializable {
 	private Date dataTemp;
 	private int mesTemp;
 	private SimpleDateFormat sdf;
+	private Double saldo; 
 
 	@PostConstruct
 	public void init() {
@@ -62,6 +63,14 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		iniciarData();
 		findAllItensPessoalAtivos();
 		findAllFuncionariosAtivos();
+		IniciarSaldo();
+	}
+
+	private void IniciarSaldo() {
+		if(saldo==null){
+			saldo = 0.0;
+		}
+		
 	}
 
 	private void iniciarData() {
@@ -80,7 +89,7 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		dataTemp.setMonth(mesTemp - 1);
 		mesTemp = dataTemp.getMonth();
 		c.setTime(dataTemp);
-		todosFuncionarios(dataTemp, dataTemp);
+		encontrarFuncionario(funcionarioVo.getFuncionario(), dataTemp, dataTemp);
 		return contaFuncionarioRedict(funcionarioVo, dataTemp);
 	}
 
@@ -91,7 +100,7 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		gavarPagamentos(getSelectedItensContasFuncionario());
 		return contaFuncionarioRedict(funcionarioVo, dataTemp);
 	}
-
+	
 	/**
 	 * Método que efetua o pagamento.
 	 * 
@@ -100,14 +109,25 @@ public class ContaUsuarioRegistroBean implements Serializable {
 	 */
 	private void gavarPagamentos(
 			List<ItensFuncionarioVO> selectedItensContasFuncionarioTmp) {
+		ContasFuncionario cadastro = new ContasFuncionario();
 		for (ItensFuncionarioVO itemTmp : selectedItensContasFuncionarioTmp) {
-			ContasFuncionario cadastro = new ContasFuncionario();
+			cadastro = new ContasFuncionario();
+//			if(!itemTmp.getItem().getSalario()){
+//				pagarSAlario(funcionarioVo,cadastro);
+//			}
 			itemTmp.getId().setQuitado(true);
 			itemTmp.getId().setDataQuitado(new Date());
 			cadastro = itemTmp.getId();
 			cadastro.merge();
 			cadastro.flush();
 		}
+	}
+
+	private void pagarSAlario(FuncionarioVO funcionarioTmp,
+			ContasFuncionario cadastro) {
+		cadastro = ContasFuncionario.findContasFuncionario(funcionarioTmp.getFuncionario().getId());
+		cadastro.setItem(salarioPorPerfil(cadastro));
+		cadastro.setValor(funcionarioTmp.getFuncionario().getSalario());
 	}
 
 	/**
@@ -118,7 +138,7 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		dataTemp.setMonth(mesTemp + 1);
 		mesTemp = dataTemp.getMonth();
 		c.setTime(dataTemp);
-		todosFuncionarios(dataTemp, dataTemp);
+		encontrarFuncionario(funcionarioVo.getFuncionario(), dataTemp, dataTemp);
 		return contaFuncionarioRedict(funcionarioVo, dataTemp);
 	}
 
@@ -153,16 +173,11 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		funcionarioVo = getFuncionarioVO(empregado, dataTemp, dataTemp);
 	}
 
-	private void todosFuncionarios(Date dataInicial, Date dataFinal) {
+	private void encontrarFuncionario(Funcionarios funcionario, Date dataInicial, Date dataFinal) {
 		List<FuncionarioVO> todosFuncionariosTmp = new ArrayList<FuncionarioVO>();
-		new ContasFuncionario();
-		List<Funcionarios> Funcionarios = ContasFuncionario
-				.encontraTodasFuncionarios();
-		for (Funcionarios funcionarioTemp : Funcionarios) {
-			if (tirarAdiministradores(funcionarioTemp)) {
-				todosFuncionariosTmp.add(getFuncionarioVO(funcionarioTemp,
-						dataInicial, dataFinal));
-			}
+		if (tirarAdiministradores(funcionario)) {
+			todosFuncionariosTmp.add(getFuncionarioVO(funcionario,
+					dataInicial, dataFinal));
 		}
 		todosFuncionarios = todosFuncionariosTmp;
 	}
@@ -181,100 +196,93 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		Double salario = 0.0;
 		Double totalDesconto = 0.0;
 		Double credito = 0.0;
-		Double saldoDevedor = 0.0;
-		saldoDevedor = saldoDevedorMesAnterior(dataInicial, empregado);
-		salario = salario(dataInicial, empregado);
+		Double saldoMesAnterior = 0.0;
+		saldoMesAnterior = getSaldoMesAnterior(
+				empregado,dataInicial,dataFinal);
+		salario = empregado.getSalario();
 		funcionarioVoTmp.setFuncionario(empregado);
 		List<ContasFuncionario> listContaFuncionarios = ContasFuncionario
 				.encontraContaFuncionarios(dataInicial, dataFinal, empregado);
 		for (ContasFuncionario funcionarioTemp : listContaFuncionarios) {
-			ItensFuncionarioVO umFuncionario = new ItensFuncionarioVO();
-			umFuncionario.setId(funcionarioTemp);
-			umFuncionario.setItem(funcionarioTemp.getItem());
-			umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
-			umFuncionario.setValor(df.format(funcionarioTemp.getValor()));
-			umFuncionario.setVencidasColor(vencidas(umFuncionario,
-					funcionarioTemp.getPeriodo(), funcionarioTemp.getOrigem()));
-			if (funcionarioTemp.getOrigem()) {
-				if (!funcionarioTemp.isQuitado()) {
+			if(funcionarioTemp.getItem().getSalario()){
+				salario = funcionarioTemp.getValor();
+			}else{			
+				ItensFuncionarioVO umFuncionario = new ItensFuncionarioVO();
+				umFuncionario.setId(funcionarioTemp);
+				umFuncionario.setItem(funcionarioTemp.getItem());
+				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
+				umFuncionario.setValor(df.format(funcionarioTemp.getValor()));
+				// umFuncionario.setVencidasColor(vencidas(umFuncionario,
+				// funcionarioTemp.getPeriodo(), funcionarioTemp.getOrigem()));
+				if (funcionarioTemp.getOrigem()) {
 					totalDesconto = Math.abs(totalDesconto
 							+ funcionarioTemp.getValor());
+				} else {
+					credito = Math.abs(credito + funcionarioTemp.getValor());
 				}
-			} else {
-				credito = Math.abs(credito + funcionarioTemp.getValor());
+				todosFuncionariosTmp.add(umFuncionario);
 			}
-			todosFuncionariosTmp.add(umFuncionario);
 		}
 		funcionarioVoTmp.setSalario(df.format(salario));
 		funcionarioVoTmp.setTotalDesconto(df.format(totalDesconto));
-		funcionarioVoTmp.setSaldoDevedor(df.format(saldoDevedor));
-		funcionarioVoTmp.setValorReceber(df.format((salario + credito)
-				- Math.abs(totalDesconto + saldoDevedor)));
+		funcionarioVoTmp.setCredito(df.format(salario + credito));
+				if(saldoMesAnterior.equals(salario)){
+			funcionarioVoTmp.setSaldoDevedor(df.format(0.0));
+			funcionarioVoTmp.setValorReceber(df.format((salario + credito)-Math.abs(totalDesconto )));
+		}else{
+			funcionarioVoTmp.setSaldoDevedor(df.format(saldoMesAnterior));
+			funcionarioVoTmp.setValorReceber(df.format((salario + credito)-Math.abs(totalDesconto )+saldoMesAnterior));
+		}
 		funcionarioVoTmp.setItem(todosFuncionariosTmp);
 		todosItensContasFuncionario = todosFuncionariosTmp;
 		return funcionarioVoTmp;
 	}
 
-	private Double saldoDevedorMesAnterior(Date dataInicialTmp,
-			Funcionarios empregado) {
-		Double saldoDevedor = 0.0;
-		List<ContasFuncionario> listContaFuncionarios2 = new ContasFuncionario()
-				.encontraContaFuncionariosDevedor(dataInicialTmp, empregado);
-		for (ContasFuncionario funcionarioTemp : listContaFuncionarios2) {
-			if (funcionarioTemp.getOrigem() && !funcionarioTemp.isQuitado()) {
-				saldoDevedor = Math.abs(saldoDevedor
-						+ funcionarioTemp.getValor());
+	private Double getSaldoMesAnterior(Funcionarios empregado,
+			Date dataInicial, Date dataFinal) {
+		List<ItensFuncionarioVO> todosFuncionariosTmp = new ArrayList<ItensFuncionarioVO>();
+		Boolean quitado = false;
+		Double valorTmp = 0.0;
+		Double salario = 0.0;
+		Double totalDesconto = 0.0;
+		Double credito = 0.0;
+		salario = empregado.getSalario();
+		List<ContasFuncionario> listContaFuncionarios = ContasFuncionario
+				.encontraContaFuncionariosMesAnterior(dataInicial, dataInicial, empregado);
+		for (ContasFuncionario funcionarioTemp : listContaFuncionarios) {
+			if(funcionarioTemp.getItem().getSalario()){
+				salario = funcionarioTemp.getValor();
+			}else{
+				ItensFuncionarioVO umFuncionario = new ItensFuncionarioVO();
+				umFuncionario.setId(funcionarioTemp);
+				umFuncionario.setItem(funcionarioTemp.getItem());
+				umFuncionario.setPeriodo(funcionarioTemp.getPeriodo());
+				umFuncionario.setValor(df.format(funcionarioTemp.getValor()));
+				if(!funcionarioTemp.isQuitado()){
+					quitado = true;
+				}
+				if (funcionarioTemp.getOrigem()) {
+//					if (!funcionarioTemp.isQuitado()) {
+						totalDesconto = Math.abs(totalDesconto
+								+ funcionarioTemp.getValor());
+//					}
+				} else {
+					credito = Math.abs(credito + funcionarioTemp.getValor());
+				}
+				todosFuncionariosTmp.add(umFuncionario);
 			}
 		}
-		return saldoDevedor;
-	}
-	
-
-	private Double salario(Date dataInicialTmp, Funcionarios empregado) {
-		List<ContasFuncionario> listContaFuncionarios2 = new ContasFuncionario()
-				.encontrarSalarioFuncionario(dataInicialTmp, empregado);
-		for (ContasFuncionario funcionarioTemp : listContaFuncionarios2) {
-			if(funcionarioTemp.getDespesa()!=null)
-				return funcionarioTemp.getDespesa().getValor();
+		
+		valorTmp = (salario + credito) - Math.abs(totalDesconto);
+		
+		if(!valorTmp.equals(salario)){
+			return (salario + credito) - Math.abs(totalDesconto);
 		}
-		return empregado.getSalario();
-	}	
-
-	/**
-	 * Método que desabilita os itens dos mes que o funcionario já recebeu.
-	 * 
-	 * @param ItensFuncionarioVO
-	 *            -- umFuncionario
-	 * @param Date
-	 *            -- periodo
-	 * @param Boolean
-	 *            -- origem
-	 */
-	private String vencidas(ItensFuncionarioVO umFuncionario, Date periodo,
-			Boolean origem) {
-		new DataUltil();
-		Date dataTmp = DataUltil.quintoDiaUtil(new Date());
-		if (periodo.before(dataTmp)) {
-			if (origem) {
-				umFuncionario.getId().setQuitado(true);
-			} else {
-				return "(Estou devendo)";
-			}
-		}
-		return "";
-	}
-
-	/**
-	 * Método que valida se é item do salario.
-	 * 
-	 * @param DespesasGastos
-	 *            -- itens
-	 */
-	private boolean validarSeESalario(DespesasGastos item) {
-		return (item.getCodigo().equals(Long.parseLong("489"))
-				|| item.getCodigo().equals(Long.parseLong("490"))
-				|| item.getCodigo().equals(Long.parseLong("166")) || item
-				.getCodigo().equals(Long.parseLong("168")));
+//		else{
+//			return  credito - Math.abs(totalDesconto);
+//		}
+		
+		return 0.0;
 	}
 
 	/**
@@ -317,12 +325,19 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		cadastro.setFuncionario(contaFuncionarioTmp.getFuncionario());
 		cadastro.setItem(contaFuncionarioTmp.getItem());
 		cadastro.setLoja(contaFuncionarioTmp.getLoja());
-		cadastro.setOrigem(contaFuncionarioTmp.getOrigem());
+		if(contaFuncionarioTmp.getItem().getSalario()){
+			//defini q salario é credito.
+			cadastro.setOrigem(false);
+		}else{
+			cadastro.setOrigem(contaFuncionarioTmp.getOrigem());
+		}
 		cadastro.setParcela(contaFuncionarioTmp.getParcela());
 		cadastro.setPeriodo(DataUltil.alterarMes(contaFuncionario.getPeriodo(),
 				i));
 		cadastro.setValor(valorTmp);
-		cadastro.setDespesa(despesaSalario(new Sangria(), contaFuncionarioTmp));
+		if(contaFuncionarioTmp.getItem().getSalario()){
+			cadastro.setOrigem(false);
+		}
 		try {
 			if (cadastro.getId() != null) {
 				cadastro.merge();
@@ -338,66 +353,33 @@ public class ContaUsuarioRegistroBean implements Serializable {
 
 	}
 
-	private Sangria despesaSalario(Sangria despesaTmp,
-			ContasFuncionario contaFuncionarioTmp) {
-		salarioPorPerfil(despesaTmp, contaFuncionarioTmp);
-		despesaTmp.setFuncionario(contaFuncionarioTmp.getFuncionario());
-		despesaTmp.setSangria(true);
-		// Alterar para 5 dia util.
-		despesaTmp.setPeriodo(DataUltil.quintoDiaUtil(DataUltil.alterarMes(
-				contaFuncionarioTmp.getPeriodo(), 1)));
-		despesaTmp.setLoja(ObejctSession.loja());
-		if (funcionarioVo.getValorReceber() != null) {
-			try {
-				despesaTmp.setValor(df.parse(funcionarioVo.getValorReceber())
-						.doubleValue());
-				if (despesaTmp.getId() != null) {
-					despesaTmp.merge();
-					despesaTmp.flush();
-				} else {
-					despesaTmp.persist();
-					despesaTmp.flush();
-				}
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-		return despesaTmp;
-	}
-
-	private void salarioPorPerfil(Sangria despesa2,
+	private DespesasGastos salarioPorPerfil(
 			ContasFuncionario contaFuncionarioTmp) {
 		if (contaFuncionarioTmp.getFuncionario().getCargo().getSetor()
 				.equals(Setor.COZINHA)) {
-			despesa2.setItem(DespesasGastos.findDespesasGastos(Long
-					.parseLong("166")));
-			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(
-					Long.parseLong("166")).getClassificacao());
+			return DespesasGastos.findDespesasGastos(Long
+					.parseLong("166"));
 		}
 
 		if (contaFuncionarioTmp.getFuncionario().getCargo().getSetor()
 				.equals(Setor.ATENDIMENTO)) {
-			despesa2.setItem(DespesasGastos.findDespesasGastos(Long
-					.parseLong("168")));
-			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(
-					Long.parseLong("168")).getClassificacao());
+			 return DespesasGastos.findDespesasGastos(Long
+					.parseLong("168"));
 		}
 
 		if (contaFuncionarioTmp.getFuncionario().getCargo().getSetor()
 				.equals(Setor.CENTRALDECORTE)) {
-			despesa2.setItem(DespesasGastos.findDespesasGastos(Long
-					.parseLong("489")));
-			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(
-					Long.parseLong("489")).getClassificacao());
+			return DespesasGastos.findDespesasGastos(Long
+					.parseLong("489"));
 		}
 
 		if (contaFuncionarioTmp.getFuncionario().getCargo().getSetor()
 				.equals(Setor.CALLCENTER)) {
-			despesa2.setItem(DespesasGastos.findDespesasGastos(Long
-					.parseLong("490")));
-			despesa2.setClassificacao(DespesasGastos.findDespesasGastos(
-					Long.parseLong("490")).getClassificacao());
+			return DespesasGastos.findDespesasGastos(Long
+					.parseLong("490"));
+			
 		}
+		return contaFuncionarioTmp.getItem();
 	}
 
 	public String handleDialogClose(CloseEvent event) {
@@ -406,7 +388,7 @@ public class ContaUsuarioRegistroBean implements Serializable {
 	}
 
 	/**
-	 * Método que redireçona o link.
+	 * Método que redireciona o link.
 	 * 
 	 * @param FuncionarioVO
 	 *            -- Funcionario temporario.
@@ -439,7 +421,6 @@ public class ContaUsuarioRegistroBean implements Serializable {
 
 	public String delete() {
 		String item = contaFuncionario.getDescricao();
-		despesaSalario(contaFuncionario.getDespesa(), contaFuncionario);
 		contaFuncionario.remove();
 		FacesMessage facesMessage = MessageFactory.getMessage(
 				"message_successfully_deleted", item + " do Conta Funcionairo");

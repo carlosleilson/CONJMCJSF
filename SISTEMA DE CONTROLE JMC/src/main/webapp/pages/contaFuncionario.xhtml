@@ -26,8 +26,8 @@
         	<p:column headerText="Nome" filterBy="#{funcionarios.funcionario.nome}" sortBy="#{funcionarios.funcionario.nome}">
         		<h:outputText value="#{funcionarios.funcionario.nome}"/>
         	</p:column>
-        	<p:column headerText="Debito" sortBy="#{funcionarios.totalDesconto}" style="text-align:center" >
-               <h:outputText value="#{funcionarios.totalDesconto}" />        		
+        	<p:column headerText="Saldo" sortBy="#{funcionarios.valorReceber}" style="text-align:center" >
+               <h:outputText value="#{funcionarios.valorReceber}" />        		
         	</p:column>
         	<p:column headerText="Situação" sortBy="#{funcionarios.funcionario.situacao}" style="text-align:center" >
         		<h:outputText value="Ativo" rendered="#{funcionarios.funcionario.situacao == true}"/>

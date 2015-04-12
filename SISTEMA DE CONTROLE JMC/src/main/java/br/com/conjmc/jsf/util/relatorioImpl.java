@@ -31,10 +31,9 @@ public class relatorioImpl {
 	 * @param String
 	 *            nomeArquivo -- nome do arquivo .jrxml, nunca jasper.
 	 */
-	public void gerarRelatorio(List<?> lista, String nomeArquivo)
+	public void gerarRelatorio(List<?> lista, String nomeArquivo,Map<String, Object> parametros)
 			throws MalformedURLException {
 		try {
-			Map<String, Object> parametros = new HashMap<String, Object>();
 			parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
 			this.imprimir(lista, nomeArquivo, parametros);
 		} catch (Exception e) {
@@ -56,17 +55,10 @@ public class relatorioImpl {
 	private void imprimir(List<?> lista, String relatorio,
 			Map<String, Object> parametros) {
 		OutputStream os = null;
-
+			parametros.put("SUBREPORT_DIR", pegarCaminhoJasper());
 		try {
-			ExternalContext externalContext = FacesContext.getCurrentInstance()
-					.getExternalContext();
-			ServletContext contextS = (ServletContext) externalContext
-					.getContext();
-			String reportUrlReal = contextS.getRealPath("jasperreport"
-					+ File.separator + relatorio);
-
 			JasperReport pathjrxml = JasperCompileManager
-					.compileReport(reportUrlReal);
+					.compileReport(pegarCaminhoJasper()+ File.separator + relatorio);
 
 			JasperPrint jasperPrint = JasperFillManager.fillReport(pathjrxml,
 					parametros, new JRBeanCollectionDataSource(lista));
@@ -96,5 +88,12 @@ public class relatorioImpl {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public String pegarCaminhoJasper() {
+		ExternalContext externalContext = FacesContext.getCurrentInstance()
+				.getExternalContext();
+		ServletContext contextS = (ServletContext) externalContext.getContext();
+		return new String(contextS.getRealPath("jasperreport"));
 	}
 }

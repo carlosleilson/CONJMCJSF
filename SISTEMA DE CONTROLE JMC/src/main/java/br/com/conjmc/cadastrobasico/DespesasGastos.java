@@ -53,6 +53,10 @@ public class DespesasGastos implements Serializable {
     @NotNull
     private Boolean situacao;
     
+    /**
+     */
+    private Boolean salario;       
+    
     @ManyToOne
     @JoinColumn(name="fornecedor_id")
     private Fornecedores fornecedor;
@@ -92,6 +96,10 @@ public class DespesasGastos implements Serializable {
 
 	public static List<DespesasGastos> findAllDespesasGastosAtivos() {
         return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
+    }		
+	
+	public static List<DespesasGastos> findAllDespesasGastosAtivosSemSaldo() {
+        return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true and o.id != :id", DespesasGastos.class).setParameter("id", Long.parseLong("527")).getResultList();
     }		
 	
 	public static List<DespesasGastos> findAllItensPessoalAtivos() {
@@ -290,6 +298,14 @@ public class DespesasGastos implements Serializable {
 
 	public void setFornecedor(Fornecedores fornecedor) {
 		this.fornecedor = fornecedor;
+	}
+
+	public Boolean getSalario() {
+		return salario;
+	}
+
+	public void setSalario(Boolean salario) {
+		this.salario = salario;
 	}
 
 	/*public List<Sangria> getSangria() {

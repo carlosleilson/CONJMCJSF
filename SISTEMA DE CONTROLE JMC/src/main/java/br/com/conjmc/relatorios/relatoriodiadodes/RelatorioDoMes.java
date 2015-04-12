@@ -57,7 +57,13 @@ public class RelatorioDoMes {
 		faturamentoBruto = valorFaturamentoTotal();
 		todosItens =  findAllDespasGastos();
 		todosDadosDespesasPorData = findAllSangriaByItens();		
-		
+		inicializarTaxaDeEntrega();
+	}
+	
+	private void inicializarTaxaDeEntrega(){
+		if(taxaDeEntrega==null){
+			taxaDeEntrega = new String("R$ 0,00");
+		}
 	}
 
 	private String[] inicializaArray(String[] campos){

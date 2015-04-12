@@ -1,6 +1,7 @@
 package br.com.conjmc.cadastrobasico;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
 
@@ -71,11 +71,6 @@ public class ContasFuncionario implements Serializable {
 	/**
      */
 	private String descricao;
-
-	/**
-     */
-	@ManyToOne
-	private Sangria despesa;
 
 	/**
      */
@@ -238,7 +233,6 @@ public class ContasFuncionario implements Serializable {
 
 	public static List<ContasFuncionario> encontraContaFuncionarios(
 			Date dataInicial, Date dataFinal, Funcionarios funcionario) {
-		EntityManager em = entityManager();
 		Query query = entityManager()
 				.createQuery(
 						"SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal",
@@ -249,6 +243,64 @@ public class ContasFuncionario implements Serializable {
 		query.setParameter("funcionario", funcionario);
 		query.setParameter("loja", ObejctSession.idLoja());
 		return query.getResultList();
+	}
+
+	public static List<ContasFuncionario> encontraContaFuncionariosMesAnterior(
+			Date dataInicial, Date dataFinal, Funcionarios funcionario) {
+		Query query = entityManager()
+				.createQuery(
+						"SELECT o FROM ContasFuncionario o WHERE o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal",
+						ContasFuncionario.class);
+		query.setParameter("dataInicial",
+				DataUltil.primeiroDiaMesAnterior(dataInicial));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMesAnterior(dataInicial));
+		query.setParameter("funcionario", funcionario);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
+	}	
+	
+	public static Double encontraFuncionariosSaldoDevedor(Date dataInicial,
+			Funcionarios funcionario) {
+		List<ContasFuncionario> ContaList = new ArrayList<ContasFuncionario>();
+		Double resultado = 0.0;
+		Query query = entityManager()
+				.createQuery(
+						"SELECT o FROM ContasFuncionario o WHERE o.item.codigo = 527 and o.quitado = false and o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal",
+						ContasFuncionario.class);
+		query.setParameter("dataInicial",
+				DataUltil.primeiroDiaMesAnterior(dataInicial));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMesAnterior(dataInicial));
+		query.setParameter("funcionario", funcionario);
+		query.setParameter("loja", ObejctSession.idLoja());
+		ContaList = query.getResultList();
+		
+		for (ContasFuncionario contas : ContaList) {
+			resultado = resultado + contas.getValor();
+		}
+		
+		return resultado + funcionario.getSalario();
+	}	
+	
+	public static Double encontraFuncionariosSaldoDevedorMes(Date dataInicial,
+			Funcionarios funcionario) {
+		List<ContasFuncionario> ContaList = new ArrayList<ContasFuncionario>();
+		Double resultado = 0.0;
+		Query query = entityManager()
+				.createQuery(
+						"SELECT o FROM ContasFuncionario o WHERE o.quitado = false and o.funcionario is not null and o.funcionario = :funcionario and o.loja.id = :loja and o.periodo between :dataInicial and :dataFinal",
+						ContasFuncionario.class);
+		query.setParameter("dataInicial",
+				DataUltil.primeiroDiaMesTemp(dataInicial));
+		query.setParameter("dataFinal", DataUltil.ultimoDiaMes(dataInicial));
+		query.setParameter("funcionario", funcionario);
+		query.setParameter("loja", ObejctSession.idLoja());
+		ContaList = query.getResultList();
+		
+		for (ContasFuncionario contas : ContaList) {
+			resultado = resultado + contas.getValor();
+		}
+		
+		return resultado;
 	}
 
 	@Override
@@ -336,14 +388,6 @@ public class ContasFuncionario implements Serializable {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public Sangria getDespesa() {
-		return despesa;
-	}
-
-	public void setDespesa(Sangria despesa) {
-		this.despesa = despesa;
 	}
 
 	public boolean isQuitado() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.3.final using JasperReports Library version 3.5.3  -->
-<!-- 2015-02-22T20:37:56 -->
+<!-- 2015-04-03T13:01:04 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="drm" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
@@ -51,7 +51,7 @@
 			</textField>
 			<image>
 				<reportElement x="10" y="10" width="50" height="50"/>
-				<imageExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"chinalogo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{SUBREPORT_DIR}+"/"+"chinalogo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

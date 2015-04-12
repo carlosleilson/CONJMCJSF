@@ -1,14 +1,22 @@
 package br.com.conjmc.relatorios;
+
+import java.io.File;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.ObejctSession;
@@ -65,6 +73,7 @@ public class RelatorioMes extends relatorioImpl {
 
 	public void gerarRelatorio() throws MalformedURLException {
 		List<DrmVO> drmTmpList = new ArrayList<DrmVO>();
+
 		String nomeLoja = new ObejctSession().loja().getNomeLoja().trim();
 		for (ResumoVO resTmp : this.resumos) {
 			DrmVO drmTmp = new DrmVO();
@@ -78,7 +87,7 @@ public class RelatorioMes extends relatorioImpl {
 			for (ClassificacaoVO itenTmp : resTmp.getClassificacoes()) {
 				DrmVO drmTmp2 = new DrmVO();
 				drmTmp2.setDataLabel(dataLabel);
-				drmTmp2.setLoja(nomeLoja);				
+				drmTmp2.setLoja(nomeLoja);
 				drmTmp2.setName(itenTmp.getCodigo().toString());
 				drmTmp2.setTitulo(itenTmp.getName().toString());
 				drmTmp2.setPorcentagem(itenTmp.getItens().get(0).getCampos()[itenTmp
@@ -88,7 +97,7 @@ public class RelatorioMes extends relatorioImpl {
 				drmTmpList.add(drmTmp2);
 			}
 		}
-		this.gerarRelatorio(drmTmpList, "drm.jrxml");
+		this.gerarRelatorio(drmTmpList, "drm.jrxml", new HashMap<String, Object>());
 	}
 
 	public List<Sangria> getAllSangrias() {

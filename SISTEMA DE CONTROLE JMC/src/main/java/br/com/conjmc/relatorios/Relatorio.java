@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -64,7 +66,7 @@ public class Relatorio extends relatorioImpl{
 	}
 	
 	public void gerarRelatorio() throws MalformedURLException {
-		this.gerarRelatorio(this.classificacaoItens, "despesas.jrxml");
+		this.gerarRelatorio(this.classificacaoItens, "despesas.jrxml",new HashMap<String, Object>());
 	}
 	
 	public List<ClassificacaoVO> getClassificacaoItens() {

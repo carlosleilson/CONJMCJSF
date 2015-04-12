@@ -41,6 +41,9 @@ public class ApplicationBean {
     public void init() {
     }
 
+	public Boolean ativarModuloAlertar(Boolean ativar){
+		return ativar != null? ativar: true ;
+	}
 
 	public String getAppName() {
         return "Conjmc";

@@ -64,6 +64,7 @@ public class DespesasGastosBean implements Serializable {
         despesasGastos = new DespesasGastos();
         despesasGastos.setDespesaPessoal(false);
         despesasGastos.setSituacao(true);
+        despesasGastos.setSalario(false);
         despesasGastos.setCodigo(DespesasGastos.getMaxId()+1);
         findAllDespesasGastosAtivos();
         findAllItensPessoalAtivos();
@@ -444,6 +445,27 @@ public class DespesasGastosBean implements Serializable {
         return "despesasGastos.xhtml";
     }
 
+	public String persistContas() {
+        String message = "";
+        despesasGastos.setDespesaPessoal(true);
+        
+        if (despesasGastos.getId() != null) {
+            despesasGastos.merge();
+            message = "message_successfully_updated";
+        } else {
+            despesasGastos.persist();
+            message = "message_successfully_created";
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("createDialogWidget.hide()");
+        context.execute("editDialogWidget.hide()");
+        
+        FacesMessage facesMessage = MessageFactory.getMessage(message, "DespesasGastos");
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        init();
+        return "contaFuncionarioRegistro.xhtml";
+    }
+	
 	public String delete() {
 		try {
 			despesasGastos.setSituacao(false);

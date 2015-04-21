@@ -393,15 +393,16 @@ public class RelatorioDoMes {
 			}
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
 			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
-			porcentagem(i,df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue());
+			porcentagem(itemI3,i,df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue());
 		}
 		if(itemI3){
 			campoTemp[QTD_CAMPOS-1] = df.format(df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue() - df.parse(taxaDeEntrega).doubleValue());
+			campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue() / tratarFaturamento(faturamentoBruto) )*100)+" %";
 		}
 		return campos;
 	}
 
-	private void porcentagem(int dia, Double valor) {
+	private void porcentagem(Boolean itemI3, int dia, Double valor) {
 		//calcular a porcentagem.
 		if(dia == QTD_CAMPOS-1){
 			campoTemp[QTD_CAMPOS-2] = String.format("%.2f",( valor / tratarFaturamento(faturamentoBruto) )*100)+" %";

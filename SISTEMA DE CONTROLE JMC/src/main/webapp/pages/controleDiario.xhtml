@@ -14,6 +14,22 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">
+    	<p:fieldset legend="Filtro">
+    		<h:panelGrid columns="2">
+    			<p:outputLabel value="De" for="dataInicialFilter"/>
+    			<p:calendar id="dataInicialFilter" required="true"/>
+    			
+    			<p:outputLabel value="Ate" for="dataFinalFilter"/>
+    			<p:calendar id="dataFinalFilter" required="true"/>
+    			
+    			<p:outputLabel value="Turno" for="turnoFilter" />
+		    	<p:selectOneMenu id="turnoFilter">
+					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
+					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
+				</p:selectOneMenu>
+    		</h:panelGrid>
+    		<p:commandButton value="Pesquisar"/>
+    	</p:fieldset>
 		<p:dataTable id="list" var="list" value="#{controleDiarioBean.fechamentos}" scrollable="true" paginator="true" rows="10">
 			<f:facet name="header">Controle Diario</f:facet>
 			<p:column headerText="Data" sortBy="#{list.data}" width="70">

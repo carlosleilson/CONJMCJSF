@@ -202,6 +202,39 @@ public class Sangria implements Serializable{
 	public void setBanco(String banco) {
 		this.banco = banco;
 	}
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
+	@Version
+    @Column(name = "version")
+    private Integer version;
+
+	public Long getId() {
+        return this.id;
+    }
+
+	public void setId(Long id) {
+        this.id = id;
+    }
+
+	public Integer getVersion() {
+        return this.version;
+    }
+
+	public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+	public Despesas getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(Despesas classificacao) {
+		this.classificacao = classificacao;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -383,43 +416,12 @@ public class Sangria implements Serializable{
         return merged;
     }
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
 
-	@Version
-    @Column(name = "version")
-    private Integer version;
-
-	public Long getId() {
-        return this.id;
-    }
-
-	public void setId(Long id) {
-        this.id = id;
-    }
-
-	public Integer getVersion() {
-        return this.version;
-    }
-
-	public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-	public Despesas getClassificacao() {
-		return classificacao;
-	}
-
-	public void setClassificacao(Despesas classificacao) {
-		this.classificacao = classificacao;
-	}
 	
 	public static List<Sangria> encontrarPorData(Date dataInicial, Date dataFinal,DespesasGastos item) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (dataInicial == null) throw new IllegalArgumentException("O Dia � obrigatorio");
-        if (dataFinal == null) throw new IllegalArgumentException("O At� Mes/ano � obrigatorio");
+        if (dataInicial == null) throw new IllegalArgumentException("O Dia é obrigatorio");
+        if (dataFinal == null) throw new IllegalArgumentException("O Até Mes/ano é obrigatorio");
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
         if(item!=null){
@@ -489,4 +491,12 @@ public class Sangria implements Serializable{
        	return valor;
 	}
 	
+	//Soma para o faturamento
+	public List<Sangria> findSangrias(Date data,Turno turno, String origem){
+		Query query = entityManager().createQuery("SELECT o FROM Sangria o WHERE periodo=:data and origem=:origem and loja=:loja and turno="+turno.ordinal(), Sangria.class);
+		query.setParameter("data", data);
+		query.setParameter("origem", origem);
+		query.setParameter("loja", ObejctSession.loja());
+       	return query.getResultList();
+	}
 }

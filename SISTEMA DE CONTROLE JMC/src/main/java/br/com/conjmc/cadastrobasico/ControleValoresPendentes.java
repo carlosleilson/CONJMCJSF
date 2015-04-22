@@ -266,6 +266,13 @@ public class ControleValoresPendentes implements Serializable {
        	return valor;
 	}
 	
+	public List<ControleValoresPendentes> ContasPendentes(Date data,Turno turno, int tipoPagamento){
+		Query query = entityManager().createQuery("SELECT o FROM ControleValoresPendentes o WHERE data=:data and tipoPagamento="+tipoPagamento+"and loja=:loja and turno="+turno.ordinal(), ControleValoresPendentes.class);
+		query.setParameter("data", data);
+		query.setParameter("loja", ObejctSession.loja());
+       	return query.getResultList();
+	}
+	
 	public static List<ControleValoresPendentes> findByControleValores(ControleValoresPendentes controlePendentes){	
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<ControleValoresPendentes> c = cb.createQuery(ControleValoresPendentes.class);

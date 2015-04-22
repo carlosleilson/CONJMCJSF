@@ -226,4 +226,11 @@ public class Fechamento {
 	}
 	
 	
+	@Transactional
+	public List<Fechamento> fechamentos() {
+		Query query = entityManager().createQuery("SELECT o FROM Fechamento o where o.loja=:loja", Fechamento.class);
+		query.setParameter("loja", ObejctSession.loja());
+		return query.getResultList();
+	}
+	
 }

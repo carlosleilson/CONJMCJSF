@@ -14,66 +14,66 @@
       <p:growl id="growl" showDetail="false" />
     </h:form>
     <h:form prependId="false" id="dataForm">
-			<p:dataTable id="list" var="list" value="#{controleDiarioBean.fechamentos}" paginator="true" rows="10">
-				<f:facet name="header">Cargos</f:facet>
-				<p:column headerText="Data" sortBy="#{list.data}" width="70">
-					<h:outputText value="#{list.data}">
-						<f:convertDateTime pattern="dd/MM/yyyy"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Truno" width="70">
-					<h:outputText value="#{list.turno.label}"/>
-				</p:column>
-				<p:column headerText="Dinheiro" width="70">
-					<h:outputText value="#{list.dinheiro}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Debito" width="70">
-					<h:outputText value="#{list.debito}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Credito" width="70">
-					<h:outputText value="#{list.credito}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Ticket" width="70">
-					<h:outputText value="#{list.ticket}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Cheque" width="70">
-					<h:outputText value="#{list.cheque}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Sangria" width="70">
-					<h:outputText value="#{list.sangriaCaixa}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Sangria (Gastos)" width="70">
-					<p:commandLink value="#{list.sangriaGastos}" action="#{controleDiarioBean.carregarDespesas()}" onclick="PF('despesas').show()" update=":dataFormDespesas:list">
-						<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
-					</p:commandLink>
-				</p:column>
-				<p:column headerText="Contas a Cobrar" width="70">
-					<h:outputText value="#{list.sangriaGastos}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Contas a Receber" width="70">
-					<h:outputText value="#{list.sangriaGastos}">
-						<f:convertNumber minFractionDigits="2"/>
-					</h:outputText>
-				</p:column>
-				<p:column headerText="Justificativa" width="150">
-					<h:outputText value="#{list.justificativa}"/>
-				</p:column>
-			</p:dataTable>
-		</h:form>
+		<p:dataTable id="list" var="list" value="#{controleDiarioBean.fechamentos}" scrollable="true" paginator="true" rows="10">
+			<f:facet name="header">Controle Diario</f:facet>
+			<p:column headerText="Data" sortBy="#{list.data}" width="70">
+				<h:outputText value="#{list.data}">
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Truno" width="70">
+				<h:outputText value="#{list.turno.label}"/>
+			</p:column>
+			<p:column headerText="Dinheiro" width="70">
+				<h:outputText value="#{list.dinheiro}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Debito" width="70">
+				<h:outputText value="#{list.debito}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Credito" width="70">
+				<h:outputText value="#{list.credito}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Ticket" width="70">
+				<h:outputText value="#{list.ticket}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Cheque" width="70">
+				<h:outputText value="#{list.cheque}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Sangria" width="70">
+				<h:outputText value="#{list.sangriaCaixa}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Sangria (Gastos)" width="70">
+				<p:commandLink value="#{list.sangriaGastos}" action="#{controleDiarioBean.carregarDespesas()}" onclick="PF('despesas').show()" update=":dataFormDespesas:list">
+					<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
+				</p:commandLink>
+			</p:column>
+			<p:column headerText="Contas a Cobrar" width="70">
+				<p:commandLink value="#{list.cobrar}" action="#{controleDiarioBean.carregarControleValoresCobrar()}" onclick="PF('valores').show()" update=":dataFormValores:list">
+					<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
+				</p:commandLink>
+			</p:column>
+			<p:column headerText="Contas a Receber" width="70">
+				<p:commandLink value="#{list.receber}" action="#{controleDiarioBean.carregarControleValoresReceber()}" onclick="PF('valores').show()" update=":dataFormValores:list">
+					<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
+				</p:commandLink>
+			</p:column>
+			<p:column headerText="Justificativa" width="150">
+				<h:outputText value="#{list.justificativa}"/>
+			</p:column>
+		</p:dataTable>
+	</h:form>
 		
 		<!-- Despesas  -->	
 		<p:dialog id="despesas" header="Depesas" modal="true" widgetVar="despesas" showEffect="fade" hideEffect="explode" width="900">
@@ -89,6 +89,27 @@
 		          	</p:column>
 		          	<p:column headerText="Valor" sortBy="#{sangria.valor}">
 		          		<h:outputText value="#{sangria.valor}">
+		          			<f:convertNumber minFractionDigits="2"/>
+		          		</h:outputText>
+		          	</p:column>
+		 		</p:dataTable>
+		 	</h:form>
+		</p:dialog>
+		
+		<!-- Controle de valores  -->	
+		<p:dialog id="valores" header="Depesas" modal="true" widgetVar="valores" showEffect="fade" hideEffect="explode" width="900">
+			<h:form id="dataFormValores">
+		        <p:dataTable id="list" value="#{controleDiarioBean.valoresPendentes}" var="valores" paginator="true">
+		          	<p:column headerText="Item" sortBy="#{valores.numeroPedido}">
+		          		<h:outputText value="#{valores.numeroPedido}"/>
+		          	</p:column>
+		        	<p:column headerText="Data" sortBy="#{valores.data}">
+		          		<h:outputText value="#{valores.data}">
+		          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+		          		</h:outputText>
+		          	</p:column>
+		          	<p:column headerText="Valor" sortBy="#{valores.valor}">
+		          		<h:outputText value="#{valores.valor}">
 		          			<f:convertNumber minFractionDigits="2"/>
 		          		</h:outputText>
 		          	</p:column>

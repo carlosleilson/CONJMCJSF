@@ -392,6 +392,9 @@ public class RelatorioDoMes {
 				}		
 			}
 			totalLinha[i] = df.format(df.parse(totalLinha[i]).doubleValue()+ df.parse(campos[i]).doubleValue());
+			if(itemI3){
+				totalLinha[i] = df.format(df.parse(totalLinha[QTD_CAMPOS-1]).doubleValue() - df.parse(taxaDeEntrega).doubleValue());
+			}
 			somarTotalPorClassificacao(i,df.parse(campos[i]).doubleValue());
 			porcentagem(itemI3,i,df.parse(campoTemp[QTD_CAMPOS-1]).doubleValue());
 		}

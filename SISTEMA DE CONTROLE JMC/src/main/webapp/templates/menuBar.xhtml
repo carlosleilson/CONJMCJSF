@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -21,7 +22,8 @@
 				url="#{pageContext.servletContext.contextPath}/pages/usuarios.xhtml"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
 			<p:menuitem value="Motoqueiros"
-				url="#{pageContext.servletContext.contextPath}/pages/motoqueiros.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/pages/motoqueiros.xhtml"
+				disabled="true" />
 			<p:menuitem value="Classificação de Despesas"
 				url="#{pageContext.servletContext.contextPath}/pages/despesas.xhtml"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
@@ -40,14 +42,12 @@
 		</p:submenu>
 		<p:submenu label="Controle Diário">
 			<p:menuitem value="Fechamento"
-				ajax="false"
-				url="#{pageContext.servletContext.contextPath}/pages/fechamento.xhtml"
+				url="#{pageContext.servletContext.contextPath}/pages/diaria.xhtml"
+				disabled="true"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
 			<p:menuitem value="Sangria" disabled="true"
 				url="#{pageContext.servletContext.contextPath}/pages/sangria.xhtml"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
-			<p:menuitem value="Controle de Valores Pendentes"
-				url="#{pageContext.servletContext.contextPath}/pages/controleValores.xhtml"/>
 			<p:submenu label="Controle de Valores Pendentes"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }">
 				<p:menuitem value="Controles a receber" disabled="true" />
@@ -70,7 +70,7 @@
 			<p:menuitem value="Gerenciamentos de Contas"
 				url="#{pageContext.servletContext.contextPath}/pages/contasPendentes.xhtml"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
-			<p:menuitem value="Conta Corrente Funicionarios"
+			<p:menuitem value="Conta Corrente Funicionarios" disabled="true"
 				url="#{pageContext.servletContext.contextPath}/pages/contaFuncionario.xhtml"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
 		</p:submenu>

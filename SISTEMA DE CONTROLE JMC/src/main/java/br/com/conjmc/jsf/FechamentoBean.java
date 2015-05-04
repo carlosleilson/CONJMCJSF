@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
+import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
@@ -17,7 +18,7 @@ import br.com.conjmc.jsf.util.ObejctSession;
 public class FechamentoBean {
 
 	private Fechamento fechamento;
-	private Double total;
+	private Double totalCaixaInical;
 	
 	@PostConstruct
 	public void init() {
@@ -41,28 +42,44 @@ public class FechamentoBean {
         return "fechamento.xhtml";
     }
 	
+	public void calcularTotalCaixaInicial() {
+		this.totalCaixaInical= 0.0;
+		this.totalCaixaInical += this.fechamento.getCaixaInicial();
+		this.totalCaixaInical += this.fechamento.getTrocadoDinheiro();
+		this.totalCaixaInical += this.fechamento.getTrocadoMoeda();
+	}
+	
+	
 	public void calcularTotal() {
-		this.total = 0.0;
-		this.total += fechamento.getCaixaInicial();
-		this.total += fechamento.getTrocado();
-		this.total += fechamento.getSangriaCaixa();
-		this.total += fechamento.getSangriaGastos();
-		this.total += fechamento.getDinheiro();
-		this.total += fechamento.getDebito();
-		this.total += fechamento.getCredito();
-		this.total += fechamento.getTicket();
-		this.total += fechamento.getCheque();
-		this.total += fechamento.getReceber();
-		this.total += fechamento.getCobrar();
+		double totalDiferenca = new ItemFaturamento().valorTotal(fechamento.getData(), fechamento.getData(), fechamento.getTurno(), "");
+		totalDiferenca = totalDiferenca - (totalDiferenca * 2);
+		double total = 0;
+		total += fechamento.getSangriaCaixa();
+		total += fechamento.getSangriaGastos();
+		total += fechamento.getDinheiro();
+		total += fechamento.getDebito();
+		total += fechamento.getCredito();
+		total += fechamento.getTicket();
+		total += fechamento.getCheque();
+		//total += fechamento.getReceber();
+		//total += fechamento.getCobrar();
+		fechamento.setTotalFechamento(total);
+		fechamento.setDiferenca(totalDiferenca + total);
 	}
 	
 	public void calcularContas(){
 		totalContasCobrar();
 		totalContasReceber();
 		totalDespespas();
+		totalSangria();
 		calcularTotal();
 	}
 	
+	private void totalSangria() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void totalContasReceber(){
 		fechamento.setReceber(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 0));
 	}
@@ -84,13 +101,13 @@ public class FechamentoBean {
 		this.fechamento = fechamento;
 	}
 
-	public Double getTotal() {
-		return total;
+	public Double getTotalCaixaInical() {
+		return totalCaixaInical;
 	}
 
-	public void setTotal(Double total) {
-		this.total = total;
+	public void setTotalCaixaInical(Double totalCaixaInical) {
+		this.totalCaixaInical = totalCaixaInical;
 	}
-	
+
 	
 }

@@ -13,7 +13,7 @@
     <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
-    <h:form prependId="false" id="dataForm">
+    <h:form>
     	<p:fieldset legend="Filtro">
     		<h:panelGrid columns="2">
     			<p:outputLabel value="De" for="dataInicialFilter"/>
@@ -30,6 +30,8 @@
     		</h:panelGrid>
     		<p:commandButton value="Pesquisar"/>
     	</p:fieldset>
+    </h:form>
+    <h:form prependId="false" id="dataForm">
 		<p:dataTable id="list" var="list" value="#{controleDiarioBean.fechamentos}" scrollable="true" paginator="true" rows="10">
 			<f:facet name="header">Controle Diario</f:facet>
 			<p:column headerText="Data" sortBy="#{list.data}" width="70">

@@ -27,28 +27,41 @@
 				<p:selectOneMenu id="turno" value="#{fechamentoBean.fechamento.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
 					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
-					<p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:total"/>
+					<p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca"/>
 				</p:selectOneMenu>
 				<p:message for="turno"/>
 		    
 		    	<p:outputLabel value="Caixa Inicial" for="caixaInicial" />
 		    	<p:inputText id="caixaInicial" styleClass="moneyNotSymbol" value="#{fechamentoBean.fechamento.caixaInicial}" required="true" requiredMessage="O valor inicial é obrigatório">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalCaixaInicial" listener="#{fechamentoBean.calcularTotalCaixaInicial()}"/>
 		    	</p:inputText>
 		    	<p:message for="caixaInicial" />
 
-				<p:outputLabel value="Trocado" for="trocado" />
-		    	<p:inputText id="trocado" value="#{fechamentoBean.fechamento.trocado}" styleClass="moneyNotSymbol">
+				<p:outputLabel value="Trocado Dinheiro" for="trocadoDinheiro" />
+		    	<p:inputText id="trocadoDinheiro" value="#{fechamentoBean.fechamento.trocadoDinheiro}" styleClass="moneyNotSymbol">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalCaixaInicial" listener="#{fechamentoBean.calcularTotalCaixaInicial()}"/>
 		    	</p:inputText>
-		    	<p:message for="trocado" />
+		    	<p:message for="trocadoDinheiro" />
+		    	
+		    	<p:outputLabel value="Trocado Moeda" for="trocadoMoeda" />
+		    	<p:inputText id="trocadoMoeda" value="#{fechamentoBean.fechamento.trocadoMoeda}" styleClass="moneyNotSymbol">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    		<p:ajax event="keyup" update=":createForm:totalCaixaInicial" listener="#{fechamentoBean.calcularTotalCaixaInicial()}"/>
+		    	</p:inputText>
+		    	<p:message for="trocadoMoeda" />
+		    	
+		    	<p:outputLabel value="TOTAL CAIXA INICIAL" for="totalCaixaInicial" />
+		    	<p:inputText id="totalCaixaInicial" disabled="true" value="#{fechamentoBean.totalCaixaInical}" styleClass="moneyNotSymbol">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="totalCaixaInicial"/>
 		    	
 		    	<p:outputLabel value="Sangria Caixa" for="sangriaCaixa" />
 		    	<p:inputText id="sangriaCaixa" value="#{fechamentoBean.fechamento.sangriaCaixa}" styleClass="moneyNotSymbol" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="sangriaCaixa" />
 		    	
@@ -61,35 +74,35 @@
 		    	<p:outputLabel value="Dinheiro" for="dinheiro" />
 		    	<p:inputText id="dinheiro" value="#{fechamentoBean.fechamento.dinheiro}" styleClass="moneyNotSymbol" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="dinheiro" />
 		    	
 		    	<p:outputLabel value="Débito" for="debito" />
 		    	<p:inputText id="debito" value="#{fechamentoBean.fechamento.debito}" styleClass="moneyNotSymbol" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="debito" />
 		    	
 		    	<p:outputLabel value="Crédito" for="credito" />
 		    	<p:inputText id="credito" value="#{fechamentoBean.fechamento.credito}" styleClass="moneyNotSymbol" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="credito" />
 		    	
 		    	<p:outputLabel value="Ticket" for="ticket" />
 		    	<p:inputText id="ticket" value="#{fechamentoBean.fechamento.ticket}" styleClass="moneyNotSymbol" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="ticket" />
 		    	
 		    	<p:outputLabel value="Cheque" for="cheque" />
 		    	<p:inputText id="cheque" value="#{fechamentoBean.fechamento.cheque}" styleClass="moneyNotSymbol" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:total" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="cheque" />
 		    	
@@ -105,13 +118,28 @@
 		    	</p:inputText>
 		    	<p:message for="contasCobrar" />
 		    	
+		    	<p:outputLabel value="Caixa Final" for="caixaFinal" />
+		    	<p:inputText id="caixaFinal" value="#{fechamentoBean.fechamento.caixaFinal}" styleClass="moneyNotSymbol">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="caixaFinal" />
+		    	
+		    	<p:outputLabel value="Total Fechamento" for="totalFechamento" />
+		    	<p:inputText id="totalFechamento" value="#{fechamentoBean.fechamento.totalFechamento}" styleClass="moneyNotSymbol">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="totalFechamento" />
+		    	
+		    	<p:outputLabel value="Diferença" for="diferenca" />
+		    	<p:inputText id="diferenca" disabled="true" value="#{fechamentoBean.fechamento.diferenca}">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="diferenca" />
+		    	
 		    	<p:outputLabel value="Justificativa" for="justificativa" />
 		    	<p:inputTextarea id="justificativa" value="#{fechamentoBean.fechamento.justificativa}" />
 		    	<p:message for="justificativa" />
 			 </h:panelGrid>
-			 Total: <h:outputText value="#{fechamentoBean.total}" id="total">
-			 	<f:convertNumber minFractionDigits="2"/>
-			 </h:outputText>
 			 <br/><br/>
 			 <p:commandButton ajax="false" value="Salvar" action="#{fechamentoBean.persist()}"/>
 		</fieldset>

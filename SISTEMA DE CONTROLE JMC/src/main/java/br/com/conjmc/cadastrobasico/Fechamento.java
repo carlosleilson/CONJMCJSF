@@ -25,7 +25,8 @@ public class Fechamento {
 	@Id @GeneratedValue
 	private Long id;
 	private double caixaInicial;
-	private double trocado;
+	private double trocadoDinheiro;
+	private double trocadoMoeda;
 	private double sangriaCaixa;
 	private double sangriaGastos;
 	private double dinheiro;
@@ -36,6 +37,9 @@ public class Fechamento {
 	private String justificativa;
 	private double receber;
 	private double cobrar;
+	private double caixaFinal;
+	private double totalFechamento;
+	private double diferenca;
 	
 	@Temporal(TemporalType.DATE)
 	private Date data;
@@ -68,14 +72,22 @@ public class Fechamento {
 		this.caixaInicial = caixaInicial;
 	}
 	
-	public double getTrocado() {
-		return trocado;
+	public double getTrocadoDinheiro() {
+		return trocadoDinheiro;
 	}
-	
-	public void setTrocado(double trocado) {
-		this.trocado = trocado;
+
+	public void setTrocadoDinheiro(double trocadoDinheiro) {
+		this.trocadoDinheiro = trocadoDinheiro;
 	}
-	
+
+	public double getTrocadoMoeda() {
+		return trocadoMoeda;
+	}
+
+	public void setTrocadoMoeda(double trocadoMoeda) {
+		this.trocadoMoeda = trocadoMoeda;
+	}
+
 	public double getSangriaCaixa() {
 		return sangriaCaixa;
 	}
@@ -187,6 +199,32 @@ public class Fechamento {
 	public void setData(Date data) {
 		this.data = data;
 	}
+
+	public double getCaixaFinal() {
+		return caixaFinal;
+	}
+
+	public void setCaixaFinal(double caixaFinal) {
+		this.caixaFinal = caixaFinal;
+	}
+
+	public double getTotalFechamento() {
+		return totalFechamento;
+	}
+
+	public void setTotalFechamento(double totalFechamento) {
+		this.totalFechamento = totalFechamento;
+	}
+
+	public double getDiferenca() {
+		return diferenca;
+	}
+
+	public void setDiferenca(double diferenca) {
+		this.diferenca = diferenca;
+	}
+
+
 
 	//DAO
 	@PersistenceContext

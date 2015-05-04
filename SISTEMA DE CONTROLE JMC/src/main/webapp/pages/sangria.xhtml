@@ -9,7 +9,7 @@
 	<ui:define name="title">
 		<title>Sangrias</title>
 	</ui:define>
-  <!-- <ui:define name="content">
+  <ui:define name="content">
     <h:form prependId="false" id="growlForm">
       <p:growl id="growl" showDetail="false" />
     </h:form>
@@ -39,15 +39,6 @@
           	<p:message for="valor"/>
           	<span></span>
           	
-          	<p:outputLabel value="Origem" for="origem"/>
-          	<p:selectOneMenu id="origem" value="#{sangriaBean.sangria.origem}" required="true" requiredMessage="A origem é obrigatório">
-          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
-          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
-          	</p:selectOneMenu>
-          	<p:message for="origem"/>
-          	<span></span>
-          	
           	<p:outputLabel value="Itens" for="itens"/>
           	<p:selectOneMenu id="itens" value="#{sangriaBean.sangria.item}" converter="despesasGastosConverter" required="true" requiredMessage="O item é obrigatório" filter="true">
           		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
@@ -57,6 +48,16 @@
           	</p:selectOneMenu>
        		<h:outputText id="classific" value="#{sangriaBean.sangria.item.classificacao.descricao}" style="color:red;"/>
           	<p:message for="itens"/>
+          	
+          	<p:outputLabel value="Origem" for="origem"/>
+          	<p:selectOneMenu id="origem" value="#{sangriaBean.sangria.origem}" required="true" requiredMessage="A origem é obrigatório">
+          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
+          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
+          		<p:ajax event="change" update="optionBanco" />
+          	</p:selectOneMenu>
+          	<p:message for="origem"/>
+          	<span></span>
           </h:panelGrid>
           <h:panelGrid id="funcionarioGrid" columns="3">
 	          	<p:outputLabel value="Funcionario" for="funcionario" rendered="#{sangriaBean.sangria.item.despesaPessoal == true}"/>
@@ -66,7 +67,17 @@
 	          			itemLabel="#{func.apelido}" itemValue="#{func}" />
 	          	</p:selectOneMenu>
 	          	<p:message for="funcionario"/>
-          	</h:panelGrid>
+          </h:panelGrid>
+          <h:panelGrid id="optionBanco" >
+				<h:panelGrid columns="3" rendered="#{sangriaBean.sangria.origem == 'SANGRIA CAIXA'}">
+					<p:outputLabel value="Turno" for="turno" />
+					<p:selectOneMenu id="turno" value="#{sangriaBean.sangria.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
+						<f:selectItem itemLabel="Selecione um turno" itemValue="" />
+						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
+					</p:selectOneMenu>
+					<p:message for="turno"/>
+				</h:panelGrid>
+			</h:panelGrid>
           	<br/>
           <p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" actionListener="#{sangriaBean.validarSangria()}" action="#{sangriaBean.persistCofirmation()}" />
     	</fieldset>
@@ -99,7 +110,7 @@
 	          	<p:column headerText="Funcionario" sortBy="#{sang.funcionario.apelido}">
 	          		<h:outputText value="#{sang.funcionario.apelido}"/>
 	          	</p:column>
-	          
+	          <ui:remove>
 	          <p:column headerText="Ações" styleClass="action-column" style="width:40px;">
 	            <p:commandButton id="viewButton" icon="ui-icon-zoomin" update=":viewForm:viewPanelGrid" oncomplete="viewDialogWidget.show()" title="#{messages.label_view}">
 	              <f:setPropertyActionListener value="#{sangria}" target="#{sangriaBean.sangria}" />
@@ -114,7 +125,9 @@
 					<f:setPropertyActionListener value="#{sang}" target="#{sangriaBean.sangria}" />
 				</p:commandButton>
 	          </p:column>
+	          </ui:remove>
 	        </p:dataTable>
+	        <ui:remove>
 	        <p:confirmDialog id="excluir" header="Excluir Cargo" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
 				<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{sangriaBean.delete}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
 				<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
@@ -123,7 +136,8 @@
 				<p:commandButton id="optionSin" value="Sim" oncomplete="PF('duplicate').hide()" action="#{sangriaBean.persist()}" update=":dataForm:list :growlForm:growl" onclick="confirmation.hide()" />
 				<p:commandButton id="optionNao" value="Não" onclick="PF('duplicate').hide()" type="button"/>
 			</p:confirmDialog>
+			</ui:remove>
 	       </h:form>
-  </ui:define> -->
+  </ui:define>
 </ui:composition>
 </html>

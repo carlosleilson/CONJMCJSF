@@ -50,7 +50,7 @@ public class EntregasBean implements Serializable {
         	HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();    
         	Fechamento fechamento = (Fechamento) request.getSession(true).getAttribute("fechamento");    
         	controle.setLoja(ObejctSession.loja());
-        	controle.setStatus(Status.PENDENTE);
+        	controle.setStatus(Status.COBRAR);
     		controle.setData(new Date());
     		controle.setFechamento(fechamento);
         	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {

@@ -81,11 +81,11 @@ public class FechamentoBean {
 	}
 
 	private void totalContasReceber(){
-		fechamento.setReceber(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 0));
+		fechamento.setReceber(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 1));
 	}
 	
 	private void totalContasCobrar(){
-		fechamento.setCobrar(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 1));
+		fechamento.setCobrar(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 0));
 	}
 	
 	private void totalDespespas() {

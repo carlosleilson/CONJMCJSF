@@ -42,6 +42,8 @@ public class ControleValoresPendentes implements Serializable {
 	
 	private Double valor;
 	
+	private boolean baixado;
+	
 	private boolean ativo;
 	
 	@Enumerated
@@ -152,6 +154,16 @@ public class ControleValoresPendentes implements Serializable {
 		this.loja = loja;
 	}
 
+	public boolean isBaixado() {
+		return baixado;
+	}
+
+	public void setBaixado(boolean baixado) {
+		this.baixado = baixado;
+	}
+
+
+
 	// DAO
 	@PersistenceContext
     transient EntityManager entityManager;
@@ -253,8 +265,8 @@ public class ControleValoresPendentes implements Serializable {
         return merged;
     }
 	
-	public Double TotalContasPendentes(Date data,Turno turno, int tipoPagamento){
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ControleValoresPendentes o WHERE data=:data and tipoPagamento="+tipoPagamento+"and loja=:loja and turno="+turno.ordinal(), Double.class);
+	public Double TotalContasPendentes(Date data,Turno turno, int status){
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ControleValoresPendentes o WHERE data=:data and status="+status+"and loja=:loja and turno="+turno.ordinal(), Double.class);
 		query.setParameter("data", data);
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;

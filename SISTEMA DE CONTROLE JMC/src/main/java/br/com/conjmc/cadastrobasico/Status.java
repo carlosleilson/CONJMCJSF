@@ -2,10 +2,8 @@ package br.com.conjmc.cadastrobasico;
 
 public enum Status {
 
-    PENDENTE ("Pendente"),
-    RECEBER ("A Receber"),
-    BAIXADO ("Baixado");
-    /* BAIXADO_DIF ("Baixado DIF"); */
+    COBRAR ("A Cobrar"),
+    RECEBER ("A Receber");
     
     private String label;
     

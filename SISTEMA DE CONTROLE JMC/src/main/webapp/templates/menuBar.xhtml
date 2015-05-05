@@ -45,7 +45,7 @@
 				url="#{pageContext.servletContext.contextPath}/pages/diaria.xhtml"
 				disabled="true"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
-			<p:menuitem value="Sangria" disabled="true"
+			<p:menuitem value="Sangria" disabled="false"
 				url="#{pageContext.servletContext.contextPath}/pages/sangria.xhtml"
 				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
 			<p:submenu label="Controle de Valores Pendentes"

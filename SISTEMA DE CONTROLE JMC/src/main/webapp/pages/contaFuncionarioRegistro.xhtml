@@ -89,12 +89,50 @@
 					required="true" requiredMessage="As parcelas são obrigatório" />
 				<p:message for="parcela" />
 				<p:outputLabel value="" />
-
+				
+				<p:outputLabel value="Origem" for="origem"/>
+	          	<p:selectOneMenu id="origem" value="#{contaUsuarioRegistroBean.contaFuncionario.origemPagamento}" required="true" requiredMessage="A origem é obrigatório">
+	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+	          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
+	          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
+	          		<f:selectItem itemLabel="BANCO" itemValue="BANCO"/>
+	          		<p:ajax event="change" update="optionBanco" />
+	          	</p:selectOneMenu>
+	          	<p:message for="origem"/>
 			</h:panelGrid>
+			<h:panelGrid id="optionBanco" >
+				<h:panelGrid columns="3" rendered="#{contaUsuarioRegistroBean.contaFuncionario.origemPagamento == 'SANGRIA CAIXA'}">
+					<p:outputLabel value="Turno" for="turno" />
+					<p:selectOneMenu id="turno" value="#{contaUsuarioRegistroBean.contaFuncionario.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
+						<f:selectItem itemLabel="Selecione um turno" itemValue="" />
+						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
+					</p:selectOneMenu>
+					<p:message for="turno"/>
+				</h:panelGrid>
+				<h:panelGrid columns="3" rendered="#{contaUsuarioRegistroBean.contaFuncionario.origemPagamento == 'BANCO'}">
+				 	<p:outputLabel value="Banco" for="banco"/>
+		          	<p:selectOneMenu id="banco" value="#{contaUsuarioRegistroBean.contaFuncionario.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
+		          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
+		          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
+		          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
+		          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>
+		          		<f:selectItem itemLabel="Caixa" itemValue="Caixa"/>
+		          		<f:selectItem itemLabel="HSBC" itemValue="HSBC"/>
+		          		<f:selectItem itemLabel="ITAU" itemValue="ITAU"/>
+		          		<f:selectItem itemLabel="Santander" itemValue="Santander"/>
+		          	</p:selectOneMenu>
+		          	<p:message for="banco"/>	
+		          	
+				 	<p:outputLabel value="Detalhe do Banco" for="dbanco" />
+		          	<p:inputTextarea id="dbanco" value="#{contaUsuarioBean.contaFuncionario.detalhamentoBanco}" required="true" requiredMessage="O valor é obrigatório"/>
+		          	<p:message for="dbanco"/>
+		          </h:panelGrid>
+	          </h:panelGrid>
 			<br />
 			<p:commandButton id="createSaveButton" value="#{messages.label_save}"
 				action="#{contaUsuarioRegistroBean.persist}"
 				oncomplete="PF('dlgRegistroContaFuncionario').show()"
+				ajax="false"
 				update=":adicionarRegistroForm:funcionarioGrid :dataListFucionarios:listFucionarios" />
 			<p:commandButton id="createCloseButton"
 				value="#{messages.label_close}"

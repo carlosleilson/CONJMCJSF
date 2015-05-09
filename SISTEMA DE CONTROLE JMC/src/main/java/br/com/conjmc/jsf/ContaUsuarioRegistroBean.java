@@ -2,7 +2,6 @@ package br.com.conjmc.jsf;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,10 +12,11 @@ import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.CloseEvent;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.DespesasGastos;
@@ -33,7 +33,8 @@ import br.com.conjmc.valueobject.FuncionarioVO;
 import br.com.conjmc.valueobject.ItensFuncionarioVO;
 
 @ManagedBean(name = "contaUsuarioRegistroBean")
-@ViewScoped
+@SessionScoped
+@Configurable
 public class ContaUsuarioRegistroBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date dataInicial;

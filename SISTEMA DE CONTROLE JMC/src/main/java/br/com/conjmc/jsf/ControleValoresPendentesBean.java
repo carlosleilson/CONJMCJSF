@@ -54,6 +54,7 @@ public class ControleValoresPendentesBean implements Serializable {
         	controle.setLoja(ObejctSession.loja());
         	controle.setData(new Date());
         	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
+        		controle.setBaixado(false);
         		controle.persist();
         		message = "message_successfully_created";
         		FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
@@ -68,13 +69,18 @@ public class ControleValoresPendentesBean implements Serializable {
     }
 
 	public String delete() {
-		controle.setAtivo(false);
-		controle.merge();
+		controle.remove();
 		FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "ControleValoresPendentes");
 	    FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 	    init();
         return "controleValores.xhtml";
     }
+	
+	public void baixarPedido(){
+		controle.setBaixado(true);
+		controle.merge();
+		init();
+	}
 	
 	public void filtrar() {
 		controles = controle.findByControleValores(controleFilter);

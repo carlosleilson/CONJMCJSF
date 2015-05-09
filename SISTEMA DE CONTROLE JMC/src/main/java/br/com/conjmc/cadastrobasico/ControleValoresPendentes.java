@@ -190,7 +190,7 @@ public class ControleValoresPendentes implements Serializable {
 	}
 
 	public static List<ControleValoresPendentes> findAllControleValoresPendenteses() {
-		Query query = entityManager().createQuery("SELECT o FROM ControleValoresPendentes o where o.ativo=true and o.data=:data order by o.id desc", ControleValoresPendentes.class);
+		Query query = entityManager().createQuery("SELECT o FROM ControleValoresPendentes o where o.ativo=true and o.data=:data and o.baixado=false order by o.id desc", ControleValoresPendentes.class);
 		query.setParameter("data", new Date());
 		return query.getResultList();
     }
@@ -323,8 +323,8 @@ public class ControleValoresPendentes implements Serializable {
 			predicates.add(cb.and(cb.equal(status, controlePendentes.status)));
 		}
 		
-		Path<String> ativo = root.get("ativo");
-		predicates.add(cb.and(cb.equal(ativo, true)));
+		Path<String> baixado = root.get("baixado");
+		predicates.add(cb.and(cb.equal(baixado, false)));
 				
 		Path<String> loja = root.get("loja");
 		predicates.add(cb.and(cb.equal(loja, ObejctSession.idLoja())));

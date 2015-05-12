@@ -90,6 +90,8 @@
 			<p:menuitem value="Despesas"
 				url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioDespesa.xhtml" />
 		</p:submenu>
+		<p:menuitem ajax="false" value="Calculadora" 
+			actionListener="#{calculadoraWindows.calculadora()}"/>
 		<p:menuitem ajax="false" value="Sair"
 			url="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_logout" />
 	</p:menubar>

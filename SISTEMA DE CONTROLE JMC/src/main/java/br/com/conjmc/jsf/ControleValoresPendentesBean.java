@@ -52,7 +52,7 @@ public class ControleValoresPendentesBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, facesMessage);
         } else {
         	controle.setLoja(ObejctSession.loja());
-        	controle.setData(new Date());
+        	/*controle.setData(new Date());*/
         	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
         		controle.setBaixado(false);
         		controle.persist();

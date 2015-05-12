@@ -117,6 +117,11 @@
 	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
 	          		</h:outputText>
 	          	</p:column>
+	          	<p:column headerText="Pagamento" sortBy="#{contaPendente.dataPagamento}">
+	          		<h:outputText value="#{contaPendente.dataPagamento}">
+	          			<f:convertDateTime pattern="dd/MM/yyyy"/>
+	          		</h:outputText>
+	          	</p:column>
 	          	<p:column headerText="Status">
 	          		<h:outputText value="Paga" rendered="#{not empty contaPendente.dataPagamento}" />
 	          		<h:outputText value="Pendente" rendered="#{empty contaPendente.dataPagamento}"/>

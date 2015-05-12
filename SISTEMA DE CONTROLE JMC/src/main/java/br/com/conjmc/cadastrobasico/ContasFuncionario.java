@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -87,6 +88,19 @@ public class ContasFuncionario implements Serializable {
 	@NotNull
 	private Double valor;
 
+	// Pagamento
+	@Enumerated
+	private Turno turno;	
+	
+	private String detalhamentoBanco;
+	
+	private String tipoPagamento;
+	
+	private String banco;
+	
+	private String origemPagamento;
+	
+	//Generate Getters and Setters
 	public Long getId() {
 		return id;
 	}
@@ -142,6 +156,48 @@ public class ContasFuncionario implements Serializable {
 	public void setParcela(Integer parcela) {
 		this.parcela = parcela;
 	}
+
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
+	}
+
+	public String getDetalhamentoBanco() {
+		return detalhamentoBanco;
+	}
+
+	public void setDetalhamentoBanco(String detalhamentoBanco) {
+		this.detalhamentoBanco = detalhamentoBanco;
+	}
+
+	public String getTipoPagamento() {
+		return tipoPagamento;
+	}
+
+	public void setTipoPagamento(String tipoPagamento) {
+		this.tipoPagamento = tipoPagamento;
+	}
+
+	public String getBanco() {
+		return banco;
+	}
+
+	public void setBanco(String banco) {
+		this.banco = banco;
+	}
+
+	public String getOrigemPagamento() {
+		return origemPagamento;
+	}
+
+	public void setOrigemPagamento(String origemPagamento) {
+		this.origemPagamento = origemPagamento;
+	}
+
+
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -340,6 +396,20 @@ public class ContasFuncionario implements Serializable {
 		query.setParameter("funcionario", empregado);
 		query.setParameter("loja", ObejctSession.idLoja());
 		return query.getResultList();
+	}
+	
+	public Double TotalDespesa(Date data,Turno turno, String origem){
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ContasFuncionario o WHERE periodo=:data and origem=:origem and loja=:loja and turno="+turno.ordinal(), Double.class);
+		query.setParameter("data", data);
+		query.setParameter("origem", origem);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
 	}
 
 	@Override

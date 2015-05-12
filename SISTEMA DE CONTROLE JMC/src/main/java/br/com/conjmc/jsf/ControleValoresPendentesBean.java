@@ -43,7 +43,7 @@ public class ControleValoresPendentesBean implements Serializable {
 		controles = controle.findAllControleValoresPendenteses();
 	}
 	
-	public String persist() {
+	public void persist() {
         String message = "";
         if (controle.getId() != null) {
         	controle.merge();
@@ -65,7 +65,7 @@ public class ControleValoresPendentesBean implements Serializable {
         	}
         }
         init();
-        return "controleValores.xhtml";
+        /*return "controleValores.xhtml";*/
     }
 
 	public String delete() {

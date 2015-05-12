@@ -30,7 +30,7 @@ public class ControleDiarioBean {
 	}
 	
 	public void carregarDespesas() {
-		sangrias = new Sangria().findSangrias(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA"); 
+		//sangrias = new Sangria().findSangrias(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA"); 
 	}
 	
 	public void carregarControleValoresCobrar() {

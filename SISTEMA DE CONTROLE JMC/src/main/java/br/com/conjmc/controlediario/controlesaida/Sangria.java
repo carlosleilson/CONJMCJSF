@@ -476,10 +476,10 @@ public class Sangria implements Serializable{
 	
 	//Soma para o faturamento
 	public Double TotalDespesa(Date data,Turno turno, String origem, boolean sangria){
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria o WHERE periodo=:data and origem=:origem and sangria=:sangira and loja=:loja and turno="+turno.ordinal(), Double.class);
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria o WHERE periodo=:data and origem=:origem and loja=:loja and turno="+turno.ordinal(), Double.class);
 		query.setParameter("data", data);
 		query.setParameter("origem", origem);
-		query.setParameter("sangria", sangria);
+		//query.setParameter("sangria", sangria);
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;
 		try {

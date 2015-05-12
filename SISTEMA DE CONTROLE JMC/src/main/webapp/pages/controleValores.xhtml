@@ -111,6 +111,10 @@
 	    	<fieldset>
 	    		<legend>Controle de Valores Pendentes</legend>
 			    <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+			    	<p:outputLabel value="Data" for="dataPedido" />
+			    	<p:calendar id="dataPedido" value="#{controleValoresPendentesBean.controle.data}" pattern="dd/MM/yyyy" required="true" requiredMessage="A data não pode ser nula" />
+			    	<p:message for="dataPedido" />
+			    
 			    	<p:outputLabel value="Nº pedido" for="pedido" />
 			    	<p:inputText id="pedido" value="#{controleValoresPendentesBean.controle.numeroPedido}" required="true" requiredMessage="O Nº do pedido não pode ser nulo" />
 			    	<p:message for="pedido" />

@@ -82,19 +82,19 @@ public class FechamentoBean {
 	}
 
 	private void totalContasReceber(){
-		fechamento.setReceber(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 0));
+		fechamento.setReceber(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 1));
 	}
 	
 	private void totalContasCobrar(){
-		fechamento.setCobrar(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 1));
+		fechamento.setCobrar(new ControleValoresPendentes().TotalContasPendentes(fechamento.getData(), fechamento.getTurno(), 0));
 	}
 	
 	private void totalDespespas() {
 		double sangriaGastos = 0;
 		sangriaGastos += new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA", true);
-		sangriaGastos += new ContasFuncionario().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA");
+		//sangriaGastos += new ContasFuncionario().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA");
 		fechamento.setSangriaGastos(sangriaGastos);
-		fechamento.setSangriaCaixa(new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA", false));
+		//fechamento.setSangriaCaixa(new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA", false));
 		
 	}
 

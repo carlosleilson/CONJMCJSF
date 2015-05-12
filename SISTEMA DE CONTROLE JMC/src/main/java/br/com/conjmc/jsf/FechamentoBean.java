@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
@@ -89,7 +90,12 @@ public class FechamentoBean {
 	}
 	
 	private void totalDespespas() {
-		fechamento.setSangriaGastos(new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA"));
+		double sangriaGastos = 0;
+		sangriaGastos += new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA", true);
+		sangriaGastos += new ContasFuncionario().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA");
+		fechamento.setSangriaGastos(sangriaGastos);
+		fechamento.setSangriaCaixa(new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA", false));
+		
 	}
 
 	//Getters and Setters

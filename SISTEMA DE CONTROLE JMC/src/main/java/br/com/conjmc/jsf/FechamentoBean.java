@@ -62,8 +62,9 @@ public class FechamentoBean {
 		total += fechamento.getCredito();
 		total += fechamento.getTicket();
 		total += fechamento.getCheque();
-		//total += fechamento.getReceber();
-		//total += fechamento.getCobrar();
+		total += fechamento.getReceber();
+		total += fechamento.getCobrar();
+		total += fechamento.getCaixaFinal();
 		fechamento.setTotalFechamento(total);
 		fechamento.setDiferenca(totalDiferenca + total);
 	}

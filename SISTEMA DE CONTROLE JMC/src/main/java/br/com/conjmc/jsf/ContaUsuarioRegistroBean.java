@@ -326,6 +326,11 @@ public class ContaUsuarioRegistroBean implements Serializable {
 		cadastro.setFuncionario(contaFuncionarioTmp.getFuncionario());
 		cadastro.setItem(contaFuncionarioTmp.getItem());
 		cadastro.setLoja(contaFuncionarioTmp.getLoja());
+		cadastro.setOrigemPagamento(contaFuncionarioTmp.getOrigemPagamento());
+		cadastro.setTurno(contaFuncionarioTmp.getTurno());
+		cadastro.setBanco(contaFuncionarioTmp.getBanco());
+		cadastro.setDetalhamentoBanco(contaFuncionarioTmp.getDetalhamentoBanco());
+		
 		if(contaFuncionarioTmp.getItem().getSalario()){
 			//defini q salario é credito.
 			cadastro.setOrigem(false);

@@ -66,7 +66,7 @@
 				<h:panelGrid columns="3" rendered="#{contasBean.origem == 'BANCO'}">
 				 	<p:outputLabel value="Banco" for="banco"/>
 		          	<p:selectOneMenu id="banco" value="#{contasBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
-		          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
+		          		<!-- <f:selectItem itemLabel="Selecione um banco" itemValue=""/> -->
 		          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
 		          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
 		          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>

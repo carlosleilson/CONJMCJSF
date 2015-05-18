@@ -52,7 +52,11 @@ public class ContasBean {
 	            message = "message_successfully_updated";
 	        } else {
 	        	conta.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-	        	conta.persist();        	
+	        	conta.persist();
+	        	ContasPendentesBean contas = (ContasPendentesBean) ObejctSession.getObjectSession("contasPendentesBean");
+	        	if(contas != null) {
+	        		contas.carregarContas();	        		
+	        	}
 	            message = "message_successfully_created";
 	        }
 	        if(pagarAgora == false) {

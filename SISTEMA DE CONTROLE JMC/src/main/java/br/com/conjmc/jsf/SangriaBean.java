@@ -129,7 +129,7 @@ public class SangriaBean implements Serializable  {
         columns.add("valor");
         columns.add("origem");
         sangria = new Sangria();
-        sangria.setPeriodo(new Date());
+        /*sangria.setPeriodo(new Date());*/
         findAllSangrias();
         findAllDespesaLoja();
         dataAtual = DataUltil.dataAtual();

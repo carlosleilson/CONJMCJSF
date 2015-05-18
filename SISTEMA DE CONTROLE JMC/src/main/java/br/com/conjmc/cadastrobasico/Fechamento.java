@@ -24,23 +24,23 @@ public class Fechamento {
 	
 	@Id @GeneratedValue
 	private Long id;
-	private double caixaInicial;
-	private double trocadoDinheiro;
-	private double trocadoMoeda;
-	private double sangriaCaixa;
-	private double sangriaGastos;
-	private double dinheiro;
-	private double trocado;
-	private double moeda;
-	private double cartao;
-	private double web;
-	private double cheque;
+	private Double caixaInicial;
+	private Double trocadoDinheiro;
+	private Double trocadoMoeda;
+	private Double sangriaCaixa;
+	private Double sangriaGastos;
+	private Double dinheiro;
+	private Double trocado;
+	private Double moeda;
+	private Double cartao;
+	private Double web;
+	private Double cheque;
 	private String justificativa;
-	private double receber;
-	private double cobrar;
-	private double caixaFinal;
-	private double totalFechamento;
-	private double diferenca;
+	private Double receber;
+	private Double cobrar;
+	private Double caixaFinal;
+	private Double totalFechamento;
+	private Double diferenca;
 	
 	@Temporal(TemporalType.DATE)
 	private Date data;
@@ -65,59 +65,59 @@ public class Fechamento {
 		this.id = id;
 	}
 	
-	public double getCaixaInicial() {
+	public Double getCaixaInicial() {
 		return caixaInicial;
 	}
 	
-	public void setCaixaInicial(double caixaInicial) {
+	public void setCaixaInicial(Double caixaInicial) {
 		this.caixaInicial = caixaInicial;
 	}
 	
-	public double getTrocadoDinheiro() {
+	public Double getTrocadoDinheiro() {
 		return trocadoDinheiro;
 	}
 
-	public void setTrocadoDinheiro(double trocadoDinheiro) {
+	public void setTrocadoDinheiro(Double trocadoDinheiro) {
 		this.trocadoDinheiro = trocadoDinheiro;
 	}
 
-	public double getTrocadoMoeda() {
+	public Double getTrocadoMoeda() {
 		return trocadoMoeda;
 	}
 
-	public void setTrocadoMoeda(double trocadoMoeda) {
+	public void setTrocadoMoeda(Double trocadoMoeda) {
 		this.trocadoMoeda = trocadoMoeda;
 	}
 
-	public double getSangriaCaixa() {
+	public Double getSangriaCaixa() {
 		return sangriaCaixa;
 	}
 	
-	public void setSangriaCaixa(double sangriaCaixa) {
+	public void setSangriaCaixa(Double sangriaCaixa) {
 		this.sangriaCaixa = sangriaCaixa;
 	}
 	
-	public double getSangriaGastos() {
+	public Double getSangriaGastos() {
 		return sangriaGastos;
 	}
 	
-	public void setSangriaGastos(double sangriaGastos) {
+	public void setSangriaGastos(Double sangriaGastos) {
 		this.sangriaGastos = sangriaGastos;
 	}
 	
-	public double getDinheiro() {
+	public Double getDinheiro() {
 		return dinheiro;
 	}
 	
-	public void setDinheiro(double dinheiro) {
+	public void setDinheiro(Double dinheiro) {
 		this.dinheiro = dinheiro;
 	}
 	
-	public double getCheque() {
+	public Double getCheque() {
 		return cheque;
 	}
 	
-	public void setCheque(double cheque) {
+	public void setCheque(Double cheque) {
 		this.cheque = cheque;
 	}
 	
@@ -137,19 +137,19 @@ public class Fechamento {
 		this.loja = loja;
 	}
 
-	public double getReceber() {
+	public Double getReceber() {
 		return receber;
 	}
 
-	public void setReceber(double receber) {
+	public void setReceber(Double receber) {
 		this.receber = receber;
 	}
 
-	public double getCobrar() {
+	public Double getCobrar() {
 		return cobrar;
 	}
 
-	public void setCobrar(double cobrar) {
+	public void setCobrar(Double cobrar) {
 		this.cobrar = cobrar;
 	}
 
@@ -177,59 +177,59 @@ public class Fechamento {
 		this.data = data;
 	}
 
-	public double getCaixaFinal() {
+	public Double getCaixaFinal() {
 		return caixaFinal;
 	}
 
-	public void setCaixaFinal(double caixaFinal) {
+	public void setCaixaFinal(Double caixaFinal) {
 		this.caixaFinal = caixaFinal;
 	}
 
-	public double getTotalFechamento() {
+	public Double getTotalFechamento() {
 		return totalFechamento;
 	}
 
-	public void setTotalFechamento(double totalFechamento) {
+	public void setTotalFechamento(Double totalFechamento) {
 		this.totalFechamento = totalFechamento;
 	}
 
-	public double getDiferenca() {
+	public Double getDiferenca() {
 		return diferenca;
 	}
 
-	public void setDiferenca(double diferenca) {
+	public void setDiferenca(Double diferenca) {
 		this.diferenca = diferenca;
 	}
 
-	public double getTrocado() {
+	public Double getTrocado() {
 		return trocado;
 	}
 
-	public void setTrocado(double trocado) {
+	public void setTrocado(Double trocado) {
 		this.trocado = trocado;
 	}
 
-	public double getMoeda() {
+	public Double getMoeda() {
 		return moeda;
 	}
 
-	public void setMoeda(double moeda) {
+	public void setMoeda(Double moeda) {
 		this.moeda = moeda;
 	}
 
-	public double getCartao() {
+	public Double getCartao() {
 		return cartao;
 	}
 
-	public void setCartao(double cartao) {
+	public void setCartao(Double cartao) {
 		this.cartao = cartao;
 	}
 
-	public double getWeb() {
+	public Double getWeb() {
 		return web;
 	}
 
-	public void setWeb(double web) {
+	public void setWeb(Double web) {
 		this.web = web;
 	}
 

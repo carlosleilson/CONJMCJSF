@@ -30,9 +30,10 @@ public class Fechamento {
 	private double sangriaCaixa;
 	private double sangriaGastos;
 	private double dinheiro;
-	private double debito;
-	private double credito;
-	private double ticket;
+	private double trocado;
+	private double moeda;
+	private double cartao;
+	private double web;
 	private double cheque;
 	private String justificativa;
 	private double receber;
@@ -110,30 +111,6 @@ public class Fechamento {
 	
 	public void setDinheiro(double dinheiro) {
 		this.dinheiro = dinheiro;
-	}
-	
-	public double getDebito() {
-		return debito;
-	}
-	
-	public void setDebito(double debito) {
-		this.debito = debito;
-	}
-	
-	public double getCredito() {
-		return credito;
-	}
-	
-	public void setCredito(double credito) {
-		this.credito = credito;
-	}
-	
-	public double getTicket() {
-		return ticket;
-	}
-	
-	public void setTicket(double ticket) {
-		this.ticket = ticket;
 	}
 	
 	public double getCheque() {
@@ -224,7 +201,37 @@ public class Fechamento {
 		this.diferenca = diferenca;
 	}
 
+	public double getTrocado() {
+		return trocado;
+	}
 
+	public void setTrocado(double trocado) {
+		this.trocado = trocado;
+	}
+
+	public double getMoeda() {
+		return moeda;
+	}
+
+	public void setMoeda(double moeda) {
+		this.moeda = moeda;
+	}
+
+	public double getCartao() {
+		return cartao;
+	}
+
+	public void setCartao(double cartao) {
+		this.cartao = cartao;
+	}
+
+	public double getWeb() {
+		return web;
+	}
+
+	public void setWeb(double web) {
+		this.web = web;
+	}
 
 	//DAO
 	@PersistenceContext

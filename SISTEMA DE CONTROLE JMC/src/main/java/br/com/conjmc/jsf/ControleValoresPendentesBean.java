@@ -12,6 +12,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
+import br.com.conjmc.cadastrobasico.Fechamento;
+import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Status;
 import br.com.conjmc.cadastrobasico.TipoPagamento;
 import br.com.conjmc.cadastrobasico.Turno;

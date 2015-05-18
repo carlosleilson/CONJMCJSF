@@ -17,7 +17,7 @@
 	    <h:form id="filtro">
 	    	<div class="gridFunc">	
 	          <h:panelGrid id="createPanelGrid1" columns="2" styleClass="dialog">
-	    		<p:outputLabel value="De" for="dataInicial" />
+	    		<p:outputLabel value="Data de vencimento de" for="dataInicial" />
 		    	<p:calendar id="dataInicial" value="#{contasPendentesBean.contaFiltro.dataPagamento}" pattern="dd/MM/yyyy" required="true"/>
 		    	
 		    	<p:outputLabel value="Até" for="dataFinal" />
@@ -81,7 +81,7 @@
 				<h:panelGrid columns="3" rendered="#{contasPendentesBean.origem == 'BANCO'}">
 				 	<p:outputLabel value="Banco" for="banco"/>
 		          	<p:selectOneMenu id="banco" value="#{contasPendentesBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">
-		          		<f:selectItem itemLabel="Selecione um banco" itemValue=""/>
+		          		<!-- <f:selectItem itemLabel="Selecione um banco" itemValue=""/> -->
 		          		<f:selectItem itemLabel="Banco do Brasil" itemValue="Banco do Brasil"/>
 		          		<f:selectItem itemLabel="BRB" itemValue="BRB"/>
 		          		<f:selectItem itemLabel="Bradesco" itemValue="Bradesco"/>

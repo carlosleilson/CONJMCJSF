@@ -399,7 +399,7 @@ public class ContasFuncionario implements Serializable {
 	}
 	
 	public Double TotalDespesa(Date data,Turno turno, String origem){
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ContasFuncionario o WHERE periodo=:data and origem=:origem and loja=:loja and turno="+turno.ordinal(), Double.class);
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ContasFuncionario o WHERE periodo=:data and origemPagamento=:origem and loja=:loja and turno="+turno.ordinal(), Double.class);
 		query.setParameter("data", data);
 		query.setParameter("origem", origem);
 		query.setParameter("loja", ObejctSession.loja());

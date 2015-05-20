@@ -154,6 +154,14 @@ public class FechamentoBean {
         calcularContas();
         /*return "controleValores.xhtml";*/
     }
+	
+	public String limpar() {
+		fechamento = new Fechamento();
+		controle = new ControleValoresPendentes();
+		totalCaixaInical = 0.0;
+		saldo = 0.0;
+		return "fechamento.xhtml";
+	}
 
 	//Getters and Setters
 	public Fechamento getFechamento() {

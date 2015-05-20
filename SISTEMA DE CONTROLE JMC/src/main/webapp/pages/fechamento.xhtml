@@ -156,7 +156,8 @@
 		    	<p:message for="justificativa" />
 			 </h:panelGrid>
 			 <br/><br/>
-			 <p:commandButton ajax="false" value="Salvar" action="#{fechamentoBean.persist()}"/>
+			 <p:commandButton ajax="false" value="Salvar" action="#{fechamentoBean.persist()}"/>&#160;&#160;
+			 <p:commandButton value="Limpar" ajax="false" immediate="true" action="#{fechamentoBean.limpar()}"/>
 		</fieldset>
     </h:form>
     

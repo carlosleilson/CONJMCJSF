@@ -35,8 +35,8 @@ $(document).ready(function() {
 	$(".money").maskMoney({
 		symbol : 'R$',
 		decimal : ',',
-		precision : 1,
-		thousands : ',',
+		precision : 2,
+		thousands : '.',
 		allowZero : true,
 		showSymbol : false
 	});

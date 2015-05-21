@@ -79,6 +79,7 @@ public class FechamentoBean {
 		total += fechamento.getDinheiro();
 		total += fechamento.getMoeda();
 		total += fechamento.getTrocado();
+		total += fechamento.getPorcentagem();
 		total += fechamento.getCheque();
 		total += fechamento.getReceber();
 		total += fechamento.getCobrar();

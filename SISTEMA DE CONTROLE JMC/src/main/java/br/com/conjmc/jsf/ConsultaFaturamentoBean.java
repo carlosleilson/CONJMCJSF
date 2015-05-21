@@ -9,9 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
-import br.com.conjmc.cadastrobasico.ItemFaturamentoDescricao;
 import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.jsf.util.MessageFactory;
 
@@ -41,9 +39,6 @@ public class ConsultaFaturamentoBean {
 			if(faturamentos.get(i).getValor() < 0){
 				faturamentos.get(i).setValor(faturamentos.get(i).getValor() * (-1));
 			}
-		}
-		for (ItemFaturamento fat : faturamentos) {
-		
 		}
 		return "consultaFaturamento.xhtml";
 	}

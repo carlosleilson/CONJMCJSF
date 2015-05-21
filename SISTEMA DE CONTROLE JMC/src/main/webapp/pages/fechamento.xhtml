@@ -86,6 +86,13 @@
 		    	</p:inputText>
 		    	<p:message for="saldo" />
 		    	
+		    	<p:outputLabel value="valor de 10%" for="porcentagem" />
+		    	<p:inputText id="porcentagem" value="#{fechamentoBean.fechamento.porcentagem}" styleClass="money" required="true" requiredMessage="A porcentagem não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
+		    	</p:inputText>
+		    	<p:message for="porcentagem" />
+		    	
 		    	<p:outputLabel value="Web" for="web" />
 		    	<p:inputText id="web" value="#{fechamentoBean.fechamento.web}" styleClass="money" required="true" requiredMessage="A Web não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>

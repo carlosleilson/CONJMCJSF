@@ -72,6 +72,9 @@ public class ItemFaturamentoDescricaoBean {
 		ItemFaturamento ifaturamento = new ItemFaturamento();
 		if(ifaturamento.validarFaturamento(data, turno) < 1){
 			for (ItemFaturamento item : itemFaturamentoNovo) {
+				if(item.getFaturamentoDescricao().getItem().equals("Desconto")) {
+					item.setValor(item.getValor() * (-1));
+				}
 				item.setPeriodo(data);
 				item.setTurno(turno);
 				item.persist();

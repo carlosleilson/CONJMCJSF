@@ -32,6 +32,7 @@ public class Fechamento {
 	private double dinheiro;
 	private double trocado;
 	private double moeda;
+	private double porcentagem;
 	private double cartao;
 	private double web;
 	private double cheque;
@@ -231,6 +232,14 @@ public class Fechamento {
 
 	public void setWeb(double web) {
 		this.web = web;
+	}	
+
+	public double getPorcentagem() {
+		return porcentagem;
+	}
+
+	public void setPorcentagem(double porcentagem) {
+		this.porcentagem = porcentagem;
 	}
 
 	//DAO

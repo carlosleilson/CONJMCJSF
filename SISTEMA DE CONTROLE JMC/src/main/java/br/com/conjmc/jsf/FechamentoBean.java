@@ -14,6 +14,7 @@ import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.controlediario.controlesaida.Sangria2015;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
@@ -91,6 +92,8 @@ public class FechamentoBean {
 	}
 	
 	public void calcularContas(){
+		fechamento.setTrocadoDinheiro(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Trocado", fechamento.getTurno()));
+		fechamento.setTrocadoMoeda(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Moeda", fechamento.getTurno()));
 		totalContasCobrar();
 		totalContasReceber();
 		totalDespespas();

@@ -27,7 +27,7 @@
 				<p:selectOneMenu id="turno" value="#{fechamentoBean.fechamento.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
 					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
-					<p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca"/>
+					<p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:createPanelGrid"/>
 					<!-- <p:ajax event="change" listener="#{fechamentoBean.totalSangria()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca"/> -->
 				</p:selectOneMenu>
 				<p:message for="turno"/>
@@ -40,14 +40,14 @@
 		    	<p:message for="caixaInicial" />
 
 				<p:outputLabel value="Trocado Dinheiro" for="trocadoDinheiro" />
-		    	<p:inputText id="trocadoDinheiro" value="#{fechamentoBean.fechamento.trocadoDinheiro}" styleClass="money">
+		    	<p:inputText id="trocadoDinheiro" value="#{fechamentoBean.fechamento.trocadoDinheiro}" disabled="true" styleClass="money">
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalCaixaInicial :createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="trocadoDinheiro" />
 		    	
 		    	<p:outputLabel value="Trocado Moeda" for="trocadoMoeda" />
-		    	<p:inputText id="trocadoMoeda" value="#{fechamentoBean.fechamento.trocadoMoeda}" styleClass="money">
+		    	<p:inputText id="trocadoMoeda" value="#{fechamentoBean.fechamento.trocadoMoeda}" disabled="true" styleClass="money">
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalCaixaInicial :createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>

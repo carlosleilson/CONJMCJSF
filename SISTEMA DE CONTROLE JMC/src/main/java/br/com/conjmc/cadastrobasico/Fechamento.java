@@ -287,4 +287,39 @@ public class Fechamento {
 		return query.getResultList();
 	}
 	
+	public Double TotalDinheiro(){
+		Query query = entityManager().createQuery("SELECT SUM(o.dinheiro) FROM Fechamento o WHERE loja=:loja", Double.class);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
+	public Double TotalTrocado(){
+		Query query = entityManager().createQuery("SELECT SUM(o.trocado) FROM Fechamento o WHERE loja=:loja", Double.class);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
+	public Double TotalMoeda(){
+		Query query = entityManager().createQuery("SELECT SUM(o.moeda) FROM Fechamento o WHERE loja=:loja", Double.class);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
 }

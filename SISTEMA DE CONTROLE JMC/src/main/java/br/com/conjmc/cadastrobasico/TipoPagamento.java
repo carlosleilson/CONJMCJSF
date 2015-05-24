@@ -5,7 +5,6 @@ public enum TipoPagamento {
     DINHEIRO ("Dinheiro"),
     DEBITO ("Débito"),
     CREDITO ("Crédito"),
-    TICKET ("Ticket"),
     CHEQUE ("Cheque");
     
     private String label;

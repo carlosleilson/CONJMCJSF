@@ -174,4 +174,17 @@ public class Sangria2015 {
        	return valor;
 	}
 	
+	public Double TotalSangira2015Cofre(String origem){
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria2015 o WHERE origem=:origem and loja=:loja", String.class);
+		query.setParameter("origem", origem);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = Double.parseDouble((String) query.getSingleResult()); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
 }

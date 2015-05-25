@@ -286,7 +286,7 @@ public class ControleValoresPendentes implements Serializable {
 	}
 	
 	public Double TotalBaixadoDinheiro(){
-		Query query = entityManager().createQuery("select sum(o.valor) from ControleValoresPendentes o where o.tipo_pagamento='0' and o.baixado='true' and o.loja=:loja", Double.class);
+		Query query = entityManager().createQuery("select sum(o.valor) from ControleValoresPendentes o where o.tipoPagamento=0 and o.baixado=true and o.loja=:loja", Double.class);
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;
 		try {

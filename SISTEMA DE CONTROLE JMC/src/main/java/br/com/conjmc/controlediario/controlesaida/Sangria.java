@@ -490,4 +490,16 @@ public class Sangria implements Serializable{
        	return valor;
 	}
 	
+	public Double TotalSangiraCofre(){
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria o WHERE origem='SANGRIA COFRE' and loja=:loja", Double.class);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
 }

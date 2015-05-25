@@ -94,6 +94,7 @@ public class FechamentoBean {
 	public void calcularContas(){
 		fechamento.setTrocadoDinheiro(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Trocado", fechamento.getTurno()));
 		fechamento.setTrocadoMoeda(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Moeda", fechamento.getTurno()));
+		fechamento.setSangriaCaixa(new Sangria2015().TotalSangriaCaixa(fechamento.getData(), fechamento.getTurno()));
 		totalContasCobrar();
 		totalContasReceber();
 		totalDespespas();

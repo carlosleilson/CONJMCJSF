@@ -101,7 +101,7 @@
 		    	<p:message for="web" />
 		    	
 		    	<p:outputLabel value="Sangria Caixa" for="sangriaCaixa" />
-		    	<p:inputText id="sangriaCaixa" value="#{fechamentoBean.fechamento.sangriaCaixa}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo">
+		    	<p:inputText id="sangriaCaixa" disabled="true" value="#{fechamentoBean.fechamento.sangriaCaixa}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>

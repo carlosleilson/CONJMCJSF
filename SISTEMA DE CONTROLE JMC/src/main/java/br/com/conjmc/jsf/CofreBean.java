@@ -1,14 +1,15 @@
 package br.com.conjmc.jsf;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
+import br.com.conjmc.controlediario.controlesaida.Sangria2015;
 
 @ManagedBean
-@ViewScoped
+@RequestScoped
 public class CofreBean {
 	
 	private double dinheiro;
@@ -28,8 +29,10 @@ public class CofreBean {
 	public void calcularDinheiro() {
 		this.dinheiro = 0.0;
 		this.dinheiro += new Fechamento().TotalDinheiro();
-		//this.dinheiro += new ControleValoresPendentes().TotalBaixadoDinheiro();
-		//this.dinheiro -= new Sangria().TotalSangiraCofre();
+		this.dinheiro += new ControleValoresPendentes().TotalBaixadoDinheiro();
+		this.dinheiro += new Sangria2015().TotalSangira2015Cofre("SANGRIA CAIXA");
+		this.dinheiro -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE");
+		this.dinheiro -= new Sangria().TotalSangiraCofre();
 	}
 	
 	public void calcularTrocado() {

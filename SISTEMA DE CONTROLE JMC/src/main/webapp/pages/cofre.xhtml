@@ -7,14 +7,14 @@
       xmlns:p="http://primefaces.org/ui">
 	
 	<h:form>
-		<h:outputText value="Dinheiro #{cofreBean.dinheiro}">
+		Dinheiro <h:inputText disabled="true" value="#{cofreBean.dinheiro}">
 			<f:convertNumber minFractionDigits="2"/>
-		</h:outputText>&nbsp;&nbsp;&nbsp;
-		<h:outputText value="Trocado #{cofreBean.trocado}">
+		</h:inputText>&nbsp;&nbsp;&nbsp;
+		Trocado <h:inputText disabled="true" value="#{cofreBean.trocado}">
 			<f:convertNumber minFractionDigits="2"/>
-		</h:outputText>&nbsp;&nbsp;&nbsp;
-		<h:outputText value="Moeda #{cofreBean.moeda}">
+		</h:inputText>&nbsp;&nbsp;&nbsp;
+		Moeda <h:inputText disabled="true" value="#{cofreBean.moeda}">
 			<f:convertNumber minFractionDigits="2"/>
-		</h:outputText>
+		</h:inputText>
 	</h:form>
 </html>

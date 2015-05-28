@@ -30,19 +30,21 @@ public class CofreBean {
 		this.dinheiro = 0.0;
 		this.dinheiro += new Fechamento().TotalDinheiro();
 		this.dinheiro += new ControleValoresPendentes().TotalBaixadoDinheiro();
-		this.dinheiro += new Sangria2015().TotalSangira2015Cofre("SANGRIA CAIXA");
-		this.dinheiro -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE");
+		this.dinheiro += new Sangria2015().TotalSangira2015Cofre("SANGRIA CAIXA", "Dinheiro");
+		this.dinheiro -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Dinheiro");
 		this.dinheiro -= new Sangria().TotalSangiraCofre();
 	}
 	
 	public void calcularTrocado() {
 		this.trocado = 0.0;
 		this.trocado += new Fechamento().TotalTrocado();
+		this.trocado -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Trocado");
 	}
 	
 	public void calcularMoeda() {
 		this.moeda =0.0;
 		this.moeda += new Fechamento().TotalMoeda();
+		this.moeda -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Moeda");
 	} 
 
 	//Getters and Setters

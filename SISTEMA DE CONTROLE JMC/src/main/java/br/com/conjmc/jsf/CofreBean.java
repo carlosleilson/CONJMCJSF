@@ -3,6 +3,7 @@ package br.com.conjmc.jsf;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
@@ -33,6 +34,7 @@ public class CofreBean {
 		this.dinheiro += new Sangria2015().TotalSangira2015Cofre("SANGRIA CAIXA", "Dinheiro");
 		this.dinheiro -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Dinheiro");
 		this.dinheiro -= new Sangria().TotalSangiraCofre();
+		this.dinheiro -= new ContasFuncionario().TotalDespesaCofre();
 	}
 	
 	public void calcularTrocado() {

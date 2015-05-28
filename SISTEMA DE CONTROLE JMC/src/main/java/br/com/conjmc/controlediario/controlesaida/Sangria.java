@@ -282,7 +282,7 @@ public class Sangria implements Serializable{
     }
 
 	public static List<Sangria> findAllSangrias() {
-		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja and o.periodo != null order by o.id desc", Sangria.class);
+		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja and o.periodo != null order by o.periodo desc", Sangria.class);
 		query.setParameter("loja", ObejctSession.idLoja());
 		query.setMaxResults(50);
         return query.getResultList();

@@ -8,7 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
@@ -34,6 +36,9 @@ public class Motoqueiros implements Serializable {
 	
 	@Version
 	private int version;
+	
+	@ManyToOne
+	private Lojas loja;
 	
 	//Getters and Setters
 	public Long getId() {
@@ -65,6 +70,12 @@ public class Motoqueiros implements Serializable {
 	}
 	public void setSituacao(boolean situacao) {
 		this.situacao = situacao;
+	}
+	public Lojas getLoja() {
+		return loja;
+	}
+	public void setLoja(Lojas loja) {
+		this.loja = loja;
 	}
 	
 	@Override
@@ -106,7 +117,9 @@ public class Motoqueiros implements Serializable {
     }
 
 	public static List<Motoqueiros> findAllMotoqueiroses() {
-        return entityManager().createQuery("SELECT o FROM Motoqueiros o where o.situacao=true", Motoqueiros.class).getResultList();
+		Query query = entityManager().createQuery("SELECT o FROM Motoqueiros o where o.situacao=true and o.loja=:loja");
+		query.setParameter("loja", ObejctSession.loja());
+		return query.getResultList();
     }
 
 	public static List<Motoqueiros> findAllMotoqueiroses(String sortFieldName, String sortOrder) {

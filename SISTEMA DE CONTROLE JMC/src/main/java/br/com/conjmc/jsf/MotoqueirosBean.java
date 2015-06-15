@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.Motoqueiros;
 import br.com.conjmc.jsf.util.MessageFactory;
+import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean
 @SessionScoped
@@ -37,6 +38,7 @@ public class MotoqueirosBean implements Serializable {
             motoqueiro.merge();
             message = "message_successfully_updated";
         } else {
+        	motoqueiro.setLoja(ObejctSession.loja());
             motoqueiro.persist();
             message = "message_successfully_created";
         }

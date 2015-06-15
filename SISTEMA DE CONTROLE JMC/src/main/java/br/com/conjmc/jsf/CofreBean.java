@@ -6,6 +6,7 @@ import javax.faces.bean.RequestScoped;
 import br.com.conjmc.cadastrobasico.ContasFuncionario;
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
+import br.com.conjmc.cadastrobasico.ValoresExtra;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.controlediario.controlesaida.Sangria2015;
 
@@ -32,6 +33,7 @@ public class CofreBean {
 		this.dinheiro += new Fechamento().TotalDinheiro();
 		this.dinheiro += new ControleValoresPendentes().TotalBaixadoDinheiro();
 		this.dinheiro += new Sangria2015().TotalSangira2015Cofre("SANGRIA CAIXA", "Dinheiro");
+		this.dinheiro += new ValoresExtra().TotalValorExtra("Dinheiro");
 		this.dinheiro -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Dinheiro");
 		this.dinheiro -= new Sangria().TotalSangiraCofre();
 		this.dinheiro -= new ContasFuncionario().TotalDespesaCofre();
@@ -40,12 +42,14 @@ public class CofreBean {
 	public void calcularTrocado() {
 		this.trocado = 0.0;
 		this.trocado += new Fechamento().TotalTrocado();
+		this.trocado += new ValoresExtra().TotalValorExtra("Trocado");
 		this.trocado -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Trocado");
 	}
 	
 	public void calcularMoeda() {
 		this.moeda =0.0;
 		this.moeda += new Fechamento().TotalMoeda();
+		this.moeda += new ValoresExtra().TotalValorExtra("Moeda");
 		this.moeda -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Moeda");
 	} 
 

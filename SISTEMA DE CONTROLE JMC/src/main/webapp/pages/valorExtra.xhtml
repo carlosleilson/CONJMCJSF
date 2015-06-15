@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../templates/administrador.xhtml">
+	<ui:define name="title">
+		<title>Valor Extra</title>
+	</ui:define>
+  <ui:define name="content">
+    <h:form enctype="multipart/form-data" prependId="false" id="growlForm">
+      <p:growl id="growl" showDetail="false" />
+    </h:form>
+    <h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+    	<fieldset>
+    		<legend>Valor Extra</legend>
+		    <h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog">
+		    	<p:outputLabel value="Data" for="data" />
+		    	<p:calendar id="data" pattern="dd/MM/yyyy" value="#{valoresExtraBean.valorExtra.data}" required="true" requiredMessage="A data é obrigatória"/>
+		    	<p:message for="data" />
+		    	
+		    	<p:outputLabel value="Valor" for="valor" />
+		    	<p:inputText id="valor" value="#{valoresExtraBean.valorExtra.valor}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="valor" />
+
+				<p:outputLabel value="Origem" for="origem"/>
+				<p:selectOneMenu id="origem" 
+						value="#{valoresExtraBean.valorExtra.tipoValor}" 
+						required="true" 
+	          			requiredMessage="A origem é obrigatório ">
+	          		<f:selectItem itemLabel="Selecione uma Classificação" itemValue=""/>
+	          		<f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro"/>
+	          		<f:selectItem itemLabel="Trocado" itemValue="Trocado"/>
+	          		<f:selectItem itemLabel="Moeda" itemValue="Moeda"/>
+	          	</p:selectOneMenu>
+	          	<p:message for="origem"/>
+			 </h:panelGrid>
+			<p:commandButton id="createSaveButton" ajax="false" value="#{messages.label_save}" action="#{valoresExtraBean.persit()}" />&#160;&#160;
+			<p:commandButton id="createCloseButton" immediate="true" ajax="false" value="#{messages.label_reset}" action="valorExtra.xhtml" />
+		</fieldset>
+    </h:form>
+    
+    <h:form prependId="false" id="dataForm">
+			<p:dataTable id="list" var="list" value="#{valoresExtraBean.valoresExtra}" paginator="true" rows="10">
+				<f:facet name="header">Valores Extra</f:facet>
+				<p:column headerText="Data">
+					<h:outputText value="#{list.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Valor">
+					<h:outputText value="#{list.valor}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Origem" sortBy="#{list.tipoValor}">
+					<h:outputText value="#{list.tipoValor}" />
+				</p:column>
+				
+			</p:dataTable>					
+		</h:form>
+  </ui:define>
+</ui:composition>
+</html>

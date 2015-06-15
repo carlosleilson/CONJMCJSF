@@ -61,7 +61,7 @@
 			rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }">
 			<p:menuitem value="Inclusão"
 				url="#{pageContext.servletContext.contextPath}/pages/despesasLoja.xhtml" />
-			<p:menuitem value="Exclusão"
+			<p:menuitem value="Consulta"
 				url="#{pageContext.servletContext.contextPath}/pages/ExclusaoDespesasLoja.xhtml" />
 		</p:submenu>
 		<p:submenu label="Contas">
@@ -92,8 +92,8 @@
 			<p:menuitem value="Controle Diario"
 				url="#{pageContext.servletContext.contextPath}/relatorios/controleDiario.xhtml" />
 		</p:submenu>
-		<p:menuitem ajax="false" value="Calculadora" 
-			actionListener="#{calculadoraWindows.calculadora()}"/>
+		<p:menuitem ajax="false" value="Valor Extra" 
+			url="#{pageContext.servletContext.contextPath}/pages/valorExtra.xhtml" />
 		<p:menuitem ajax="false" value="Sair"
 			url="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_logout" />
 	</p:menubar>

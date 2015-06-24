@@ -32,7 +32,7 @@ public class FechamentoBean {
 	@PostConstruct
 	public void init() {
 		fechamento = new Fechamento();
-		fechamento.setCaixaFinal(new Fechamento().ultimoCaixaFinal());
+		fechamento.setCaixaInicial(new Fechamento().ultimoCaixaFinal());
 		controle = new ControleValoresPendentes();
 		calcularTotal();
 	}

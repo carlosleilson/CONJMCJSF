@@ -327,6 +327,12 @@ public class Fechamento {
 		Query query = entityManager().createQuery("Select o.caixaFinal from Fechamento o where o.loja=:loja order by id desc", Double.class);
 		query.setParameter("loja", ObejctSession.loja());
 		query.setMaxResults(1);
-		return (Double) query.getSingleResult();
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
 	}
 }

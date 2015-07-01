@@ -27,8 +27,8 @@
 				<p:selectOneMenu id="turno" value="#{fechamentoBean.fechamento.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
 					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
-					<p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:createPanelGrid"/>
-					<!-- <p:ajax event="change" listener="#{fechamentoBean.totalSangria()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca"/> -->
+					<!-- <p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:createPanelGrid"/> -->
+					<p:ajax event="change" listener="#{fechamentoBean.totalSangria()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca"/>
 				</p:selectOneMenu>
 				<p:message for="turno"/>
 		    

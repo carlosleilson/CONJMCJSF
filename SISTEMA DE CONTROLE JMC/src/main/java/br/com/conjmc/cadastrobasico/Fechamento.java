@@ -324,15 +324,15 @@ public class Fechamento {
 	}
 	
 	public Double ultimoCaixaFinal(){
-		Query query = entityManager().createQuery("Select o.caixaFinal from Fechamento o where o.loja=:loja order by id desc", Double.class);
-		query.setParameter("loja", ObejctSession.loja());
-		query.setMaxResults(1);
 		double valor;
 		try {
-			valor = (double) query.getSingleResult(); 
-		} catch(NullPointerException e) {
+			Query query = entityManager().createQuery("Select o.caixaFinal from Fechamento o where o.loja=:loja order by id desc", Double.class);
+			query.setParameter("loja", ObejctSession.loja());
+			query.setMaxResults(1);
+			valor = (double) query.getSingleResult();
+		}catch(Exception e) {
 			valor = 0;
 		}
-       	return valor;
+		return valor;
 	}
 }

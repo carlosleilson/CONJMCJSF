@@ -4,14 +4,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ControleDiarioBean {
 	
 	private Fechamento fechamento;

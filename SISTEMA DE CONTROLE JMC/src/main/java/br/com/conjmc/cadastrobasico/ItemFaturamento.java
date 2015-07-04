@@ -30,9 +30,9 @@ public class ItemFaturamento {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	private Integer quantidade;
+	private int quantidade;
 	
-	private Double valor;
+	private double valor;
 	
 	private Date periodo;
 	
@@ -59,19 +59,19 @@ public class ItemFaturamento {
 		this.id = id;
 	}
 	
-	public Integer getQuantidade() {
+	public int getQuantidade() {
 		return quantidade;
 	}
 	
-	public void setQuantidade(Integer quantidade) {
+	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 
-	public Double getValor() {
+	public double getValor() {
 		return valor;
 	}
 
-	public void setValor(Double valor) {
+	public void setValor(double valor) {
 		this.valor = valor;
 	}
 	

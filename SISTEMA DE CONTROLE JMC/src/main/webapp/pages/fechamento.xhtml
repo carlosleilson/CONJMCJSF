@@ -28,14 +28,14 @@
 					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
 					<!-- <p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:createPanelGrid"/> -->
-					<p:ajax event="change" listener="#{fechamentoBean.totalSangria()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca"/>
+					<p:ajax event="change" listener="#{fechamentoBean.calcularContas()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca :createForm:trocadoDinheiro :createForm:trocadoMoeda :createForm:totalCaixaInicial :createForm:saldo :createForm:sangriaCaixa :createForm:caixaInicial" />
 				</p:selectOneMenu>
-				<p:message for="turno"/>
+				<p:commandButton icon="ui-icon-search" immediate="true" actionListener="#{fechamentoBean.calcularContas()}" update=":createForm:sangriaGastos :createForm:contasReceber :createForm:contasCobrar :createForm:totalFechamento :createForm:diferenca :createForm:trocadoDinheiro :createForm:trocadoMoeda :createForm:totalCaixaInicial :createForm:saldo :createForm:sangriaCaixa :createForm:caixaInicial" />
 		    
 		    	<p:outputLabel value="Caixa Inicial" for="caixaInicial" />
 		    	<p:inputText id="caixaInicial" styleClass="money" value="#{fechamentoBean.fechamento.caixaInicial}" required="true" requiredMessage="O valor inicial é obrigatório">
 		    		<f:convertNumber minFractionDigits="2"/>
-		    		<p:ajax event="keyup" update=":createForm:totalCaixaInicial :createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
+		    		<p:ajax event="keyup" update=":createForm:totalCaixaInicial :createForm:totalCaixaInicial :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
 		    	<p:message for="caixaInicial" />
 

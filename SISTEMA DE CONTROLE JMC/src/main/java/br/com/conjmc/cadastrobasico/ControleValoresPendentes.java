@@ -310,7 +310,7 @@ public class ControleValoresPendentes implements Serializable {
 			predicates.add(cb.and(cb.equal(data, controlePendentes.data)));
 		}
 		
-		if(controlePendentes.numeroPedido != 0) {
+		if(controlePendentes.numeroPedido != null) {
 			Path<Integer> numeroPedido = root.get("numeroPedido");
 			predicates.add(cb.and(cb.equal(numeroPedido, controlePendentes.numeroPedido)));
 		}

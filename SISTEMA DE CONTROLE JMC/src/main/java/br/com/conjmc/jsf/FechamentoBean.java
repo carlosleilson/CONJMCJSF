@@ -32,7 +32,6 @@ public class FechamentoBean {
 	@PostConstruct
 	public void init() {
 		fechamento = new Fechamento();
-		fechamento.setCaixaInicial(new Fechamento().ultimoCaixaFinal());
 		controle = new ControleValoresPendentes();
 		calcularTotal();
 	}
@@ -93,6 +92,7 @@ public class FechamentoBean {
 	}
 	
 	public void calcularContas(){
+		fechamento.setCaixaInicial(new Fechamento().ultimoCaixaFinal());
 		fechamento.setTrocadoDinheiro(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Trocado", fechamento.getTurno()));
 		fechamento.setTrocadoMoeda(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Moeda", fechamento.getTurno()));
 		fechamento.setSangriaCaixa(new Sangria2015().TotalSangriaCaixa(fechamento.getData(), fechamento.getTurno()));

@@ -130,7 +130,7 @@ public class RelatorioDiaDoMes {
 		for(int i = 1; i<campos.length; i++){
 			if(itenId.equals(Long.parseLong("1"))){
 				for(ItemFaturamento dadosF :todosItemFaturamentos){
-					if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(Long.parseLong("7"))){
+					if(dadosF.getValor()!=0 && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(Long.parseLong("7"))){
 						campos[i] = dadosF.getValor();
 						campos[campos.length-1] = campos[campos.length-1] + dadosF.getValor();
 					}
@@ -138,7 +138,7 @@ public class RelatorioDiaDoMes {
 			}
 			if(itenId.equals(Long.parseLong("2"))){
 				for(ItemFaturamento dadosF :todosItemFaturamentos){
-					if(dadosF.getValor()!=null && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(Long.parseLong("6"))){
+					if(dadosF.getValor()!=0 && dadosF.getPeriodo().getDate() == i && dadosF.getPeriodo().getMonth() == data.getMonth() && dadosF.getPeriodo().getYear() == data.getYear() && dadosF.getFaturamentoDescricao().getId().equals(Long.parseLong("6"))){
 						campos[i] =dadosF.getValor();
 						campos[campos.length-1] = campos[campos.length-1] + dadosF.getValor();
 					}

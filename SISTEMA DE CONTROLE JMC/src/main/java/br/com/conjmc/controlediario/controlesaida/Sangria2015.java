@@ -28,7 +28,7 @@ public class Sangria2015 {
 	
 	@Id @GeneratedValue
 	private Long id;
-	private String valor;
+	private Double valor;
 	private String origem;
 	private String tipo;
 	private String descricao;
@@ -50,10 +50,10 @@ public class Sangria2015 {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getValor() {
+	public Double getValor() {
 		return valor;
 	}
-	public void setValor(String valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
 	}
 	public String getOrigem() {
@@ -161,13 +161,13 @@ public class Sangria2015 {
     }
 	
 	public Double TotalCaixaInicial(Date data, String tipo, Turno turno){
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria2015 o WHERE o.data=:data and o.origem='SANGRIA COFRE' and tipo=:tipo and troco=true and loja=:loja and turno="+turno.ordinal(), String.class);
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria2015 o WHERE o.data=:data and o.origem='SANGRIA COFRE' and tipo=:tipo and troco=true and loja=:loja and turno="+turno.ordinal(), Double.class);
 		query.setParameter("data", data);
 		query.setParameter("tipo", tipo);
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;
 		try {
-			valor = Double.parseDouble((String) query.getSingleResult()); 
+			valor = (double) query.getSingleResult();
 		} catch(NullPointerException e) {
 			valor = 0;
 		}
@@ -175,12 +175,12 @@ public class Sangria2015 {
 	}
 	
 	public Double TotalSangriaCaixa(Date data, Turno turno) {
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria2015 o WHERE o.data=:data and o.origem='SANGRIA CAIXA' and loja=:loja and turno="+turno.ordinal(), String.class);
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria2015 o WHERE o.data=:data and o.origem='SANGRIA CAIXA' and loja=:loja and turno="+turno.ordinal(), Double.class);
 		query.setParameter("data", data);
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;
 		try {
-			valor = Double.parseDouble((String) query.getSingleResult()); 
+			valor = (double) query.getSingleResult();
 		} catch(NullPointerException e) {
 			valor = 0;
 		}
@@ -188,13 +188,13 @@ public class Sangria2015 {
 	}
 	
 	public Double TotalSangira2015Cofre(String origem, String tipo){
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria2015 o WHERE origem=:origem and tipo=:tipo and loja=:loja", String.class);
+		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM Sangria2015 o WHERE origem=:origem and tipo=:tipo and loja=:loja", Double.class);
 		query.setParameter("origem", origem);
 		query.setParameter("tipo", tipo);
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;
 		try {
-			valor = Double.parseDouble((String) query.getSingleResult()); 
+			valor = (double) query.getSingleResult(); 
 		} catch(NullPointerException e) {
 			valor = 0;
 		}

@@ -42,6 +42,22 @@
 			<p:column headerText="Truno" width="70">
 				<h:outputText value="#{list.turno.label}"/>
 			</p:column>
+			
+			<p:column headerText="Caixa Inicial" width="70">
+				<h:outputText value="#{list.caixaInicial}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Trocado Dinheiro" width="70">
+				<h:outputText value="#{list.trocadoDinheiro}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Trocado Moeda" width="70">
+				<h:outputText value="#{list.trocadoMoeda}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
 			<p:column headerText="Dinheiro" width="70">
 				<h:outputText value="#{list.dinheiro}">
 					<f:convertNumber minFractionDigits="2"/>
@@ -57,12 +73,17 @@
 					<f:convertNumber minFractionDigits="2"/>
 				</h:outputText>
 			</p:column>
+			<p:column headerText="10%" width="70">
+				<h:outputText value="#{list.porcentagem}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
 			<p:column headerText="Web" width="70">
 				<h:outputText value="#{list.web}">
 					<f:convertNumber minFractionDigits="2"/>
 				</h:outputText>
 			</p:column>
-			<p:column headerText="cartao" width="70">
+			<p:column headerText="Cartão" width="70">
 				<h:outputText value="#{list.cartao}">
 					<f:convertNumber minFractionDigits="2"/>
 				</h:outputText>
@@ -91,6 +112,11 @@
 				<p:commandLink value="#{list.receber}" action="#{controleDiarioBean.carregarControleValoresReceber()}" onclick="PF('valores').show()" update=":dataFormValores:list">
 					<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
 				</p:commandLink>
+			</p:column>
+			<p:column headerText="Caixa Final" width="70">
+				<h:outputText value="#{list.caixaFinal}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
 			</p:column>
 			<p:column headerText="Total Fechemento" width="70">
 				<h:outputText value="#{list.totalFechamento}">

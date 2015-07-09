@@ -122,7 +122,8 @@ public class FechamentoBean {
 	private void totalDespespas() {
 		double sangriaGastos = 0;
 		sangriaGastos += new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA", true);
-		sangriaGastos += new ContasFuncionario().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA");
+		//contas funcionários
+		//sangriaGastos += new ContasFuncionario().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA");
 		fechamento.setSangriaGastos(sangriaGastos);
 		//fechamento.setSangriaCaixa(new Sangria().TotalDespesa(fechamento.getData(), fechamento.getTurno(), "SANGRIA CAIXA", false));
 		

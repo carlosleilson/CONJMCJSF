@@ -83,6 +83,7 @@
 				<p:commandButton 
 						id="baixarButton" 
 						icon="ui-icon-note"
+						update=":createFormBaixar:createPanelGridBaixa"
 						oncomplete="PF('baixar').show()"  
 						title="Baixar">
 					<f:setPropertyActionListener target="#{controleValoresPendentesBean.controle}" value="#{list}" />
@@ -100,11 +101,28 @@
 			<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{controleValoresPendentesBean.delete()}" ajax="false" onclick="confirmation.hide()" />
 			<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
 		</p:confirmDialog>
-		<p:confirmDialog id="baixar" header="baixar pedido" message="Tem certeza que deseja dar baixa?" hideEffect="explode" widgetVar="baixar" severity="alert">
-			<p:commandButton id="confirmBaixa" value="Sim" oncomplete="PF('confirmation').hide()" action="#{controleValoresPendentesBean.baixarPedido()}" ajax="false" onclick="confirmation.hide()" />
-			<p:commandButton id="declineBaixa" value="Não" onclick="PF('confirmation').hide()" type="button"/>
-		</p:confirmDialog>					
+		<ui:remove>
+			<p:confirmDialog id="baixar" header="baixar pedido" message="Tem certeza que deseja dar baixa?" hideEffect="explode" widgetVar="baixar" severity="alert">
+				<p:commandButton id="confirmBaixa" value="Sim" oncomplete="PF('confirmation').hide()" action="#{controleValoresPendentesBean.baixarPedido()}" ajax="false" onclick="confirmation.hide()" />
+				<p:commandButton id="declineBaixa" value="Não" onclick="PF('confirmation').hide()" type="button"/>
+			</p:confirmDialog>
+		</ui:remove>					
 	</h:form>
+	
+	<p:dialog id="baixar" header="baixar pedido" message="Tem certeza que deseja dar baixa?" modal="true" hideEffect="explode" widgetVar="baixar" >
+		<h:form id="createFormBaixar" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
+			<h:panelGrid id="createPanelGridBaixa" columns="3" styleClass="dialog">
+				<p:outputLabel value="Pagamento" for="pagamentoBaixa" />
+				<p:selectOneMenu id="pagamentoBaixa" value="#{controleValoresPendentesBean.controle.tipoPagamento}" required="true"  requiredMessage="O tipo do pagamento não pode ser nulo" >
+					<f:selectItem itemLabel="Selecione um tipo de pagamento" itemValue="" />
+					<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
+				</p:selectOneMenu>
+				<p:message for="pagamentoBaixa"/>
+			</h:panelGrid>
+			<p:commandButton id="confirmBaixa" value="Baixar" oncomplete="PF('baixar').hide()" action="#{controleValoresPendentesBean.baixarPedido()}" ajax="false" onclick="confirmation.hide()" />
+			<p:commandButton id="declineBaixa" value="Fechar" onclick="PF('baixar').hide()" type="button"/>
+		</h:form>
+	</p:dialog>
 	
 	<p:dialog id="cadControle" header="Controle de Valores" modal="true" widgetVar="cadControle" showEffect="fade" hideEffect="explode">
 		<h:form id="createForm" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
@@ -145,7 +163,7 @@
 					
 					<p:outputLabel value="Turno" for="turno" />
 					<p:selectOneMenu id="turno" value="#{controleValoresPendentesBean.controle.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
-						<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
+						<f:selectItem itemLabel="Selecione um tipo de pagamento" itemValue="" />
 						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
 					</p:selectOneMenu>
 					<p:message for="turno"/>	

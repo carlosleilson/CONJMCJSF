@@ -329,7 +329,7 @@ public class ControleValoresPendentes implements Serializable {
 			Path<String> tipoPagamento = root.get("tipoPagamento");
 			predicates.add(cb.and(cb.equal(tipoPagamento, controlePendentes.tipoPagamento)));
 		}
-		
+		 
 		if(controlePendentes.status != null) {
 			Path<String> status = root.get("status");
 			predicates.add(cb.and(cb.equal(status, controlePendentes.status)));

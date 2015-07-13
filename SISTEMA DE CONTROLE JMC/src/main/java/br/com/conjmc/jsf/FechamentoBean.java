@@ -9,7 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import br.com.conjmc.cadastrobasico.ContasFuncionario;
+import org.primefaces.context.RequestContext;
+
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
@@ -26,6 +27,7 @@ public class FechamentoBean {
 	private Double totalCaixaInical;
 	private ControleValoresPendentes controle;
 	private double saldo;
+	private double valor=0;
 	Toolkit toolkit;
     Timer timer;
 	
@@ -169,6 +171,42 @@ public class FechamentoBean {
 		saldo = 0.0;
 		return "fechamento.xhtml";
 	}
+	
+	public void somaPorcentagem(){
+		fechamento.setPorcentagem(fechamento.getPorcentagem()+valor);
+		valor = 0;
+		calcularTotal();
+		RequestContext.getCurrentInstance().update("porcentagem");
+		
+	}
+	
+	public void somaCartao() {
+		fechamento.setCartao(fechamento.getCartao()+valor);
+		valor = 0;
+		calcularTotal();
+		RequestContext.getCurrentInstance().update("cartao");
+	}
+	
+	public void somaWeb(){
+		fechamento.setWeb(fechamento.getWeb()+valor);
+		valor = 0;
+		calcularTotal();
+		RequestContext.getCurrentInstance().update("web");
+	}
+	
+	public void somaCheque(){
+		fechamento.setCheque(fechamento.getCheque()+valor);
+		valor = 0;
+		calcularTotal();
+		RequestContext.getCurrentInstance().update("cheque");
+	}
+	
+	public void somaCaixaFinal(){
+		fechamento.setCaixaFinal(fechamento.getCaixaFinal()+valor);
+		valor = 0;
+		calcularTotal();
+		RequestContext.getCurrentInstance().update("caixaFinal");
+	}
 
 	//Getters and Setters
 	public Fechamento getFechamento() {
@@ -201,6 +239,14 @@ public class FechamentoBean {
 
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
+	}
+
+	public double getValor() {
+		return valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
 	}
 	
 	/*class FooRunnable implements Runnable {

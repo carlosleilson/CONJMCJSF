@@ -91,14 +91,14 @@
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
-		    	<p:message for="porcentagem" />
+		    	<p:commandButton icon="ui-icon-circle-plus" onclick="PF('somaPorcentagem').show()"/>
 		    	
 		    	<p:outputLabel value="Web" for="web" />
 		    	<p:inputText id="web" value="#{fechamentoBean.fechamento.web}" styleClass="money" required="true" requiredMessage="A Web não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
-		    	<p:message for="web" />
+		    	<p:commandButton icon="ui-icon-circle-plus" onclick="PF('somaWeb').show()"/>
 		    	
 		    	<p:outputLabel value="Sangria Caixa" for="sangriaCaixa" />
 		    	<p:inputText id="sangriaCaixa" disabled="true" value="#{fechamentoBean.fechamento.sangriaCaixa}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo">
@@ -118,14 +118,14 @@
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
-		    	<p:message for="cartao" />
+		    	<p:commandButton icon="ui-icon-circle-plus" onclick="PF('somaCartao').show()"/>
 		    			    	
 		    	<p:outputLabel value="Cheque" for="cheque" />
 		    	<p:inputText id="cheque" value="#{fechamentoBean.fechamento.cheque}" styleClass="money" required="true" requiredMessage="O nome não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
-		    	<p:message for="cheque" />
+		    	<p:commandButton icon="ui-icon-circle-plus" onclick="PF('somaCheque').show()"/>
 		    	
 		    	<p:outputLabel value="Contas a Receber" for="contasReceber" />
 		    	<p:inputText id="contasReceber" value="#{fechamentoBean.fechamento.receber}" styleClass="money" disabled="true">
@@ -144,7 +144,7 @@
 		    		<f:convertNumber minFractionDigits="2"/>
 		    		<p:ajax event="keyup" update=":createForm:totalFechamento :createForm:diferenca" listener="#{fechamentoBean.calcularTotal()}"/>
 		    	</p:inputText>
-		    	<p:message for="caixaFinal" />
+		    	<p:commandButton icon="ui-icon-circle-plus" onclick="PF('somaCaixaFinal').show()"/>
 		    	
 		    	<p:outputLabel value="Total Fechamento" for="totalFechamento" />
 		    	<p:inputText id="totalFechamento" disabled="true" value="#{fechamentoBean.fechamento.totalFechamento}" styleClass="money">
@@ -211,6 +211,51 @@
 				<p:commandButton id="createSaveButton" ajax="true" update=":createForm:contasReceber :createForm:contasCobrar :growlForm:growl :createFormControle:createPanelGridForm" value="#{messages.label_save}" action="#{fechamentoBean.inserirValoresPendentes()}"/>&#160;&#160;
 			</fieldset>
 	    </h:form>
+	</p:dialog>
+	
+	<p:dialog id="somaPorcentagem" header="Somar valor" modal="true" widgetVar="somaPorcentagem" showEffect="fade" hideEffect="explode">
+	 	<h:form id="formSomaPorcentagem">
+	 		<p:inputText id="porcentagemValor" value="#{fechamentoBean.valor}" required="true" styleClass="money">
+	 			<f:convertNumber minFractionDigits="2"/>
+	 		</p:inputText>
+	 		<p:commandButton value="Adicionar" ajax="true" update=":createForm:porcentagem :createForm:totalFechamento :createForm:diferenca :formSomaPorcentagem:porcentagemValor" action="#{fechamentoBean.somaPorcentagem()}" />
+	 	</h:form>
+	</p:dialog>
+	 
+	<p:dialog id="somaCartao" header="Controle de Valores" modal="true" widgetVar="somaCartao" showEffect="fade" hideEffect="explode">
+		<h:form id="formSomaCartao">
+	 		<p:inputText id="cartaoValor" value="#{fechamentoBean.valor}" required="true" styleClass="money">
+	 			<f:convertNumber minFractionDigits="2"/>
+	 		</p:inputText>
+	 		<p:commandButton value="Adicionar" ajax="true" update=":createForm:cartao :createForm:totalFechamento :createForm:diferenca :formSomaCartao:cartaoValor" action="#{fechamentoBean.somaCartao()}" />
+	 	</h:form>
+	</p:dialog>
+	  
+	<p:dialog id="somaWeb" header="Controle de Valores" modal="true" widgetVar="somaWeb" showEffect="fade" hideEffect="explode">
+	   <h:form id="formSomaWeb">
+	 		<p:inputText id="webValor" value="#{fechamentoBean.valor}" required="true" styleClass="money">
+	 			<f:convertNumber minFractionDigits="2"/>
+	 		</p:inputText>
+	 		<p:commandButton value="Adicionar" ajax="true" update=":createForm:web :createForm:totalFechamento :createForm:diferenca :formSomaWeb:webValor" action="#{fechamentoBean.somaWeb()}" />
+	 	</h:form>
+	</p:dialog>
+	
+	<p:dialog id="somaCheque" header="Controle de Valores" modal="true" widgetVar="somaCheque" showEffect="fade" hideEffect="explode">
+		<h:form id="formSomaCheque">
+	 		<p:inputText id="chequeValor" value="#{fechamentoBean.valor}" required="true" styleClass="money">
+	 			<f:convertNumber minFractionDigits="2"/>
+	 		</p:inputText>
+	 		<p:commandButton value="Adicionar" ajax="true" update=":createForm:cheque :createForm:totalFechamento :createForm:diferenca :formSomaCheque:chequeValor" action="#{fechamentoBean.somaCheque()}" />
+	 	</h:form>
+	</p:dialog>
+	
+	<p:dialog id="somaCaixaFinal" header="Controle de Valores" modal="true" widgetVar="somaCaixaFinal" showEffect="fade" hideEffect="explode">
+		<h:form id="formSomaCaixaFinal">
+	 		<p:inputText id="caixaFinalValor" value="#{fechamentoBean.valor}" required="true" styleClass="money">
+	 			<f:convertNumber minFractionDigits="2"/>
+	 		</p:inputText>
+	 		<p:commandButton value="Adicionar" ajax="true" update=":createForm:caixaFinal :createForm:totalFechamento :createForm:diferenca :formSomaCaixaFinal:caixaFinalValor" action="#{fechamentoBean.somaCaixaFinal()}" />
+	 	</h:form>
 	</p:dialog>
   </ui:define>
 </ui:composition>

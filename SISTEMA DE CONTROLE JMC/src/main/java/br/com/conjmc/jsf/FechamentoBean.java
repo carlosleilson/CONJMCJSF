@@ -38,19 +38,28 @@ public class FechamentoBean {
 		calcularTotal();
 	}
 	
-	public String persist() {
-		long validar = new Fechamento().validarfechamento(fechamento.getData(), fechamento.getTurno());
-		if(validar == 0) {
-			fechamento.setLoja(ObejctSession.loja());
-			fechamento.setUsuarios(ObejctSession.getUsuarioLogado());
-			fechamento.persist();
+	public String persist() {		
+		if(fechamento.getId() == null){
+			long validar = new Fechamento().validarfechamento(fechamento.getData(), fechamento.getTurno());
+			if(validar == 0) {
+				fechamento.setLoja(ObejctSession.loja());
+				fechamento.setUsuarios(ObejctSession.getUsuarioLogado());
+				fechamento.persist();
+				String message = "message_successfully_created";        
+				FacesMessage facesMessage = MessageFactory.getMessage(message, "Fechamento");
+				FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+				init();			
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O fechamento não pode ser incluindo porque já existe fechamento com a mesma data e período", "O fechamento não pode ser incluindo porque já existe fechamento com a mesma data e período"));
+			}
+		} else {
+			fechamento.merge();
 			String message = "message_successfully_created";        
 			FacesMessage facesMessage = MessageFactory.getMessage(message, "Fechamento");
 			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 			init();			
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O fechamento não pode ser incluindo porque já existe fechamento com a mesma data e período", "O fechamento não pode ser incluindo porque já existe fechamento com a mesma data e período"));
 		}
+		
         return "fechamento.xhtml";
     }
 	

@@ -73,4 +73,8 @@ public class ControleDiarioBean {
 		this.valoresPendentes = valoresPendentes;
 	}
 	
+	public String redirectFechamento() {
+		return "../pages/fechamento.xhtml";
+	}
+	
 }

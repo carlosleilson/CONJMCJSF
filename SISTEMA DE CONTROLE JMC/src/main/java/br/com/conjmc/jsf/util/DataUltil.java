@@ -11,6 +11,14 @@ public class DataUltil {
 	private static SimpleDateFormat sdf;
 	private static Date data;
 	
+	public static Date somarDia(Date data, int dias){
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(data);
+		calendar.add(calendar.DAY_OF_MONTH, dias);
+		data = calendar.getTime();
+		return data;
+	}
+	
 	public static SimpleDateFormat getSdf() {
 		return sdf;
 	}

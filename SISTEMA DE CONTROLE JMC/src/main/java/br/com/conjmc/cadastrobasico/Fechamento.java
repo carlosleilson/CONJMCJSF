@@ -335,4 +335,11 @@ public class Fechamento {
 		}
 		return valor;
 	}
+	
+	public static Fechamento ultimoCaixa(){
+		Query query = entityManager().createQuery("Select o from Fechamento o where o.loja=:loja order by id desc", Fechamento.class);
+		query.setParameter("loja", ObejctSession.loja());
+		query.setMaxResults(1);
+		return (Fechamento) query.getSingleResult();
+	}
 }

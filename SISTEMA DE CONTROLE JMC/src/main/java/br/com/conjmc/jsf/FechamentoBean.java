@@ -1,27 +1,32 @@
 package br.com.conjmc.jsf;
 
 import java.awt.Toolkit;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Timer;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.NoResultException;
 
 import org.primefaces.context.RequestContext;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
+import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.controlediario.controlesaida.Sangria2015;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean
-@SessionScoped
-public class FechamentoBean {
+@ViewScoped
+public class FechamentoBean implements Serializable {
 
 	private Fechamento fechamento;
 	private Double totalCaixaInical;
@@ -34,6 +39,20 @@ public class FechamentoBean {
 	@PostConstruct
 	public void init() {
 		fechamento = new Fechamento();
+		try {
+			if(Fechamento.ultimoCaixa().getTurno().ordinal() == 0) {
+				fechamento.setData(Fechamento.ultimoCaixa().getData());
+				fechamento.setTurno(Turno.SEGUNDO);
+			} else {
+				Date data = Fechamento.ultimoCaixa().getData();
+				data = DataUltil.somarDia(Fechamento.ultimoCaixa().getData(), 1);
+				fechamento.setData(data);
+				fechamento.setTurno(Turno.PRIMEIRO);
+			}
+		} catch (Exception ex) { 
+			fechamento.setData(new Date());
+			fechamento.setTurno(Turno.PRIMEIRO);
+		}
 		controle = new ControleValoresPendentes();
 		calcularTotal();
 	}

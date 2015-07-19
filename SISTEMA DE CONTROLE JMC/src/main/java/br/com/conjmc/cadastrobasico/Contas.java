@@ -280,4 +280,11 @@ public class Contas implements Serializable{
         return (long) query.getSingleResult();
     }
 	
+	public static List<Contas> findAllContas(Date data) {
+		Query query = entityManager().createQuery("SELECT o FROM Contas o where o.vencimento<=:data and o.loja.id = :loja order by o.vencimento desc", Contas.class);
+		query.setParameter("data", data);
+		query.setParameter("loja", ObejctSession.idLoja());
+		return query.getResultList();
+    }
+	
 }

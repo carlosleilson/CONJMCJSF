@@ -1,5 +1,6 @@
 package br.com.conjmc.cadastrobasico;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,10 +14,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
@@ -342,4 +349,30 @@ public class Fechamento {
 		query.setMaxResults(1);
 		return (Fechamento) query.getSingleResult();
 	}
+	
+	public static List<Fechamento> findByDate(Date dataInicial, Date dataFinal, Turno turnoSearch) {	
+        CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<Fechamento> c = cb.createQuery(Fechamento.class);
+		Root<Fechamento> root = c.from(Fechamento.class);
+		c.select(root);
+	
+		List<Predicate> predicates = new ArrayList<Predicate>();
+
+		Path<Date> data = root.get("data");
+		predicates.add(cb.and(cb.between(data, dataInicial, dataFinal)));
+
+		try{
+			if(turnoSearch.ordinal() >= 0) {
+				Path<String> turno = root.get("turno");
+				predicates.add(cb.and(cb.equal(turno, turnoSearch)));
+			}
+		} catch (NullPointerException ex){
+			 ex.printStackTrace();
+		}
+		
+		
+		c.select(root).where(predicates.toArray(new Predicate[]{}));
+		List<Fechamento> fechamentos = entityManager().createQuery(c).getResultList();
+		return fechamentos;
+    }
 }

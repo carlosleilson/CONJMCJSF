@@ -18,20 +18,20 @@
     		<h:panelGrid columns="3">
     			<p:outputLabel value="De" for="dataInicialFilter"/>
     			<p:calendar id="dataInicialFilter" value="#{controleDiarioBean.dataInicial}" required="true" requiredMessage="Data inicial obrigatória"/>
-    			<p:message/>
+    			<p:message for="dataInicialFilter"/>
     			
     			<p:outputLabel value="Ate" for="dataFinalFilter"/>
     			<p:calendar id="dataFinalFilter" value="#{controleDiarioBean.dataFinal}" required="true" requiredMessage="Data final Obrigatória"/>
-    			<p:message/>
+    			<p:message for="dataFinalFilter"/>
     			
     			<p:outputLabel value="Turno" for="turnoFilter" />
 		    	<p:selectOneMenu id="turnoFilter" value="#{controleDiarioBean.turno}">
 					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
-				<p:message/>
+				<p:message for="turnoFilter"/>
     		</h:panelGrid>
-    		<p:commandButton value="Pesquisar" update=":dataForm:accordion" action="#{controleDiarioBean.searchFaturamento()}"/>
+    		<p:commandButton value="Pesquisar" update=":dataForm:accordion :growlForm:growl" action="#{controleDiarioBean.searchFaturamento()}"/>
     	</p:fieldset>
     </h:form>
     <h:form prependId="false" id="dataForm">

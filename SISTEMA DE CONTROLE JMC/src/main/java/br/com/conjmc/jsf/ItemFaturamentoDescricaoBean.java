@@ -1,5 +1,6 @@
 package br.com.conjmc.jsf;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,20 +8,23 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamentoDescricao;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Turno;
+import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean
-@SessionScoped
-public class ItemFaturamentoDescricaoBean {
+@ViewScoped
+public class ItemFaturamentoDescricaoBean implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private Date data;
 	private Turno turno;
 	private ItemFaturamentoDescricao itemFaturamentoDescricao;
@@ -33,6 +37,19 @@ public class ItemFaturamentoDescricaoBean {
 		itemFaturamentoDescricao = new ItemFaturamentoDescricao();
 		itemFaturamentoDescricao.setAtivo(true);
 		//itemFaturamentoNovo = new ArrayList<ItemFaturamento>();
+		try {
+			if(ItemFaturamento.ultimoFaturamento().getTurno().ordinal() == 0) {
+				data = ItemFaturamento.ultimoFaturamento().getPeriodo();
+				turno = Turno.SEGUNDO;
+			} else {
+				data = ItemFaturamento.ultimoFaturamento().getPeriodo();
+				data = DataUltil.somarDia(data, 1);
+				turno = Turno.PRIMEIRO;
+			}
+		} catch (Exception ex) { 
+			data = new Date();
+			turno = Turno.PRIMEIRO;
+		}
 		carregarItens();
 	}
 
@@ -80,8 +97,6 @@ public class ItemFaturamentoDescricaoBean {
 				item.persist();
 			}
 			init();
-			data = null;
-			turno = null;
 			FacesMessage facesMessage = MessageFactory.getMessage("Faturamento adicionado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
 		} else {

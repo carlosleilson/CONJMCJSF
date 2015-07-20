@@ -250,4 +250,12 @@ public class ItemFaturamento {
 		query.setParameter("loja", ObejctSession.loja());
        	return (long) query.getSingleResult();
 	}
+	
+	public static ItemFaturamento ultimoFaturamento(){
+		Query query = entityManager().createQuery("Select o from ItemFaturamento o where o.loja=:loja order by id desc", ItemFaturamento.class);
+		query.setParameter("loja", ObejctSession.loja());
+		query.setMaxResults(1);
+		return (ItemFaturamento) query.getSingleResult();
+	}
+	
 }

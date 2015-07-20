@@ -15,128 +15,227 @@
     </h:form>
     <h:form>
     	<p:fieldset legend="Filtro">
-    		<h:panelGrid columns="2">
+    		<h:panelGrid columns="3">
     			<p:outputLabel value="De" for="dataInicialFilter"/>
-    			<p:calendar id="dataInicialFilter" required="true"/>
+    			<p:calendar id="dataInicialFilter" value="#{controleDiarioBean.dataInicial}" required="true" requiredMessage="Data inicial obrigatória"/>
+    			<p:message/>
     			
     			<p:outputLabel value="Ate" for="dataFinalFilter"/>
-    			<p:calendar id="dataFinalFilter" required="true"/>
+    			<p:calendar id="dataFinalFilter" value="#{controleDiarioBean.dataFinal}" required="true" requiredMessage="Data final Obrigatória"/>
+    			<p:message/>
     			
     			<p:outputLabel value="Turno" for="turnoFilter" />
-		    	<p:selectOneMenu id="turnoFilter">
+		    	<p:selectOneMenu id="turnoFilter" value="#{controleDiarioBean.turno}">
 					<f:selectItem itemLabel="Selecione um turno" itemValue="" />
 					<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
+				<p:message/>
     		</h:panelGrid>
-    		<p:commandButton value="Pesquisar"/>
+    		<p:commandButton value="Pesquisar" update=":dataForm:accordion" action="#{controleDiarioBean.searchFaturamento()}"/>
     	</p:fieldset>
     </h:form>
     <h:form prependId="false" id="dataForm">
-		<p:dataTable id="list" var="list" value="#{controleDiarioBean.fechamentos}" scrollable="true" paginator="true" rows="10">
-			<f:facet name="header">Controle Diario</f:facet>
-			<p:column headerText="Açoes" width="70">
-				<p:commandButton icon="ui-icon-pencil" ajax="false" title="Editar"  action="#{controleDiarioBean.redirectFechamento()}">
-					<f:setPropertyActionListener value="#{list}" target="#{fechamentoBean.fechamento}" />
-				</p:commandButton>
-			</p:column>
-			<p:column headerText="Data" sortBy="#{list.data}" width="70">
-				<h:outputText value="#{list.data}">
-					<f:convertDateTime pattern="dd/MM/yyyy"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Truno" width="70">
-				<h:outputText value="#{list.turno.label}"/>
-			</p:column>
-			
-			<p:column headerText="Caixa Inicial" width="70">
-				<h:outputText value="#{list.caixaInicial}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Trocado Dinheiro" width="70">
-				<h:outputText value="#{list.trocadoDinheiro}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Trocado Moeda" width="70">
-				<h:outputText value="#{list.trocadoMoeda}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Dinheiro" width="70">
-				<h:outputText value="#{list.dinheiro}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Trocado" width="70">
-				<h:outputText value="#{list.trocado}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Moeda" width="70">
-				<h:outputText value="#{list.moeda}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="10%" width="70">
-				<h:outputText value="#{list.porcentagem}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Web" width="70">
-				<h:outputText value="#{list.web}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Cartão" width="70">
-				<h:outputText value="#{list.cartao}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Cheque" width="70">
-				<h:outputText value="#{list.cheque}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Sangria" width="70">
-				<h:outputText value="#{list.sangriaCaixa}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Sangria (Gastos)" width="70">
-				<p:commandLink value="#{list.sangriaGastos}" action="#{controleDiarioBean.carregarDespesas()}" onclick="PF('despesas').show()" update=":dataFormDespesas:list">
-					<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
-				</p:commandLink>
-			</p:column>
-			<p:column headerText="Contas a Cobrar" width="70">
-				<p:commandLink value="#{list.cobrar}" action="#{controleDiarioBean.carregarControleValoresCobrar()}" onclick="PF('valores').show()" update=":dataFormValores:list">
-					<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
-				</p:commandLink>
-			</p:column>
-			<p:column headerText="Contas a Receber" width="70">
-				<p:commandLink value="#{list.receber}" action="#{controleDiarioBean.carregarControleValoresReceber()}" onclick="PF('valores').show()" update=":dataFormValores:list">
-					<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
-				</p:commandLink>
-			</p:column>
-			<p:column headerText="Caixa Final" width="70">
-				<h:outputText value="#{list.caixaFinal}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Total Fechemento" width="70">
-				<h:outputText value="#{list.totalFechamento}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Diferença" width="70">
-				<h:outputText value="#{list.diferenca}">
-					<f:convertNumber minFractionDigits="2"/>
-				</h:outputText>
-			</p:column>
-			<p:column headerText="Justificativa" width="150">
-				<h:outputText value="#{list.justificativa}"/>
-			</p:column>
-		</p:dataTable>
+    	 <p:accordionPanel id="accordion" value="#{controleDiarioBean.fechamentos}" var="list">
+	        <p:tab title="#{list.data} - #{list.turno.label}">
+	            <h:panelGrid columns="2" cellpadding="5">                
+	                <h:outputText value="Caixa Inicial:"/>
+	                <h:outputText value="#{list.caixaInicial}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Trocado (troco):"/>
+					<h:outputText value="#{list.trocadoDinheiro}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Moeda (troco):"/>
+					<h:outputText value="#{list.trocadoMoeda}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Dinhiero:"/>
+					<h:outputText value="#{list.dinheiro}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Trocado"/>
+					<h:outputText value="#{list.trocado}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Moeda"/>
+					<h:outputText value="#{list.moeda}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Porcentagem:"/>
+					<h:outputText value="#{list.porcentagem}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Web:"/>
+					<h:outputText value="#{list.web}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Cartão:"/>
+					<h:outputText value="#{list.cartao}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Cheque:"/>
+					<h:outputText value="#{list.cheque}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Sangria Caixa:"/>
+					<h:outputText value="#{list.sangriaCaixa}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Despesas:"/>
+					<h:outputText value="#{list.sangriaGastos}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="A cobrar:"/>
+					<h:outputText value="#{list.cobrar}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="A receber:"/>
+					<h:outputText value="#{list.receber}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Caixa Final:"/>
+					<h:outputText value="#{list.caixaFinal}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Total Fechamento:"/>
+					<h:outputText value="#{list.totalFechamento}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Diferença:"/>
+					<h:outputText value="#{list.diferenca}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+					
+					<h:outputText value="Justificativa:"/>
+					<h:outputText value="#{list.justificativa}"/>
+	            </h:panelGrid>
+	        </p:tab>
+	    </p:accordionPanel>
+	    
+	    <ui:remove>
+			<p:dataTable id="list" var="list" value="#{controleDiarioBean.fechamentos}" scrollable="true" paginator="true" rows="10">
+				<f:facet name="header">Controle Diario</f:facet>
+				<p:column headerText="Açoes" width="70">
+					<p:commandButton icon="ui-icon-pencil" ajax="false" title="Editar"  action="#{controleDiarioBean.redirectFechamento()}">
+						<f:setPropertyActionListener value="#{list}" target="#{fechamentoBean.fechamento}" />
+					</p:commandButton>
+				</p:column>
+				<p:column headerText="Data" sortBy="#{list.data}" width="70">
+					<h:outputText value="#{list.data}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Truno" width="70">
+					<h:outputText value="#{list.turno.label}"/>
+				</p:column>
+				
+				<p:column headerText="Caixa Inicial" width="70">
+					<h:outputText value="#{list.caixaInicial}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Trocado Dinheiro" width="70">
+					<h:outputText value="#{list.trocadoDinheiro}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Trocado Moeda" width="70">
+					<h:outputText value="#{list.trocadoMoeda}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Dinheiro" width="70">
+					<h:outputText value="#{list.dinheiro}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Trocado" width="70">
+					<h:outputText value="#{list.trocado}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Moeda" width="70">
+					<h:outputText value="#{list.moeda}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="10%" width="70">
+					<h:outputText value="#{list.porcentagem}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Web" width="70">
+					<h:outputText value="#{list.web}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Cartão" width="70">
+					<h:outputText value="#{list.cartao}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Cheque" width="70">
+					<h:outputText value="#{list.cheque}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Sangria" width="70">
+					<h:outputText value="#{list.sangriaCaixa}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Sangria (Gastos)" width="70">
+					<p:commandLink value="#{list.sangriaGastos}" action="#{controleDiarioBean.carregarDespesas()}" onclick="PF('despesas').show()" update=":dataFormDespesas:list">
+						<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Contas a Cobrar" width="70">
+					<p:commandLink value="#{list.cobrar}" action="#{controleDiarioBean.carregarControleValoresCobrar()}" onclick="PF('valores').show()" update=":dataFormValores:list">
+						<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Contas a Receber" width="70">
+					<p:commandLink value="#{list.receber}" action="#{controleDiarioBean.carregarControleValoresReceber()}" onclick="PF('valores').show()" update=":dataFormValores:list">
+						<f:setPropertyActionListener value="#{list}" target="#{controleDiarioBean.fechamento}" />
+					</p:commandLink>
+				</p:column>
+				<p:column headerText="Caixa Final" width="70">
+					<h:outputText value="#{list.caixaFinal}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Fechemento" width="70">
+					<h:outputText value="#{list.totalFechamento}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Diferença" width="70">
+					<h:outputText value="#{list.diferenca}">
+						<f:convertNumber minFractionDigits="2"/>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Justificativa" width="150">
+					<h:outputText value="#{list.justificativa}"/>
+				</p:column>
+			</p:dataTable>
+		</ui:remove>
 	</h:form>
 		
 		<!-- Despesas  -->	

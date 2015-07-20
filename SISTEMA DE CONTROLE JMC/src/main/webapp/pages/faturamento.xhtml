@@ -21,12 +21,13 @@
 					value="#{itemFaturamentoDescricaoBean.data}"
 					pattern="dd/MM/yyyy" 
 					required="true"
+					disabled="treu"
 					mask="true"
 					requiredMessage="O valor é obrigatório"/>        	
 	          	<p:message for="mesDoAno"/>    
 	          
 	          	<p:outputLabel value="Periodo" for="periodo"/>
-	          	<p:selectOneMenu id="periodo" value="#{itemFaturamentoDescricaoBean.turno}" required="true" requiredMessage="O periodo é obrigatório">
+	          	<p:selectOneMenu id="periodo" disabled="true" value="#{itemFaturamentoDescricaoBean.turno}" required="true" requiredMessage="O periodo é obrigatório">
 	          		<f:selectItem itemLabel="Selecione um periodo" itemValue=""/>
 	          		<f:selectItems value="#{faturamentoBean.turno}" var="turno" itemLabel="#{turno.label}"/>
 	          	</p:selectOneMenu>

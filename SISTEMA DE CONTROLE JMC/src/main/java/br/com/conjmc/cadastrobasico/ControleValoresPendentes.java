@@ -162,8 +162,6 @@ public class ControleValoresPendentes implements Serializable {
 		this.baixado = baixado;
 	}
 
-
-
 	// DAO
 	@PersistenceContext
     transient EntityManager entityManager;
@@ -310,7 +308,7 @@ public class ControleValoresPendentes implements Serializable {
 			predicates.add(cb.and(cb.equal(data, controlePendentes.data)));
 		}
 		
-		if(controlePendentes.numeroPedido != null) {
+		if(controlePendentes.numeroPedido != null || controlePendentes.numeroPedido != 0) {
 			Path<Integer> numeroPedido = root.get("numeroPedido");
 			predicates.add(cb.and(cb.equal(numeroPedido, controlePendentes.numeroPedido)));
 		}

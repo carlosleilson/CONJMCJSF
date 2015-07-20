@@ -8,9 +8,9 @@ import java.util.Timer;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.NoResultException;
 
 import org.primefaces.context.RequestContext;
 
@@ -25,7 +25,7 @@ import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean
-@ViewScoped
+@RequestScoped
 public class FechamentoBean implements Serializable {
 
 	private Fechamento fechamento;

@@ -1,5 +1,6 @@
 package br.com.conjmc.jsf;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -7,7 +8,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
+import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.Fechamento;
+import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 
 @ManagedBean
@@ -19,10 +22,19 @@ public class ControleDiarioBean {
 	private List<Sangria> sangrias;
 	private List<ControleValoresPendentes> valoresPendentes;
 	
+	//Filtros
+	private Date dataInicial;
+	private Date dataFinal;
+	private Turno turno;
+	
 	@PostConstruct
 	public void init(){
 		fechamento = new Fechamento();
-		carregarFechamentos();
+		//carregarFechamentos();
+	}
+	
+	public void searchFaturamento() {
+		fechamentos =  Fechamento.findByDate(dataInicial, dataFinal, turno);
 	}
 	
 	private void carregarFechamentos() {
@@ -75,6 +87,30 @@ public class ControleDiarioBean {
 	
 	public String redirectFechamento() {
 		return "../pages/fechamento.xhtml";
+	}
+
+	public Date getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(Date dataInicial) {
+		this.dataInicial = dataInicial;
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
+	}
+
+	public Turno getTurno() {
+		return turno;
+	}
+
+	public void setTurno(Turno turno) {
+		this.turno = turno;
 	}
 	
 }

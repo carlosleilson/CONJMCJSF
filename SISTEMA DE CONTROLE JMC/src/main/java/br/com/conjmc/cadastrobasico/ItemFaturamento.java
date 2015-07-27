@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.springframework.beans.factory.annotation.Configurable;
@@ -34,6 +36,7 @@ public class ItemFaturamento {
 	
 	private double valor;
 	
+	@Temporal(TemporalType.DATE)
 	private Date periodo;
 	
 	@Enumerated

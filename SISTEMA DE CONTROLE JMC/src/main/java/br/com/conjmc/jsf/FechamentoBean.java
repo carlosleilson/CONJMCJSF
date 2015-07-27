@@ -8,7 +8,6 @@ import java.util.Timer;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -25,7 +24,7 @@ import br.com.conjmc.jsf.util.MessageFactory;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class FechamentoBean implements Serializable {
 
 	private Fechamento fechamento;
@@ -54,7 +53,7 @@ public class FechamentoBean implements Serializable {
 			fechamento.setTurno(Turno.PRIMEIRO);
 		}
 		controle = new ControleValoresPendentes();
-		calcularTotal();
+		calcularContas();
 	}
 	
 	public String persist() {		

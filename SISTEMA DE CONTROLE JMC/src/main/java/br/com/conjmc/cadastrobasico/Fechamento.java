@@ -370,6 +370,8 @@ public class Fechamento {
 			 ex.printStackTrace();
 		}
 		
+		Path<String> loja = root.get("loja");
+		predicates.add(cb.and(cb.equal(loja, ObejctSession.idLoja())));
 		
 		c.select(root).where(predicates.toArray(new Predicate[]{}));
 		List<Fechamento> fechamentos = entityManager().createQuery(c).getResultList();

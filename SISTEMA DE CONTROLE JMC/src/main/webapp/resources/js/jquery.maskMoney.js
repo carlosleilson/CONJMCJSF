@@ -37,7 +37,7 @@ $(document).ready(function() {
 		decimal : ',',
 		precision : 2,
 		thousands : '.',
-		allowZero : false,
+		allowZero : true,
 		showSymbol : false
 	});
 });

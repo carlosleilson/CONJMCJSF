@@ -58,6 +58,10 @@
 		          		<p:ajax event="change" update="optionBanco" />
 		          	</p:selectOneMenu>
 		          	<p:message for="origem"/>
+		          	
+		          	<p:outputLabel value="Descrição" for="descricao"/>
+		          	<p:inputText id="descricao" value="#{sangriaBean.sangria.descricao}"/>
+		          	<p:message for="descricao" />
 	         	</h:panelGrid>
 	         	
 				<h:panelGrid id="optionBanco" >
@@ -110,6 +114,12 @@
 		          		<h:outputText value="#{sangria.valor}">
 		          			<f:convertNumber minFractionDigits="2"/>
 		          		</h:outputText>
+		          	</p:column>
+		          	<p:column headerText="Origem" sortBy="#{sangria.origem}">
+		          		<h:outputText value="#{sangria.origem}"/>
+		          	</p:column>
+		          	<p:column headerText="Descrição">
+		          		<h:outputText value="#{sangria.descricao}"/>
 		          	</p:column>
 		        </p:dataTable>
 			       <p:confirmDialog id="duplicate" header="Atenção!" message="Já foi inserido um registro para o item com a mesma data e valor, tem certeza que deseja inserir o registro?" hideEffect="explode" widgetVar="duplicate" severity="alert">

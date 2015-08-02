@@ -72,6 +72,8 @@ public class Sangria implements Serializable{
     @JoinColumn(name="conta_id")
     private Contas conta;
     
+    private String descricao;
+    
     // Pagamento
 	@Enumerated
 	private Turno turno;	
@@ -201,6 +203,14 @@ public class Sangria implements Serializable{
 
 	public void setBanco(String banco) {
 		this.banco = banco;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@Override

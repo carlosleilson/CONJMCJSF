@@ -33,6 +33,7 @@ import br.com.conjmc.cadastrobasico.Funcionarios;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.MetaData;
 import br.com.conjmc.cadastrobasico.Turno;
+import br.com.conjmc.cadastrobasico.Usuarios;
 import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.util.DataUltil;
 import br.com.conjmc.jsf.util.ObejctSession;
@@ -292,7 +293,14 @@ public class Sangria implements Serializable{
     }
 
 	public static List<Sangria> findAllSangrias() {
-		Query query = entityManager().createQuery("select o from Sangria o where o.loja.id = :loja and o.periodo != null order by o.periodo desc", Sangria.class);
+		Usuarios usuarioLogado = (Usuarios) ObejctSession.getObjectSession("usuarioLogado");
+		String sql;
+		if(usuarioLogado.getPerfil().getLabel() == "Administrador") {
+			sql = "select o from Sangria o where o.loja.id = :loja and o.periodo != null order by o.periodo desc";
+		} else {
+			sql = "select o from Sangria o where o.loja.id = :loja and o.periodo != null and o.item.descrisao!='Pró-labore' order by o.periodo desc";
+		}
+		Query query = entityManager().createQuery(sql, Sangria.class);
 		query.setParameter("loja", ObejctSession.idLoja());
 		query.setMaxResults(50);
         return query.getResultList();

@@ -9,9 +9,34 @@
  
     <security:http auto-config="false" use-expressions="true" access-denied-page="/index.html" entry-point-ref="authenticationEntryPoint" >
 		<security:intercept-url pattern="/login.xhtml" access="permitAll" />
+		<security:intercept-url pattern="/index.html" access="permitAll" />
+		<security:intercept-url pattern="/viewExpired.xhtml" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" /> 
-		<security:intercept-url pattern="/pages/**" access="isAuthenticated()" />
-		<security:intercept-url pattern="/relatorios/**" access="isAuthenticated()" />     
+		<security:intercept-url pattern="/pages/main.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa','Estagiário','Contabilidade')" />
+		<security:intercept-url pattern="/pages/lojas.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/pages/cargos.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/pages/funcionarios.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário')" />
+		<security:intercept-url pattern="/pages/usuarios.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/pages/motoqueiros.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário')" />
+		<security:intercept-url pattern="/pages/despesas.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/pages/despesasGastos.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/pages/itemFaturamentoDecricao.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/pages/fechamento.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa','Estagiário')" />
+		<security:intercept-url pattern="/pages/sangria.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa','Estagiário')" />
+		<security:intercept-url pattern="/pages/controleValores.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa','Estagiário')" />
+		<security:intercept-url pattern="/pages/despesasLoja.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa','Estagiário')" />
+		<security:intercept-url pattern="/pages/ExclusaoDespesasLoja.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário','Contabilidade')" />
+		<security:intercept-url pattern="/pages/contas.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário')" />
+		<security:intercept-url pattern="/pages/contasPendentes.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário','Contabilidade')" />
+		<security:intercept-url pattern="/pages/contaFuncionario.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário')" />
+		<security:intercept-url pattern="/pages/faturamento.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa','Estagiário')" />
+		<security:intercept-url pattern="/pages/consultaFaturamento.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/relatorios/RelatorioMensal.xhtml" access="hasAnyRole('Administrador')" />
+		<security:intercept-url pattern="/relatorios/RelatorioDespesa.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário')" />
+		<security:intercept-url pattern="/relatorios/controleDiario.xhtml" access="hasAnyRole('Administrador','Gerente','Estagiário')" />
+		<security:intercept-url pattern="/pages/valorExtra.xhtml" access="hasAnyRole('Administrador','Gerente')" />
+		<security:intercept-url pattern="/pages/**" access="denyAll" /> 
+		<security:intercept-url pattern="/relatorios/**" access="denyAll" />    
         <security:logout invalidate-session="true" logout-success-url="/login.xhtml" logout-url="/resources/j_spring_security_logout"/>
  
         <security:custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER"/>

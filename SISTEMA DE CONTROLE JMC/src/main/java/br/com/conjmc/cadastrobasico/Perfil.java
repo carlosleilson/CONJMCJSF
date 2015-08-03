@@ -2,10 +2,10 @@ package br.com.conjmc.cadastrobasico;
 
 public enum Perfil {
 	ADMIN("Administrador"),
-    EXCLUSIVO("Exclusivo"),
-    SUPERVISOR("Supervisor"),
     GERENTE("Gerente"),
-    ATENDENTE("Atendente");
+    CAIXA("Caixa"),
+    ESTAGIARIO("Estagiário"),
+    CONTABILIDADE("Contabilidade");
     
     private String label;
 

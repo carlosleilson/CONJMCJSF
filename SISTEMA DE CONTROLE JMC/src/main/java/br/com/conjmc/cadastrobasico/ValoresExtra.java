@@ -30,6 +30,8 @@ public class ValoresExtra {
 	private Double valor;
 	private String tipoValor;
 	
+	private String Descricao;
+	
 	@ManyToOne
 	private Lojas loja;
 	
@@ -59,6 +61,12 @@ public class ValoresExtra {
 		this.tipoValor = tipoValor;
 	}
 	
+	public String getDescricao() {
+		return Descricao;
+	}
+	public void setDescricao(String descricao) {
+		Descricao = descricao;
+	}
 	public Lojas getLoja() {
 		return loja;
 	}

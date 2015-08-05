@@ -5,16 +5,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
-import br.com.conjmc.cadastrobasico.Faturamento;
 import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class ControleDiarioBean {
 	
 	private Fechamento fechamento;

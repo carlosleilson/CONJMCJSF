@@ -1,6 +1,7 @@
 package br.com.conjmc.jsf;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ControleValoresPendentesBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private ControleValoresPendentes controle;
-	private ControleValoresPendentes controleFilter;
+	private ControleValoresPendentes controleFilter = new ControleValoresPendentes();
 	private List<ControleValoresPendentes> controles;
 	private List<TipoPagamento> tipoPagamento;
 	private List<Status> status;
@@ -36,9 +37,8 @@ public class ControleValoresPendentesBean implements Serializable {
 	@PostConstruct
     public void init() {
 		controle= new ControleValoresPendentes();
-		controleFilter = new ControleValoresPendentes();
 		controle.setAtivo(true);
-		carregarControles();
+		//carregarControles();
     }
 	
 	private void carregarControles() {
@@ -89,6 +89,8 @@ public class ControleValoresPendentesBean implements Serializable {
 	}
 	
 	public String reset() {
+		controleFilter = new ControleValoresPendentes();
+		controles = new ArrayList<ControleValoresPendentes>();
 		init();
 		return "controleValores.xhtml";
 	}

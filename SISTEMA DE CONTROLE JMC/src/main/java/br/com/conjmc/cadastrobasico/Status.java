@@ -3,7 +3,8 @@ package br.com.conjmc.cadastrobasico;
 public enum Status {
 
     COBRAR ("A Cobrar"),
-    RECEBER ("A Receber");
+    RECEBER ("A Receber"),
+    BAIXADO ("Baixado");
     
     private String label;
     

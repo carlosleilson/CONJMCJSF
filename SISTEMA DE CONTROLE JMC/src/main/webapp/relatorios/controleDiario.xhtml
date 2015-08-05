@@ -125,6 +125,10 @@
 					
 					<h:outputText value="Justificativa:"/>
 					<h:outputText value="#{list.justificativa}"/>
+					
+					<p:commandButton icon="ui-icon-pencil" action="/pages/fechamento.xhtml" value="Editar">
+						<f:setPropertyActionListener value="#{list}" target="#{fechamentoBean.fechamento}" />
+					</p:commandButton>
 	            </h:panelGrid>
 	        </p:tab>
 	    </p:accordionPanel>
@@ -133,7 +137,7 @@
 			<p:dataTable id="list" var="list" value="#{controleDiarioBean.fechamentos}" scrollable="true" paginator="true" rows="10">
 				<f:facet name="header">Controle Diario</f:facet>
 				<p:column headerText="Açoes" width="70">
-					<p:commandButton icon="ui-icon-pencil" ajax="false" title="Editar"  action="#{controleDiarioBean.redirectFechamento()}">
+					<p:commandButton icon="ui-icon-pencil" ajax="false" title="Editar" action="#{controleDiarioBean.redirectFechamento()}">
 						<f:setPropertyActionListener value="#{list}" target="#{fechamentoBean.fechamento}" />
 					</p:commandButton>
 				</p:column>

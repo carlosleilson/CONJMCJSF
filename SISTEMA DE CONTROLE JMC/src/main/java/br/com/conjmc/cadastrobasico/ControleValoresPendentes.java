@@ -328,8 +328,8 @@ public class ControleValoresPendentes implements Serializable {
 			predicates.add(cb.and(cb.equal(status, controlePendentes.status)));
 		}
 		
-		Path<String> baixado = root.get("baixado");
-		predicates.add(cb.and(cb.equal(baixado, false)));
+		/*Path<String> baixado = root.get("baixado");
+		predicates.add(cb.and(cb.equal(baixado, false)));*/
 				
 		Path<String> loja = root.get("loja");
 		predicates.add(cb.and(cb.equal(loja, ObejctSession.idLoja())));

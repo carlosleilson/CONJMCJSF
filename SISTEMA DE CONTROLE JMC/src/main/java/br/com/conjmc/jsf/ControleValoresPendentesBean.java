@@ -79,7 +79,7 @@ public class ControleValoresPendentesBean implements Serializable {
     }
 	
 	public void baixarPedido(){
-		controle.setBaixado(true);
+		controle.setStatus(Status.BAIXADO);
 		controle.merge();
 		init();
 	}

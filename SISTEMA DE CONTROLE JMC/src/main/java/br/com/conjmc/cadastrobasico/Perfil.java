@@ -4,7 +4,6 @@ public enum Perfil {
 	ADMIN("Administrador"),
     GERENTE("Gerente"),
     CAIXA("Caixa"),
-    ESTAGIARIO("Estagiário"),
     CONTABILIDADE("Contabilidade");
     
     private String label;

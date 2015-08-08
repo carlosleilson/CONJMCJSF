@@ -3,8 +3,7 @@ package br.com.conjmc.cadastrobasico;
 public enum TipoPagamento {
 
     DINHEIRO ("Dinheiro"),
-    DEBITO ("Débito"),
-    CREDITO ("Crédito"),
+    CARTAO ("Cartão"),
     CHEQUE ("Cheque");
     
     private String label;

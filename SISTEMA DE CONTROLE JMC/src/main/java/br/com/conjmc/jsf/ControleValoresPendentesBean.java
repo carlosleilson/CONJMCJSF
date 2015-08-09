@@ -56,7 +56,6 @@ public class ControleValoresPendentesBean implements Serializable {
         	controle.setLoja(ObejctSession.loja());
         	/*controle.setData(new Date());*/
         	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
-        		controle.setBaixado(false);
         		controle.persist();
         		message = "message_successfully_created";
         		FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");

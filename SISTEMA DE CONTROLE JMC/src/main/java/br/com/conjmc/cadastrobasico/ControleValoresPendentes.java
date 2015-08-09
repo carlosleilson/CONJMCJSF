@@ -40,14 +40,17 @@ public class ControleValoresPendentes implements Serializable {
 	
 	private String telefone;
 	
-	private Double valor;
+	private double dinheiro;
 	
-	private boolean baixado;
+	private double cartao;
+	
+	private double trocado;
+	
+	private double moeda;
+	
+	private double cheque;
 	
 	private boolean ativo;
-	
-	@Enumerated
-	private TipoPagamento tipoPagamento;
 	
 	@Enumerated
 	private Status status;
@@ -90,28 +93,12 @@ public class ControleValoresPendentes implements Serializable {
 		this.telefone = telefone;
 	}
 
-	public Double getValor() {
-		return valor;
-	}
-
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
-
 	public boolean isAtivo() {
 		return ativo;
 	}
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
-	}
-
-	public TipoPagamento getTipoPagamento() {
-		return tipoPagamento;
-	}
-
-	public void setTipoPagamento(TipoPagamento tipoPagamento) {
-		this.tipoPagamento = tipoPagamento;
 	}
 
 	public Status getStatus() {
@@ -152,14 +139,46 @@ public class ControleValoresPendentes implements Serializable {
 
 	public void setLoja(Lojas loja) {
 		this.loja = loja;
+	}	
+	
+	public double getDinheiro() {
+		return dinheiro;
 	}
 
-	public boolean isBaixado() {
-		return baixado;
+	public void setDinheiro(double dinheiro) {
+		this.dinheiro = dinheiro;
 	}
 
-	public void setBaixado(boolean baixado) {
-		this.baixado = baixado;
+	public double getCartao() {
+		return cartao;
+	}
+
+	public void setCartao(double cartao) {
+		this.cartao = cartao;
+	}
+
+	public double getTrocado() {
+		return trocado;
+	}
+
+	public void setTrocado(double trocado) {
+		this.trocado = trocado;
+	}
+
+	public double getMoeda() {
+		return moeda;
+	}
+
+	public void setMoeda(double moeda) {
+		this.moeda = moeda;
+	}
+	
+	public double getCheque() {
+		return cheque;
+	}
+
+	public void setCheque(double cheque) {
+		this.cheque = cheque;
 	}
 
 	// DAO
@@ -284,7 +303,7 @@ public class ControleValoresPendentes implements Serializable {
 	}
 	
 	public Double TotalBaixadoDinheiro(){
-		Query query = entityManager().createQuery("select sum(o.valor) from ControleValoresPendentes o where o.tipoPagamento=0 and o.baixado=true and o.loja=:loja", Double.class);
+		Query query = entityManager().createQuery("select sum(o.dinheiro) from ControleValoresPendentes o where o.status=2 and o.loja=:loja", Double.class);
 		query.setParameter("loja", ObejctSession.loja());
 		double valor;
 		try {
@@ -316,11 +335,6 @@ public class ControleValoresPendentes implements Serializable {
 		if(controlePendentes.motoqueiro != null) {
 			Path<String> motoqueiro = root.get("motoqueiro");
 			predicates.add(cb.and(cb.equal(motoqueiro, controlePendentes.motoqueiro)));
-		}
-		
-		if(controlePendentes.tipoPagamento != null) {
-			Path<String> tipoPagamento = root.get("tipoPagamento");
-			predicates.add(cb.and(cb.equal(tipoPagamento, controlePendentes.tipoPagamento)));
 		}
 		 
 		if(controlePendentes.status != null) {

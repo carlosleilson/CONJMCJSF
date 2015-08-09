@@ -469,7 +469,11 @@ public class Sangria implements Serializable{
 	public static List< Sangria > paginaPorMes(Date data) {
         EntityManager em = DespesasLoja.entityManager();
         TypedQuery<Sangria> q = null;
-        q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.naoDespesa=false and o.loja.id = :loja", Sangria.class);
+        if(ObejctSession.getUsuarioLogado().getPerfil().getLabel().equals("Administrador")){
+        	q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.naoDespesa=false and o.loja.id = :loja", Sangria.class);
+        } else {
+        	q = em.createQuery("SELECT o FROM Sangria AS o WHERE o.periodo between :dataInicial and :dataFinal and o.item.naoDespesa=false and o.loja.id = :loja and o.item.classificacao.descricao!='Pró-labore'", Sangria.class);      	
+        }
         q.setParameter("dataInicial", DataUltil.primeiroDiaMes(data));
         q.setParameter("dataFinal", DataUltil.ultimoDiaMes(data));
         q.setParameter("loja", ObejctSession.idLoja());

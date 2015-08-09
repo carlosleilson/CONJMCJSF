@@ -34,12 +34,6 @@
 		    		<f:selectItems value="#{motoqueirosBean.motoqueiros}" var="motoq" itemLabel="#{motoq.apelido}" itemValue="#{motoq}"/>
 		    	</p:selectOneMenu>
 		    	
-				<p:outputLabel value="Pagamento" for="pagamentoFilter" />
-		    	<p:selectOneMenu id="pagamentoFilter" value="#{controleValoresPendentesBean.controleFilter.tipoPagamento}">
-					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
-					<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
-				</p:selectOneMenu>
-		    	
 		    	<p:outputLabel value="Status" for="statusFilter" />
 		    	<p:selectOneMenu id="statusFilter" value="#{controleValoresPendentesBean.controleFilter.status}">
 					<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
@@ -65,16 +59,17 @@
 			<p:column headerText="Telefone" sortBy="#{list.telefone}">
 				<h:outputText value="#{list.telefone}" />
 			</p:column>
-			<p:column headerText="Valor" sortBy="#{list.valor}">
-				<h:outputText value="#{list.valor}">
+			<p:column headerText="Valor">
+				<h:outputText value="#{list.dinheiro +
+						list.trocado +
+						list.moeda +
+						list.cartao +
+						list.cheque}">
 					<f:convertNumber minFractionDigits="2"/>
 				</h:outputText>
 			</p:column>
 			<p:column headerText="Motoqueiro" sortBy="#{list.motoqueiro.apelido}">
 				<h:outputText value="#{list.motoqueiro.apelido}"/>
-			</p:column>
-			<p:column headerText="Pagamento" sortBy="#{list.tipoPagamento.label}">
-				<h:outputText value="#{list.tipoPagamento.label}"/>
 			</p:column>
 			<p:column headerText="Turno" sortBy="#{list.turno.label}">
 				<h:outputText value="#{list.turno.label}"/>
@@ -115,12 +110,35 @@
 	<p:dialog id="baixar" header="baixar pedido" message="Tem certeza que deseja dar baixa?" modal="true" hideEffect="explode" widgetVar="baixar" >
 		<h:form id="createFormBaixar" acceptcharset="ISO-8859-1" enctype="multipart/form-data">
 			<h:panelGrid id="createPanelGridBaixa" columns="3" styleClass="dialog">
-				<p:outputLabel value="Pagamento" for="pagamentoBaixa" />
-				<p:selectOneMenu id="pagamentoBaixa" value="#{controleValoresPendentesBean.controle.tipoPagamento}" required="true"  requiredMessage="O tipo do pagamento não pode ser nulo" >
-					<f:selectItem itemLabel="Selecione um tipo de pagamento" itemValue="" />
-					<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
-				</p:selectOneMenu>
-				<p:message for="pagamentoBaixa"/>
+				<p:outputLabel value="Dinheiro" for="dinheiro" />
+		    	<p:inputText id="dinheiro" styleClass="money" value="#{controleValoresPendentesBean.controle.dinheiro}" required="true" requiredMessage="O dinheiro não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="dinheiro" />
+		    	
+		    	<p:outputLabel value="Trocado" for="trocado" />
+		    	<p:inputText id="trocado" styleClass="money" value="#{controleValoresPendentesBean.controle.trocado}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="trocado" />
+		    	
+		    	<p:outputLabel value="Moeda" for="moeda" />
+		    	<p:inputText id="moeda" styleClass="money" value="#{controleValoresPendentesBean.controle.moeda}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="moeda" />
+		    	
+				<p:outputLabel value="Cartão" for="cartao" />
+		    	<p:inputText id="valor" styleClass="money" value="#{controleValoresPendentesBean.controle.cartao}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="cartao" />
+				
+				<p:outputLabel value="Cheque" for="cheque" />
+		    	<p:inputText id="cheque" styleClass="money" value="#{controleValoresPendentesBean.controle.cheque}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="cheque" />
 			</h:panelGrid>
 			<p:commandButton id="confirmBaixa" value="Baixar" oncomplete="PF('baixar').hide()" action="#{controleValoresPendentesBean.baixarPedido()}" ajax="false" onclick="confirmation.hide()" />
 			<p:commandButton id="declineBaixa" value="Fechar" onclick="PF('baixar').hide()" type="button"/>
@@ -144,12 +162,6 @@
 			    		<p:inputMask id="telefone" value="#{controleValoresPendentesBean.controle.telefone}" mask="9999-9999" />
 			    	<p:message for="telefone" />
 			    	
-			    	<p:outputLabel value="Valor" for="valor" />
-			    	<p:inputText id="valor" styleClass="money" value="#{controleValoresPendentesBean.controle.valor}" required="true" requiredMessage="O Telefone não pode ser nulo">
-			    		<f:convertNumber minFractionDigits="2"/>
-			    	</p:inputText>
-			    	<p:message for="valor" />
-					
 					<p:outputLabel value="Motoqueiro" for="motoqueiro" />
 			    	<p:selectOneMenu id="motoqueiro" value="#{controleValoresPendentesBean.controle.motoqueiro}" converter="motoqueirosConverter" required="true" requiredMessage="O motoqueiro não pode ser nulo">
 			    		<f:selectItem itemLabel="Selecione um motoqueiro" itemValue="" />
@@ -157,16 +169,39 @@
 			    	</p:selectOneMenu>
 			    	<p:message for="motoqueiro" />
 					
-					<p:outputLabel value="Pagamento" for="pagamento" />
-					<p:selectOneMenu id="pagamento" value="#{controleValoresPendentesBean.controle.tipoPagamento}" required="true"  requiredMessage="O tipo do pagamento não pode ser nulo" >
-						<f:selectItem itemLabel="Selecione um cargo" itemValue="" />
-						<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
-					</p:selectOneMenu>
-					<p:message for="pagamento"/>
+					<p:outputLabel value="Dinheiro" for="dinheiro" />
+		    	<p:inputText id="dinheiro" styleClass="money" value="#{controleValoresPendentesBean.controle.dinheiro}" required="true" requiredMessage="O dinheiro não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="dinheiro" />
+		    	
+		    	<p:outputLabel value="Trocado" for="trocado" />
+		    	<p:inputText id="trocado" styleClass="money" value="#{controleValoresPendentesBean.controle.trocado}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="trocado" />
+		    	
+		    	<p:outputLabel value="Moeda" for="moeda" />
+		    	<p:inputText id="moeda" styleClass="money" value="#{controleValoresPendentesBean.controle.moeda}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="moeda" />
+		    	
+				<p:outputLabel value="Cartão" for="cartao" />
+		    	<p:inputText id="valor" styleClass="money" value="#{controleValoresPendentesBean.controle.cartao}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="cartao" />
+				
+				<p:outputLabel value="Cheque" for="cheque" />
+		    	<p:inputText id="cheque" styleClass="money" value="#{controleValoresPendentesBean.controle.cheque}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="cheque" />
 					
 					<p:outputLabel value="Turno" for="turno" />
 					<p:selectOneMenu id="turno" value="#{controleValoresPendentesBean.controle.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
-						<f:selectItem itemLabel="Selecione um tipo de pagamento" itemValue="" />
+						<f:selectItem itemLabel="Selecione um turno" itemValue="" />
 						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
 					</p:selectOneMenu>
 					<p:message for="turno"/>	
@@ -186,18 +221,36 @@
 	 <p:dialog id="baixa" header="Controle de Valores" modal="true" widgetVar="baixa" showEffect="fade" hideEffect="explode">
 	    <h:form id="item">
 		 	<h:panelGrid id="createPanelGridItem" columns="3" styleClass="dialog">
-				<p:outputLabel value="Valor" for="valor" />
-		    	<p:inputText id="valor" styleClass="money" value="#{controleValoresPendentesBean.controle.valor}" required="true" requiredMessage="O Telefone não pode ser nulo">
+				<p:outputLabel value="Dinheiro" for="dinheiro" />
+		    	<p:inputText id="dinheiro" styleClass="money" value="#{controleValoresPendentesBean.controle.dinheiro}" required="true" requiredMessage="O dinheiro não pode ser nulo">
 		    		<f:convertNumber minFractionDigits="2"/>
 		    	</p:inputText>
-		    	<p:message for="valor" />
-			 
-			 	<p:outputLabel value="Pagamento" for="pagamento" />
-				<p:selectOneMenu id="pagamento" value="#{controleValoresPendentesBean.controle.tipoPagamento}" required="true"  requiredMessage="O tipo do pagamento não pode ser nulo" >
-					<f:selectItems value="#{controleValoresPendentesBean.tipoPagamento}" var="setor" itemLabel="#{setor.label}" />
-				</p:selectOneMenu>
-				<p:message for="pagamento"/>
+		    	<p:message for="dinheiro" />
+		    	
+		    	<p:outputLabel value="Trocado" for="trocado" />
+		    	<p:inputText id="trocado" styleClass="money" value="#{controleValoresPendentesBean.controle.trocado}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="trocado" />
+		    	
+		    	<p:outputLabel value="Moeda" for="moeda" />
+		    	<p:inputText id="moeda" styleClass="money" value="#{controleValoresPendentesBean.controle.moeda}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="moeda" />
+		    	
+				<p:outputLabel value="Cartão" for="cartao" />
+		    	<p:inputText id="valor" styleClass="money" value="#{controleValoresPendentesBean.controle.cartao}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="cartao" />
 				
+				<p:outputLabel value="Cheque" for="cheque" />
+		    	<p:inputText id="cheque" styleClass="money" value="#{controleValoresPendentesBean.controle.cheque}" required="true" requiredMessage="O Telefone não pode ser nulo">
+		    		<f:convertNumber minFractionDigits="2"/>
+		    	</p:inputText>
+		    	<p:message for="cheque" />
+		
 				<p:outputLabel value="Status" for="status" />
 				<p:selectOneMenu id="status" value="#{controleValoresPendentesBean.controle.status}" required="true"  requiredMessage="O status não pode ser nulo" >
 					<f:selectItems value="#{controleValoresPendentesBean.status}" var="setor" itemLabel="#{setor.label}" />

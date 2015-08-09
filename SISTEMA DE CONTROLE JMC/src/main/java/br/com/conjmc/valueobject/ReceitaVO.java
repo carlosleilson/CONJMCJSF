@@ -20,16 +20,16 @@ public class ReceitaVO {
 	
 	public void somarReceita(ControleValoresPendentes controle) {
 		init();
-		receita.setValor(controle.getValor());
-		receita.setTipoPagamento(controle.getTipoPagamento());
+		//receita.setValor(controle.getValor());
+		//receita.setTipoPagamento(controle.getTipoPagamento());
 		receita.setControleValores(controle);
 		receita.persist();
 	}
 	
 	public void subtrairReceitar(ControleValoresPendentes controle) {
 		init();
-		receita.setValor(DoubleInversionValue.inverter(controle.getValor()));
-		receita.setTipoPagamento(controle.getTipoPagamento());
+		//receita.setValor(DoubleInversionValue.inverter(controle.getValor()));
+		//receita.setTipoPagamento(controle.getTipoPagamento());
 		receita.setControleValores(controle);
 		receita.persist();
 	}

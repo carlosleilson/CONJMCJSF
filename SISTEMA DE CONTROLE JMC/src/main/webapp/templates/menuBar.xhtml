@@ -6,91 +6,86 @@
 	xmlns:p="http://primefaces.org/ui">
 <ui:composition>
 	<p:menubar>
-		<p:submenu label="Cadastro Básico" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Supervisor')}">
+		<p:submenu label="Cadastro Básico" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}">
 			<p:menuitem value="Lojas"
 				url="#{pageContext.servletContext.contextPath}/pages/lojas.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 			<p:menuitem value="Cargos"
 				url="#{pageContext.servletContext.contextPath}/pages/cargos.xhtml"
 				disabled="false"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 			<p:menuitem value="Funcionarios"
 				url="#{pageContext.servletContext.contextPath}/pages/funcionarios.xhtml"
-				disabled="false"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 			<p:menuitem value="Usuários"
 				url="#{pageContext.servletContext.contextPath}/pages/usuarios.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 			<p:menuitem value="Motoqueiros"
-				url="#{pageContext.servletContext.contextPath}/pages/motoqueiros.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/pages/motoqueiros.xhtml" 
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 			<p:menuitem value="Classificação de Despesas"
 				url="#{pageContext.servletContext.contextPath}/pages/despesas.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 			<p:menuitem value="Despesas e Gastos"
 				url="#{pageContext.servletContext.contextPath}/pages/despesasGastos.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
-			<p:menuitem value="Lançamento de Funcionários"
-				url="#{pageContext.servletContext.contextPath}/pages/lancamentosFuncionarios.xhtml"
-				disabled="true"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
-			<p:menuitem value="Fornecedores"
-				url="#{pageContext.servletContext.contextPath}/pages/fornecedores.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 			<p:menuitem value="Item do Faturamento"
-				url="#{pageContext.servletContext.contextPath}/pages/itemFaturamentoDecricao.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/pages/itemFaturamentoDecricao.xhtml" 
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 		</p:submenu>
-		<p:submenu label="Controle Diário">
+		<p:submenu label="Controle Diário" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa') or facesContext.externalContext.isUserInRole('Estagiário')}">
 			<p:menuitem value="Fechamento"
-				ajax="false"
 				url="#{pageContext.servletContext.contextPath}/pages/fechamento.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') or facesContext.externalContext.isUserInRole('Atendente')}" />
-			<p:menuitem value="Sangria" disabled="false"
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
+			<p:menuitem value="Sangria"
 				url="#{pageContext.servletContext.contextPath}/pages/sangria.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') or facesContext.externalContext.isUserInRole('Atendente')}" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 			<p:menuitem value="Controle de Valores Pendentes"
 				url="#{pageContext.servletContext.contextPath}/pages/controleValores.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') or facesContext.externalContext.isUserInRole('Atendente')}"/>
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 		</p:submenu>
-		<p:menuitem value="Redução Z" disabled="true"
-			rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
-		<p:submenu label="Despesas"
-			rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') or facesContext.externalContext.isUserInRole('Atendente')}">
+		<p:menuitem value="Redução Z" disabled="true"/>
+		<p:submenu label="Despesas" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa') or facesContext.externalContext.isUserInRole('Contabilidade')}">
 			<p:menuitem value="Inclusão"
-				url="#{pageContext.servletContext.contextPath}/pages/despesasLoja.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/pages/despesasLoja.xhtml" 
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa')}"/>
 			<p:menuitem value="Consulta"
-				url="#{pageContext.servletContext.contextPath}/pages/ExclusaoDespesasLoja.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/pages/ExclusaoDespesasLoja.xhtml"
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário') or facesContext.externalContext.isUserInRole('Contabilidade')}" />
 		</p:submenu>
-		<p:submenu label="Contas" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Supervisor')}">
+		<p:submenu label="Contas" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário') or facesContext.externalContext.isUserInRole('Contabilidade')}">
 			<p:menuitem value="Cadastro de Contas"
 				url="#{pageContext.servletContext.contextPath}/pages/contas.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 			<p:menuitem value="Gerenciamentos de Contas"
 				url="#{pageContext.servletContext.contextPath}/pages/contasPendentes.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário') or facesContext.externalContext.isUserInRole('Contabilidade')}"/>
 			<p:menuitem value="Conta Corrente Funicionarios"
 				url="#{pageContext.servletContext.contextPath}/pages/contaFuncionario.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') }" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 		</p:submenu>
-		<p:submenu label="Faturamento">
+		<p:submenu label="Faturamento" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa') or facesContext.externalContext.isUserInRole('Estagiário')}">
 			<p:menuitem value="Lançamento"
 				url="#{pageContext.servletContext.contextPath}/pages/faturamento.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') or facesContext.externalContext.isUserInRole('Atendente')}" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Caixa') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 			<p:menuitem value="Consulta"
 				url="#{pageContext.servletContext.contextPath}/pages/consultaFaturamento.xhtml"
-				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Supervisor')  or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Exclusivo') or facesContext.externalContext.isUserInRole('Atendente')}" />
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 		</p:submenu>
-		<p:submenu label="Relatorios"
-			rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Exclusivo') }">
+		<p:submenu label="Relatorios" rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}">
 			<p:menuitem value="Mensal (RDM)"
-				url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioMensal.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioMensal.xhtml" 
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
 			<p:menuitem value="Despesas"
-				url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioDespesa.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/relatorios/RelatorioDespesa.xhtml" 
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 			<p:menuitem value="Controle Diario"
-				url="#{pageContext.servletContext.contextPath}/relatorios/controleDiario.xhtml" />
+				url="#{pageContext.servletContext.contextPath}/relatorios/controleDiario.xhtml" 
+				rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente') or facesContext.externalContext.isUserInRole('Estagiário')}"/>
 		</p:submenu>
 		<p:menuitem ajax="false" value="Valor Extra" 
-			url="#{pageContext.servletContext.contextPath}/pages/valorExtra.xhtml" 
-			rendered="#{facesContext.externalContext.isUserInRole('Administrador')}"/>
+			url="#{pageContext.servletContext.contextPath}/pages/valorExtra.xhtml"
+			rendered="#{facesContext.externalContext.isUserInRole('Administrador') or facesContext.externalContext.isUserInRole('Gerente')}"/>
 		<p:menuitem ajax="false" value="Sair"
 			url="#{facesContext.externalContext.requestContextPath}/resources/j_spring_security_logout" />
 	</p:menubar>

@@ -314,6 +314,30 @@ public class ControleValoresPendentes implements Serializable {
        	return valor;
 	}
 	
+	public Double TotalBaixadoTrocado(){
+		Query query = entityManager().createQuery("select sum(o.trocado) from ControleValoresPendentes o where o.status=2 and o.loja=:loja", Double.class);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
+	public Double TotalBaixadoMoeda(){
+		Query query = entityManager().createQuery("select sum(o.moeda) from ControleValoresPendentes o where o.status=2 and o.loja=:loja", Double.class);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
 	public static List<ControleValoresPendentes> findByControleValores(ControleValoresPendentes controlePendentes){	
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<ControleValoresPendentes> c = cb.createQuery(ControleValoresPendentes.class);

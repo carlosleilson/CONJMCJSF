@@ -95,7 +95,12 @@ public class DespesasGastos implements Serializable {
     }
 
 	public static List<DespesasGastos> findAllDespesasGastosAtivos() {
-        return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
+		if(ObejctSession.getUsuarioLogado().getPerfil().getLabel().equals("Administrador")){
+			return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true", DespesasGastos.class).getResultList();
+		} else {
+			return entityManager().createQuery("SELECT o FROM DespesasGastos o where o.situacao = true and o.descrisao!='Pró-labore'", DespesasGastos.class).getResultList();
+		}
+        
     }		
 	
 	public static List<DespesasGastos> findAllDespesasGastosAtivosSemSaldo() {

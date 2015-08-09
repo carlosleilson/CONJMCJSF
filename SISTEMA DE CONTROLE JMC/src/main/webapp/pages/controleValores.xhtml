@@ -46,13 +46,19 @@
 					<f:selectItems value="#{controleValoresPendentesBean.status}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
     		</h:panelGrid>
-    		<p:commandButton id="createFilterButton" update=":dataForm:list" value="Filtrar" action="#{controleValoresPendentesBean.filtrar()}" />
+    		<p:commandButton id="createFilterButton" update=":dataForm:list" value="Filtrar" action="#{controleValoresPendentesBean.filtrar()}" />&#160;&#160;
+    		<p:commandButton id="reset" value="Limpar" ajax="false" action="#{controleValoresPendentesBean.reset()}" immediate="true" />
     	</fieldset>
     </h:form>
     
     <h:form prependId="false" id="dataForm">
 		<p:dataTable id="list" var="list" value="#{controleValoresPendentesBean.controles}" paginator="true" rows="10">
 			<f:facet name="header">Controle de Valores</f:facet>
+			<p:column headerText="Data" sortBy="#{list.data}">
+				<h:outputText value="#{list.data}">
+					<f:convertDateTime pattern="dd/MM//yyyy"/>
+				</h:outputText>
+			</p:column>
 			<p:column headerText="Nº Pedido" sortBy="#{list.numeroPedido}">
 				<h:outputText value="#{list.numeroPedido}" />
 			</p:column>
@@ -198,6 +204,11 @@
 				</p:selectOneMenu>
 				<p:message for="status"/>
 			 
+				<p:outputLabel value="Motoqueiro" for="motoqueiro" />
+				<p:selectOneMenu id="motoqueiro" value="#{controleValoresPendentesBean.controle.motoqueiro}" converter="motoqueirosConverter" required="true" requiredMessage="O motoqueiro é obrigatório" >
+			    	<f:selectItems value="#{motoqueirosBean.motoqueiros}" var="motoq" itemLabel="#{motoq.apelido}" itemValue="#{motoq}"/>
+				</p:selectOneMenu>
+				<p:message for="motoqueiro"/>
 			 </h:panelGrid>
 			 <p:commandButton value="Adicionar" ajax="true" update=":dataForm:list" action="#{controleValoresPendentesBean.persist()}" onclick="PF('baixa').hide()" />
 			 <p:commandButton id="fechar" value="Fechar" onclick="PF('baixa').hide()" type="button"/>

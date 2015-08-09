@@ -2,74 +2,48 @@ package br.com.conjmc.cadastrobasico;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
-import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Configurable;
-
-@Entity
-@Configurable
 public class Alerta {
 
-	/**
-     */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private Long id;
-
-	/**
-     */
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date periodo;
-
-	/**
-     */
-	@NotNull
-	private Integer intervalo;
-
-	/**
-     */
-	@Version
-	@Column(name = "version")
-	private Integer version;	
+	private Date data;
 	
-	public Long getId() {
-		return id;
+	private String descricao;
+	
+	private String modulo;
+	
+	private Double Valor;
+
+	//Getter and Setter
+	public Date getData() {
+		return data;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
-	public Integer getIntervalo() {
-		return intervalo;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setIntervalo(Integer intervalo) {
-		this.intervalo = intervalo;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public Integer getVersion() {
-		return version;
+	public String getModulo() {
+		return modulo;
 	}
 
-	public void setVersion(Integer version) {
-		this.version = version;
+	public void setModulo(String modulo) {
+		this.modulo = modulo;
 	}
 
-	public Date getPeriodo() {
-		return periodo;
+	public Double getValor() {
+		return Valor;
 	}
 
-	public void setPeriodo(Date periodo) {
-		this.periodo = periodo;
+	public void setValor(Double valor) {
+		Valor = valor;
 	}
+	
 }

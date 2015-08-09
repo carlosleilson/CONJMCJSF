@@ -171,7 +171,6 @@ public class FechamentoBean implements Serializable {
     		if(controle.getData() != null && controle.getTurno() != null) {
     			controle.setLoja(ObejctSession.loja());
             	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
-            		controle.setBaixado(false);
             		controle.persist();
             		message = "message_successfully_created";
             		FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");

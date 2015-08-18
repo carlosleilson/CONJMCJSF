@@ -41,6 +41,7 @@ public class CofreBean {
 	
 	public void calcularTrocado() {
 		this.trocado = 0.0;
+		this.trocado += new ControleValoresPendentes().TotalBaixadoTrocado();
 		this.trocado += new Fechamento().TotalTrocado();
 		this.trocado += new ValoresExtra().TotalValorExtra("Trocado");
 		this.trocado -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Trocado");
@@ -48,6 +49,7 @@ public class CofreBean {
 	
 	public void calcularMoeda() {
 		this.moeda =0.0;
+		this.moeda += new ControleValoresPendentes().TotalBaixadoTrocado();
 		this.moeda += new Fechamento().TotalMoeda();
 		this.moeda += new ValoresExtra().TotalValorExtra("Moeda");
 		this.moeda -= new Sangria2015().TotalSangira2015Cofre("SANGRIA COFRE", "Moeda");

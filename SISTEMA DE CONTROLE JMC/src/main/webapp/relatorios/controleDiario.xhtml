@@ -126,7 +126,7 @@
 					<h:outputText value="Justificativa:"/>
 					<h:outputText value="#{list.justificativa}"/>
 					
-					<p:commandButton icon="ui-icon-pencil" action="/pages/fechamento.xhtml" value="Editar">
+					<p:commandButton icon="ui-icon-pencil" ajax="false" action="/pages/fechamento.xhtml" value="Editar">
 						<f:setPropertyActionListener value="#{list}" target="#{fechamentoBean.fechamento}" />
 					</p:commandButton>
 	            </h:panelGrid>

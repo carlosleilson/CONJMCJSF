@@ -22,6 +22,7 @@
 		<security:intercept-url pattern="/pages/despesasGastos.xhtml" access="hasAnyRole('Administrador')" />
 		<security:intercept-url pattern="/pages/itemFaturamentoDecricao.xhtml" access="hasAnyRole('Administrador')" />
 		<security:intercept-url pattern="/pages/fechamento.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa')" />
+		<security:intercept-url pattern="/pages/sangria.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa')" />
 		<security:intercept-url pattern="/pages/controleValores.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa')" />
 		<security:intercept-url pattern="/pages/despesasLoja.xhtml" access="hasAnyRole('Administrador','Gerente','Caixa')" />
 		<security:intercept-url pattern="/pages/ExclusaoDespesasLoja.xhtml" access="hasAnyRole('Administrador','Gerente','Contabilidade')" />

@@ -283,14 +283,34 @@ public class ControleValoresPendentes implements Serializable {
     }
 	
 	public Double TotalContasPendentes(Date data,Turno turno, int status){
-		Query query = entityManager().createQuery("SELECT SUM(o.valor) FROM ControleValoresPendentes o WHERE data=:data and status="+status+"and loja=:loja and turno="+turno.ordinal(), Double.class);
+		double valor = 0;
+		Query query = entityManager().createQuery("SELECT SUM(o.dinheiro) FROM ControleValoresPendentes o WHERE data=:data and status="+status+"and loja=:loja and turno="+turno.ordinal(), Double.class);
 		query.setParameter("data", data);
 		query.setParameter("loja", ObejctSession.loja());
-		double valor;
+		
+		Query query1 = entityManager().createQuery("SELECT SUM(o.trocado) FROM ControleValoresPendentes o WHERE data=:data and status="+status+"and loja=:loja and turno="+turno.ordinal(), Double.class);
+		query1.setParameter("data", data);
+		query1.setParameter("loja", ObejctSession.loja());
+		
+		Query query2 = entityManager().createQuery("SELECT SUM(o.moeda) FROM ControleValoresPendentes o WHERE data=:data and status="+status+"and loja=:loja and turno="+turno.ordinal(), Double.class);
+		query2.setParameter("data", data);
+		query2.setParameter("loja", ObejctSession.loja());
+		
+		Query query3 = entityManager().createQuery("SELECT SUM(o.cheque) FROM ControleValoresPendentes o WHERE data=:data and status="+status+"and loja=:loja and turno="+turno.ordinal(), Double.class);
+		query3.setParameter("data", data);
+		query3.setParameter("loja", ObejctSession.loja());
+		
+		Query query4 = entityManager().createQuery("SELECT SUM(o.cartao) FROM ControleValoresPendentes o WHERE data=:data and status="+status+"and loja=:loja and turno="+turno.ordinal(), Double.class);
+		query4.setParameter("data", data);
+		query4.setParameter("loja", ObejctSession.loja());
 		try {
-			valor = (double) query.getSingleResult(); 
+			valor += (double) query.getSingleResult();
+			valor += (double) query1.getSingleResult();
+			valor += (double) query2.getSingleResult();
+			valor += (double) query3.getSingleResult();
+			valor += (double) query4.getSingleResult();
 		} catch(NullPointerException e) {
-			valor = 0;
+			
 		}
        	return valor;
 	}

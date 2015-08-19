@@ -35,7 +35,7 @@
 	          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
 	          		<f:selectItem itemLabel="SANGRIA CAIXA" itemValue="SANGRIA CAIXA"/>
 	          		<f:selectItem itemLabel="SANGRIA COFRE" itemValue="SANGRIA COFRE"/>
-	          		<p:ajax event="change" update=":createForm:panelTroco"/>
+	          		<p:ajax event="change" update="panelTroco"/>
 	          	</p:selectOneMenu>
 	    		<p:message for="origem"/>
 	    		
@@ -51,28 +51,30 @@
 			        <p:selectOneRadio id="troco" value="#{sangria2015Bean.sangria.troco}" rendered="#{sangria2015Bean.sangria.origem == 'SANGRIA COFRE'}" required="true" requiredMessage="O troco é obrigatório">
 			            <f:selectItem itemLabel="Sim" itemValue="true"/>
 			            <f:selectItem itemLabel="Não" itemValue="false"/>
-			            <p:ajax event="change" update=":createForm:panelTipo :createForm:panelTipo1"/>
 			        </p:selectOneRadio>
 		        	<p:message for="troco" rendered="#{sangria2015Bean.sangria.origem == 'SANGRIA COFRE'}"/>
 	        	</h:panelGrid>
 	    		
 	    		<h:panelGrid columns="3" id="panelTipo">
-		    		<p:outputLabel value="Tipo" for="tipo" required="true" requiredMessage="A data é obrigatória" rendered="#{sangria2015Bean.sangria.troco==true}" />
-		    		<p:selectOneMenu id="tipo" value="#{sangria2015Bean.sangria.tipo}" required="true" requiredMessage="A origem é obrigatório" rendered="#{sangria2015Bean.sangria.troco==true}">
+		    		<p:outputLabel value="Tipo" for="tipo" required="true" requiredMessage="A data é obrigatória" />
+		    		<p:selectOneMenu id="tipo" value="#{sangria2015Bean.sangria.tipo}" required="true" requiredMessage="A origem é obrigatório" >
 		          		<f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+		          		<f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro"/>
 		          		<f:selectItem itemLabel="Trocado" itemValue="Trocado"/>
 		          		<f:selectItem itemLabel="Moeda" itemValue="Moeda"/>
 		          	</p:selectOneMenu>
-		    		<p:message for="tipo" rendered="#{sangria2015Bean.sangria.troco==true}"/>
+		    		<p:message for="tipo" />
 	    		</h:panelGrid>
 	    		
-	    		<h:panelGrid columns="3" id="panelTipo1">
-		    		<p:outputLabel value="Tipo" for="tipo1" required="true" requiredMessage="A data é obrigatória" rendered="#{sangria2015Bean.sangria.troco!=true or sangria2015Bean.sangria.origem == 'SANGRIA CAIXA'}"/>
-		    		<p:selectOneMenu id="tipo1" value="#{sangria2015Bean.sangria.tipo}" required="true" requiredMessage="A origem é obrigatório" rendered="#{sangria2015Bean.sangria.troco!=true or sangria2015Bean.sangria.origem == 'SANGRIA CAIXA'}">
-		          		<f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro"/>
-		          	</p:selectOneMenu>
-		    		<p:message for="tipo1" rendered="#{sangria2015Bean.sangria.troco!=true or sangria2015Bean.sangria.origem == 'SANGRIA CAIXA'}"/>
-	    		</h:panelGrid>
+	    		<ui:remove>
+		    		<h:panelGrid columns="3" id="panelTipo1">
+			    		<p:outputLabel value="Tipo" for="tipo1" required="true" requiredMessage="A data é obrigatória" rendered="#{sangria2015Bean.sangria.troco!=true or sangria2015Bean.sangria.origem == 'SANGRIA CAIXA'}"/>
+			    		<p:selectOneMenu id="tipo1" value="#{sangria2015Bean.sangria.tipo}" required="true" requiredMessage="A origem é obrigatório" rendered="#{sangria2015Bean.sangria.troco!=true or sangria2015Bean.sangria.origem == 'SANGRIA CAIXA'}">
+			          		<f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro"/>
+			          	</p:selectOneMenu>
+			    		<p:message for="tipo1" rendered="#{sangria2015Bean.sangria.troco!=true or sangria2015Bean.sangria.origem == 'SANGRIA CAIXA'}"/>
+		    		</h:panelGrid>
+	    		</ui:remove>
 	    	<p:commandButton value="Salvar" ajax="false" action="#{sangria2015Bean.persist()}"/>
     	</p:fieldset>
     </h:form>
@@ -95,8 +97,17 @@
         		<h:outputText value="#{sang.origem}"/>
         	</p:column>
         	
+        	<p:column headerText="Turno">
+        		<h:outputText value="#{sang.turno.label}"/>
+        	</p:column>
+        	
         	<p:column headerText="Tipo" sortBy="#{sang.tipo}">
         		<h:outputText value="#{sang.tipo}"/>
+        	</p:column>
+        	
+        	<p:column headerText="Trocado">
+        		<h:outputText value="Sim" rendered="#{sang.troco == true}"/>
+        		<h:outputText value="Não" rendered="#{sang.troco == false}"/>
         	</p:column>
         	
         	<p:column headerText="Descrição" sortBy="#{sang.descricao}">

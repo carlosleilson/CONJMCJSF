@@ -121,7 +121,7 @@ public class FechamentoBean implements Serializable {
 	}
 	
 	public void calcularContas(){
-		fechamento.setCaixaInicial(new Fechamento().ultimoCaixaFinal());
+		fechamento.setCaixaInicial(new Fechamento().ultimoCaixaFinal() + new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Dinheiro", fechamento.getTurno()) );
 		fechamento.setTrocadoDinheiro(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Trocado", fechamento.getTurno()));
 		fechamento.setTrocadoMoeda(new Sangria2015().TotalCaixaInicial(fechamento.getData(), "Moeda", fechamento.getTurno()));
 		fechamento.setSangriaCaixa(new Sangria2015().TotalSangriaCaixa(fechamento.getData(), fechamento.getTurno()));

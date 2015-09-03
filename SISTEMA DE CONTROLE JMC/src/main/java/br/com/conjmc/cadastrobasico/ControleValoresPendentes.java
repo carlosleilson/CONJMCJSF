@@ -40,6 +40,8 @@ public class ControleValoresPendentes implements Serializable {
 	
 	private String telefone;
 	
+	private Double valor;
+	
 	private double dinheiro;
 	
 	private double cartao;
@@ -179,6 +181,14 @@ public class ControleValoresPendentes implements Serializable {
 
 	public void setCheque(double cheque) {
 		this.cheque = cheque;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	// DAO
@@ -346,6 +356,20 @@ public class ControleValoresPendentes implements Serializable {
        	return valor;
 	}
 	
+	public Double totalBaixadoTrocado(Date dataInicial, Date dataFinal){
+		Query query = entityManager().createQuery("select sum(o.trocado) from ControleValoresPendentes o where o.data between :dataInicial and :dataFinal and o.status=2 and o.loja=:loja", Double.class);
+		query.setParameter("dataIncial", dataInicial);
+		query.setParameter("dataIncial", dataFinal);
+		query.setParameter("loja", ObejctSession.loja());
+		double valor;
+		try {
+			valor = (double) query.getSingleResult(); 
+		} catch(NullPointerException e) {
+			valor = 0;
+		}
+       	return valor;
+	}
+	
 	public Double TotalBaixadoMoeda(){
 		Query query = entityManager().createQuery("select sum(o.moeda) from ControleValoresPendentes o where o.status=2 and o.loja=:loja", Double.class);
 		query.setParameter("loja", ObejctSession.loja());
@@ -358,7 +382,7 @@ public class ControleValoresPendentes implements Serializable {
        	return valor;
 	}
 	
-	public static List<ControleValoresPendentes> findByControleValores(ControleValoresPendentes controlePendentes){	
+	public static List<ControleValoresPendentes> findByControleValores(ControleValoresPendentes controlePendentes, Date dataFinal){	
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<ControleValoresPendentes> c = cb.createQuery(ControleValoresPendentes.class);
 		Root<ControleValoresPendentes> root = c.from(ControleValoresPendentes.class);
@@ -366,10 +390,13 @@ public class ControleValoresPendentes implements Serializable {
 		
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		
-		if(controlePendentes.data != null) {
+		Path<Date> data = root.get("data");
+		predicates.add(cb.and(cb.between(data, controlePendentes.data, dataFinal)));
+		
+		/*if(controlePendentes.data != null) {
 			Path<Date> data = root.get("data");
 			predicates.add(cb.and(cb.equal(data, controlePendentes.data)));
-		}
+		}*/
 				
 		if(controlePendentes.turno != null) { 
 			Path<String> turno = root.get("turno");

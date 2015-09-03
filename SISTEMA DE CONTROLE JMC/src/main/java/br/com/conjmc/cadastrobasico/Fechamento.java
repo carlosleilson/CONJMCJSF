@@ -23,7 +23,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.conjmc.despesa.DespesasLoja;
 import br.com.conjmc.jsf.util.ObejctSession;
 
 @Entity
@@ -349,6 +348,20 @@ public class Fechamento {
 		query.setMaxResults(1);
 		return (Fechamento) query.getSingleResult();
 	}
+	
+	public static long countFechamento(Date data, Turno turno) {
+        Query query = entityManager().createQuery("SELECT COUNT(o) FROM Fechamento o where o.data=:data and turno="+turno.ordinal()+" and o.loja=:loja", Long.class);
+        query.setParameter("data", data);
+        query.setParameter("loja", ObejctSession.loja());
+        return (long) query.getSingleResult(); 
+    }
+	
+	public static long countFechamento(Date data) {
+        Query query = entityManager().createQuery("SELECT COUNT(o) FROM Fechamento o where o.data=:data and o.loja=:loja", Long.class);
+        query.setParameter("data", data);
+        query.setParameter("loja", ObejctSession.loja());
+        return (long) query.getSingleResult(); 
+    }
 	
 	public static List<Fechamento> findByDate(Date dataInicial, Date dataFinal, Turno turnoSearch) {	
         CriteriaBuilder cb = entityManager().getCriteriaBuilder();

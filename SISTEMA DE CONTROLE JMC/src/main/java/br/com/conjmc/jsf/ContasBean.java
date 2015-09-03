@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.Enumerated;
 
 import br.com.conjmc.cadastrobasico.Contas;
+import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
@@ -40,54 +41,64 @@ public class ContasBean {
 		sangrias = new ArrayList<Sangria>();
 	}
 	
-	public void persist() {
-		if(sangrias.size() > 0) {
-	        String message = "";
-	        if (conta.getId() != null) {
-	            conta.merge();
-	            List<Sangria> sangriasRemove = sangria.findSangriaByConta(conta.getId());
-            	for (Sangria sangriaRemove : sangriasRemove) { 
-            		sangriaRemove.remove();
-            	}
-	            message = "message_successfully_updated";
-	        } else {
-	        	conta.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-	        	conta.persist();
-	        	ContasPendentesBean contas = (ContasPendentesBean) ObejctSession.getObjectSession("contasPendentesBean");
-	        	if(contas != null) {
-	        		contas.carregarContas();	        		
+	public String persist() {
+		
+			if(sangrias.size() > 0) {
+		        String message = ""; 
+		        
+		        if(pagarAgora == true) {
+		        	long fechamento = Fechamento.countFechamento(conta.getDataPagamento(),turno);
+		        	if(fechamento > 0) {
+		        		message="Esse período já foi fechado";
+		            	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
+		        		return null;	
+		        	}
+		        }
+		        if (conta.getId() != null) {
+		            conta.merge();
+		            List<Sangria> sangriasRemove = sangria.findSangriaByConta(conta.getId());
+	            	for (Sangria sangriaRemove : sangriasRemove) { 
+	            		sangriaRemove.remove();
+	            	}
+		            message = "message_successfully_updated";
+		        } else {
+		        	conta.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+		        	conta.persist();
+		        	ContasPendentesBean contas = (ContasPendentesBean) ObejctSession.getObjectSession("contasPendentesBean");
+		        	if(contas != null) {
+		        		contas.carregarContas();	        		
+		        	}
+		            message = "message_successfully_created";
+		        }
+		        if(pagarAgora == false) {
+		        	for (int i = 0; i < sangrias.size(); i++) {
+						sangria = sangrias.get(i);
+						sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+						sangria.setConta(conta);
+						sangria.persist();
+					}
+	        	} else {
+	        		for (Sangria sangria2 : sangrias) {
+	        			sangria2.setOrigem(origem);
+	        			if(origem.equals("SANGRIA CAIXA"))
+	        				sangria2.setTurno(turno);
+	        			sangria2.setPeriodo(conta.getDataPagamento());
+	        			sangria2.setSangria(true);
+	        			sangria2.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+						sangria2.setConta(conta);
+	        			sangria2.persist();
+	        		}
 	        	}
-	            message = "message_successfully_created";
-	        }
-	        if(pagarAgora == false) {
-	        	for (int i = 0; i < sangrias.size(); i++) {
-					sangria = sangrias.get(i);
-					sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-					sangria.setConta(conta);
-					sangria.persist();
-				}
-        	} else {
-        		for (Sangria sangria2 : sangrias) {
-        			sangria2.setOrigem(origem);
-        			if(origem.equals("SANGRIA CAIXA"))
-        				sangria2.setTurno(turno);
-        			sangria2.setPeriodo(conta.getDataPagamento());
-        			sangria2.setSangria(true);
-        			sangria2.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-					sangria2.setConta(conta);
-        			sangria2.persist();
-        		}
-        	}
-	        
-	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
-	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        this.origem = null;
-	        this.pagarAgora = false;
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
-		}
-		init();
-	        
+		        
+		        FacesMessage facesMessage = MessageFactory.getMessage(message, "Contas");
+		        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+		        this.origem = null;
+		        this.pagarAgora = false;
+			} else {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "O boleto teve ter pelo menos um item", "O boleto teve ter pelo menos um item"));
+			}
+			init();
+			return null;
     }
 	 
 	public String reset(){

@@ -103,9 +103,10 @@ public class ControleValoresPendentesBean implements Serializable {
 		controle.merge();
 		init();
 	}
-	public void filtrar() {
+	public String filtrar() {
 		controles = controle.findByControleValores(controleFilter, dataFinal);
-		carregarTotalTrocado();
+		//carregarTotalTrocado();
+		return "controleValores.xhtml";
 	}
 	
 	public String reset() {

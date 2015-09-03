@@ -52,17 +52,16 @@
 				 	<p:outputLabel value="Data do Pagamento" for="dataPagamento"/>
 				 	<p:calendar id="dataPagamento" value="#{contasBean.conta.dataPagamento}" pattern="dd/MM/yyyy" required="true" requiredMessage="Por favor, imforme a data de pagamento"/>
 				 	<p:message for="dataPagamento" />
+				 	
+				 	<p:outputLabel value="Turno" for="turno" />
+					<p:selectOneMenu id="turno" value="#{contasBean.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
+						<f:selectItem itemLabel="Selecione um turno" itemValue="" />
+						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
+					</p:selectOneMenu>
+					<p:message for="turno"/>
 			 	</h:panelGrid>
 			</h:panelGrid>
 			<h:panelGrid id="optionBanco" >
-				<h:panelGrid columns="3" rendered="#{contasBean.origem == 'SANGRIA CAIXA'}">
-						<p:outputLabel value="Turno" for="turno" />
-						<p:selectOneMenu id="turno" value="#{contasBean.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
-							<f:selectItem itemLabel="Selecione um turno" itemValue="" />
-							<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
-						</p:selectOneMenu>
-						<p:message for="turno"/>
-					</h:panelGrid>
 				<h:panelGrid columns="3" rendered="#{contasBean.origem == 'BANCO'}">
 				 	<p:outputLabel value="Banco" for="banco"/>
 		          	<p:selectOneMenu id="banco" value="#{contasBean.conta.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">

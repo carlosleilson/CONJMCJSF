@@ -67,8 +67,22 @@
 				<p:column headerText="Descrição">
 					<h:outputText value="#{list.descricao}" />
 				</p:column>
-				
-			</p:dataTable>					
+				<p:column headerText="Descrição">
+					<h:outputText value="#{list.descricao}" />
+				</p:column>
+				<p:column headerText="Ações" styleClass="action-column" style="width:90px;">
+					<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="false" title="#{messages.label_edit}" action="valorExtra.xhtml">
+						<f:setPropertyActionListener target="#{valoresExtraBean.valorExtra}" value="#{list}" />
+					</p:commandButton>
+					<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}">
+						<f:setPropertyActionListener value="#{list}" target="#{valoresExtraBean.valorExtra}" />
+					</p:commandButton>
+	          	</p:column>
+			</p:dataTable>	
+			<p:confirmDialog id="excluir" header="Excluir Valor Extra" message="Deseja realmente excluir?" hideEffect="explode" widgetVar="confirmation" severity="alert">
+				<p:commandButton id="confirm" value="Sim" oncomplete="PF('confirmation').hide()" action="#{valoresExtraBean.remove()}" ajax="false" onclick="confirmation.hide()" />
+				<p:commandButton id="decline" value="Não" onclick="PF('confirmation').hide()" type="button"/>
+			</p:confirmDialog>				
 		</h:form>
   </ui:define>
 </ui:composition>

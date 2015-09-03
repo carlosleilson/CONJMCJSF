@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.ItemFaturamento;
 import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.jsf.util.MessageFactory;
@@ -44,11 +45,16 @@ public class ConsultaFaturamentoBean {
 	}
 	
 	public void salvar(){
-		if(itemFaturamento.getId() != null) {
+		String message = "";
+		long fechamento = Fechamento.countFechamento(itemFaturamento.getPeriodo(), itemFaturamento.getTurno());
+		if(itemFaturamento.getId() != null && fechamento == 0) {
 			itemFaturamento.merge();
 			carregarTotal();
 			FacesMessage facesMessage = MessageFactory.getMessage("Faturamento alterado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+		} else {
+			message="Esse período já foi fechado";
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
 		}
 	}
 

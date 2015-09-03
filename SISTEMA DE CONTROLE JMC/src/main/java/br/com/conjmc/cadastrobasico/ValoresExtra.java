@@ -91,6 +91,31 @@ public class ValoresExtra {
         MetaData.gravarMetadata(ObejctSession.getUsuarioLogado(), this.id, this.getClass().getSimpleName());
     }
 	
+	@Transactional
+    public ValoresExtra merge() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        ValoresExtra merged = this.entityManager.merge(this);
+        this.entityManager.flush();
+        return merged;
+    }
+	
+	@Transactional
+    public void remove() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        if (this.entityManager.contains(this)) {
+            this.entityManager.remove(this);
+        } else {
+        	ValoresExtra attached = ValoresExtra.findValoresExtra(this.id);
+            this.entityManager.remove(attached);
+        }
+    }
+	
+	public static ValoresExtra findValoresExtra(Long id) {
+        if (id == null) return null;
+        return entityManager().find(ValoresExtra.class, id);
+    }
+
+	
 	public List<ValoresExtra> findAllValores() {
 		Query query = entityManager().createQuery("SELECT o FROM ValoresExtra o where loja=:loja order by data desc", ValoresExtra.class);
 		query.setParameter("loja", ObejctSession.loja());

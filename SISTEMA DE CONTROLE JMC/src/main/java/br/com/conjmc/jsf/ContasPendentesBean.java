@@ -10,6 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.persistence.Enumerated;
 
 import br.com.conjmc.cadastrobasico.Contas;
+import br.com.conjmc.cadastrobasico.Fechamento;
 import br.com.conjmc.cadastrobasico.Turno;
 import br.com.conjmc.controlediario.controlesaida.Sangria;
 import br.com.conjmc.jsf.util.MessageFactory;
@@ -47,27 +48,41 @@ public class ContasPendentesBean {
 	}
 	
 	public String persist() {
-		conta.merge();
-		List<Sangria> sangria = Sangria.findSangriaConta(conta);
-		
-		
-		for (Sangria sangria2 : sangria) {
-			sangria2.setOrigem(origem);
-			if(origem.equals("SANGRIA CAIXA"))
-				sangria2.setTurno(turno);
-			sangria2.setPeriodo(conta.getDataPagamento());
-			sangria2.setSangria(true);
-			sangria2.persist();
-		}
-		origem = null;
+		long fechamento = 0;
+		if(getTurno() != null)
+			fechamento = Fechamento.countFechamento(conta.getDataPagamento(), getTurno());
+		if(fechamento == 0) {
+			conta.merge();
+			List<Sangria> sangria = Sangria.findSangriaConta(conta);
+			
+			for (Sangria sangria2 : sangria) {
+				sangria2.setOrigem(origem);
+				if(origem.equals("SANGRIA CAIXA"))
+					sangria2.setTurno(turno);
+				sangria2.setPeriodo(conta.getDataPagamento());
+				sangria2.setSangria(true);
+				sangria2.persist();
+			}
+			origem = null;
+		}  else {
+        	String message="Esse período já foi fechado";
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
+        	init();
+        }
 		return "contasPendentes.xhtml";
 	}
 
 	public String delete() {
-		conta.remove();
-		FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Conta");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        init();
+		long fechamento = Fechamento.countFechamento(conta.getDataPagamento(), getTurno());
+		if(fechamento == 0) {
+			conta.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Conta");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        init();
+		}  else {
+        	String message="Esse período já foi fechado";
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
+		}
         return "contasPendentes.xhtml";
     }
 	

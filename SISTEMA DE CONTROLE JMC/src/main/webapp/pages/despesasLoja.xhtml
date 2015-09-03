@@ -25,7 +25,7 @@
 		          	<span></span>
 		          
 		          	<p:outputLabel value="Período: " for="periodo"/>
-		    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pagedate="#{sangriaBean.mesAnterior}" pattern="dd/MM/yyyy" pages="2"  mindate="#{sangriaBean.mesAnterior}" maxdate="#{sangriaBean.dataAtual}" required="true" requiredMessage="Campo obrigatório"/>
+		    		<p:calendar id="periodo" value="#{sangriaBean.sangria.periodo}" pattern="dd/MM/yyyy" required="true" requiredMessage="Campo obrigatório"/>
 		    		<p:message for="periodo"/>   
 		          
 		          	<p:outputLabel value="Valor" for="valor"/>
@@ -59,20 +59,19 @@
 		          	</p:selectOneMenu>
 		          	<p:message for="origem"/>
 		          	
+		          	<p:outputLabel value="Turno" for="turno" />
+					<p:selectOneMenu id="turno" value="#{sangriaBean.sangria.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
+						<f:selectItem itemLabel="Selecione um turno" itemValue="" />
+						<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
+					</p:selectOneMenu>
+					<p:message for="turno"/>
+		          	
 		          	<p:outputLabel value="Descrição" for="descricao"/>
 		          	<p:inputTextarea id="descricao" value="#{sangriaBean.sangria.descricao}"/>
 		          	<p:message for="descricao" />
 	         	</h:panelGrid>
 	         	
 				<h:panelGrid id="optionBanco" >
-					<h:panelGrid columns="3" rendered="#{sangriaBean.sangria.origem == 'SANGRIA CAIXA'}">
-						<p:outputLabel value="Turno" for="turno" />
-						<p:selectOneMenu id="turno" value="#{sangriaBean.sangria.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >
-							<f:selectItem itemLabel="Selecione um turno" itemValue="" />
-							<f:selectItems value="#{controleValoresPendentesBean.turno}" var="setor" itemLabel="#{setor.label}" />
-						</p:selectOneMenu>
-						<p:message for="turno"/>
-					</h:panelGrid>
 					<h:panelGrid columns="3" rendered="#{sangriaBean.sangria.origem == 'BANCO'}">
 					 	<p:outputLabel value="Banco" for="banco"/>
 			          	<p:selectOneMenu id="banco" value="#{sangriaBean.sangria.banco}" required="true" requiredMessage="O bando é obrigatório" filter="true">

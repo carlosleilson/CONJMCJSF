@@ -19,8 +19,11 @@
     	<fieldset>
     		<legend>Filtros</legend>
     		<h:panelGrid columns="2">
-    			<p:outputLabel value="Data" for="dataFilter" />
-    			<p:calendar id="dataFilter" value="#{controleValoresPendentesBean.controleFilter.data}" pattern="dd/MM/yyyy"/>
+    			<p:outputLabel value="De" for="dataFilter" />
+    			<p:calendar id="dataFilter" value="#{controleValoresPendentesBean.controleFilter.data}" pattern="dd/MM/yyyy" required="true"/>
+    			
+    			<p:outputLabel value="Até" for="dataFinalFilter" />
+    			<p:calendar id="dataFinalFilter" value="#{controleValoresPendentesBean.dataFinal}" pattern="dd/MM/yyyy" required="true"/>
 		    	
 		    	<p:outputLabel value="Turno" for="turnoFilter" />
 		    	<p:selectOneMenu id="turnoFilter" value="#{controleValoresPendentesBean.controleFilter.turno}" >
@@ -40,12 +43,17 @@
 					<f:selectItems value="#{controleValoresPendentesBean.status}" var="setor" itemLabel="#{setor.label}" />
 				</p:selectOneMenu>
     		</h:panelGrid>
-    		<p:commandButton id="createFilterButton" update=":dataForm:list" value="Filtrar" action="#{controleValoresPendentesBean.filtrar()}" />&#160;&#160;
+    		<p:commandButton id="createFilterButton" ajax="false" value="Filtrar" action="#{controleValoresPendentesBean.filtrar()}" />&#160;&#160;
     		<p:commandButton id="reset" value="Limpar" ajax="false" action="#{controleValoresPendentesBean.reset()}" immediate="true" />
     	</fieldset>
     </h:form>
-    
-    <h:form prependId="false" id="dataForm">
+    <h:form id="frmTotalizador">
+		<h:panelGrid id="gridTotal">
+    		<h:outputText value="#{controleValoresPendentesBean.totalTrocado}" />
+    	</h:panelGrid>
+	</h:form>
+	    
+    <h:form id="dataForm">
 		<p:dataTable id="list" var="list" value="#{controleValoresPendentesBean.controles}" paginator="true" rows="10">
 			<f:facet name="header">Controle de Valores</f:facet>
 			<p:column headerText="Data" sortBy="#{list.data}">
@@ -60,6 +68,11 @@
 				<h:outputText value="#{list.telefone}" />
 			</p:column>
 			<p:column headerText="Valor">
+				<h:outputText value="#{list.valor}">
+					<f:convertNumber minFractionDigits="2"/>
+				</h:outputText>
+			</p:column>
+			<p:column headerText="Valor Baixado">
 				<h:outputText value="#{list.dinheiro +
 						list.trocado +
 						list.moeda +
@@ -83,11 +96,12 @@
 						icon="ui-icon-note"
 						update=":createFormBaixar:createPanelGridBaixa"
 						oncomplete="PF('baixar').show()"  
-						title="Baixar">
+						title="Baixar"
+						rendered="#{list.status.label != 'Baixado'}">
 					<f:setPropertyActionListener target="#{controleValoresPendentesBean.controle}" value="#{list}" />
 				</p:commandButton>
 				
-				<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="true" update=":item" title="#{messages.label_edit}" onclick="PF('baixa').show()" rendered="#{list.status.label == 'Pendente' or list.status.label == 'A Receber' or usuariosBean.usuarioLogado.perfil.label == 'Administrador'}">
+				<p:commandButton id="editButton" icon="ui-icon-pencil" ajax="true" update=":item" title="#{messages.label_edit}" onclick="PF('baixa').show()" rendered="#{list.status.label != 'Baixado' or usuariosBean.usuarioLogado.perfil.label == 'Administrador'}">
 					<f:setPropertyActionListener target="#{controleValoresPendentesBean.controle}" value="#{list}" />
 				</p:commandButton>
 				<p:commandButton id="deleteButton" icon="ui-icon-trash"  oncomplete="PF('confirmation').show()" title="#{messages.label_delete}" rendered="#{usuariosBean.usuarioLogado.perfil.label == 'Administrador'}">
@@ -168,36 +182,12 @@
 			    		<f:selectItems value="#{motoqueirosBean.motoqueiros}" var="motoq" itemLabel="#{motoq.apelido}" itemValue="#{motoq}"/>
 			    	</p:selectOneMenu>
 			    	<p:message for="motoqueiro" />
-					
-					<p:outputLabel value="Dinheiro" for="dinheiro" />
-		    	<p:inputText id="dinheiro" styleClass="money" value="#{controleValoresPendentesBean.controle.dinheiro}" required="true" requiredMessage="O dinheiro não pode ser nulo">
-		    		<f:convertNumber minFractionDigits="2"/>
-		    	</p:inputText>
-		    	<p:message for="dinheiro" />
-		    	
-		    	<p:outputLabel value="Trocado" for="trocado" />
-		    	<p:inputText id="trocado" styleClass="money" value="#{controleValoresPendentesBean.controle.trocado}" required="true" requiredMessage="O Telefone não pode ser nulo">
-		    		<f:convertNumber minFractionDigits="2"/>
-		    	</p:inputText>
-		    	<p:message for="trocado" />
-		    	
-		    	<p:outputLabel value="Moeda" for="moeda" />
-		    	<p:inputText id="moeda" styleClass="money" value="#{controleValoresPendentesBean.controle.moeda}" required="true" requiredMessage="O Telefone não pode ser nulo">
-		    		<f:convertNumber minFractionDigits="2"/>
-		    	</p:inputText>
-		    	<p:message for="moeda" />
-		    	
-				<p:outputLabel value="Cartão" for="cartao" />
-		    	<p:inputText id="cartao" styleClass="money" value="#{controleValoresPendentesBean.controle.cartao}" required="true" requiredMessage="O Telefone não pode ser nulo">
-		    		<f:convertNumber minFractionDigits="2"/>
-		    	</p:inputText>
-		    	<p:message for="cartao" />
-				
-				<p:outputLabel value="Cheque" for="cheque" />
-		    	<p:inputText id="cheque" styleClass="money" value="#{controleValoresPendentesBean.controle.cheque}" required="true" requiredMessage="O Telefone não pode ser nulo">
-		    		<f:convertNumber minFractionDigits="2"/>
-		    	</p:inputText>
-		    	<p:message for="cheque" />
+			    	
+			    	<p:outputLabel value="Valor" for="valor" />
+			    	<p:inputText id="valor" styleClass="money" required="true" value="#{controleValoresPendentesBean.controle.valor}" requiredMessage="O valor não pode ser nulo">
+			    		<f:convertNumber minFractionDigits="2"/>
+			    	</p:inputText>
+			    	<p:message for="valor" />
 					
 					<p:outputLabel value="Turno" for="turno" />
 					<p:selectOneMenu id="turno" value="#{controleValoresPendentesBean.controle.turno}" required="true"  requiredMessage="O turno não pode ser nulo" >

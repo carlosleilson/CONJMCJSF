@@ -14,7 +14,6 @@ import javax.faces.context.FacesContext;
 
 import br.com.conjmc.cadastrobasico.ControleValoresPendentes;
 import br.com.conjmc.cadastrobasico.Fechamento;
-import br.com.conjmc.cadastrobasico.Lojas;
 import br.com.conjmc.cadastrobasico.Status;
 import br.com.conjmc.cadastrobasico.TipoPagamento;
 import br.com.conjmc.cadastrobasico.Turno;
@@ -27,12 +26,16 @@ public class ControleValoresPendentesBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private Date dataFinal;
 	private ControleValoresPendentes controle;
 	private ControleValoresPendentes controleFilter = new ControleValoresPendentes();
 	private List<ControleValoresPendentes> controles;
 	private List<TipoPagamento> tipoPagamento;
 	private List<Status> status;
 	private List<Turno> turno;
+	private double totalDinheiro;
+	private double totalTrocado;
+	private double totalMoeda;
 	
 	@PostConstruct
     public void init() {
@@ -45,35 +48,53 @@ public class ControleValoresPendentesBean implements Serializable {
 		controles = controle.findAllControleValoresPendenteses();
 	}
 	
+	public void carregarTotalTrocado() {
+		totalTrocado = new ControleValoresPendentes().totalBaixadoTrocado(controle.getData(), dataFinal);
+	}
+	
 	public void persist() {
         String message = "";
-        if (controle.getId() != null) {
-        	controle.merge();
-        	message = "message_successfully_created";
-        	FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
-            FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        } else {
-        	controle.setLoja(ObejctSession.loja());
-        	/*controle.setData(new Date());*/
-        	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
-        		controle.persist();
-        		message = "message_successfully_created";
-        		FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
+        long fechamento = Fechamento.countFechamento(controle.getData(), controle.getTurno());
+        if(fechamento == 0){
+        	if (controle.getId() != null) {
+            	controle.merge();
+            	message = "message_successfully_created";
+            	FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
                 FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        	} else {
-        		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não foi poissivel cadastrar o item porque ele já esta cadastrado", "Não foi poissivel cadastrar o item porque ele já esta cadastrado"));
-        		message = "";
-        	}
+            } else {
+            	controle.setLoja(ObejctSession.loja());
+            	/*controle.setData(new Date());*/
+            	if(new ControleValoresPendentes().validarValoresPendentes(controle.getData(), controle.getTurno(), controle.getNumeroPedido()) == 0) {
+            		controle.persist();
+            		message = "message_successfully_created";
+            		FacesMessage facesMessage = MessageFactory.getMessage(message, "ControleValoresPendentes");
+                    FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+            	} else {
+            		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não foi poissivel cadastrar o item porque ele já esta cadastrado", "Não foi poissivel cadastrar o item porque ele já esta cadastrado"));
+            		message = "";
+            	}
+            }
+            init();
+        }  else {
+        	message="Esse período já foi fechado";
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
         }
-        init();
+        
         /*return "controleValores.xhtml";*/
     }
 
 	public String delete() {
-		controle.remove();
-		FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "ControleValoresPendentes");
-	    FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	    init();
+		String message = "";
+        long fechamento = Fechamento.countFechamento(controle.getData(), controle.getTurno());
+        if(fechamento == 0){
+			controle.remove();
+			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "ControleValoresPendentes");
+		    FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+		    init();
+		}  else {
+	    	message="Esse período já foi fechado";
+	    	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
+		}
         return "controleValores.xhtml";
     }
 	
@@ -82,14 +103,15 @@ public class ControleValoresPendentesBean implements Serializable {
 		controle.merge();
 		init();
 	}
-	
 	public void filtrar() {
-		controles = controle.findByControleValores(controleFilter);
+		controles = controle.findByControleValores(controleFilter, dataFinal);
+		carregarTotalTrocado();
 	}
 	
 	public String reset() {
 		controleFilter = new ControleValoresPendentes();
 		controles = new ArrayList<ControleValoresPendentes>();
+		dataFinal = null;
 		init();
 		return "controleValores.xhtml";
 	}
@@ -140,6 +162,38 @@ public class ControleValoresPendentesBean implements Serializable {
 
 	public void setTurno(List<Turno> turno) {
 		this.turno = turno;
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
+	}
+
+	public double getTotalDinheiro() {
+		return totalDinheiro;
+	}
+
+	public void setTotalDinheiro(double totalDinheiro) {
+		this.totalDinheiro = totalDinheiro;
+	}
+
+	public double getTotalTrocado() {
+		return totalTrocado;
+	}
+
+	public void setTotalTrocado(double totalTrocado) {
+		this.totalTrocado = totalTrocado;
+	}
+
+	public double getTotalMoeda() {
+		return totalMoeda;
+	}
+
+	public void setTotalMoeda(double totalMoeda) {
+		this.totalMoeda = totalMoeda;
 	}
 	
 }

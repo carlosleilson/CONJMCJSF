@@ -548,42 +548,56 @@ public class SangriaBean implements Serializable  {
 
 	public String persist() {
         String message = "";
-    	if(sangria.getOrigem() != null) {
-//        		sangria.setPeriodo(new Date());
-    		sangria.setSangria(true);
-    	} else {
-    		sangria.setSangria(false);
-    	}
-    	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
-    	/*if (sangria.getOrigem().equals("SANGRIA CAIXA")) {
-    		Fechamento recuperaCaixa = Fechamento.caixaAberto();
-    		if(recuperaCaixa.getSangriaGastos() == null){
-    			recuperaCaixa.setSangriaGastos(0.00);
-    		}
-    		recuperaCaixa.setSangriaGastos(recuperaCaixa.getSangriaGastos() + sangria.getValor());
-    		recuperaCaixa.merge();
-    	}*/
-        sangria.persist();
-        message = "message_successfully_created";
-        FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        codigo = null;
-        reset();
-        init();
+        long fechamento = Fechamento.countFechamento(sangria.getPeriodo(), sangria.getTurno());
+        if(fechamento == 0){        	
+        	if(sangria.getOrigem() != null) {
+        		// sangria.setPeriodo(new Date());
+	    		sangria.setSangria(true);
+	    	} else {
+	    		sangria.setSangria(false);
+	    	}
+	    	sangria.setLoja(new Lojas().findLojas(ObejctSession.idLoja()));
+	    	/*if (sangria.getOrigem().equals("SANGRIA CAIXA")) {
+	    		Fechamento recuperaCaixa = Fechamento.caixaAberto();
+	    		if(recuperaCaixa.getSangriaGastos() == null){
+	    			recuperaCaixa.setSangriaGastos(0.00);
+	    		}
+	    		recuperaCaixa.setSangriaGastos(recuperaCaixa.getSangriaGastos() + sangria.getValor());
+	    		recuperaCaixa.merge();
+	    	}*/
+	        sangria.persist();
+	        message = "message_successfully_created";
+	        FacesMessage facesMessage = MessageFactory.getMessage(message, "Despesas");
+	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+	        codigo = null;
+	        reset();
+	        init();
+        }  else {
+        	message="Esse período já foi fechado";
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
+        }
+	    	
         return findAllSangrias();
     }
 
 	public void delete() {
-		try {
-			sangria.remove();
-			FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Sangria");
-	        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-	        reset();
-	        init();
-		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, e.getMessage(), e.getMessage()));
-		}
-        findAllSangrias();
+		String message = "";
+        long fechamento = Fechamento.countFechamento(sangria.getPeriodo(), sangria.getTurno());
+        if(fechamento == 0){        	
+			try {
+				sangria.remove();
+				FacesMessage facesMessage = MessageFactory.getMessage("message_successfully_deleted", "Sangria");
+		        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+		        reset();
+		        init();
+			} catch (Exception e) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, e.getMessage(), e.getMessage()));
+			}
+	        findAllSangrias();   
+        }  else {
+        	message="Esse período já foi fechado";
+        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, message, message));
+        }
     }
 
 	public void reset() {
